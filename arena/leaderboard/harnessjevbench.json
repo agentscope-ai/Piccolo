@@ -1,0 +1,3572 @@
+{
+  "schema_version": "jev.leaderboard.v1",
+  "benchmark_id": "harnessjevbench",
+  "title": "HarnessJevBench",
+  "version": "V0.4",
+  "metric": "mean_task_score",
+  "score_scale": [
+    0.0,
+    1.0
+  ],
+  "higher_is_better": true,
+  "axis_scale": [
+    0.0,
+    1.0
+  ],
+  "rows": [
+    {
+      "model_id": "oneshot-w22m05r02-v5best-avg50",
+      "model_name": "Ours",
+      "score": 0.8186440677966101,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.8186440677966101,
+        "accuracy_n": 295.0,
+        "strict_task_accuracy": 0.8169491525423729,
+        "soft_tv": 0.15151060845599934,
+        "soft_valid": 10.0,
+        "soft_total": 10.0,
+        "valid_questions": 313.0,
+        "failed_questions": 0.0,
+        "first_run_hard_accuracy": 0.8186440677966101,
+        "transport_recovered_questions": 0.0,
+        "order_stability": null,
+        "brier": null,
+        "ece": null
+      },
+      "axes": [
+        {
+          "id": "argument_validation",
+          "label_en": "argument_validation",
+          "label_zh": "参数校验",
+          "score": 0.14285714285714285,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "browser_action",
+          "label_en": "browser_action",
+          "label_zh": "浏览器操作",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "browser_confirmation",
+          "label_en": "browser_confirmation",
+          "label_zh": "浏览器确认",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "budget_allocation",
+          "label_en": "budget_allocation",
+          "label_zh": "预算分配",
+          "score": 0.5,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "cache_validity",
+          "label_en": "cache_validity",
+          "label_zh": "缓存有效性",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "clarification_abstention",
+          "label_en": "clarification_abstention",
+          "label_zh": "澄清与弃答",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "completion_verification",
+          "label_en": "completion_verification",
+          "label_zh": "完成核验",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "concurrency_transaction",
+          "label_en": "concurrency_transaction",
+          "label_zh": "并发与事务",
+          "score": 0.5454545454545454,
+          "metric": "mean_task_score",
+          "samples": 11
+        },
+        {
+          "id": "context_compression",
+          "label_en": "context_compression",
+          "label_zh": "上下文压缩",
+          "score": 0.6,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "context_retention",
+          "label_en": "context_retention",
+          "label_zh": "上下文保留",
+          "score": 0.6923076923076923,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "delegation",
+          "label_en": "delegation",
+          "label_zh": "任务委派",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "injection_boundary",
+          "label_en": "injection_boundary",
+          "label_zh": "注入边界",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "memory_write",
+          "label_en": "memory_write",
+          "label_zh": "记忆写入",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "model_routing",
+          "label_en": "model_routing",
+          "label_zh": "模型路由",
+          "score": 0.7857142857142857,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "plan_progress",
+          "label_en": "plan_progress",
+          "label_zh": "计划进度",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "privacy_release",
+          "label_en": "privacy_release",
+          "label_zh": "隐私披露",
+          "score": 0.6363636363636364,
+          "metric": "mean_task_score",
+          "samples": 11
+        },
+        {
+          "id": "reasoning_budget",
+          "label_en": "reasoning_budget",
+          "label_zh": "推理预算",
+          "score": 0.7777777777777778,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "retrieval_evidence",
+          "label_en": "retrieval_evidence",
+          "label_zh": "检索证据",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "retry_or_escalate",
+          "label_en": "retry_or_escalate",
+          "label_zh": "重试或升级",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "retry_recovery",
+          "label_en": "retry_recovery",
+          "label_zh": "重试恢复",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "safety_gate",
+          "label_en": "safety_gate",
+          "label_zh": "安全门控",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "secret_egress",
+          "label_en": "secret_egress",
+          "label_zh": "敏感信息外发",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "subagent_dispatch",
+          "label_en": "subagent_dispatch",
+          "label_zh": "子代理调度",
+          "score": 0.6923076923076923,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "termination_evidence",
+          "label_en": "termination_evidence",
+          "label_zh": "终止证据",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "tool_call_review",
+          "label_en": "tool_call_review",
+          "label_zh": "工具调用审查",
+          "score": 0.8846153846153846,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "tool_permission",
+          "label_en": "tool_permission",
+          "label_zh": "工具权限",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "tool_selection",
+          "label_en": "tool_selection",
+          "label_zh": "工具选择",
+          "score": 0.7142857142857143,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "trajectory_progress",
+          "label_en": "trajectory_progress",
+          "label_zh": "轨迹进度",
+          "score": 0.8571428571428571,
+          "metric": "mean_task_score",
+          "samples": 7
+        },
+        {
+          "id": "uncertainty_abstention",
+          "label_en": "uncertainty_abstention",
+          "label_zh": "不确定性弃答",
+          "score": 0.8484893915440006,
+          "metric": "soft_distribution_overlap",
+          "samples": 10
+        },
+        {
+          "id": "version_conflict",
+          "label_en": "version_conflict",
+          "label_zh": "版本冲突",
+          "score": 0.7777777777777778,
+          "metric": "mean_task_score",
+          "samples": 9
+        }
+      ],
+      "samples": 305,
+      "errors": 0,
+      "evaluated_at": "2026-10-19T19:15:19.591691+00:00",
+      "protocol": "HarnessJevBenchV0.4/native_logits",
+      "notes": [
+        "305 tasks / 313 questions; 295 Hard tasks / 10 Soft tasks; original view only; order stability not measured.",
+        "Full denominator; failures zero on Hard. Soft TV valid-only with explicit coverage.",
+        "Outcome-aware challenge development and correlated source-family variants; not an unseen production accuracy estimate.",
+        "Frozen records SHA256: 2481e7bee51757d88a2e5bfc805aa04e81d57b60545abf94479205c2a1f1a67d"
+      ]
+    },
+    {
+      "model_id": "access-qwen38-27b",
+      "model_name": "Qwen3.8-27B (Logits)",
+      "logo": "./playground/logos/qwen.png",
+      "score": 0.5898305084745763,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.5898305084745763,
+        "accuracy_n": 295.0,
+        "strict_task_accuracy": 0.5864406779661017,
+        "soft_tv": 0.37721384431632576,
+        "soft_valid": 10.0,
+        "soft_total": 10.0,
+        "valid_questions": 313.0,
+        "failed_questions": 0.0,
+        "first_run_hard_accuracy": 0.5898305084745763,
+        "transport_recovered_questions": 0.0,
+        "order_stability": null,
+        "brier": null,
+        "ece": null
+      },
+      "axes": [
+        {
+          "id": "argument_validation",
+          "label_en": "argument_validation",
+          "label_zh": "参数校验",
+          "score": 0.14285714285714285,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "browser_action",
+          "label_en": "browser_action",
+          "label_zh": "浏览器操作",
+          "score": 0.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "browser_confirmation",
+          "label_en": "browser_confirmation",
+          "label_zh": "浏览器确认",
+          "score": 0.5,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "budget_allocation",
+          "label_en": "budget_allocation",
+          "label_zh": "预算分配",
+          "score": 0.07142857142857142,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "cache_validity",
+          "label_en": "cache_validity",
+          "label_zh": "缓存有效性",
+          "score": 0.5,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "clarification_abstention",
+          "label_en": "clarification_abstention",
+          "label_zh": "澄清与弃答",
+          "score": 0.875,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "completion_verification",
+          "label_en": "completion_verification",
+          "label_zh": "完成核验",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "concurrency_transaction",
+          "label_en": "concurrency_transaction",
+          "label_zh": "并发与事务",
+          "score": 0.5454545454545454,
+          "metric": "mean_task_score",
+          "samples": 11
+        },
+        {
+          "id": "context_compression",
+          "label_en": "context_compression",
+          "label_zh": "上下文压缩",
+          "score": 0.5,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "context_retention",
+          "label_en": "context_retention",
+          "label_zh": "上下文保留",
+          "score": 0.46153846153846156,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "delegation",
+          "label_en": "delegation",
+          "label_zh": "任务委派",
+          "score": 0.9,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "injection_boundary",
+          "label_en": "injection_boundary",
+          "label_zh": "注入边界",
+          "score": 0.875,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "memory_write",
+          "label_en": "memory_write",
+          "label_zh": "记忆写入",
+          "score": 0.875,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "model_routing",
+          "label_en": "model_routing",
+          "label_zh": "模型路由",
+          "score": 0.07142857142857142,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "plan_progress",
+          "label_en": "plan_progress",
+          "label_zh": "计划进度",
+          "score": 0.25,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "privacy_release",
+          "label_en": "privacy_release",
+          "label_zh": "隐私披露",
+          "score": 0.45454545454545453,
+          "metric": "mean_task_score",
+          "samples": 11
+        },
+        {
+          "id": "reasoning_budget",
+          "label_en": "reasoning_budget",
+          "label_zh": "推理预算",
+          "score": 0.6666666666666666,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "retrieval_evidence",
+          "label_en": "retrieval_evidence",
+          "label_zh": "检索证据",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "retry_or_escalate",
+          "label_en": "retry_or_escalate",
+          "label_zh": "重试或升级",
+          "score": 0.4444444444444444,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "retry_recovery",
+          "label_en": "retry_recovery",
+          "label_zh": "重试恢复",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "safety_gate",
+          "label_en": "safety_gate",
+          "label_zh": "安全门控",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "secret_egress",
+          "label_en": "secret_egress",
+          "label_zh": "敏感信息外发",
+          "score": 0.625,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "subagent_dispatch",
+          "label_en": "subagent_dispatch",
+          "label_zh": "子代理调度",
+          "score": 0.3076923076923077,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "termination_evidence",
+          "label_en": "termination_evidence",
+          "label_zh": "终止证据",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "tool_call_review",
+          "label_en": "tool_call_review",
+          "label_zh": "工具调用审查",
+          "score": 0.8461538461538461,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "tool_permission",
+          "label_en": "tool_permission",
+          "label_zh": "工具权限",
+          "score": 0.8571428571428571,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "tool_selection",
+          "label_en": "tool_selection",
+          "label_zh": "工具选择",
+          "score": 0.5714285714285714,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "trajectory_progress",
+          "label_en": "trajectory_progress",
+          "label_zh": "轨迹进度",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 7
+        },
+        {
+          "id": "uncertainty_abstention",
+          "label_en": "uncertainty_abstention",
+          "label_zh": "不确定性弃答",
+          "score": 0.6227861556836742,
+          "metric": "soft_distribution_overlap",
+          "samples": 10
+        },
+        {
+          "id": "version_conflict",
+          "label_en": "version_conflict",
+          "label_zh": "版本冲突",
+          "score": 0.6666666666666666,
+          "metric": "mean_task_score",
+          "samples": 9
+        }
+      ],
+      "samples": 305,
+      "errors": 0,
+      "evaluated_at": "2026-10-19T19:09:07.197032+00:00",
+      "protocol": "HarnessJevBenchV0.4/native_logits",
+      "notes": [
+        "305 tasks / 313 questions; 295 Hard tasks / 10 Soft tasks; original view only; order stability not measured.",
+        "Full denominator; failures zero on Hard. Soft TV valid-only with explicit coverage.",
+        "Outcome-aware challenge development and correlated source-family variants; not an unseen production accuracy estimate.",
+        "Frozen records SHA256: 2481e7bee51757d88a2e5bfc805aa04e81d57b60545abf94479205c2a1f1a67d"
+      ]
+    },
+    {
+      "model_id": "access-StartLux-Decision-v1.1-27B-Instant",
+      "model_name": "StartLux-Decision v1.1 27B Instant",
+      "score": 0.8135593220338984,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.8135593220338984,
+        "accuracy_n": 295.0,
+        "strict_task_accuracy": 0.8135593220338984,
+        "soft_tv": 0.19386480858718716,
+        "soft_valid": 10.0,
+        "soft_total": 10.0,
+        "valid_questions": 313.0,
+        "failed_questions": 0.0,
+        "first_run_hard_accuracy": 0.8135593220338984,
+        "transport_recovered_questions": 0.0,
+        "order_stability": null,
+        "brier": null,
+        "ece": null
+      },
+      "axes": [
+        {
+          "id": "argument_validation",
+          "label_en": "argument_validation",
+          "label_zh": "参数校验",
+          "score": 0.14285714285714285,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "browser_action",
+          "label_en": "browser_action",
+          "label_zh": "浏览器操作",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "browser_confirmation",
+          "label_en": "browser_confirmation",
+          "label_zh": "浏览器确认",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "budget_allocation",
+          "label_en": "budget_allocation",
+          "label_zh": "预算分配",
+          "score": 0.42857142857142855,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "cache_validity",
+          "label_en": "cache_validity",
+          "label_zh": "缓存有效性",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "clarification_abstention",
+          "label_en": "clarification_abstention",
+          "label_zh": "澄清与弃答",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "completion_verification",
+          "label_en": "completion_verification",
+          "label_zh": "完成核验",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "concurrency_transaction",
+          "label_en": "concurrency_transaction",
+          "label_zh": "并发与事务",
+          "score": 0.6363636363636364,
+          "metric": "mean_task_score",
+          "samples": 11
+        },
+        {
+          "id": "context_compression",
+          "label_en": "context_compression",
+          "label_zh": "上下文压缩",
+          "score": 0.6,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "context_retention",
+          "label_en": "context_retention",
+          "label_zh": "上下文保留",
+          "score": 0.5384615384615384,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "delegation",
+          "label_en": "delegation",
+          "label_zh": "任务委派",
+          "score": 0.9,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "injection_boundary",
+          "label_en": "injection_boundary",
+          "label_zh": "注入边界",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "memory_write",
+          "label_en": "memory_write",
+          "label_zh": "记忆写入",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "model_routing",
+          "label_en": "model_routing",
+          "label_zh": "模型路由",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "plan_progress",
+          "label_en": "plan_progress",
+          "label_zh": "计划进度",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "privacy_release",
+          "label_en": "privacy_release",
+          "label_zh": "隐私披露",
+          "score": 0.7272727272727273,
+          "metric": "mean_task_score",
+          "samples": 11
+        },
+        {
+          "id": "reasoning_budget",
+          "label_en": "reasoning_budget",
+          "label_zh": "推理预算",
+          "score": 0.6666666666666666,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "retrieval_evidence",
+          "label_en": "retrieval_evidence",
+          "label_zh": "检索证据",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "retry_or_escalate",
+          "label_en": "retry_or_escalate",
+          "label_zh": "重试或升级",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "retry_recovery",
+          "label_en": "retry_recovery",
+          "label_zh": "重试恢复",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "safety_gate",
+          "label_en": "safety_gate",
+          "label_zh": "安全门控",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "secret_egress",
+          "label_en": "secret_egress",
+          "label_zh": "敏感信息外发",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "subagent_dispatch",
+          "label_en": "subagent_dispatch",
+          "label_zh": "子代理调度",
+          "score": 0.5384615384615384,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "termination_evidence",
+          "label_en": "termination_evidence",
+          "label_zh": "终止证据",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "tool_call_review",
+          "label_en": "tool_call_review",
+          "label_zh": "工具调用审查",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "tool_permission",
+          "label_en": "tool_permission",
+          "label_zh": "工具权限",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "tool_selection",
+          "label_en": "tool_selection",
+          "label_zh": "工具选择",
+          "score": 0.7142857142857143,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "trajectory_progress",
+          "label_en": "trajectory_progress",
+          "label_zh": "轨迹进度",
+          "score": 0.8571428571428571,
+          "metric": "mean_task_score",
+          "samples": 7
+        },
+        {
+          "id": "uncertainty_abstention",
+          "label_en": "uncertainty_abstention",
+          "label_zh": "不确定性弃答",
+          "score": 0.8061351914128128,
+          "metric": "soft_distribution_overlap",
+          "samples": 10
+        },
+        {
+          "id": "version_conflict",
+          "label_en": "version_conflict",
+          "label_zh": "版本冲突",
+          "score": 0.6666666666666666,
+          "metric": "mean_task_score",
+          "samples": 9
+        }
+      ],
+      "samples": 305,
+      "errors": 0,
+      "evaluated_at": null,
+      "protocol": "HarnessJevBenchV0.4/native_logits",
+      "notes": [
+        "305 tasks / 313 questions; 295 Hard tasks / 10 Soft tasks; original view only; order stability not measured.",
+        "Full denominator; failures zero on Hard. Soft TV valid-only with explicit coverage.",
+        "Outcome-aware challenge development and correlated source-family variants; not an unseen production accuracy estimate.",
+        "Frozen records SHA256: 2481e7bee51757d88a2e5bfc805aa04e81d57b60545abf94479205c2a1f1a67d"
+      ]
+    },
+    {
+      "model_id": "access-StartLux-Decision-v1.1-27B-AutoThink",
+      "model_name": "StartLux-Decision v1.1 27B AutoThink",
+      "score": 0.8661016949152542,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.8661016949152542,
+        "accuracy_n": 295.0,
+        "strict_task_accuracy": 0.864406779661017,
+        "soft_tv": 0.2761230827381213,
+        "soft_valid": 10.0,
+        "soft_total": 10.0,
+        "valid_questions": 313.0,
+        "failed_questions": 0.0,
+        "first_run_hard_accuracy": 0.8661016949152542,
+        "transport_recovered_questions": 0.0,
+        "order_stability": null,
+        "brier": null,
+        "ece": null
+      },
+      "axes": [
+        {
+          "id": "argument_validation",
+          "label_en": "argument_validation",
+          "label_zh": "参数校验",
+          "score": 0.14285714285714285,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "browser_action",
+          "label_en": "browser_action",
+          "label_zh": "浏览器操作",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "browser_confirmation",
+          "label_en": "browser_confirmation",
+          "label_zh": "浏览器确认",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "budget_allocation",
+          "label_en": "budget_allocation",
+          "label_zh": "预算分配",
+          "score": 0.7857142857142857,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "cache_validity",
+          "label_en": "cache_validity",
+          "label_zh": "缓存有效性",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "clarification_abstention",
+          "label_en": "clarification_abstention",
+          "label_zh": "澄清与弃答",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "completion_verification",
+          "label_en": "completion_verification",
+          "label_zh": "完成核验",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "concurrency_transaction",
+          "label_en": "concurrency_transaction",
+          "label_zh": "并发与事务",
+          "score": 0.8181818181818182,
+          "metric": "mean_task_score",
+          "samples": 11
+        },
+        {
+          "id": "context_compression",
+          "label_en": "context_compression",
+          "label_zh": "上下文压缩",
+          "score": 0.8,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "context_retention",
+          "label_en": "context_retention",
+          "label_zh": "上下文保留",
+          "score": 0.8461538461538461,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "delegation",
+          "label_en": "delegation",
+          "label_zh": "任务委派",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "injection_boundary",
+          "label_en": "injection_boundary",
+          "label_zh": "注入边界",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "memory_write",
+          "label_en": "memory_write",
+          "label_zh": "记忆写入",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "model_routing",
+          "label_en": "model_routing",
+          "label_zh": "模型路由",
+          "score": 0.7857142857142857,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "plan_progress",
+          "label_en": "plan_progress",
+          "label_zh": "计划进度",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "privacy_release",
+          "label_en": "privacy_release",
+          "label_zh": "隐私披露",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 11
+        },
+        {
+          "id": "reasoning_budget",
+          "label_en": "reasoning_budget",
+          "label_zh": "推理预算",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "retrieval_evidence",
+          "label_en": "retrieval_evidence",
+          "label_zh": "检索证据",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "retry_or_escalate",
+          "label_en": "retry_or_escalate",
+          "label_zh": "重试或升级",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "retry_recovery",
+          "label_en": "retry_recovery",
+          "label_zh": "重试恢复",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "safety_gate",
+          "label_en": "safety_gate",
+          "label_zh": "安全门控",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "secret_egress",
+          "label_en": "secret_egress",
+          "label_zh": "敏感信息外发",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "subagent_dispatch",
+          "label_en": "subagent_dispatch",
+          "label_zh": "子代理调度",
+          "score": 0.6153846153846154,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "termination_evidence",
+          "label_en": "termination_evidence",
+          "label_zh": "终止证据",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "tool_call_review",
+          "label_en": "tool_call_review",
+          "label_zh": "工具调用审查",
+          "score": 0.9615384615384616,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "tool_permission",
+          "label_en": "tool_permission",
+          "label_zh": "工具权限",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "tool_selection",
+          "label_en": "tool_selection",
+          "label_zh": "工具选择",
+          "score": 0.42857142857142855,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "trajectory_progress",
+          "label_en": "trajectory_progress",
+          "label_zh": "轨迹进度",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 7
+        },
+        {
+          "id": "uncertainty_abstention",
+          "label_en": "uncertainty_abstention",
+          "label_zh": "不确定性弃答",
+          "score": 0.7238769172618787,
+          "metric": "soft_distribution_overlap",
+          "samples": 10
+        },
+        {
+          "id": "version_conflict",
+          "label_en": "version_conflict",
+          "label_zh": "版本冲突",
+          "score": 0.7777777777777778,
+          "metric": "mean_task_score",
+          "samples": 9
+        }
+      ],
+      "samples": 305,
+      "errors": 0,
+      "evaluated_at": "2026-10-19T20:08:20.384404+00:00",
+      "protocol": "HarnessJevBenchV0.4/native_logits",
+      "notes": [
+        "305 tasks / 313 questions; 295 Hard tasks / 10 Soft tasks; original view only; order stability not measured.",
+        "Full denominator; failures zero on Hard. Soft TV valid-only with explicit coverage.",
+        "Outcome-aware challenge development and correlated source-family variants; not an unseen production accuracy estimate.",
+        "Frozen records SHA256: 2481e7bee51757d88a2e5bfc805aa04e81d57b60545abf94479205c2a1f1a67d"
+      ]
+    },
+    {
+      "model_id": "access-strands-decider-26B-A4B-gemma4-v1-2610",
+      "model_name": "Strands Decider 26B-A4B (Gemma 4)",
+      "score": 0.559322033898305,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.559322033898305,
+        "accuracy_n": 295.0,
+        "strict_task_accuracy": 0.5559322033898305,
+        "soft_tv": 0.29199754396684424,
+        "soft_valid": 10.0,
+        "soft_total": 10.0,
+        "valid_questions": 313.0,
+        "failed_questions": 0.0,
+        "first_run_hard_accuracy": 0.559322033898305,
+        "transport_recovered_questions": 0.0,
+        "order_stability": null,
+        "brier": null,
+        "ece": null
+      },
+      "axes": [
+        {
+          "id": "argument_validation",
+          "label_en": "argument_validation",
+          "label_zh": "参数校验",
+          "score": 0.35714285714285715,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "browser_action",
+          "label_en": "browser_action",
+          "label_zh": "浏览器操作",
+          "score": 0.25,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "browser_confirmation",
+          "label_en": "browser_confirmation",
+          "label_zh": "浏览器确认",
+          "score": 0.6,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "budget_allocation",
+          "label_en": "budget_allocation",
+          "label_zh": "预算分配",
+          "score": 0.14285714285714285,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "cache_validity",
+          "label_en": "cache_validity",
+          "label_zh": "缓存有效性",
+          "score": 0.375,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "clarification_abstention",
+          "label_en": "clarification_abstention",
+          "label_zh": "澄清与弃答",
+          "score": 0.875,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "completion_verification",
+          "label_en": "completion_verification",
+          "label_zh": "完成核验",
+          "score": 0.9,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "concurrency_transaction",
+          "label_en": "concurrency_transaction",
+          "label_zh": "并发与事务",
+          "score": 0.36363636363636365,
+          "metric": "mean_task_score",
+          "samples": 11
+        },
+        {
+          "id": "context_compression",
+          "label_en": "context_compression",
+          "label_zh": "上下文压缩",
+          "score": 0.5,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "context_retention",
+          "label_en": "context_retention",
+          "label_zh": "上下文保留",
+          "score": 0.6153846153846154,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "delegation",
+          "label_en": "delegation",
+          "label_zh": "任务委派",
+          "score": 0.7,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "injection_boundary",
+          "label_en": "injection_boundary",
+          "label_zh": "注入边界",
+          "score": 0.875,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "memory_write",
+          "label_en": "memory_write",
+          "label_zh": "记忆写入",
+          "score": 0.625,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "model_routing",
+          "label_en": "model_routing",
+          "label_zh": "模型路由",
+          "score": 0.35714285714285715,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "plan_progress",
+          "label_en": "plan_progress",
+          "label_zh": "计划进度",
+          "score": 0.125,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "privacy_release",
+          "label_en": "privacy_release",
+          "label_zh": "隐私披露",
+          "score": 0.36363636363636365,
+          "metric": "mean_task_score",
+          "samples": 11
+        },
+        {
+          "id": "reasoning_budget",
+          "label_en": "reasoning_budget",
+          "label_zh": "推理预算",
+          "score": 0.4444444444444444,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "retrieval_evidence",
+          "label_en": "retrieval_evidence",
+          "label_zh": "检索证据",
+          "score": 0.75,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "retry_or_escalate",
+          "label_en": "retry_or_escalate",
+          "label_zh": "重试或升级",
+          "score": 0.5555555555555556,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "retry_recovery",
+          "label_en": "retry_recovery",
+          "label_zh": "重试恢复",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "safety_gate",
+          "label_en": "safety_gate",
+          "label_zh": "安全门控",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "secret_egress",
+          "label_en": "secret_egress",
+          "label_zh": "敏感信息外发",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "subagent_dispatch",
+          "label_en": "subagent_dispatch",
+          "label_zh": "子代理调度",
+          "score": 0.46153846153846156,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "termination_evidence",
+          "label_en": "termination_evidence",
+          "label_zh": "终止证据",
+          "score": 0.7777777777777778,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "tool_call_review",
+          "label_en": "tool_call_review",
+          "label_zh": "工具调用审查",
+          "score": 0.6923076923076923,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "tool_permission",
+          "label_en": "tool_permission",
+          "label_zh": "工具权限",
+          "score": 0.35714285714285715,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "tool_selection",
+          "label_en": "tool_selection",
+          "label_zh": "工具选择",
+          "score": 0.5,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "trajectory_progress",
+          "label_en": "trajectory_progress",
+          "label_zh": "轨迹进度",
+          "score": 0.7142857142857143,
+          "metric": "mean_task_score",
+          "samples": 7
+        },
+        {
+          "id": "uncertainty_abstention",
+          "label_en": "uncertainty_abstention",
+          "label_zh": "不确定性弃答",
+          "score": 0.7080024560331558,
+          "metric": "soft_distribution_overlap",
+          "samples": 10
+        },
+        {
+          "id": "version_conflict",
+          "label_en": "version_conflict",
+          "label_zh": "版本冲突",
+          "score": 0.6666666666666666,
+          "metric": "mean_task_score",
+          "samples": 9
+        }
+      ],
+      "samples": 305,
+      "errors": 0,
+      "evaluated_at": "2026-10-19T19:06:09.393459+00:00",
+      "protocol": "HarnessJevBenchV0.4/native_logits",
+      "notes": [
+        "305 tasks / 313 questions; 295 Hard tasks / 10 Soft tasks; original view only; order stability not measured.",
+        "Full denominator; failures zero on Hard. Soft TV valid-only with explicit coverage.",
+        "Outcome-aware challenge development and correlated source-family variants; not an unseen production accuracy estimate.",
+        "Frozen records SHA256: 2481e7bee51757d88a2e5bfc805aa04e81d57b60545abf94479205c2a1f1a67d"
+      ]
+    },
+    {
+      "model_id": "access-Clef-27B-original",
+      "model_name": "Cloudflare Clef (27B)",
+      "score": 0.6016949152542372,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.6016949152542372,
+        "accuracy_n": 295.0,
+        "strict_task_accuracy": 0.6,
+        "soft_tv": 0.3486904516774694,
+        "soft_valid": 10.0,
+        "soft_total": 10.0,
+        "valid_questions": 313.0,
+        "failed_questions": 0.0,
+        "first_run_hard_accuracy": 0.6016949152542372,
+        "transport_recovered_questions": 0.0,
+        "order_stability": null,
+        "brier": null,
+        "ece": null
+      },
+      "axes": [
+        {
+          "id": "argument_validation",
+          "label_en": "argument_validation",
+          "label_zh": "参数校验",
+          "score": 0.21428571428571427,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "browser_action",
+          "label_en": "browser_action",
+          "label_zh": "浏览器操作",
+          "score": 0.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "browser_confirmation",
+          "label_en": "browser_confirmation",
+          "label_zh": "浏览器确认",
+          "score": 0.9,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "budget_allocation",
+          "label_en": "budget_allocation",
+          "label_zh": "预算分配",
+          "score": 0.21428571428571427,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "cache_validity",
+          "label_en": "cache_validity",
+          "label_zh": "缓存有效性",
+          "score": 0.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "clarification_abstention",
+          "label_en": "clarification_abstention",
+          "label_zh": "澄清与弃答",
+          "score": 0.875,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "completion_verification",
+          "label_en": "completion_verification",
+          "label_zh": "完成核验",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "concurrency_transaction",
+          "label_en": "concurrency_transaction",
+          "label_zh": "并发与事务",
+          "score": 0.36363636363636365,
+          "metric": "mean_task_score",
+          "samples": 11
+        },
+        {
+          "id": "context_compression",
+          "label_en": "context_compression",
+          "label_zh": "上下文压缩",
+          "score": 0.6,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "context_retention",
+          "label_en": "context_retention",
+          "label_zh": "上下文保留",
+          "score": 0.46153846153846156,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "delegation",
+          "label_en": "delegation",
+          "label_zh": "任务委派",
+          "score": 0.9,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "injection_boundary",
+          "label_en": "injection_boundary",
+          "label_zh": "注入边界",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "memory_write",
+          "label_en": "memory_write",
+          "label_zh": "记忆写入",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "model_routing",
+          "label_en": "model_routing",
+          "label_zh": "模型路由",
+          "score": 0.14285714285714285,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "plan_progress",
+          "label_en": "plan_progress",
+          "label_zh": "计划进度",
+          "score": 0.25,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "privacy_release",
+          "label_en": "privacy_release",
+          "label_zh": "隐私披露",
+          "score": 0.5454545454545454,
+          "metric": "mean_task_score",
+          "samples": 11
+        },
+        {
+          "id": "reasoning_budget",
+          "label_en": "reasoning_budget",
+          "label_zh": "推理预算",
+          "score": 0.6666666666666666,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "retrieval_evidence",
+          "label_en": "retrieval_evidence",
+          "label_zh": "检索证据",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "retry_or_escalate",
+          "label_en": "retry_or_escalate",
+          "label_zh": "重试或升级",
+          "score": 0.6666666666666666,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "retry_recovery",
+          "label_en": "retry_recovery",
+          "label_zh": "重试恢复",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "safety_gate",
+          "label_en": "safety_gate",
+          "label_zh": "安全门控",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "secret_egress",
+          "label_en": "secret_egress",
+          "label_zh": "敏感信息外发",
+          "score": 0.625,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "subagent_dispatch",
+          "label_en": "subagent_dispatch",
+          "label_zh": "子代理调度",
+          "score": 0.38461538461538464,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "termination_evidence",
+          "label_en": "termination_evidence",
+          "label_zh": "终止证据",
+          "score": 0.8888888888888888,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "tool_call_review",
+          "label_en": "tool_call_review",
+          "label_zh": "工具调用审查",
+          "score": 0.8076923076923077,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "tool_permission",
+          "label_en": "tool_permission",
+          "label_zh": "工具权限",
+          "score": 0.8571428571428571,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "tool_selection",
+          "label_en": "tool_selection",
+          "label_zh": "工具选择",
+          "score": 0.42857142857142855,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "trajectory_progress",
+          "label_en": "trajectory_progress",
+          "label_zh": "轨迹进度",
+          "score": 0.8571428571428571,
+          "metric": "mean_task_score",
+          "samples": 7
+        },
+        {
+          "id": "uncertainty_abstention",
+          "label_en": "uncertainty_abstention",
+          "label_zh": "不确定性弃答",
+          "score": 0.6513095483225306,
+          "metric": "soft_distribution_overlap",
+          "samples": 10
+        },
+        {
+          "id": "version_conflict",
+          "label_en": "version_conflict",
+          "label_zh": "版本冲突",
+          "score": 0.5555555555555556,
+          "metric": "mean_task_score",
+          "samples": 9
+        }
+      ],
+      "samples": 305,
+      "errors": 0,
+      "evaluated_at": "2026-10-19T19:22:26.514357+00:00",
+      "protocol": "HarnessJevBenchV0.4/native_logits",
+      "notes": [
+        "305 tasks / 313 questions; 295 Hard tasks / 10 Soft tasks; original view only; order stability not measured.",
+        "Full denominator; failures zero on Hard. Soft TV valid-only with explicit coverage.",
+        "Outcome-aware challenge development and correlated source-family variants; not an unseen production accuracy estimate.",
+        "Frozen records SHA256: 2481e7bee51757d88a2e5bfc805aa04e81d57b60545abf94479205c2a1f1a67d"
+      ]
+    },
+    {
+      "model_id": "access-microsoft--microsoft-decision-1",
+      "model_name": "Microsoft Decision-1",
+      "logo": "./playground/logos/microsoft.ico",
+      "score": 0.6084745762711864,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.6084745762711864,
+        "accuracy_n": 295.0,
+        "strict_task_accuracy": 0.6067796610169491,
+        "soft_tv": 0.37370755450412124,
+        "soft_valid": 10.0,
+        "soft_total": 10.0,
+        "valid_questions": 306.0,
+        "failed_questions": 7.0,
+        "first_run_hard_accuracy": 0.6084745762711864,
+        "transport_recovered_questions": 0.0,
+        "order_stability": null,
+        "brier": null,
+        "ece": null
+      },
+      "axes": [
+        {
+          "id": "argument_validation",
+          "label_en": "argument_validation",
+          "label_zh": "参数校验",
+          "score": 0.07142857142857142,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "browser_action",
+          "label_en": "browser_action",
+          "label_zh": "浏览器操作",
+          "score": 0.875,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "browser_confirmation",
+          "label_en": "browser_confirmation",
+          "label_zh": "浏览器确认",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "budget_allocation",
+          "label_en": "budget_allocation",
+          "label_zh": "预算分配",
+          "score": 0.21428571428571427,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "cache_validity",
+          "label_en": "cache_validity",
+          "label_zh": "缓存有效性",
+          "score": 0.75,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "clarification_abstention",
+          "label_en": "clarification_abstention",
+          "label_zh": "澄清与弃答",
+          "score": 0.875,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "completion_verification",
+          "label_en": "completion_verification",
+          "label_zh": "完成核验",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "concurrency_transaction",
+          "label_en": "concurrency_transaction",
+          "label_zh": "并发与事务",
+          "score": 0.45454545454545453,
+          "metric": "mean_task_score",
+          "samples": 11
+        },
+        {
+          "id": "context_compression",
+          "label_en": "context_compression",
+          "label_zh": "上下文压缩",
+          "score": 0.6,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "context_retention",
+          "label_en": "context_retention",
+          "label_zh": "上下文保留",
+          "score": 0.46153846153846156,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "delegation",
+          "label_en": "delegation",
+          "label_zh": "任务委派",
+          "score": 0.8,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "injection_boundary",
+          "label_en": "injection_boundary",
+          "label_zh": "注入边界",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "memory_write",
+          "label_en": "memory_write",
+          "label_zh": "记忆写入",
+          "score": 0.75,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "model_routing",
+          "label_en": "model_routing",
+          "label_zh": "模型路由",
+          "score": 0.14285714285714285,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "plan_progress",
+          "label_en": "plan_progress",
+          "label_zh": "计划进度",
+          "score": 0.25,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "privacy_release",
+          "label_en": "privacy_release",
+          "label_zh": "隐私披露",
+          "score": 0.5454545454545454,
+          "metric": "mean_task_score",
+          "samples": 11
+        },
+        {
+          "id": "reasoning_budget",
+          "label_en": "reasoning_budget",
+          "label_zh": "推理预算",
+          "score": 0.6666666666666666,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "retrieval_evidence",
+          "label_en": "retrieval_evidence",
+          "label_zh": "检索证据",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "retry_or_escalate",
+          "label_en": "retry_or_escalate",
+          "label_zh": "重试或升级",
+          "score": 0.8888888888888888,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "retry_recovery",
+          "label_en": "retry_recovery",
+          "label_zh": "重试恢复",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "safety_gate",
+          "label_en": "safety_gate",
+          "label_zh": "安全门控",
+          "score": 0.75,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "secret_egress",
+          "label_en": "secret_egress",
+          "label_zh": "敏感信息外发",
+          "score": 0.5,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "subagent_dispatch",
+          "label_en": "subagent_dispatch",
+          "label_zh": "子代理调度",
+          "score": 0.15384615384615385,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "termination_evidence",
+          "label_en": "termination_evidence",
+          "label_zh": "终止证据",
+          "score": 0.8888888888888888,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "tool_call_review",
+          "label_en": "tool_call_review",
+          "label_zh": "工具调用审查",
+          "score": 0.8076923076923077,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "tool_permission",
+          "label_en": "tool_permission",
+          "label_zh": "工具权限",
+          "score": 0.5714285714285714,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "tool_selection",
+          "label_en": "tool_selection",
+          "label_zh": "工具选择",
+          "score": 0.42857142857142855,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "trajectory_progress",
+          "label_en": "trajectory_progress",
+          "label_zh": "轨迹进度",
+          "score": 0.8571428571428571,
+          "metric": "mean_task_score",
+          "samples": 7
+        },
+        {
+          "id": "uncertainty_abstention",
+          "label_en": "uncertainty_abstention",
+          "label_zh": "不确定性弃答",
+          "score": 0.6262924454958788,
+          "metric": "soft_distribution_overlap",
+          "samples": 10
+        },
+        {
+          "id": "version_conflict",
+          "label_en": "version_conflict",
+          "label_zh": "版本冲突",
+          "score": 0.5555555555555556,
+          "metric": "mean_task_score",
+          "samples": 9
+        }
+      ],
+      "samples": 305,
+      "errors": 7,
+      "evaluated_at": "2026-10-19T18:55:27.076319+00:00",
+      "protocol": "HarnessJevBenchV0.4/decision_API",
+      "notes": [
+        "305 tasks / 313 questions; 295 Hard tasks / 10 Soft tasks; original view only; order stability not measured.",
+        "Full denominator; failures zero on Hard. Soft TV valid-only with explicit coverage.",
+        "Outcome-aware challenge development and correlated source-family variants; not an unseen production accuracy estimate.",
+        "Frozen records SHA256: 2481e7bee51757d88a2e5bfc805aa04e81d57b60545abf94479205c2a1f1a67d"
+      ]
+    },
+    {
+      "model_id": "access-inception--mercury-decide",
+      "model_name": "Mercury Decide (Inception)",
+      "logo": "./playground/logos/inception.png",
+      "score": 0.7338983050847457,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.7338983050847457,
+        "accuracy_n": 295.0,
+        "strict_task_accuracy": 0.7322033898305085,
+        "soft_tv": 0.39807478335204627,
+        "soft_valid": 10.0,
+        "soft_total": 10.0,
+        "valid_questions": 313.0,
+        "failed_questions": 0.0,
+        "first_run_hard_accuracy": 0.7338983050847457,
+        "transport_recovered_questions": 0.0,
+        "order_stability": null,
+        "brier": null,
+        "ece": null
+      },
+      "axes": [
+        {
+          "id": "argument_validation",
+          "label_en": "argument_validation",
+          "label_zh": "参数校验",
+          "score": 0.14285714285714285,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "browser_action",
+          "label_en": "browser_action",
+          "label_zh": "浏览器操作",
+          "score": 0.875,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "browser_confirmation",
+          "label_en": "browser_confirmation",
+          "label_zh": "浏览器确认",
+          "score": 0.9,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "budget_allocation",
+          "label_en": "budget_allocation",
+          "label_zh": "预算分配",
+          "score": 0.07142857142857142,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "cache_validity",
+          "label_en": "cache_validity",
+          "label_zh": "缓存有效性",
+          "score": 0.875,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "clarification_abstention",
+          "label_en": "clarification_abstention",
+          "label_zh": "澄清与弃答",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "completion_verification",
+          "label_en": "completion_verification",
+          "label_zh": "完成核验",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "concurrency_transaction",
+          "label_en": "concurrency_transaction",
+          "label_zh": "并发与事务",
+          "score": 0.6363636363636364,
+          "metric": "mean_task_score",
+          "samples": 11
+        },
+        {
+          "id": "context_compression",
+          "label_en": "context_compression",
+          "label_zh": "上下文压缩",
+          "score": 0.5,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "context_retention",
+          "label_en": "context_retention",
+          "label_zh": "上下文保留",
+          "score": 0.9230769230769231,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "delegation",
+          "label_en": "delegation",
+          "label_zh": "任务委派",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "injection_boundary",
+          "label_en": "injection_boundary",
+          "label_zh": "注入边界",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "memory_write",
+          "label_en": "memory_write",
+          "label_zh": "记忆写入",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "model_routing",
+          "label_en": "model_routing",
+          "label_zh": "模型路由",
+          "score": 0.5714285714285714,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "plan_progress",
+          "label_en": "plan_progress",
+          "label_zh": "计划进度",
+          "score": 0.625,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "privacy_release",
+          "label_en": "privacy_release",
+          "label_zh": "隐私披露",
+          "score": 0.6363636363636364,
+          "metric": "mean_task_score",
+          "samples": 11
+        },
+        {
+          "id": "reasoning_budget",
+          "label_en": "reasoning_budget",
+          "label_zh": "推理预算",
+          "score": 0.8888888888888888,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "retrieval_evidence",
+          "label_en": "retrieval_evidence",
+          "label_zh": "检索证据",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "retry_or_escalate",
+          "label_en": "retry_or_escalate",
+          "label_zh": "重试或升级",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "retry_recovery",
+          "label_en": "retry_recovery",
+          "label_zh": "重试恢复",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "safety_gate",
+          "label_en": "safety_gate",
+          "label_zh": "安全门控",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "secret_egress",
+          "label_en": "secret_egress",
+          "label_zh": "敏感信息外发",
+          "score": 0.875,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "subagent_dispatch",
+          "label_en": "subagent_dispatch",
+          "label_zh": "子代理调度",
+          "score": 0.38461538461538464,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "termination_evidence",
+          "label_en": "termination_evidence",
+          "label_zh": "终止证据",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "tool_call_review",
+          "label_en": "tool_call_review",
+          "label_zh": "工具调用审查",
+          "score": 0.8076923076923077,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "tool_permission",
+          "label_en": "tool_permission",
+          "label_zh": "工具权限",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "tool_selection",
+          "label_en": "tool_selection",
+          "label_zh": "工具选择",
+          "score": 0.35714285714285715,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "trajectory_progress",
+          "label_en": "trajectory_progress",
+          "label_zh": "轨迹进度",
+          "score": 0.7142857142857143,
+          "metric": "mean_task_score",
+          "samples": 7
+        },
+        {
+          "id": "uncertainty_abstention",
+          "label_en": "uncertainty_abstention",
+          "label_zh": "不确定性弃答",
+          "score": 0.6019252166479537,
+          "metric": "soft_distribution_overlap",
+          "samples": 10
+        },
+        {
+          "id": "version_conflict",
+          "label_en": "version_conflict",
+          "label_zh": "版本冲突",
+          "score": 0.5555555555555556,
+          "metric": "mean_task_score",
+          "samples": 9
+        }
+      ],
+      "samples": 305,
+      "errors": 0,
+      "evaluated_at": "2026-10-19T18:55:35.150706+00:00",
+      "protocol": "HarnessJevBenchV0.4/decision_API",
+      "notes": [
+        "305 tasks / 313 questions; 295 Hard tasks / 10 Soft tasks; original view only; order stability not measured.",
+        "Full denominator; failures zero on Hard. Soft TV valid-only with explicit coverage.",
+        "Outcome-aware challenge development and correlated source-family variants; not an unseen production accuracy estimate.",
+        "Frozen records SHA256: 2481e7bee51757d88a2e5bfc805aa04e81d57b60545abf94479205c2a1f1a67d"
+      ]
+    },
+    {
+      "model_id": "access-openai--gpt-6-luna-decisions",
+      "model_name": "GPT-6 Luna Decisions",
+      "score": 0.611864406779661,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.611864406779661,
+        "accuracy_n": 295.0,
+        "strict_task_accuracy": 0.6101694915254238,
+        "soft_tv": 0.22750522953868849,
+        "soft_valid": 10.0,
+        "soft_total": 10.0,
+        "valid_questions": 312.0,
+        "failed_questions": 1.0,
+        "first_run_hard_accuracy": 0.6050847457627119,
+        "transport_recovered_questions": 3.0,
+        "order_stability": null,
+        "brier": null,
+        "ece": null
+      },
+      "axes": [
+        {
+          "id": "argument_validation",
+          "label_en": "argument_validation",
+          "label_zh": "参数校验",
+          "score": 0.14285714285714285,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "browser_action",
+          "label_en": "browser_action",
+          "label_zh": "浏览器操作",
+          "score": 0.125,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "browser_confirmation",
+          "label_en": "browser_confirmation",
+          "label_zh": "浏览器确认",
+          "score": 0.5,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "budget_allocation",
+          "label_en": "budget_allocation",
+          "label_zh": "预算分配",
+          "score": 0.35714285714285715,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "cache_validity",
+          "label_en": "cache_validity",
+          "label_zh": "缓存有效性",
+          "score": 0.25,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "clarification_abstention",
+          "label_en": "clarification_abstention",
+          "label_zh": "澄清与弃答",
+          "score": 0.875,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "completion_verification",
+          "label_en": "completion_verification",
+          "label_zh": "完成核验",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "concurrency_transaction",
+          "label_en": "concurrency_transaction",
+          "label_zh": "并发与事务",
+          "score": 0.36363636363636365,
+          "metric": "mean_task_score",
+          "samples": 11
+        },
+        {
+          "id": "context_compression",
+          "label_en": "context_compression",
+          "label_zh": "上下文压缩",
+          "score": 0.6,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "context_retention",
+          "label_en": "context_retention",
+          "label_zh": "上下文保留",
+          "score": 0.46153846153846156,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "delegation",
+          "label_en": "delegation",
+          "label_zh": "任务委派",
+          "score": 0.9,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "injection_boundary",
+          "label_en": "injection_boundary",
+          "label_zh": "注入边界",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "memory_write",
+          "label_en": "memory_write",
+          "label_zh": "记忆写入",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "model_routing",
+          "label_en": "model_routing",
+          "label_zh": "模型路由",
+          "score": 0.2857142857142857,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "plan_progress",
+          "label_en": "plan_progress",
+          "label_zh": "计划进度",
+          "score": 0.25,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "privacy_release",
+          "label_en": "privacy_release",
+          "label_zh": "隐私披露",
+          "score": 0.45454545454545453,
+          "metric": "mean_task_score",
+          "samples": 11
+        },
+        {
+          "id": "reasoning_budget",
+          "label_en": "reasoning_budget",
+          "label_zh": "推理预算",
+          "score": 0.6666666666666666,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "retrieval_evidence",
+          "label_en": "retrieval_evidence",
+          "label_zh": "检索证据",
+          "score": 0.875,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "retry_or_escalate",
+          "label_en": "retry_or_escalate",
+          "label_zh": "重试或升级",
+          "score": 0.8888888888888888,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "retry_recovery",
+          "label_en": "retry_recovery",
+          "label_zh": "重试恢复",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "safety_gate",
+          "label_en": "safety_gate",
+          "label_zh": "安全门控",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "secret_egress",
+          "label_en": "secret_egress",
+          "label_zh": "敏感信息外发",
+          "score": 0.75,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "subagent_dispatch",
+          "label_en": "subagent_dispatch",
+          "label_zh": "子代理调度",
+          "score": 0.3076923076923077,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "termination_evidence",
+          "label_en": "termination_evidence",
+          "label_zh": "终止证据",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "tool_call_review",
+          "label_en": "tool_call_review",
+          "label_zh": "工具调用审查",
+          "score": 0.7307692307692307,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "tool_permission",
+          "label_en": "tool_permission",
+          "label_zh": "工具权限",
+          "score": 0.9285714285714286,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "tool_selection",
+          "label_en": "tool_selection",
+          "label_zh": "工具选择",
+          "score": 0.5,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "trajectory_progress",
+          "label_en": "trajectory_progress",
+          "label_zh": "轨迹进度",
+          "score": 0.8571428571428571,
+          "metric": "mean_task_score",
+          "samples": 7
+        },
+        {
+          "id": "uncertainty_abstention",
+          "label_en": "uncertainty_abstention",
+          "label_zh": "不确定性弃答",
+          "score": 0.7724947704613114,
+          "metric": "soft_distribution_overlap",
+          "samples": 10
+        },
+        {
+          "id": "version_conflict",
+          "label_en": "version_conflict",
+          "label_zh": "版本冲突",
+          "score": 0.4444444444444444,
+          "metric": "mean_task_score",
+          "samples": 9
+        }
+      ],
+      "samples": 305,
+      "errors": 1,
+      "evaluated_at": "2026-10-19T18:55:39.403046+00:00",
+      "protocol": "HarnessJevBenchV0.4/decision_API/transport-recovered",
+      "notes": [
+        "305 tasks / 313 questions; 295 Hard tasks / 10 Soft tasks; original view only; order stability not measured.",
+        "Full denominator; failures zero on Hard. Soft TV valid-only with explicit coverage.",
+        "Outcome-aware challenge development and correlated source-family variants; not an unseen production accuracy estimate.",
+        "Frozen records SHA256: 2481e7bee51757d88a2e5bfc805aa04e81d57b60545abf94479205c2a1f1a67d",
+        "Includes 3 successful exact-payload transport recoveries; first-run Hard=0.605084745763; raw results retained."
+      ]
+    },
+    {
+      "model_id": "access-typesafe--jev-1.14",
+      "model_name": "Jev 1.14",
+      "logo": "./playground/logos/typesafe.png",
+      "score": 0.6406779661016949,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.6406779661016949,
+        "accuracy_n": 295.0,
+        "strict_task_accuracy": 0.6406779661016949,
+        "soft_tv": 0.20727424038194414,
+        "soft_valid": 10.0,
+        "soft_total": 10.0,
+        "valid_questions": 313.0,
+        "failed_questions": 0.0,
+        "first_run_hard_accuracy": 0.6406779661016949,
+        "transport_recovered_questions": 0.0,
+        "order_stability": null,
+        "brier": null,
+        "ece": null
+      },
+      "axes": [
+        {
+          "id": "argument_validation",
+          "label_en": "argument_validation",
+          "label_zh": "参数校验",
+          "score": 0.07142857142857142,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "browser_action",
+          "label_en": "browser_action",
+          "label_zh": "浏览器操作",
+          "score": 0.25,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "browser_confirmation",
+          "label_en": "browser_confirmation",
+          "label_zh": "浏览器确认",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "budget_allocation",
+          "label_en": "budget_allocation",
+          "label_zh": "预算分配",
+          "score": 0.14285714285714285,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "cache_validity",
+          "label_en": "cache_validity",
+          "label_zh": "缓存有效性",
+          "score": 0.875,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "clarification_abstention",
+          "label_en": "clarification_abstention",
+          "label_zh": "澄清与弃答",
+          "score": 0.875,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "completion_verification",
+          "label_en": "completion_verification",
+          "label_zh": "完成核验",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "concurrency_transaction",
+          "label_en": "concurrency_transaction",
+          "label_zh": "并发与事务",
+          "score": 0.5454545454545454,
+          "metric": "mean_task_score",
+          "samples": 11
+        },
+        {
+          "id": "context_compression",
+          "label_en": "context_compression",
+          "label_zh": "上下文压缩",
+          "score": 0.7,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "context_retention",
+          "label_en": "context_retention",
+          "label_zh": "上下文保留",
+          "score": 0.07692307692307693,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "delegation",
+          "label_en": "delegation",
+          "label_zh": "任务委派",
+          "score": 0.9,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "injection_boundary",
+          "label_en": "injection_boundary",
+          "label_zh": "注入边界",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "memory_write",
+          "label_en": "memory_write",
+          "label_zh": "记忆写入",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "model_routing",
+          "label_en": "model_routing",
+          "label_zh": "模型路由",
+          "score": 0.07142857142857142,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "plan_progress",
+          "label_en": "plan_progress",
+          "label_zh": "计划进度",
+          "score": 0.375,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "privacy_release",
+          "label_en": "privacy_release",
+          "label_zh": "隐私披露",
+          "score": 0.6363636363636364,
+          "metric": "mean_task_score",
+          "samples": 11
+        },
+        {
+          "id": "reasoning_budget",
+          "label_en": "reasoning_budget",
+          "label_zh": "推理预算",
+          "score": 0.7777777777777778,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "retrieval_evidence",
+          "label_en": "retrieval_evidence",
+          "label_zh": "检索证据",
+          "score": 0.875,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "retry_or_escalate",
+          "label_en": "retry_or_escalate",
+          "label_zh": "重试或升级",
+          "score": 0.8888888888888888,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "retry_recovery",
+          "label_en": "retry_recovery",
+          "label_zh": "重试恢复",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "safety_gate",
+          "label_en": "safety_gate",
+          "label_zh": "安全门控",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "secret_egress",
+          "label_en": "secret_egress",
+          "label_zh": "敏感信息外发",
+          "score": 0.75,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "subagent_dispatch",
+          "label_en": "subagent_dispatch",
+          "label_zh": "子代理调度",
+          "score": 0.5384615384615384,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "termination_evidence",
+          "label_en": "termination_evidence",
+          "label_zh": "终止证据",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "tool_call_review",
+          "label_en": "tool_call_review",
+          "label_zh": "工具调用审查",
+          "score": 0.8461538461538461,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "tool_permission",
+          "label_en": "tool_permission",
+          "label_zh": "工具权限",
+          "score": 0.7857142857142857,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "tool_selection",
+          "label_en": "tool_selection",
+          "label_zh": "工具选择",
+          "score": 0.42857142857142855,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "trajectory_progress",
+          "label_en": "trajectory_progress",
+          "label_zh": "轨迹进度",
+          "score": 0.8571428571428571,
+          "metric": "mean_task_score",
+          "samples": 7
+        },
+        {
+          "id": "uncertainty_abstention",
+          "label_en": "uncertainty_abstention",
+          "label_zh": "不确定性弃答",
+          "score": 0.7927257596180559,
+          "metric": "soft_distribution_overlap",
+          "samples": 10
+        },
+        {
+          "id": "version_conflict",
+          "label_en": "version_conflict",
+          "label_zh": "版本冲突",
+          "score": 0.5555555555555556,
+          "metric": "mean_task_score",
+          "samples": 9
+        }
+      ],
+      "samples": 305,
+      "errors": 0,
+      "evaluated_at": "2026-10-19T18:55:14.229501+00:00",
+      "protocol": "HarnessJevBenchV0.4/decision_API",
+      "notes": [
+        "305 tasks / 313 questions; 295 Hard tasks / 10 Soft tasks; original view only; order stability not measured.",
+        "Full denominator; failures zero on Hard. Soft TV valid-only with explicit coverage.",
+        "Outcome-aware challenge development and correlated source-family variants; not an unseen production accuracy estimate.",
+        "Frozen records SHA256: 2481e7bee51757d88a2e5bfc805aa04e81d57b60545abf94479205c2a1f1a67d"
+      ]
+    },
+    {
+      "model_id": "access-qwen3.8-27b-chat-Direct-v1",
+      "model_name": "Qwen3.8-27B (Chat API)",
+      "score": 0.6033898305084746,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.6033898305084746,
+        "accuracy_n": 295.0,
+        "strict_task_accuracy": 0.6,
+        "soft_tv": 0.3246188355171861,
+        "soft_valid": 9.0,
+        "soft_total": 10.0,
+        "valid_questions": 312.0,
+        "failed_questions": 1.0,
+        "first_run_hard_accuracy": 0.6033898305084746,
+        "transport_recovered_questions": 0.0,
+        "order_stability": null,
+        "brier": null,
+        "ece": null
+      },
+      "axes": [
+        {
+          "id": "argument_validation",
+          "label_en": "argument_validation",
+          "label_zh": "参数校验",
+          "score": 0.14285714285714285,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "browser_action",
+          "label_en": "browser_action",
+          "label_zh": "浏览器操作",
+          "score": 0.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "browser_confirmation",
+          "label_en": "browser_confirmation",
+          "label_zh": "浏览器确认",
+          "score": 0.9,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "budget_allocation",
+          "label_en": "budget_allocation",
+          "label_zh": "预算分配",
+          "score": 0.14285714285714285,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "cache_validity",
+          "label_en": "cache_validity",
+          "label_zh": "缓存有效性",
+          "score": 0.5,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "clarification_abstention",
+          "label_en": "clarification_abstention",
+          "label_zh": "澄清与弃答",
+          "score": 0.875,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "completion_verification",
+          "label_en": "completion_verification",
+          "label_zh": "完成核验",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "concurrency_transaction",
+          "label_en": "concurrency_transaction",
+          "label_zh": "并发与事务",
+          "score": 0.5454545454545454,
+          "metric": "mean_task_score",
+          "samples": 11
+        },
+        {
+          "id": "context_compression",
+          "label_en": "context_compression",
+          "label_zh": "上下文压缩",
+          "score": 0.5,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "context_retention",
+          "label_en": "context_retention",
+          "label_zh": "上下文保留",
+          "score": 0.5384615384615384,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "delegation",
+          "label_en": "delegation",
+          "label_zh": "任务委派",
+          "score": 0.9,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "injection_boundary",
+          "label_en": "injection_boundary",
+          "label_zh": "注入边界",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "memory_write",
+          "label_en": "memory_write",
+          "label_zh": "记忆写入",
+          "score": 0.875,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "model_routing",
+          "label_en": "model_routing",
+          "label_zh": "模型路由",
+          "score": 0.0,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "plan_progress",
+          "label_en": "plan_progress",
+          "label_zh": "计划进度",
+          "score": 0.125,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "privacy_release",
+          "label_en": "privacy_release",
+          "label_zh": "隐私披露",
+          "score": 0.5454545454545454,
+          "metric": "mean_task_score",
+          "samples": 11
+        },
+        {
+          "id": "reasoning_budget",
+          "label_en": "reasoning_budget",
+          "label_zh": "推理预算",
+          "score": 0.6666666666666666,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "retrieval_evidence",
+          "label_en": "retrieval_evidence",
+          "label_zh": "检索证据",
+          "score": 0.875,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "retry_or_escalate",
+          "label_en": "retry_or_escalate",
+          "label_zh": "重试或升级",
+          "score": 0.5555555555555556,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "retry_recovery",
+          "label_en": "retry_recovery",
+          "label_zh": "重试恢复",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "safety_gate",
+          "label_en": "safety_gate",
+          "label_zh": "安全门控",
+          "score": 0.875,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "secret_egress",
+          "label_en": "secret_egress",
+          "label_zh": "敏感信息外发",
+          "score": 0.625,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "subagent_dispatch",
+          "label_en": "subagent_dispatch",
+          "label_zh": "子代理调度",
+          "score": 0.38461538461538464,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "termination_evidence",
+          "label_en": "termination_evidence",
+          "label_zh": "终止证据",
+          "score": 0.8888888888888888,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "tool_call_review",
+          "label_en": "tool_call_review",
+          "label_zh": "工具调用审查",
+          "score": 0.7692307692307693,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "tool_permission",
+          "label_en": "tool_permission",
+          "label_zh": "工具权限",
+          "score": 0.9285714285714286,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "tool_selection",
+          "label_en": "tool_selection",
+          "label_zh": "工具选择",
+          "score": 0.5,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "trajectory_progress",
+          "label_en": "trajectory_progress",
+          "label_zh": "轨迹进度",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 7
+        },
+        {
+          "id": "uncertainty_abstention",
+          "label_en": "uncertainty_abstention",
+          "label_zh": "不确定性弃答",
+          "score": 0.6753811644828139,
+          "metric": "soft_distribution_overlap",
+          "samples": 9
+        },
+        {
+          "id": "version_conflict",
+          "label_en": "version_conflict",
+          "label_zh": "版本冲突",
+          "score": 0.6666666666666666,
+          "metric": "mean_task_score",
+          "samples": 9
+        }
+      ],
+      "samples": 305,
+      "errors": 1,
+      "evaluated_at": "2026-10-19T18:55:28.508283+00:00",
+      "protocol": "HarnessJevBenchV0.4/generated_label_and_soft_policy_marginal",
+      "notes": [
+        "305 tasks / 313 questions; 295 Hard tasks / 10 Soft tasks; original view only; order stability not measured.",
+        "Full denominator; failures zero on Hard. Soft TV valid-only with explicit coverage.",
+        "Outcome-aware challenge development and correlated source-family variants; not an unseen production accuracy estimate.",
+        "Frozen records SHA256: 2481e7bee51757d88a2e5bfc805aa04e81d57b60545abf94479205c2a1f1a67d"
+      ]
+    },
+    {
+      "model_id": "access-vllm-sr--d3",
+      "model_name": "vLLM-SR d3 (27B)",
+      "score": 0.823728813559322,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.823728813559322,
+        "accuracy_n": 295.0,
+        "strict_task_accuracy": 0.823728813559322,
+        "soft_tv": 0.15449602303230847,
+        "soft_valid": 10.0,
+        "soft_total": 10.0,
+        "valid_questions": 313.0,
+        "failed_questions": 0.0,
+        "first_run_hard_accuracy": 0.823728813559322,
+        "transport_recovered_questions": 0.0,
+        "order_stability": null,
+        "brier": null,
+        "ece": null
+      },
+      "axes": [
+        {
+          "id": "argument_validation",
+          "label_en": "argument_validation",
+          "label_zh": "参数校验",
+          "score": 0.14285714285714285,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "browser_action",
+          "label_en": "browser_action",
+          "label_zh": "浏览器操作",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "browser_confirmation",
+          "label_en": "browser_confirmation",
+          "label_zh": "浏览器确认",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "budget_allocation",
+          "label_en": "budget_allocation",
+          "label_zh": "预算分配",
+          "score": 0.2857142857142857,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "cache_validity",
+          "label_en": "cache_validity",
+          "label_zh": "缓存有效性",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "clarification_abstention",
+          "label_en": "clarification_abstention",
+          "label_zh": "澄清与弃答",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "completion_verification",
+          "label_en": "completion_verification",
+          "label_zh": "完成核验",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "concurrency_transaction",
+          "label_en": "concurrency_transaction",
+          "label_zh": "并发与事务",
+          "score": 0.5454545454545454,
+          "metric": "mean_task_score",
+          "samples": 11
+        },
+        {
+          "id": "context_compression",
+          "label_en": "context_compression",
+          "label_zh": "上下文压缩",
+          "score": 0.7,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "context_retention",
+          "label_en": "context_retention",
+          "label_zh": "上下文保留",
+          "score": 0.9230769230769231,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "delegation",
+          "label_en": "delegation",
+          "label_zh": "任务委派",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "injection_boundary",
+          "label_en": "injection_boundary",
+          "label_zh": "注入边界",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "memory_write",
+          "label_en": "memory_write",
+          "label_zh": "记忆写入",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "model_routing",
+          "label_en": "model_routing",
+          "label_zh": "模型路由",
+          "score": 0.7857142857142857,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "plan_progress",
+          "label_en": "plan_progress",
+          "label_zh": "计划进度",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "privacy_release",
+          "label_en": "privacy_release",
+          "label_zh": "隐私披露",
+          "score": 0.8181818181818182,
+          "metric": "mean_task_score",
+          "samples": 11
+        },
+        {
+          "id": "reasoning_budget",
+          "label_en": "reasoning_budget",
+          "label_zh": "推理预算",
+          "score": 0.8888888888888888,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "retrieval_evidence",
+          "label_en": "retrieval_evidence",
+          "label_zh": "检索证据",
+          "score": 0.875,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "retry_or_escalate",
+          "label_en": "retry_or_escalate",
+          "label_zh": "重试或升级",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "retry_recovery",
+          "label_en": "retry_recovery",
+          "label_zh": "重试恢复",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "safety_gate",
+          "label_en": "safety_gate",
+          "label_zh": "安全门控",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "secret_egress",
+          "label_en": "secret_egress",
+          "label_zh": "敏感信息外发",
+          "score": 0.875,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "subagent_dispatch",
+          "label_en": "subagent_dispatch",
+          "label_zh": "子代理调度",
+          "score": 0.6153846153846154,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "termination_evidence",
+          "label_en": "termination_evidence",
+          "label_zh": "终止证据",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "tool_call_review",
+          "label_en": "tool_call_review",
+          "label_zh": "工具调用审查",
+          "score": 0.9230769230769231,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "tool_permission",
+          "label_en": "tool_permission",
+          "label_zh": "工具权限",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "tool_selection",
+          "label_en": "tool_selection",
+          "label_zh": "工具选择",
+          "score": 0.7142857142857143,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "trajectory_progress",
+          "label_en": "trajectory_progress",
+          "label_zh": "轨迹进度",
+          "score": 0.8571428571428571,
+          "metric": "mean_task_score",
+          "samples": 7
+        },
+        {
+          "id": "uncertainty_abstention",
+          "label_en": "uncertainty_abstention",
+          "label_zh": "不确定性弃答",
+          "score": 0.8455039769676915,
+          "metric": "soft_distribution_overlap",
+          "samples": 10
+        },
+        {
+          "id": "version_conflict",
+          "label_en": "version_conflict",
+          "label_zh": "版本冲突",
+          "score": 0.7777777777777778,
+          "metric": "mean_task_score",
+          "samples": 9
+        }
+      ],
+      "samples": 305,
+      "errors": 0,
+      "evaluated_at": "2026-10-19T19:09:56.730345+00:00",
+      "protocol": "HarnessJevBenchV0.4/native_logits",
+      "notes": [
+        "305 tasks / 313 questions; 295 Hard tasks / 10 Soft tasks; original view only; order stability not measured.",
+        "Full denominator; failures zero on Hard. Soft TV valid-only with explicit coverage.",
+        "Outcome-aware challenge development and correlated source-family variants; not an unseen production accuracy estimate.",
+        "Frozen records SHA256: 2481e7bee51757d88a2e5bfc805aa04e81d57b60545abf94479205c2a1f1a67d"
+      ]
+    },
+    {
+      "model_id": "access-perplexity-ai--pplx-decider-v1.2",
+      "model_name": "Perplexity Decider v1.2 (27B)",
+      "score": 0.7864406779661017,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.7864406779661017,
+        "accuracy_n": 295.0,
+        "strict_task_accuracy": 0.7864406779661017,
+        "soft_tv": 0.2622739872589389,
+        "soft_valid": 10.0,
+        "soft_total": 10.0,
+        "valid_questions": 313.0,
+        "failed_questions": 0.0,
+        "first_run_hard_accuracy": 0.7864406779661017,
+        "transport_recovered_questions": 0.0,
+        "order_stability": null,
+        "brier": null,
+        "ece": null
+      },
+      "axes": [
+        {
+          "id": "argument_validation",
+          "label_en": "argument_validation",
+          "label_zh": "参数校验",
+          "score": 0.14285714285714285,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "browser_action",
+          "label_en": "browser_action",
+          "label_zh": "浏览器操作",
+          "score": 0.5,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "browser_confirmation",
+          "label_en": "browser_confirmation",
+          "label_zh": "浏览器确认",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "budget_allocation",
+          "label_en": "budget_allocation",
+          "label_zh": "预算分配",
+          "score": 0.2857142857142857,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "cache_validity",
+          "label_en": "cache_validity",
+          "label_zh": "缓存有效性",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "clarification_abstention",
+          "label_en": "clarification_abstention",
+          "label_zh": "澄清与弃答",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "completion_verification",
+          "label_en": "completion_verification",
+          "label_zh": "完成核验",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "concurrency_transaction",
+          "label_en": "concurrency_transaction",
+          "label_zh": "并发与事务",
+          "score": 0.5454545454545454,
+          "metric": "mean_task_score",
+          "samples": 11
+        },
+        {
+          "id": "context_compression",
+          "label_en": "context_compression",
+          "label_zh": "上下文压缩",
+          "score": 0.5,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "context_retention",
+          "label_en": "context_retention",
+          "label_zh": "上下文保留",
+          "score": 0.3076923076923077,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "delegation",
+          "label_en": "delegation",
+          "label_zh": "任务委派",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 10
+        },
+        {
+          "id": "injection_boundary",
+          "label_en": "injection_boundary",
+          "label_zh": "注入边界",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "memory_write",
+          "label_en": "memory_write",
+          "label_zh": "记忆写入",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "model_routing",
+          "label_en": "model_routing",
+          "label_zh": "模型路由",
+          "score": 0.8571428571428571,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "plan_progress",
+          "label_en": "plan_progress",
+          "label_zh": "计划进度",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "privacy_release",
+          "label_en": "privacy_release",
+          "label_zh": "隐私披露",
+          "score": 0.7272727272727273,
+          "metric": "mean_task_score",
+          "samples": 11
+        },
+        {
+          "id": "reasoning_budget",
+          "label_en": "reasoning_budget",
+          "label_zh": "推理预算",
+          "score": 0.8888888888888888,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "retrieval_evidence",
+          "label_en": "retrieval_evidence",
+          "label_zh": "检索证据",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "retry_or_escalate",
+          "label_en": "retry_or_escalate",
+          "label_zh": "重试或升级",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "retry_recovery",
+          "label_en": "retry_recovery",
+          "label_zh": "重试恢复",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "safety_gate",
+          "label_en": "safety_gate",
+          "label_zh": "安全门控",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "secret_egress",
+          "label_en": "secret_egress",
+          "label_zh": "敏感信息外发",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 8
+        },
+        {
+          "id": "subagent_dispatch",
+          "label_en": "subagent_dispatch",
+          "label_zh": "子代理调度",
+          "score": 0.5384615384615384,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "termination_evidence",
+          "label_en": "termination_evidence",
+          "label_zh": "终止证据",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 9
+        },
+        {
+          "id": "tool_call_review",
+          "label_en": "tool_call_review",
+          "label_zh": "工具调用审查",
+          "score": 0.9230769230769231,
+          "metric": "mean_task_score",
+          "samples": 13
+        },
+        {
+          "id": "tool_permission",
+          "label_en": "tool_permission",
+          "label_zh": "工具权限",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "tool_selection",
+          "label_en": "tool_selection",
+          "label_zh": "工具选择",
+          "score": 0.7142857142857143,
+          "metric": "mean_task_score",
+          "samples": 14
+        },
+        {
+          "id": "trajectory_progress",
+          "label_en": "trajectory_progress",
+          "label_zh": "轨迹进度",
+          "score": 1.0,
+          "metric": "mean_task_score",
+          "samples": 7
+        },
+        {
+          "id": "uncertainty_abstention",
+          "label_en": "uncertainty_abstention",
+          "label_zh": "不确定性弃答",
+          "score": 0.7377260127410612,
+          "metric": "soft_distribution_overlap",
+          "samples": 10
+        },
+        {
+          "id": "version_conflict",
+          "label_en": "version_conflict",
+          "label_zh": "版本冲突",
+          "score": 0.8888888888888888,
+          "metric": "mean_task_score",
+          "samples": 9
+        }
+      ],
+      "samples": 305,
+      "errors": 0,
+      "evaluated_at": "2026-10-19T19:02:59.377724+00:00",
+      "protocol": "HarnessJevBenchV0.4/native_logits",
+      "notes": [
+        "305 tasks / 313 questions; 295 Hard tasks / 10 Soft tasks; original view only; order stability not measured.",
+        "Full denominator; failures zero on Hard. Soft TV valid-only with explicit coverage.",
+        "Outcome-aware challenge development and correlated source-family variants; not an unseen production accuracy estimate.",
+        "Frozen records SHA256: 2481e7bee51757d88a2e5bfc805aa04e81d57b60545abf94479205c2a1f1a67d"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "revision": "game-executed-safe-milestones-growth-v4",
+  "discount": 1.0,
+  "games": {
+    "chess": {
+      "mode": "terminal",
+      "weight": 0.0,
+      "terminal": "win_draw_loss"
+    }
+  }
+}

@@ -1,0 +1,984 @@
+{
+  "schema_version": "jev.leaderboard.v1",
+  "benchmark_id": "datajevbench",
+  "title": "DataJevBench",
+  "version": "V0.5",
+  "metric": "accuracy",
+  "score_scale": [
+    0.0,
+    1.0
+  ],
+  "higher_is_better": true,
+  "axis_scale": [
+    0.0,
+    1.0
+  ],
+  "rows": [
+    {
+      "model_id": "oneshot-w22m05r02-v5best-avg50",
+      "model_name": "Ours",
+      "score": 0.822,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.822,
+        "accuracy_n": 500.0,
+        "brier": 0.2429586814632819,
+        "ece": 0.06370926404433189,
+        "brier_n": 500.0,
+        "ece_n": 500.0,
+        "valid": 500.0,
+        "missing": 0.0
+      },
+      "axes": [
+        {
+          "id": "D1",
+          "label_en": "D1",
+          "label_zh": "D1",
+          "score": 0.8333333333333334,
+          "metric": "subset_accuracy",
+          "samples": 90
+        },
+        {
+          "id": "D2",
+          "label_en": "D2",
+          "label_zh": "D2",
+          "score": 0.7555555555555555,
+          "metric": "subset_accuracy",
+          "samples": 90
+        },
+        {
+          "id": "D3",
+          "label_en": "D3",
+          "label_zh": "D3",
+          "score": 0.875,
+          "metric": "subset_accuracy",
+          "samples": 80
+        },
+        {
+          "id": "D4",
+          "label_en": "D4",
+          "label_zh": "D4",
+          "score": 0.75,
+          "metric": "subset_accuracy",
+          "samples": 100
+        },
+        {
+          "id": "D5",
+          "label_en": "D5",
+          "label_zh": "D5",
+          "score": 0.825,
+          "metric": "subset_accuracy",
+          "samples": 80
+        },
+        {
+          "id": "D6",
+          "label_en": "D6",
+          "label_zh": "D6",
+          "score": 0.95,
+          "metric": "subset_accuracy",
+          "samples": 60
+        }
+      ],
+      "samples": 500,
+      "errors": 0,
+      "evaluated_at": "2026-10-19T11:19:15.345219+00:00",
+      "protocol": "Data-JevBenchV0.5/frozen-own-contract",
+      "notes": [
+        "Reuses completed unchanged Data V0.5 run.",
+        "Own strict probability contract; generated labels do not imply confidence probabilities."
+      ]
+    },
+    {
+      "model_id": "access-qwen38-27b",
+      "model_name": "Qwen3.8-27B (Logits)",
+      "logo": "./playground/logos/qwen.png",
+      "score": 0.68,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.68,
+        "accuracy_n": 500.0,
+        "brier": 0.43089942475812804,
+        "ece": 0.07946817676036805,
+        "brier_n": 500.0,
+        "ece_n": 500.0,
+        "valid": 500.0,
+        "missing": 0.0
+      },
+      "axes": [
+        {
+          "id": "D1",
+          "label_en": "D1",
+          "label_zh": "D1",
+          "score": 0.5888888888888889,
+          "metric": "subset_accuracy",
+          "samples": 90
+        },
+        {
+          "id": "D2",
+          "label_en": "D2",
+          "label_zh": "D2",
+          "score": 0.6888888888888889,
+          "metric": "subset_accuracy",
+          "samples": 90
+        },
+        {
+          "id": "D3",
+          "label_en": "D3",
+          "label_zh": "D3",
+          "score": 0.8125,
+          "metric": "subset_accuracy",
+          "samples": 80
+        },
+        {
+          "id": "D4",
+          "label_en": "D4",
+          "label_zh": "D4",
+          "score": 0.67,
+          "metric": "subset_accuracy",
+          "samples": 100
+        },
+        {
+          "id": "D5",
+          "label_en": "D5",
+          "label_zh": "D5",
+          "score": 0.7875,
+          "metric": "subset_accuracy",
+          "samples": 80
+        },
+        {
+          "id": "D6",
+          "label_en": "D6",
+          "label_zh": "D6",
+          "score": 0.5,
+          "metric": "subset_accuracy",
+          "samples": 60
+        }
+      ],
+      "samples": 500,
+      "errors": 0,
+      "evaluated_at": "2026-10-19T12:05:19.257761+00:00",
+      "protocol": "Data-JevBenchV0.5/frozen-own-contract",
+      "notes": [
+        "Reuses completed unchanged Data V0.5 run.",
+        "Own strict probability contract; generated labels do not imply confidence probabilities."
+      ]
+    },
+    {
+      "model_id": "access-StartLux-Decision-v1.1-27B-Instant",
+      "model_name": "StartLux-Decision v1.1 27B Instant",
+      "score": 0.79,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.79,
+        "accuracy_n": 500.0,
+        "brier": 0.2581177909298471,
+        "ece": 0.03866697817600882,
+        "brier_n": 500.0,
+        "ece_n": 500.0,
+        "valid": 500.0,
+        "missing": 0.0
+      },
+      "axes": [
+        {
+          "id": "D1",
+          "label_en": "D1",
+          "label_zh": "D1",
+          "score": 0.8333333333333334,
+          "metric": "subset_accuracy",
+          "samples": 90
+        },
+        {
+          "id": "D2",
+          "label_en": "D2",
+          "label_zh": "D2",
+          "score": 0.7111111111111111,
+          "metric": "subset_accuracy",
+          "samples": 90
+        },
+        {
+          "id": "D3",
+          "label_en": "D3",
+          "label_zh": "D3",
+          "score": 0.8,
+          "metric": "subset_accuracy",
+          "samples": 80
+        },
+        {
+          "id": "D4",
+          "label_en": "D4",
+          "label_zh": "D4",
+          "score": 0.65,
+          "metric": "subset_accuracy",
+          "samples": 100
+        },
+        {
+          "id": "D5",
+          "label_en": "D5",
+          "label_zh": "D5",
+          "score": 0.875,
+          "metric": "subset_accuracy",
+          "samples": 80
+        },
+        {
+          "id": "D6",
+          "label_en": "D6",
+          "label_zh": "D6",
+          "score": 0.95,
+          "metric": "subset_accuracy",
+          "samples": 60
+        }
+      ],
+      "samples": 500,
+      "errors": 0,
+      "evaluated_at": "2026-10-19T12:05:19.215735+00:00",
+      "protocol": "Data-JevBenchV0.5/frozen-own-contract",
+      "notes": [
+        "Reuses completed unchanged Data V0.5 run.",
+        "Own strict probability contract; generated labels do not imply confidence probabilities."
+      ]
+    },
+    {
+      "model_id": "access-StartLux-Decision-v1.1-27B-AutoThink",
+      "model_name": "StartLux-Decision v1.1 27B AutoThink",
+      "score": 0.886,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.886,
+        "accuracy_n": 500.0,
+        "brier": 0.16679543035582142,
+        "ece": 0.04769337534258633,
+        "brier_n": 500.0,
+        "ece_n": 500.0,
+        "valid": 500.0,
+        "missing": 0.0
+      },
+      "axes": [
+        {
+          "id": "D1",
+          "label_en": "D1",
+          "label_zh": "D1",
+          "score": 0.9555555555555556,
+          "metric": "subset_accuracy",
+          "samples": 90
+        },
+        {
+          "id": "D2",
+          "label_en": "D2",
+          "label_zh": "D2",
+          "score": 0.8333333333333334,
+          "metric": "subset_accuracy",
+          "samples": 90
+        },
+        {
+          "id": "D3",
+          "label_en": "D3",
+          "label_zh": "D3",
+          "score": 0.8,
+          "metric": "subset_accuracy",
+          "samples": 80
+        },
+        {
+          "id": "D4",
+          "label_en": "D4",
+          "label_zh": "D4",
+          "score": 0.92,
+          "metric": "subset_accuracy",
+          "samples": 100
+        },
+        {
+          "id": "D5",
+          "label_en": "D5",
+          "label_zh": "D5",
+          "score": 0.9625,
+          "metric": "subset_accuracy",
+          "samples": 80
+        },
+        {
+          "id": "D6",
+          "label_en": "D6",
+          "label_zh": "D6",
+          "score": 0.8166666666666667,
+          "metric": "subset_accuracy",
+          "samples": 60
+        }
+      ],
+      "samples": 500,
+      "errors": 0,
+      "evaluated_at": "2026-10-19T14:45:43.196911+00:00",
+      "protocol": "Data-JevBenchV0.5/frozen-own-contract",
+      "notes": [
+        "Reuses completed unchanged Data V0.5 run.",
+        "Own strict probability contract; generated labels do not imply confidence probabilities."
+      ]
+    },
+    {
+      "model_id": "access-strands-decider-26B-A4B-gemma4-v1-2610",
+      "model_name": "Strands Decider 26B-A4B (Gemma 4)",
+      "score": 0.61,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.61,
+        "accuracy_n": 500.0,
+        "brier": 0.4854481485739166,
+        "ece": 0.06686187040247023,
+        "brier_n": 500.0,
+        "ece_n": 500.0,
+        "valid": 500.0,
+        "missing": 0.0
+      },
+      "axes": [
+        {
+          "id": "D1",
+          "label_en": "D1",
+          "label_zh": "D1",
+          "score": 0.7666666666666667,
+          "metric": "subset_accuracy",
+          "samples": 90
+        },
+        {
+          "id": "D2",
+          "label_en": "D2",
+          "label_zh": "D2",
+          "score": 0.32222222222222224,
+          "metric": "subset_accuracy",
+          "samples": 90
+        },
+        {
+          "id": "D3",
+          "label_en": "D3",
+          "label_zh": "D3",
+          "score": 0.775,
+          "metric": "subset_accuracy",
+          "samples": 80
+        },
+        {
+          "id": "D4",
+          "label_en": "D4",
+          "label_zh": "D4",
+          "score": 0.57,
+          "metric": "subset_accuracy",
+          "samples": 100
+        },
+        {
+          "id": "D5",
+          "label_en": "D5",
+          "label_zh": "D5",
+          "score": 0.6375,
+          "metric": "subset_accuracy",
+          "samples": 80
+        },
+        {
+          "id": "D6",
+          "label_en": "D6",
+          "label_zh": "D6",
+          "score": 0.6166666666666667,
+          "metric": "subset_accuracy",
+          "samples": 60
+        }
+      ],
+      "samples": 500,
+      "errors": 0,
+      "evaluated_at": "2026-10-19T12:05:19.264738+00:00",
+      "protocol": "Data-JevBenchV0.5/frozen-own-contract",
+      "notes": [
+        "Reuses completed unchanged Data V0.5 run.",
+        "Own strict probability contract; generated labels do not imply confidence probabilities."
+      ]
+    },
+    {
+      "model_id": "access-Clef-27B-original",
+      "model_name": "Cloudflare Clef (27B)",
+      "score": 0.732,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.732,
+        "accuracy_n": 500.0,
+        "brier": 0.36698344833770297,
+        "ece": 0.07831968772783876,
+        "brier_n": 500.0,
+        "ece_n": 500.0,
+        "valid": 500.0,
+        "missing": 0.0
+      },
+      "axes": [
+        {
+          "id": "D1",
+          "label_en": "D1",
+          "label_zh": "D1",
+          "score": 0.7,
+          "metric": "subset_accuracy",
+          "samples": 90
+        },
+        {
+          "id": "D2",
+          "label_en": "D2",
+          "label_zh": "D2",
+          "score": 0.6111111111111112,
+          "metric": "subset_accuracy",
+          "samples": 90
+        },
+        {
+          "id": "D3",
+          "label_en": "D3",
+          "label_zh": "D3",
+          "score": 0.8,
+          "metric": "subset_accuracy",
+          "samples": 80
+        },
+        {
+          "id": "D4",
+          "label_en": "D4",
+          "label_zh": "D4",
+          "score": 0.68,
+          "metric": "subset_accuracy",
+          "samples": 100
+        },
+        {
+          "id": "D5",
+          "label_en": "D5",
+          "label_zh": "D5",
+          "score": 0.825,
+          "metric": "subset_accuracy",
+          "samples": 80
+        },
+        {
+          "id": "D6",
+          "label_en": "D6",
+          "label_zh": "D6",
+          "score": 0.8333333333333334,
+          "metric": "subset_accuracy",
+          "samples": 60
+        }
+      ],
+      "samples": 500,
+      "errors": 0,
+      "evaluated_at": "2026-10-19T12:05:19.208502+00:00",
+      "protocol": "Data-JevBenchV0.5/frozen-own-contract",
+      "notes": [
+        "Reuses completed unchanged Data V0.5 run.",
+        "Own strict probability contract; generated labels do not imply confidence probabilities."
+      ]
+    },
+    {
+      "model_id": "access-microsoft--microsoft-decision-1",
+      "model_name": "Microsoft Decision-1",
+      "logo": "./playground/logos/microsoft.ico",
+      "score": 0.682,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.682,
+        "accuracy_n": 500.0,
+        "brier": 0.4740812181184348,
+        "ece": 0.15322592880413152,
+        "brier_n": 500.0,
+        "ece_n": 500.0,
+        "valid": 500.0,
+        "missing": 0.0
+      },
+      "axes": [
+        {
+          "id": "D1",
+          "label_en": "D1",
+          "label_zh": "D1",
+          "score": 0.7888888888888889,
+          "metric": "subset_accuracy",
+          "samples": 90
+        },
+        {
+          "id": "D2",
+          "label_en": "D2",
+          "label_zh": "D2",
+          "score": 0.5444444444444444,
+          "metric": "subset_accuracy",
+          "samples": 90
+        },
+        {
+          "id": "D3",
+          "label_en": "D3",
+          "label_zh": "D3",
+          "score": 0.7875,
+          "metric": "subset_accuracy",
+          "samples": 80
+        },
+        {
+          "id": "D4",
+          "label_en": "D4",
+          "label_zh": "D4",
+          "score": 0.68,
+          "metric": "subset_accuracy",
+          "samples": 100
+        },
+        {
+          "id": "D5",
+          "label_en": "D5",
+          "label_zh": "D5",
+          "score": 0.7,
+          "metric": "subset_accuracy",
+          "samples": 80
+        },
+        {
+          "id": "D6",
+          "label_en": "D6",
+          "label_zh": "D6",
+          "score": 0.5666666666666667,
+          "metric": "subset_accuracy",
+          "samples": 60
+        }
+      ],
+      "samples": 500,
+      "errors": 0,
+      "evaluated_at": "2026-10-19T12:05:19.231049+00:00",
+      "protocol": "Data-JevBenchV0.5/frozen-own-contract",
+      "notes": [
+        "Reuses completed unchanged Data V0.5 run.",
+        "Own strict probability contract; generated labels do not imply confidence probabilities."
+      ]
+    },
+    {
+      "model_id": "access-inception--mercury-decide",
+      "model_name": "Mercury Decide (Inception)",
+      "logo": "./playground/logos/inception.png",
+      "score": 0.784,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.784,
+        "accuracy_n": 500.0,
+        "brier": 0.3553407851768281,
+        "ece": 0.14161769449688477,
+        "brier_n": 500.0,
+        "ece_n": 500.0,
+        "valid": 500.0,
+        "missing": 0.0
+      },
+      "axes": [
+        {
+          "id": "D1",
+          "label_en": "D1",
+          "label_zh": "D1",
+          "score": 0.8333333333333334,
+          "metric": "subset_accuracy",
+          "samples": 90
+        },
+        {
+          "id": "D2",
+          "label_en": "D2",
+          "label_zh": "D2",
+          "score": 0.7777777777777778,
+          "metric": "subset_accuracy",
+          "samples": 90
+        },
+        {
+          "id": "D3",
+          "label_en": "D3",
+          "label_zh": "D3",
+          "score": 0.8125,
+          "metric": "subset_accuracy",
+          "samples": 80
+        },
+        {
+          "id": "D4",
+          "label_en": "D4",
+          "label_zh": "D4",
+          "score": 0.72,
+          "metric": "subset_accuracy",
+          "samples": 100
+        },
+        {
+          "id": "D5",
+          "label_en": "D5",
+          "label_zh": "D5",
+          "score": 0.8,
+          "metric": "subset_accuracy",
+          "samples": 80
+        },
+        {
+          "id": "D6",
+          "label_en": "D6",
+          "label_zh": "D6",
+          "score": 0.7666666666666667,
+          "metric": "subset_accuracy",
+          "samples": 60
+        }
+      ],
+      "samples": 500,
+      "errors": 0,
+      "evaluated_at": "2026-10-19T12:05:19.223175+00:00",
+      "protocol": "Data-JevBenchV0.5/frozen-own-contract",
+      "notes": [
+        "Reuses completed unchanged Data V0.5 run.",
+        "Own strict probability contract; generated labels do not imply confidence probabilities."
+      ]
+    },
+    {
+      "model_id": "access-openai--gpt-6-luna-decisions",
+      "model_name": "GPT-6 Luna Decisions",
+      "score": 0.712,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.712,
+        "accuracy_n": 500.0,
+        "brier": 0.41615440000000037,
+        "ece": 0.10473999999999996,
+        "brier_n": 500.0,
+        "ece_n": 500.0,
+        "valid": 500.0,
+        "missing": 0.0
+      },
+      "axes": [
+        {
+          "id": "D1",
+          "label_en": "D1",
+          "label_zh": "D1",
+          "score": 0.7666666666666667,
+          "metric": "subset_accuracy",
+          "samples": 90
+        },
+        {
+          "id": "D2",
+          "label_en": "D2",
+          "label_zh": "D2",
+          "score": 0.6555555555555556,
+          "metric": "subset_accuracy",
+          "samples": 90
+        },
+        {
+          "id": "D3",
+          "label_en": "D3",
+          "label_zh": "D3",
+          "score": 0.8,
+          "metric": "subset_accuracy",
+          "samples": 80
+        },
+        {
+          "id": "D4",
+          "label_en": "D4",
+          "label_zh": "D4",
+          "score": 0.64,
+          "metric": "subset_accuracy",
+          "samples": 100
+        },
+        {
+          "id": "D5",
+          "label_en": "D5",
+          "label_zh": "D5",
+          "score": 0.7875,
+          "metric": "subset_accuracy",
+          "samples": 80
+        },
+        {
+          "id": "D6",
+          "label_en": "D6",
+          "label_zh": "D6",
+          "score": 0.6166666666666667,
+          "metric": "subset_accuracy",
+          "samples": 60
+        }
+      ],
+      "samples": 500,
+      "errors": 0,
+      "evaluated_at": "2026-10-19T12:05:19.239132+00:00",
+      "protocol": "Data-JevBenchV0.5/frozen-own-contract",
+      "notes": [
+        "Reuses completed unchanged Data V0.5 run.",
+        "Own strict probability contract; generated labels do not imply confidence probabilities."
+      ]
+    },
+    {
+      "model_id": "access-typesafe--jev-1.14",
+      "model_name": "Jev 1.14",
+      "logo": "./playground/logos/typesafe.png",
+      "score": 0.724,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.724,
+        "accuracy_n": 500.0,
+        "brier": null,
+        "ece": null,
+        "brier_n": 0.0,
+        "ece_n": 0.0,
+        "valid": 472.0,
+        "missing": 28.0
+      },
+      "axes": [
+        {
+          "id": "D1",
+          "label_en": "D1",
+          "label_zh": "D1",
+          "score": 0.8111111111111111,
+          "metric": "subset_accuracy",
+          "samples": 90
+        },
+        {
+          "id": "D2",
+          "label_en": "D2",
+          "label_zh": "D2",
+          "score": 0.5222222222222223,
+          "metric": "subset_accuracy",
+          "samples": 90
+        },
+        {
+          "id": "D3",
+          "label_en": "D3",
+          "label_zh": "D3",
+          "score": 0.85,
+          "metric": "subset_accuracy",
+          "samples": 80
+        },
+        {
+          "id": "D4",
+          "label_en": "D4",
+          "label_zh": "D4",
+          "score": 0.69,
+          "metric": "subset_accuracy",
+          "samples": 100
+        },
+        {
+          "id": "D5",
+          "label_en": "D5",
+          "label_zh": "D5",
+          "score": 0.7,
+          "metric": "subset_accuracy",
+          "samples": 80
+        },
+        {
+          "id": "D6",
+          "label_en": "D6",
+          "label_zh": "D6",
+          "score": 0.8166666666666667,
+          "metric": "subset_accuracy",
+          "samples": 60
+        }
+      ],
+      "samples": 500,
+      "errors": 28,
+      "evaluated_at": "2026-10-19T12:05:19.272216+00:00",
+      "protocol": "Data-JevBenchV0.5/frozen-own-contract",
+      "notes": [
+        "Reuses completed unchanged Data V0.5 run.",
+        "Own strict probability contract; generated labels do not imply confidence probabilities."
+      ]
+    },
+    {
+      "model_id": "access-qwen3.8-27b-chat-Direct-v1",
+      "model_name": "Qwen3.8-27B (Chat API)",
+      "score": 0.71,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.71,
+        "accuracy_n": 500.0,
+        "brier": null,
+        "ece": null,
+        "brier_n": 0.0,
+        "ece_n": 0.0,
+        "valid": 500.0,
+        "missing": 0.0
+      },
+      "axes": [
+        {
+          "id": "D1",
+          "label_en": "D1",
+          "label_zh": "D1",
+          "score": 0.7333333333333333,
+          "metric": "subset_accuracy",
+          "samples": 90
+        },
+        {
+          "id": "D2",
+          "label_en": "D2",
+          "label_zh": "D2",
+          "score": 0.7555555555555555,
+          "metric": "subset_accuracy",
+          "samples": 90
+        },
+        {
+          "id": "D3",
+          "label_en": "D3",
+          "label_zh": "D3",
+          "score": 0.825,
+          "metric": "subset_accuracy",
+          "samples": 80
+        },
+        {
+          "id": "D4",
+          "label_en": "D4",
+          "label_zh": "D4",
+          "score": 0.6,
+          "metric": "subset_accuracy",
+          "samples": 100
+        },
+        {
+          "id": "D5",
+          "label_en": "D5",
+          "label_zh": "D5",
+          "score": 0.7875,
+          "metric": "subset_accuracy",
+          "samples": 80
+        },
+        {
+          "id": "D6",
+          "label_en": "D6",
+          "label_zh": "D6",
+          "score": 0.5333333333333333,
+          "metric": "subset_accuracy",
+          "samples": 60
+        }
+      ],
+      "samples": 500,
+      "errors": 0,
+      "evaluated_at": "2026-10-19T13:44:45.176456+00:00",
+      "protocol": "Data-JevBenchV0.5/frozen-own-contract",
+      "notes": [
+        "Reuses completed unchanged Data V0.5 run.",
+        "Own strict probability contract; generated labels do not imply confidence probabilities."
+      ]
+    },
+    {
+      "model_id": "access-vllm-sr--d3",
+      "model_name": "vLLM-SR d3 (27B)",
+      "score": 0.816,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.816,
+        "accuracy_n": 500.0,
+        "brier": 0.24769693303591694,
+        "ece": 0.031101230505496416,
+        "brier_n": 500.0,
+        "ece_n": 500.0,
+        "valid": 500.0,
+        "missing": 0.0
+      },
+      "axes": [
+        {
+          "id": "D1",
+          "label_en": "D1",
+          "label_zh": "D1",
+          "score": 0.8333333333333334,
+          "metric": "subset_accuracy",
+          "samples": 90
+        },
+        {
+          "id": "D2",
+          "label_en": "D2",
+          "label_zh": "D2",
+          "score": 0.7555555555555555,
+          "metric": "subset_accuracy",
+          "samples": 90
+        },
+        {
+          "id": "D3",
+          "label_en": "D3",
+          "label_zh": "D3",
+          "score": 0.8375,
+          "metric": "subset_accuracy",
+          "samples": 80
+        },
+        {
+          "id": "D4",
+          "label_en": "D4",
+          "label_zh": "D4",
+          "score": 0.75,
+          "metric": "subset_accuracy",
+          "samples": 100
+        },
+        {
+          "id": "D5",
+          "label_en": "D5",
+          "label_zh": "D5",
+          "score": 0.8875,
+          "metric": "subset_accuracy",
+          "samples": 80
+        },
+        {
+          "id": "D6",
+          "label_en": "D6",
+          "label_zh": "D6",
+          "score": 0.8666666666666667,
+          "metric": "subset_accuracy",
+          "samples": 60
+        }
+      ],
+      "samples": 500,
+      "errors": 0,
+      "evaluated_at": "2026-10-19T14:03:17.960508+00:00",
+      "protocol": "Data-JevBenchV0.5/frozen-own-contract",
+      "notes": [
+        "Reuses completed unchanged Data V0.5 run.",
+        "Own strict probability contract; generated labels do not imply confidence probabilities."
+      ]
+    },
+    {
+      "model_id": "access-perplexity-ai--pplx-decider-v1.2",
+      "model_name": "Perplexity Decider v1.2 (27B)",
+      "score": 0.802,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.802,
+        "accuracy_n": 500.0,
+        "brier": 0.27832745141861226,
+        "ece": 0.04305477673362742,
+        "brier_n": 500.0,
+        "ece_n": 500.0,
+        "valid": 500.0,
+        "missing": 0.0
+      },
+      "axes": [
+        {
+          "id": "D1",
+          "label_en": "D1",
+          "label_zh": "D1",
+          "score": 0.8222222222222222,
+          "metric": "subset_accuracy",
+          "samples": 90
+        },
+        {
+          "id": "D2",
+          "label_en": "D2",
+          "label_zh": "D2",
+          "score": 0.7222222222222222,
+          "metric": "subset_accuracy",
+          "samples": 90
+        },
+        {
+          "id": "D3",
+          "label_en": "D3",
+          "label_zh": "D3",
+          "score": 0.825,
+          "metric": "subset_accuracy",
+          "samples": 80
+        },
+        {
+          "id": "D4",
+          "label_en": "D4",
+          "label_zh": "D4",
+          "score": 0.74,
+          "metric": "subset_accuracy",
+          "samples": 100
+        },
+        {
+          "id": "D5",
+          "label_en": "D5",
+          "label_zh": "D5",
+          "score": 0.8625,
+          "metric": "subset_accuracy",
+          "samples": 80
+        },
+        {
+          "id": "D6",
+          "label_en": "D6",
+          "label_zh": "D6",
+          "score": 0.8833333333333333,
+          "metric": "subset_accuracy",
+          "samples": 60
+        }
+      ],
+      "samples": 500,
+      "errors": 0,
+      "evaluated_at": "2026-10-19T14:01:19.984421+00:00",
+      "protocol": "Data-JevBenchV0.5/frozen-own-contract",
+      "notes": [
+        "Reuses completed unchanged Data V0.5 run.",
+        "Own strict probability contract; generated labels do not imply confidence probabilities."
+      ]
+    }
+  ]
+}

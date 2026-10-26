@@ -1,0 +1,41 @@
+{
+  "revision": "game-executed-safe-milestones-growth-v4",
+  "discount": 1.0,
+  "games": {
+    "checkers": {
+      "mode": "terminal",
+      "weight": 0.0,
+      "terminal": "win_draw_loss"
+    },
+    "go": {
+      "mode": "terminal",
+      "weight": 0.0,
+      "terminal": "win_draw_loss"
+    },
+    "xiangqi": {
+      "mode": "terminal",
+      "weight": 0.0,
+      "terminal": "win_draw_loss"
+    },
+    "guess_the_number": {
+      "mode": "terminal",
+      "weight": 0.0,
+      "terminal": "win_draw_loss"
+    },
+    "minesweeper": {
+      "mode": "terminal",
+      "weight": 0.0,
+      "terminal": "win_draw_loss"
+    },
+    "sudoku": {
+      "mode": "terminal",
+      "weight": 0.0,
+      "terminal": "win_draw_loss"
+    },
+    "uno": {
+      "mode": "terminal",
+      "weight": 0.0,
+      "terminal": "win_draw_loss"
+    }
+  }
+}

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blink · Trajectory showcase</title>
+  <link rel="icon" href="./playground/logos/blink.svg" type="image/svg+xml">
+  <style>
+    @font-face{font-family:Inter;src:url('./playground/fonts/InterVariable.woff2')}*{box-sizing:border-box}
+    body{margin:0;background:#f4f6ef;color:#263b3d;font-family:Inter,system-ui,sans-serif}
+    main{max-width:1040px;margin:auto;padding:32px 24px}a{color:#466e69;text-decoration:none}
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+    .brand{display:flex;align-items:center;gap:10px;font-size:24px;font-weight:700;letter-spacing:-1px}.brand img{width:34px}
+    h1{font-size:36px;letter-spacing:-1.4px;margin:0 0 10px}p{color:#677876;line-height:1.6}
+    nav{display:flex;gap:8px;flex-wrap:wrap;margin:24px 0}button,select{font:inherit;border:1px solid #ccd6ca;background:#fffdf7;border-radius:8px;padding:9px 14px;cursor:pointer;color:inherit}
+    button[aria-pressed=true]{background:#3d5b62;color:white;border-color:#3d5b62}
+    #capture{background:#fffdf7;border:1px solid #d6ded1;border-radius:14px;overflow:hidden}
+    .card-head{padding:18px 22px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e3e7dc}
+    .eyebrow{font-size:10px;letter-spacing:2px;font-weight:600;color:#7b8b80}h2{margin:5px 0 0;font-size:23px;letter-spacing:-.6px}
+    .badge{font-size:12px;color:#6d806e;border:1px solid #dce3d7;border-radius:20px;padding:5px 9px}
+    #stage{height:410px;display:flex;align-items:center;justify-content:center;background:#f4f6ed;overflow:hidden}
+    #stage iframe{max-height:100%;max-width:100%!important;width:auto!important;height:100%!important;border-radius:0!important;flex:0 1 auto}
+    .card-foot{min-height:52px;padding:13px 22px;display:flex;justify-content:space-between;gap:20px;font-size:12px;border-top:1px solid #e3e7dc}
+    #action{max-width:65%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#536b68}
+    .controls{display:flex;align-items:center;gap:12px;margin:18px 0}.controls input{min-width:40px;flex:1;accent-color:#3d5b62}
+    .record{font-size:12px;overflow-wrap:anywhere}#error{color:#a84635}#notice{max-width:850px}
+    @media(max-width:600px){main{padding:20px 12px}h1{font-size:29px}#stage{height:320px}.card-head{padding:16px}.badge{font-size:10px}.card-foot{padding:12px 16px}}
+  </style>
+  <script>window.JevI18n={lang:'en',t:(en)=>en,onChange(){},register(){}};</script>
+</head>
+<body><main>
+  <header><a class="brand" href="./"><img src="./playground/logos/blink.svg" alt="">Blink</a><a href="./">Open Arena ↗</a></header>
+  <h1>Decisions, in motion.</h1>
+  <p id="notice">Explore archived trajectories with the original game renderers. These are historical experiments; the Blink model release is still in preparation.</p>
+  <nav id="games" aria-label="Trajectory selection"></nav>
+  <section id="capture" aria-label="Archived trajectory">
+    <div class="card-head"><div><span class="eyebrow">BLINK / TRAJECTORY SHOWCASE</span><h2 id="title">Loading…</h2></div><span class="badge">Archived replay</span></div>
+    <div id="stage"></div>
+    <div class="card-foot"><span id="position">—</span><span id="action">—</span></div>
+  </section>
+  <div class="controls"><button id="play" disabled>Play</button><input id="seek" type="range" min="0" max="0" value="0" aria-label="Replay position" disabled><button id="restart" disabled>Restart</button></div>
+  <p id="error" role="alert"></p><p class="record" id="source"></p>
+  <p class="record">Playback shows saved decision states at a fixed pace, not original wall-clock speed. No model requests are made. <a href="./showcase/manifest.json">Source manifest ↗</a></p>
+</main><script src="./playground/renderers.js?v=blink-20261026"></script><script src="./showcase/player.js?v=blink-20261026"></script></body>
+</html>

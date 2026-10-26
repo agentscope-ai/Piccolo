@@ -1,0 +1,147 @@
+{
+  "schema_version": "blink.showcase.v1",
+  "source": "arena/leaderboard/arena-replays.json",
+  "source_run_id": "common-anchor-star-iter17-api3-20261019-v1",
+  "source_revision": "jev-arena-replay-v1",
+  "source_updated_at": 1792381721.6579611,
+  "scope": "Historical experiments, not results of the upcoming Blink model.",
+  "selection": "Fixed representative games with complete saved states; not a success-rate sample.",
+  "playback": "Original renderers, saved decision states, fixed playback pace; not wall-clock video.",
+  "items": [
+    {
+      "id": "othello",
+      "title": "Othello",
+      "kind": "othello_6x6",
+      "trace": "traces/othello.json",
+      "source_collection": "replays",
+      "source_key": "00000",
+      "source_stream_index": 0,
+      "seed": 42,
+      "participants": [
+        "oneshot27b-game-rl-native-iter17",
+        "oneshot27b-control-reviewed-sft-iter310"
+      ],
+      "recording": "reconstructed_verified",
+      "missing_frames": false,
+      "steps": 28,
+      "result": {
+        "winner": "O",
+        "steps": 28,
+        "status": "complete"
+      }
+    },
+    {
+      "id": "merge-2048",
+      "title": "2048",
+      "kind": "merge_2048",
+      "trace": "traces/merge-2048.json",
+      "source_collection": "episodes",
+      "source_key": "merge_2048-42-oneshot27b-game-rl-native-iter17",
+      "source_stream_index": null,
+      "seed": 42,
+      "participants": [
+        "oneshot27b-game-rl-native-iter17"
+      ],
+      "recording": "reconstructed_verified",
+      "missing_frames": false,
+      "steps": 91,
+      "result": {
+        "outcome": "win",
+        "score": 916,
+        "score_label": "原生合并积分",
+        "higher_is_better": true,
+        "comparison_key": [
+          1,
+          916
+        ],
+        "terminal": true,
+        "budget_exhausted": false,
+        "natural_success": true,
+        "steps": 91,
+        "status": "complete"
+      }
+    },
+    {
+      "id": "jump-jump",
+      "title": "Jump Jump",
+      "kind": "jump_jump",
+      "trace": "traces/jump-jump.json",
+      "source_collection": "episodes",
+      "source_key": "jump_jump-42-oneshot27b-game-rl-native-iter17",
+      "source_stream_index": null,
+      "seed": 42,
+      "participants": [
+        "oneshot27b-game-rl-native-iter17"
+      ],
+      "recording": "reconstructed_verified",
+      "missing_frames": false,
+      "steps": 8,
+      "result": {
+        "outcome": "win",
+        "score": 8,
+        "score_label": "已落平台数",
+        "higher_is_better": true,
+        "comparison_key": [
+          1,
+          8
+        ],
+        "terminal": true,
+        "budget_exhausted": false,
+        "natural_success": true,
+        "steps": 8,
+        "status": "complete"
+      }
+    },
+    {
+      "id": "tetris",
+      "title": "Tetris",
+      "kind": "tetris_placement",
+      "trace": "traces/tetris.json",
+      "source_collection": "episodes",
+      "source_key": "tetris_placement-42-oneshot27b-game-rl-native-iter17",
+      "source_stream_index": null,
+      "seed": 42,
+      "participants": [
+        "oneshot27b-game-rl-native-iter17"
+      ],
+      "recording": "reconstructed_verified",
+      "missing_frames": false,
+      "steps": 14,
+      "result": {
+        "outcome": "loss",
+        "score": 0,
+        "score_label": "累计消除行数",
+        "higher_is_better": true,
+        "comparison_key": [
+          0,
+          0.0,
+          0.0
+        ],
+        "terminal": true,
+        "budget_exhausted": false,
+        "natural_success": false,
+        "steps": 6,
+        "status": "complete",
+        "failure_reason": "top_out",
+        "time_score": {
+          "utility": 0.0,
+          "terminal_reward": -1.0,
+          "progress": 0.0,
+          "native_progress": 0.0,
+          "elapsed_seconds": 58.02,
+          "time_limit": 240.0,
+          "time_scale_seconds": 240.0,
+          "time_source": "engine_elapsed_after_first_input",
+          "completed": false,
+          "time_tiebreak": 0.0,
+          "comparison_key": [
+            0,
+            0.0,
+            0.0
+          ],
+          "scoring_revision": "realtime-completion-progress-time-v1"
+        }
+      }
+    }
+  ]
+}

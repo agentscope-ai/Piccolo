@@ -1,0 +1,56 @@
+.selected-game{max-width:690px;margin:1rem auto;padding:1rem;border:1px solid var(--border,#d8d4cc);border-radius:14px;background:var(--card,#fff)}
+.selected-heading{font-weight:700;margin-bottom:1rem}.selected-grid{display:grid;grid-template-columns:repeat(var(--columns),minmax(0,1fr));max-width:540px;margin:auto;border:2px solid #81725a;gap:0}
+.selected-grid .selected-cell{aspect-ratio:1;border:1px solid #d4c5a7;border-radius:0;margin:0;padding:0;font-size:clamp(14px,2.3vw,27px);min-width:0;background:#f4e8cb;color:#28352f;opacity:1}.selected-grid .selected-cell:disabled{cursor:default;opacity:1}
+.selected-grid .selected-cell.origin{background:#b4d7b4}.selected-grid .selected-cell.destination{background:#d2e0a8}.selected-grid.checkers .dark{background:#b6a084}.selected-grid.checkers .origin{background:#8fbd90}.selected-grid.checkers .destination{background:#c7d997}
+.selected-grid.minesweeper .covered{background:#b4c4c9;box-shadow:inset 2px 2px #e3ecee}.selected-grid.sudoku .selected-cell{background:#fff}.selected-grid.sudoku .origin{background:#b4d7b4}.selected-grid.sudoku .box-right{border-right:3px solid #81725a}.selected-grid.sudoku .box-bottom{border-bottom:3px solid #81725a}
+.selected-hand{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;padding:12px 0}
+#showcaseActions details{width:100%}#showcaseActions details button{margin:.2rem}#showcaseActions summary{cursor:pointer;padding:.5rem}
+.selected-grid .red-piece{color:#a44239}
+/* Xiangqi pieces sit on the same intersections as the native 9×10 board. */
+.selected-grid.xiangqi{--xq-rim:clamp(10px,2vw,20px);position:relative;isolation:isolate;padding:var(--xq-rim);border:3px solid #84613e;border-radius:5px;background:linear-gradient(105deg,#f1d8a8,#e4bf86 48%,#efd2a0);box-shadow:inset 0 0 0 4px #c59a6359,0 3px 8px #6a46241c}
+.xiangqi-lines{position:absolute;z-index:0;left:var(--xq-rim);top:var(--xq-rim);width:calc(100% - 2*var(--xq-rim));height:calc(100% - 2*var(--xq-rim));pointer-events:none;overflow:visible}
+.xiangqi-lines line,.xiangqi-lines path{stroke:#775333;stroke-width:1.2;vector-effect:non-scaling-stroke;fill:none}
+.xiangqi-lines text{fill:#79532f;font-size:39px;font-weight:600;letter-spacing:8px}
+.selected-grid.xiangqi .selected-cell{position:relative;z-index:1;display:grid;place-items:center;min-height:0;border:0;background:transparent;box-shadow:none!important;transform:none!important;cursor:default;overflow:visible}
+.selected-grid.xiangqi .selected-cell.selectable,.selected-grid.xiangqi .selected-cell.destination{cursor:pointer}
+.xiangqi-piece{--piece-ink:#28352d;position:absolute;inset:6%;display:grid;place-items:center;border:2px solid #ae7d45;border-radius:50%;background:radial-gradient(circle at 35% 25%,#fff3d6,#f2d5a1 67%,#d4a364);color:var(--piece-ink);font-size:clamp(16px,3.2vw,30px);font-weight:600;line-height:1;box-shadow:inset 0 1px 2px #fff9eb,0 3px 0 #ac7b43,0 4px 5px #63402250;text-shadow:0 1px #fff6de;pointer-events:none}
+.selected-grid.xiangqi .xiangqi-piece,.xiangqi-lines text{font-family:"STKaiti","KaiTi","Noto Serif CJK SC","Source Han Serif SC",serif!important}
+.xiangqi-piece::before{content:"";position:absolute;inset:3px;border:1px solid var(--piece-ink);border-radius:50%;opacity:.65;pointer-events:none}
+.selected-grid.xiangqi .red-piece .xiangqi-piece{--piece-ink:#a52c26}
+.selected-grid.xiangqi .selected-cell.origin::after,.selected-grid.xiangqi .selected-cell.destination.has-piece::after{content:"";position:absolute;inset:1%;border:3px solid #27725d;border-radius:50%;box-shadow:0 0 0 2px #f8edce;pointer-events:none}
+.selected-grid.xiangqi .selected-cell.destination:not(.has-piece)::after{content:"";position:absolute;inset:36%;border-radius:50%;background:#27725d;box-shadow:0 0 0 4px #fff6d788;pointer-events:none}
+.selected-grid.xiangqi .selected-cell.selectable:hover .xiangqi-piece{filter:brightness(1.06)}
+.selected-grid.xiangqi .selected-cell:focus-visible{outline:2px solid #27725d;outline-offset:-2px;border-radius:50%}
+@media(max-width:480px){.xiangqi-piece{border-width:1px;box-shadow:inset 0 1px 1px #fff9eb,0 2px 0 #ac7b43,0 3px 3px #63402250}.xiangqi-piece::before{inset:2px}.selected-grid.xiangqi .selected-cell.origin::after,.selected-grid.xiangqi .selected-cell.destination.has-piece::after{border-width:2px}}
+/* Each button is centred on an intersection. Boundary lines end at the
+   first/last intersection, leaving room for a full stone at the board edge. */
+.selected-grid.go{padding:14px;border:2px solid #8c653b;background:#ddb777;box-shadow:inset 0 0 25px #ae7d4133}
+.selected-grid.go .selected-cell{position:relative;isolation:isolate;border:0;background:transparent;box-shadow:none!important;transform:none!important;overflow:visible}
+.selected-grid.go .selected-cell::before,.selected-grid.go .selected-cell::after{content:"";position:absolute;background:#614321;z-index:-1;pointer-events:none}
+.selected-grid.go .selected-cell::before{height:1px;left:0;right:0;top:50%}
+.selected-grid.go .selected-cell::after{width:1px;top:0;bottom:0;left:50%}
+.selected-grid.go [data-col="0"]::before{left:50%}.selected-grid.go [data-col="8"]::before{right:50%}
+.selected-grid.go [data-row="0"]::after{top:50%}.selected-grid.go [data-row="8"]::after{bottom:50%}
+.go-stone{position:absolute;inset:8%;border-radius:50%;box-shadow:1px 2px 3px #39250b70;pointer-events:none}
+.go-stone.black{background:radial-gradient(circle at 33% 28%,#626262,#141414 58%,#060606);border:1px solid #111}
+.go-stone.white{background:radial-gradient(circle at 33% 28%,#fff,#f7f6ef 56%,#c9c7be);border:1px solid #969083}
+.go-star{position:absolute;width:12%;height:12%;left:44%;top:44%;border-radius:50%;background:#614321;pointer-events:none}
+.selected-grid.go .selected-cell[data-action]:hover{background:#fff2b94a}.selected-grid.go .selected-cell:focus-visible{outline:2px solid #284d3c;outline-offset:-3px}
+.go-coordinates{display:grid;grid-template-columns:repeat(9,1fr);max-width:540px;margin:0 auto 5px;padding:0 16px;text-align:center;color:#5d472c;font-size:13px;font-weight:600}
+.uno-table{display:flex;justify-content:space-evenly;align-items:center;gap:20px;padding:22px 14px;background:#edf4ec;border:1px solid #bbcdbd;border-radius:14px}
+.uno-opponent,.uno-discard{display:flex;flex-direction:column;align-items:center;gap:14px;color:#263d32}
+.uno-backs{display:flex;padding:10px 18px 10px 0}.uno-back{width:42px;height:64px;margin-right:-18px;display:grid;place-items:center;transform:rotate(-7deg);border:3px solid white;border-radius:7px;background:repeating-linear-gradient(45deg,#263547 0 5px,#33475e 5px 8px);box-shadow:0 1px 3px #24372766;color:#fff;font-weight:800;font-size:11px}
+.uno-card{--uno-color:#b51f35;position:relative;display:inline-block;width:78px;height:116px;flex:0 0 auto;margin:0;padding:0!important;min-width:0;min-height:0;border:4px solid #fff!important;border-radius:11px!important;background:var(--uno-color)!important;color:#fff!important;box-shadow:0 0 0 1px #9eaaa1,0 3px 5px #203c2b33!important;isolation:isolate;vertical-align:middle;opacity:1!important;line-height:1}
+.uno-card[data-color=g],.uno-action[data-color=g]{--uno-color:#167044}.uno-card[data-color=b],.uno-action[data-color=b]{--uno-color:#1c5cab}.uno-card[data-color=y],.uno-action[data-color=y]{--uno-color:#b97906}.uno-action[data-color=r]{--uno-color:#b51f35}
+.uno-card::before{content:"";position:absolute;inset:15% 10%;border-radius:50%;background:#fff;transform:rotate(25deg);z-index:-1}
+.uno-card .uno-face{position:absolute;inset:0;display:grid;place-items:center;color:var(--uno-color);font-weight:900;font-size:32px;text-shadow:1px 1px #ddd}
+.uno-corner{position:absolute;left:5px;top:5px;font-size:15px;font-weight:800}.uno-corner-bottom{left:auto;top:auto;right:5px;bottom:5px;transform:rotate(180deg)}
+.uno-card.uno-wild{background:#233044!important}.uno-wild::before{background:conic-gradient(#b51f35 0 25%,#1c5cab 25% 50%,#167044 50% 75%,#e4b120 75%);border:2px solid white}.uno-card.uno-wild .uno-face{color:#fff;text-shadow:1px 2px 2px #111}
+.uno-playable{outline:3px solid #4b8062;outline-offset:3px;cursor:pointer}.selected-hand .uno-card:disabled{cursor:default;box-shadow:0 0 0 1px #9eaaa1!important}.selected-hand .uno-card:not(:disabled):hover{transform:translateY(-5px)}
+.uno-hand-title{text-align:center;font-size:16px;margin:22px 0 12px}.uno-hint,.uno-active-color{font-size:14px;color:#40584a;line-height:1.6}
+#showcaseActions .uno-action{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;max-width:145px;font-size:13px;font-weight:600;border-color:var(--uno-color,#728978);color:#263d32;padding:12px}
+#showcaseActions .uno-action .uno-card{width:58px;height:84px;pointer-events:none}#showcaseActions .uno-action .uno-face{font-size:25px}#showcaseActions .uno-action .uno-corner{font-size:11px}
+@media(max-width:480px){.selected-game{padding:12px}.uno-table{gap:14px;padding:16px 8px}.selected-hand{gap:10px}.uno-card{width:64px;height:96px}.uno-card .uno-face{font-size:27px}.uno-corner{font-size:12px}.selected-grid.go{padding:10px}.go-coordinates{padding:0 12px}}
+
+.selected-feedback {margin:.7rem 0;padding:.7rem 1rem;border:1px solid var(--fs-border,#d8d4cc);border-radius:12px;background:var(--fs-accent-soft,#faf7f3)}
+.selected-feedback p {margin:.3rem 0;overflow-wrap:anywhere}

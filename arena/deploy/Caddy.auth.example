@@ -1,0 +1,7 @@
+{$DOMAIN} {
+    basic_auth {
+        {$JEV_SITE_USER} {$JEV_SITE_PASSWORD_HASH}
+    }
+    encode zstd gzip
+    reverse_proxy jev:8080
+}

@@ -1,0 +1,22 @@
+include requirements.txt Dockerfile compose.yaml
+include .dockerignore .gitignore
+recursive-include web *.html *.css *.js *.cjs *.ttf *.woff2 *.svg *.ico *.txt *.json
+recursive-include config *.json
+recursive-include data/seed *.json *.jsonl *.gz
+recursive-include leaderboard *.json
+prune leaderboard/history
+recursive-include docs *.md *.json
+exclude docs/ENGINE_INTEGRATION_HANDOFF.md
+recursive-include deploy *
+recursive-include scripts *.sh *.py
+recursive-include tests *.py *.cjs
+prune var
+prune .venv
+prune .git
+prune venv
+prune build
+prune dist
+prune .pytest_cache
+global-exclude __pycache__ *.py[cod] .DS_Store
+global-exclude .env .env.* *.log *.pem *.key *.p12 *.pfx *.sqlite* *.db
+exclude docs/HANDOFF_ACK.md

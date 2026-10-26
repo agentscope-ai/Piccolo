@@ -1,0 +1,5 @@
+# Optional host-folder sharing. The folder must be writable by container UID 10001.
+services:
+  jev:
+    volumes:
+      - ./leaderboard:/app/leaderboard

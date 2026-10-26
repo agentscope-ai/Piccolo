@@ -1,0 +1,24 @@
+{
+  "schema": "jev.live-prompt-calibration.v1",
+  "revision": "selected-prompt-pilot8-20261021-v1",
+  "games": {
+    "blackjack": {
+      "instructions": "你正在打21点，目标是不爆牌并在庄家按规则完成后胜过庄家。先只读取 observation.cards 中自己的牌；S/H/C/D是花色，不计分，数字是牌点，J/Q/K为10，A先按1计并在总点数不超过21时加10。庄家列表中的??是暗牌，不能猜。根据自己的总点数选操作：硬17、18、19、20、21均停牌；硬11以下要牌；硬12对庄家4–6停牌，其余要牌；硬13–16对庄家2–6停牌，对7–A要牌。软19及以上停牌；软17及以下要牌，软18对9/10/A要牌、对2–8停牌。只有要牌和停牌两类动作，不能分牌或加倍。例：7+9+3=19，已经是高点数，停牌而不是再要牌。先在内部核对点数和上述对应关系，再选择描述为要牌或停牌的候选。按当前Options映射输出选项大写标签，不输出动作key或解释。"
+    },
+    "liars_dice": {
+      "instructions": "目标是在本轮吹牛骰子中获胜。双方各3枚骰；只知道自己的3枚，未知对手骰按3枚独立公平骰估计，不能猜底牌。6是万能点：叫非6点数F时，本方支持数=本方F的数量+本方6的数量，未知每枚支持概率1/3；叫6时只计6，未知每枚支持概率1/6。bids最后一项N-F是上家声称至少N枚F；history只是同一公开叫数的文字。令k为己方支持数，缺额d=N-k。d<=0时该叫数必真，不要质疑；d>3时必假，应质疑；其余用Binomial(3,p)的P(X>=d)估计可信度。非6点数未知3骰至少1/2/3枚的概率分别19/27、7/27、1/27。上家可信度低于一半时优先质疑，避免为了继续叫而选择更不可信的叫数；可信时优先叫由本方骰充分支持、总可信度较高的最小合法数量，不机械选择第一个候选。自己的骰型不支持高叫数时，不要无条件抬高。只从当前Options选一个动作对应的大写标签，不输出数字动作ID或解释。"
+    },
+    "doudizhu": {
+      "append": "先识别state.role中的当前席位：玩家0是地主，玩家1/2是合作农民；不能把所有席位都当地主。若任一合法候选能使自己手牌清空，优先选择。地主需要压制任一将出完的农民；农民应帮助另一农民走牌，队友领出的牌且地主没有直接威胁时不要无意义盖过。依据option真实牌型与剩余手牌决定，保留能一次走掉的大组合。当前只选一个Options对应的大写标签；动作ID和选项标签不是同一回事，不输出牌名、动作key或解释。"
+    },
+    "snake_navigation": {
+      "instructions": "Play real-time Snake. Eat all 6 apples without crashing. Options describe each heading's visible geometric consequences; these are conditional calculations, not a predicted network delay. collision=true means death; input_would_reverse_and_be_ignored=true means this heading cannot take effect. Reject those choices. Among safe reachable routes, prefer the SMALLEST static_distance_to_visible_food (0 eats the apple); null means no static route. Keep enough reachable_free_cells to escape. A straight_safe_moves_up_to_4 value of 1 means another turn is immediately needed: do not continue toward that wall. When seconds_to_next_move is below about 0.6, the old pending heading may move the snake before your answer: carefully inspect AFTER_ONE_OLD_MOVE. Prefer a heading safe in both scenarios. Turning left decreases x, right increases x, up decreases y, down increases y. Do not drift away from food or repeat an unsafe heading. Return the uppercase option LABEL, not its direction key. No explanation.",
+      "snake_option_facts": true
+    }
+  },
+  "selection": {
+    "design": "eight matched seeds per game; exploratory pilot, no holdout",
+    "accepted_games": [],
+    "candidate_revision": "candidate-role-intent-20261021-v1"
+  }
+}

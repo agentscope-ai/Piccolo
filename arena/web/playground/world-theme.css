@@ -1,0 +1,15 @@
+/* Embedded game HUD and controls. Canvas artwork and collision coordinates are unchanged. */
+:root{--line:#e3eae7;--surface:#fff;--ink:#465b5e;--muted:#66777b;--tag:#eff4f2;--accent:#86a1a5}
+body{background:#fafbfb;background-image:none;color:var(--ink);padding:14px;font-size:12px}
+canvas,#tw-canvas{border:1px solid var(--line);border-radius:10px;box-shadow:none}
+button,#tw-wrap button{border:1px solid var(--line);background:#fff;color:#6b8b90;border-radius:8px;box-shadow:none;font-size:12px;transition:background 150ms,border-color 150ms}
+button:hover,#tw-wrap button:hover{background:#f5f7f6;border-color:#c1cfd2}
+button:focus-visible,#tw-wrap button:focus-visible{outline:3px solid #bdcccf66;outline-offset:2px}
+button:active,button.held{transform:none;box-shadow:none;background:#e7eeeb}
+button[data-key=jump],button[data-key=jump].held{background:#87a2a6;border-color:#87a2a6;color:#fff}
+.hud small{font-size:10px;letter-spacing:.8px;color:var(--muted)}.hud b{font-size:15px;font-weight:550;letter-spacing:-.3px;color:#607c80}.hud .level{color:#87a2a6}
+.game-event{border:1px solid var(--line);background:#f4f7f6;color:#769599;font-size:11px;border-radius:8px;padding:8px 10px}
+.hint,.tw-status{color:var(--muted);font-size:10px;line-height:1.6}
+#tw-touch{background:transparent;margin-top:10px}#tw-hp{border-radius:4px;height:7px}#tw-gear{color:#69898d;font-weight:500}
+@media(max-width:520px){body{padding:8px}.hud{gap:12px}.hud b{font-size:13px}.hud small{font-size:10px}.game-event{font-size:10px}#tw-touch button{min-height:38px}.controls button{height:40px}}
+@media(prefers-reduced-motion:reduce){button,#tw-wrap button{transition:none}}

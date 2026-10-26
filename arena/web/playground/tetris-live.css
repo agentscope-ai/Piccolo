@@ -1,0 +1,8 @@
+.tetris-live-controls{display:grid;grid-template-columns:repeat(4,minmax(64px,1fr));width:100%;max-width:500px;gap:8px}
+.tetris-live-controls button{min-height:44px;touch-action:manipulation;font-size:14px!important;padding:8px!important}
+.tetris-live-controls [data-tetris-action="soft_drop"],.tetris-live-controls [data-tetris-action="hard_drop"]{grid-column:span 2}
+.tetris-live-controls [data-tetris-action="hard_drop"]{background:#4f6398;color:white;border-color:#4f6398}
+#showcasesView[data-kind="tetris_placement"] .scene-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 10px}
+#showcasesView[data-kind="tetris_placement"] .scene-stats strong{font-size:19px;white-space:nowrap;letter-spacing:0}
+#showcasesView[data-kind="tetris_placement"] .scene-stats>div{min-width:0}
+@media(max-width:620px){#showcasesView[data-kind="tetris_placement"] #showcaseCanvas{min-width:0!important;width:100%!important;max-width:100%}.tetris-live-controls button{font-size:13px!important}#showcasesView[data-kind="tetris_placement"] .scene-stats strong{font-size:17px}}

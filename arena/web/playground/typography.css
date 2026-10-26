@@ -1,0 +1,13 @@
+/* One local UI family across product pages, charts and the embedded game chrome. */
+@font-face{font-family:'Inter';font-style:normal;font-weight:100 900;font-display:swap;src:url('./fonts/InterVariable.woff2') format('woff2')}
+/* Compatibility alias for existing canvas renderers; the rendered face is Inter. */
+@font-face{font-family:'Jev Comic';font-style:normal;font-weight:100 900;font-display:swap;src:url('./fonts/InterVariable.woff2') format('woff2')}
+:root{--jev-font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei','Noto Sans CJK SC',sans-serif}
+html{font-synthesis:none;text-size-adjust:100%;-webkit-text-size-adjust:100%}
+html body,html body *{font-family:var(--jev-font)!important}
+body{font-optical-sizing:auto;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-kerning:normal;text-rendering:optimizeLegibility}
+button,input,select,textarea{font:inherit}
+:where(table,b,output){font-variant-numeric:tabular-nums}
+
+/* CJK headings keep natural spacing instead of inheriting Latin display tracking. */
+html:lang(zh) body :is(h1,h2,h3,h4){letter-spacing:-.015em!important}

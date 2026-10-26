@@ -1,0 +1,192 @@
+/* Light pixel-tabletop treatment shared by the catalog and live games. */
+:root {
+  --pixel-ink: #213f3e;
+  --pixel-edge: #365953;
+  --pixel-paper: #fbf7e9;
+  --pixel-accent: #e7b65d;
+}
+body {
+  color: var(--pixel-ink);
+  background-color: #e5e8d8;
+  background-image:
+    linear-gradient(90deg, #59806b0c 1px, transparent 1px),
+    linear-gradient(#59806b0c 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+button, select, input, .tag {
+  border-radius: 2px !important;
+}
+button {
+  transition: transform .12s, background .12s, box-shadow .12s;
+}
+button:not(:disabled):active {
+  transform: translate(2px, 2px) !important;
+  box-shadow: none !important;
+}
+.mast, .panel, .model-details, .hero, .goal-card, .decision-card,
+.canvas-shell, .connection-dialog, .notice, .social-actions {
+  border-radius: 3px !important;
+}
+.panel, .goal-card, .connection-dialog {
+  border: 2px solid var(--pixel-edge) !important;
+  box-shadow: 5px 5px 0 #46645735 !important;
+  background: var(--pixel-paper);
+}
+.panel.playground-panel {
+  border-color: var(--pixel-edge) !important;
+  background:
+    linear-gradient(135deg, #f5efd9 25%, transparent 25%) 0 0 / 20px 20px,
+    linear-gradient(315deg, #f5efd9 25%, transparent 25%) 0 0 / 20px 20px,
+    var(--pixel-paper);
+}
+.mast .logo, .game-symbol, .playground-live i {
+  border-radius: 2px !important;
+}
+.mast .logo {
+  background: var(--pixel-accent);
+  color: var(--pixel-ink);
+  box-shadow: 3px 3px 0 var(--pixel-edge);
+  font-weight: 900;
+}
+.playground-heading h2, .scene-header h2, .game-turn, .play-filters button {
+  font-family: ui-monospace, SFMono-Regular, "Cascadia Code", "Noto Sans Mono CJK SC", monospace;
+  font-weight: 800;
+  letter-spacing: .02em;
+}
+.playground-live {
+  background: #dcebd2;
+  border: 1px solid #679274;
+}
+.play-filters button, .unified-picker .picker-row button {
+  border: 2px solid #71927b !important;
+  border-radius: 2px !important;
+  box-shadow: 3px 3px 0 #7b998455 !important;
+  background: #fffdf3;
+}
+.play-filters button.active, .unified-picker .picker-row button.active {
+  background: #f8e7af !important;
+  border-color: var(--pixel-edge) !important;
+  box-shadow: 3px 3px 0 var(--pixel-edge) !important;
+}
+.picker-row .game-symbol {
+  background: #cbdcc7;
+  border: 2px solid #507261;
+  font-family: ui-monospace, monospace;
+}
+.unified-picker .picker-row button:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 #57745e80 !important;
+}
+.canvas-shell, #board {
+  border: 3px solid var(--pixel-edge) !important;
+  box-shadow: 5px 5px 0 #4664574d;
+}
+#showcaseCanvas, #board {
+  image-rendering: pixelated;
+}
+.model-controller .primary, .social-primary, .scene-controls .charge-button {
+  background: #285f52 !important;
+  border: 2px solid #153d36 !important;
+  box-shadow: 3px 3px 0 #153d36 !important;
+}
+.scene-controls button, .social-actions__buttons button, #showcaseNew, #newGame {
+  border: 2px solid #5f8372 !important;
+  box-shadow: 3px 3px 0 #627f6b4d;
+}
+.scene-stats strong {
+  font-family: ui-monospace, SFMono-Regular, monospace;
+}
+.picker-row .game-copy small,
+.scene-header p,
+.scene-kicker,
+.control-hint,
+.playground-heading .muted {
+  color: #526e5e;
+}
+.picker-row .game-copy small,
+.control-hint {
+  font-size: 11px;
+}
+.scene-controls button:focus-visible,
+.unified-picker .picker-row button:focus-visible {
+  outline: 3px solid #dc9c43;
+  outline-offset: 3px;
+}
+@media (max-width: 620px) {
+  #showcasesView:is([data-kind="zha_jin_hua"],[data-kind="pig_dice"]) .canvas-shell {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  #showcasesView:is([data-kind="zha_jin_hua"],[data-kind="pig_dice"]) #showcaseCanvas {
+    width: 760px;
+    max-width: none;
+    height: 456px;
+  }
+}
+.game-evaluation-panel {
+  margin-top: 24px;
+}
+.game-evaluation-panel .subhead h2 {
+  margin: 4px 0 0;
+  font-family: ui-monospace, SFMono-Regular, "Noto Sans Mono CJK SC", monospace;
+}
+#gameEvaluationStatus {
+  margin: 13px 0;
+  padding: 11px 13px;
+  border: 2px solid #9bb29b;
+  background: #eaf0dc;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-size: 12px;
+}
+.game-evaluation-scroll {
+  overflow-x: auto;
+}
+.game-evaluation-table {
+  width: 100%;
+  min-width: 690px;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 12px;
+}
+.game-evaluation-table th,
+.game-evaluation-table td {
+  border-bottom: 1px solid #bbcab7;
+  padding: 9px 11px;
+}
+.game-evaluation-table th {
+  background: #dbe5c9;
+  color: #294c40;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+}
+.game-evaluation-table tr:nth-child(even) td {
+  background: #f4f5e8;
+}
+
+/* Bottom environment controls and shared board-game cards. */
+.play-seed-footer { margin: 28px 0 0; padding: 18px; }
+.play-seed-footer .seed-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+.play-seed-footer label { font-size: 12px; font-weight: 800; color: var(--pixel-ink); }
+.play-seed-footer input { width: 160px; min-width: 0; background: #fffdf3; border: 2px solid var(--pixel-edge); box-shadow: inset 2px 2px 0 #46645720; font: 700 13px ui-monospace, monospace; padding: 10px 12px; }
+.play-seed-footer button { min-height: 42px; border: 2px solid #5f8372; background: #fffdf3; color: var(--pixel-ink); box-shadow: 3px 3px 0 #627f6b4d; font-size: 12px; font-weight: 750; }
+.play-seed-footer #playSeedApply { background: var(--pixel-accent); border-color: var(--pixel-edge); box-shadow: 3px 3px 0 var(--pixel-edge); }
+.play-seed-footer #playSeedStatus { display: block; margin-top: 14px; font-size: 11px; line-height: 1.65; overflow-wrap: anywhere; }
+#boardPlay .game-grid { grid-template-columns: minmax(0, 1fr) 250px; gap: 26px; align-items: start; }
+#boardPlay .game-info { display: flex; padding: 0; margin: 0; background: transparent; border-radius: 0; }
+#boardPlay .game-info .goal-card { margin: 0; }
+#boardPlay .game-info #gameRules { font-size: 12px; line-height: 1.7; color: #526e5e; margin: 9px 0; }
+#boardPlay .game-info #gameTurn { font-size: 20px; letter-spacing: 0; }
+#boardPlay .game-info select { margin: 0; min-height: 42px; border: 2px solid #5f8372; background: #fffdf3; }
+#boardPlay .game-info .primary { margin: 0; }
+#boardPlay .board-preference { color: #526e5e; font-size: 12px; }
+#boardPlay .board-check { display: flex; align-items: center; gap: 7px; margin: 5px 0; }
+#boardPlay .board-check input { width: auto; accent-color: #285f52; }
+#boardPlay #gameNotice { font-size: 12px; line-height: 1.7; color: #526e5e; margin: 9px 0; }
+#boardPlay .board-wrap { min-width: 0; padding: 0; background: transparent; border-radius: 0; }
+#boardPlay .game-info #modelMove>.button-icon { position: absolute; right: 15px; }
+@media(max-width:1100px) { #boardPlay .game-grid { grid-template-columns: minmax(0,1fr) 215px; } }
+@media(max-width:800px) { #boardPlay .game-grid { display: grid; grid-template-columns: 1fr; gap: 18px; } #boardPlay .game-info { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; } #boardPlay .decision-card { grid-column: 1 / -1; } }
+@media(max-width:480px) { .play-seed-footer { padding: 12px; } .play-seed-footer .seed-toolbar { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; } .play-seed-footer label { grid-column: 1 / -1; } .play-seed-footer input { width: 100%; grid-column: 1 / -1; } .play-seed-footer button { min-width: 0; padding: 9px 7px; font-size: 11px; } #boardPlay .game-info { gap: 10px; } }
+
+#showcasesView[data-kind="racing_sprint"] #sceneStats { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px 8px; }
+#showcasesView[data-kind="racing_sprint"] #sceneStats strong { font-size: 20px; white-space: nowrap; }
+#showcasesView[data-kind="racing_sprint"] #sceneStats span { overflow-wrap: anywhere; line-height: 1.5; }

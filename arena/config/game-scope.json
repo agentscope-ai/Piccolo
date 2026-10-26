@@ -1,0 +1,32 @@
+{
+  "schema": "cues.control.active-scope.v1",
+  "revision": "games-retired6-20261021-v1",
+  "excluded_games": [
+    "tic_tac_toe",
+    "connect_four",
+    "othello_8x8",
+    "gomoku_19x19",
+    "racing_sprint",
+    "goofspiel",
+    "pig_dice",
+    "go"
+  ],
+  "excluded_body_tasks": [
+    [
+      "sphere_small",
+      "place"
+    ],
+    [
+      "sphere_large",
+      "place"
+    ]
+  ],
+  "retired_games": [
+    "othello_8x8",
+    "gomoku_19x19",
+    "racing_sprint",
+    "goofspiel",
+    "pig_dice",
+    "go"
+  ]
+}

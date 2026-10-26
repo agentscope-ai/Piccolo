@@ -1,0 +1,524 @@
+{
+  "schema_version": "jev.leaderboard.v1",
+  "benchmark_id": "decisionindex",
+  "title": "DecisionIndex · quick 3818",
+  "version": "0.3-quick-20261014",
+  "metric": "decision_index",
+  "score_scale": [
+    0.0,
+    100.0
+  ],
+  "higher_is_better": true,
+  "axis_scale": [
+    0.0,
+    1.0
+  ],
+  "rows": [
+    {
+      "model_id": "oneshot27b-control-reviewed-sft-iter310",
+      "model_name": "Blink 27B SFT-1015",
+      "score": 55.03,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.7898305084745763,
+        "brier": 0.30331829284434614,
+        "ece": 0.08824737617264547,
+        "accuracy_n": 6195.0,
+        "brier_n": 6177.0,
+        "ece_n": 6177.0,
+        "raw_index": 66.56
+      },
+      "axes": [
+        {
+          "id": "knowledge",
+          "label_en": "knowledge",
+          "label_zh": "知识与推理",
+          "score": 0.4424,
+          "metric": "area_skill",
+          "samples": 11
+        },
+        {
+          "id": "language",
+          "label_en": "language",
+          "label_zh": "语言理解",
+          "score": 0.5518,
+          "metric": "area_skill",
+          "samples": 9
+        },
+        {
+          "id": "retrieval",
+          "label_en": "retrieval",
+          "label_zh": "检索与分类",
+          "score": 0.5224,
+          "metric": "area_skill",
+          "samples": 6
+        },
+        {
+          "id": "tools",
+          "label_en": "tools",
+          "label_zh": "工具与自动化",
+          "score": 0.7932,
+          "metric": "area_skill",
+          "samples": 5
+        },
+        {
+          "id": "arts",
+          "label_en": "arts",
+          "label_zh": "艺术与审美",
+          "score": 0.4373,
+          "metric": "area_skill",
+          "samples": 6
+        }
+      ],
+      "samples": 3818,
+      "errors": 1,
+      "evaluated_at": "2026-10-16T04:43:12.713601+00:00",
+      "protocol": "native-naive-empty-prefix-v1",
+      "notes": [
+        "完整候选原生 logit；本地与 DashScope API、历史提示协议分开展示。",
+        "错误、超时、unsupported 均保留在预定分母；未完成不发布部分分数。",
+        "0–100 的 quick 子集公开指数估计，使用子集 scorer；不是官方全量或私有榜单成绩。",
+        "精确旧SFT310同协议quick结果；本次未重跑此模型；不是140620请求full-public成绩。"
+      ],
+      "logo": "./playground/logos/blink.svg"
+    },
+    {
+      "model_id": "oneshot27b-game-rl-native-iter17",
+      "model_name": "Blink 27B RL-1019-iter17",
+      "score": 54.85,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.7912832929782082,
+        "brier": 0.3033409099827375,
+        "ece": 0.08842235299646482,
+        "accuracy_n": 6195.0,
+        "brier_n": 6180.0,
+        "ece_n": 6180.0,
+        "raw_index": 66.45
+      },
+      "axes": [
+        {
+          "id": "knowledge",
+          "label_en": "knowledge",
+          "label_zh": "知识与推理",
+          "score": 0.44,
+          "metric": "area_skill",
+          "samples": 11
+        },
+        {
+          "id": "language",
+          "label_en": "language",
+          "label_zh": "语言理解",
+          "score": 0.5481,
+          "metric": "area_skill",
+          "samples": 9
+        },
+        {
+          "id": "retrieval",
+          "label_en": "retrieval",
+          "label_zh": "检索与分类",
+          "score": 0.5251,
+          "metric": "area_skill",
+          "samples": 6
+        },
+        {
+          "id": "tools",
+          "label_en": "tools",
+          "label_zh": "工具与自动化",
+          "score": 0.7847,
+          "metric": "area_skill",
+          "samples": 5
+        },
+        {
+          "id": "arts",
+          "label_en": "arts",
+          "label_zh": "艺术与审美",
+          "score": 0.4447,
+          "metric": "area_skill",
+          "samples": 6
+        }
+      ],
+      "samples": 3818,
+      "errors": 0,
+      "evaluated_at": "2026-10-19T02:24:35.219224+00:00",
+      "protocol": "native-naive-empty-prefix-v1",
+      "notes": [
+        "完整候选原生 logit；本地与 DashScope API、历史提示协议分开展示。",
+        "错误、超时、unsupported 均保留在预定分母；未完成不发布部分分数。",
+        "0–100 的 quick 子集公开指数估计，使用子集 scorer；不是官方全量或私有榜单成绩。",
+        "RL iter17；DLC dlc1c6bz0rkqcdph；精确checkpoint与原始结果绑定保存在本次评测manifest。"
+      ],
+      "logo": "./playground/logos/blink.svg"
+    },
+    {
+      "model_id": "oneshot27b-gameplay-terminal-rl4",
+      "model_name": "Blink 27B RL-1012",
+      "score": 56.42,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.8059725585149314,
+        "brier": 0.27005564118864,
+        "ece": 0.042981088015608765,
+        "accuracy_n": 6195.0,
+        "brier_n": 6180.0,
+        "ece_n": 6180.0,
+        "raw_index": 67.09
+      },
+      "axes": [
+        {
+          "id": "knowledge",
+          "label_en": "knowledge",
+          "label_zh": "知识与推理",
+          "score": 0.4112,
+          "metric": "area_skill",
+          "samples": 11
+        },
+        {
+          "id": "language",
+          "label_en": "language",
+          "label_zh": "语言理解",
+          "score": 0.6286,
+          "metric": "area_skill",
+          "samples": 9
+        },
+        {
+          "id": "retrieval",
+          "label_en": "retrieval",
+          "label_zh": "检索与分类",
+          "score": 0.6185,
+          "metric": "area_skill",
+          "samples": 6
+        },
+        {
+          "id": "tools",
+          "label_en": "tools",
+          "label_zh": "工具与自动化",
+          "score": 0.7232,
+          "metric": "area_skill",
+          "samples": 5
+        },
+        {
+          "id": "arts",
+          "label_en": "arts",
+          "label_zh": "艺术与审美",
+          "score": 0.3944,
+          "metric": "area_skill",
+          "samples": 6
+        }
+      ],
+      "samples": 3818,
+      "errors": 0,
+      "evaluated_at": "2026-10-15T16:01:37.866512+00:00",
+      "protocol": "native-naive-empty-prefix-v1",
+      "notes": [
+        "完整候选原生 logit；本地与 DashScope API、历史提示协议分开展示。",
+        "错误、超时、unsupported 均保留在预定分母；未完成不发布部分分数。",
+        "0–100 的 quick 子集公开指数估计，使用子集 scorer；不是官方全量或私有榜单成绩。",
+        "复用精确旧RL-1012同协议quick完整真实结果；本次未重跑；不是140620请求full-public成绩。"
+      ],
+      "logo": "./playground/logos/blink.svg"
+    },
+    {
+      "model_id": "qwen3.6-35b-a3b-base",
+      "model_name": "Qwen3.6 35B-A3B · 原版（本地）",
+      "score": 44.14,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.711541565778854,
+        "brier": 0.4072831319901602,
+        "ece": 0.12921296322306539,
+        "accuracy_n": 6195.0,
+        "brier_n": 6180.0,
+        "ece_n": 6180.0,
+        "raw_index": 58.25
+      },
+      "axes": [
+        {
+          "id": "knowledge",
+          "label_en": "knowledge",
+          "label_zh": "知识与推理",
+          "score": 0.3341,
+          "metric": "area_skill",
+          "samples": 11
+        },
+        {
+          "id": "language",
+          "label_en": "language",
+          "label_zh": "语言理解",
+          "score": 0.4549,
+          "metric": "area_skill",
+          "samples": 9
+        },
+        {
+          "id": "retrieval",
+          "label_en": "retrieval",
+          "label_zh": "检索与分类",
+          "score": 0.469,
+          "metric": "area_skill",
+          "samples": 6
+        },
+        {
+          "id": "tools",
+          "label_en": "tools",
+          "label_zh": "工具与自动化",
+          "score": 0.6334,
+          "metric": "area_skill",
+          "samples": 5
+        },
+        {
+          "id": "arts",
+          "label_en": "arts",
+          "label_zh": "艺术与审美",
+          "score": 0.2778,
+          "metric": "area_skill",
+          "samples": 6
+        }
+      ],
+      "samples": 3818,
+      "errors": 0,
+      "evaluated_at": "2026-10-15T16:00:29.716417+00:00",
+      "protocol": "native-naive-empty-prefix-v1",
+      "notes": [
+        "完整候选原生 logit；本地与 DashScope API、历史提示协议分开展示。",
+        "错误、超时、unsupported 均保留在预定分母；未完成不发布部分分数。",
+        "0–100 的 quick 子集公开指数估计，使用子集 scorer；不是官方全量或私有榜单成绩。",
+        "复用同版本同协议的完整本地正式重测成绩；本次未重新请求模型；不是full-public成绩。"
+      ]
+    },
+    {
+      "model_id": "qwen3.8-27b-base",
+      "model_name": "Qwen3.8 27B · 原版（本地）",
+      "score": 49.35,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.7517352703793382,
+        "brier": 0.33355612785736555,
+        "ece": 0.0401875661681706,
+        "accuracy_n": 6195.0,
+        "brier_n": 6180.0,
+        "ece_n": 6180.0,
+        "raw_index": 62.05
+      },
+      "axes": [
+        {
+          "id": "knowledge",
+          "label_en": "knowledge",
+          "label_zh": "知识与推理",
+          "score": 0.3481,
+          "metric": "area_skill",
+          "samples": 11
+        },
+        {
+          "id": "language",
+          "label_en": "language",
+          "label_zh": "语言理解",
+          "score": 0.4996,
+          "metric": "area_skill",
+          "samples": 9
+        },
+        {
+          "id": "retrieval",
+          "label_en": "retrieval",
+          "label_zh": "检索与分类",
+          "score": 0.5123,
+          "metric": "area_skill",
+          "samples": 6
+        },
+        {
+          "id": "tools",
+          "label_en": "tools",
+          "label_zh": "工具与自动化",
+          "score": 0.7422,
+          "metric": "area_skill",
+          "samples": 5
+        },
+        {
+          "id": "arts",
+          "label_en": "arts",
+          "label_zh": "艺术与审美",
+          "score": 0.3617,
+          "metric": "area_skill",
+          "samples": 6
+        }
+      ],
+      "samples": 3818,
+      "errors": 0,
+      "evaluated_at": "2026-10-15T16:00:43.613409+00:00",
+      "protocol": "native-naive-empty-prefix-v1",
+      "notes": [
+        "完整候选原生 logit；本地与 DashScope API、历史提示协议分开展示。",
+        "错误、超时、unsupported 均保留在预定分母；未完成不发布部分分数。",
+        "0–100 的 quick 子集公开指数估计，使用子集 scorer；不是官方全量或私有榜单成绩。",
+        "复用同版本同协议的完整本地正式重测成绩；本次未重新请求模型；不是full-public成绩。"
+      ]
+    },
+    {
+      "model_id": "dashscope-qwen3.6-35b-a3b",
+      "model_name": "Qwen3.6 35B-A3B · DashScope API（top-k估计）",
+      "score": 42.98,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.7196125907990315,
+        "brier": 0.4023729140075853,
+        "ece": 0.1227871228923522,
+        "accuracy_n": 6195.0,
+        "brier_n": 6180.0,
+        "ece_n": 6180.0,
+        "calibration_n": 6180.0,
+        "calibration_observed": 4521.0,
+        "calibration_estimated": 1659.0,
+        "calibration_missing": 0.0,
+        "raw_index": 57.52,
+        "probability_complete": 6014.0,
+        "probability_partial_argmax_proven": 1790.0,
+        "probability_unsupported": 0.0,
+        "probability_request_error": 0.0,
+        "probability_estimated": 5.0,
+        "probability_questions": 7809.0
+      },
+      "axes": [
+        {
+          "id": "knowledge",
+          "label_en": "knowledge",
+          "label_zh": "知识与推理",
+          "score": 0.3082,
+          "metric": "area_skill",
+          "samples": 11
+        },
+        {
+          "id": "language",
+          "label_en": "language",
+          "label_zh": "语言理解",
+          "score": 0.4536,
+          "metric": "area_skill",
+          "samples": 9
+        },
+        {
+          "id": "retrieval",
+          "label_en": "retrieval",
+          "label_zh": "检索与分类",
+          "score": 0.4255,
+          "metric": "area_skill",
+          "samples": 6
+        },
+        {
+          "id": "tools",
+          "label_en": "tools",
+          "label_zh": "工具与自动化",
+          "score": 0.6365,
+          "metric": "area_skill",
+          "samples": 5
+        },
+        {
+          "id": "arts",
+          "label_en": "arts",
+          "label_zh": "艺术与审美",
+          "score": 0.3138,
+          "metric": "area_skill",
+          "samples": 6
+        }
+      ],
+      "samples": 3818,
+      "errors": 0,
+      "evaluated_at": "2026-10-15T10:43:15.470694+00:00",
+      "protocol": "native-naive-empty-prefix-v1+dashscope-first-token-top5-v1+candidate-topk-estimate-v1",
+      "notes": [
+        "同一题集与原生计分；本地使用完整候选 logits，API 使用首 token 的截断 top-k logprobs。概率协议不同，分数并列展示供参考，不表示推理协议完全等价。",
+        "问题文本复用原 formatter；API 的 tokenizer/chat template 由服务端实现，未宣称与本地 token 逐项相同。",
+        "响应 model 逐次精确校验；API 服务别名不等同于本地 checkpoint 身份。",
+        "完整候选概率 6014；部分候选且 argmax 已严格证明 1790；概率不足 unsupported 0；请求/身份错误 0。",
+        "本行按授权采用 top-k 概率估计：未返回的候选概率估为 0 后按候选归一化。估计值不代表 API 实际返回 0，也不代表完整候选概率；原严格口径成绩单独保留。",
+        "估计计分 5 项；真实完整候选概率仍为 6014 项。",
+        "0–100 quick 子集公开指数估计；不是官方全量指数。题组内任一子题失败则整条记录失败，其他可解子题的概率覆盖仍如实记录。",
+        "API 使用 label-only 兼容层：仅在 choice 的 argmax 已严格证明且缺少完整概率时，将计分器未使用的 conf 置空；完整概率路径与原生计分公式不变。这不是未经适配的原生输入验证。",
+        "完整计分覆盖与真实完整概率覆盖分别展示；Soft 分布及概率校准受未返回候选估计为零的假设影响。",
+        "分类校准含估计分布：观测4521，估计1659，缺失0；完整计分不等于完整概率观测。",
+        "复用已保存完整quick结果；本次新增API请求0；不是全量公开集成绩。"
+      ]
+    },
+    {
+      "model_id": "dashscope-qwen3.8-max",
+      "model_name": "Qwen3.8 Max · DashScope API（top-k估计）",
+      "score": 59.06,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.8137207425343018,
+        "brier": 0.3382351984285337,
+        "ece": 0.16106127422589211,
+        "accuracy_n": 6195.0,
+        "brier_n": 6180.0,
+        "ece_n": 6180.0,
+        "calibration_n": 6180.0,
+        "calibration_observed": 2571.0,
+        "calibration_estimated": 3609.0,
+        "calibration_missing": 0.0,
+        "raw_index": 68.92,
+        "probability_complete": 3946.0,
+        "probability_partial_argmax_proven": 3727.0,
+        "probability_unsupported": 0.0,
+        "probability_request_error": 0.0,
+        "probability_estimated": 136.0,
+        "probability_questions": 7809.0
+      },
+      "axes": [
+        {
+          "id": "knowledge",
+          "label_en": "knowledge",
+          "label_zh": "知识与推理",
+          "score": 0.4937,
+          "metric": "area_skill",
+          "samples": 11
+        },
+        {
+          "id": "language",
+          "label_en": "language",
+          "label_zh": "语言理解",
+          "score": 0.6169,
+          "metric": "area_skill",
+          "samples": 9
+        },
+        {
+          "id": "retrieval",
+          "label_en": "retrieval",
+          "label_zh": "检索与分类",
+          "score": 0.6331,
+          "metric": "area_skill",
+          "samples": 6
+        },
+        {
+          "id": "tools",
+          "label_en": "tools",
+          "label_zh": "工具与自动化",
+          "score": 0.7488,
+          "metric": "area_skill",
+          "samples": 5
+        },
+        {
+          "id": "arts",
+          "label_en": "arts",
+          "label_zh": "艺术与审美",
+          "score": 0.3989,
+          "metric": "area_skill",
+          "samples": 6
+        }
+      ],
+      "samples": 3818,
+      "errors": 0,
+      "evaluated_at": "2026-10-15T10:43:21.157143+00:00",
+      "protocol": "native-naive-empty-prefix-v1+dashscope-first-token-top5-v1+candidate-topk-estimate-v1",
+      "notes": [
+        "同一题集与原生计分；本地使用完整候选 logits，API 使用首 token 的截断 top-k logprobs。概率协议不同，分数并列展示供参考，不表示推理协议完全等价。",
+        "问题文本复用原 formatter；API 的 tokenizer/chat template 由服务端实现，未宣称与本地 token 逐项相同。",
+        "响应 model 逐次精确校验；API 服务别名不等同于本地 checkpoint 身份。",
+        "完整候选概率 3946；部分候选且 argmax 已严格证明 3727；概率不足 unsupported 0；请求/身份错误 0。",
+        "本行按授权采用 top-k 概率估计：未返回的候选概率估为 0 后按候选归一化。估计值不代表 API 实际返回 0，也不代表完整候选概率；原严格口径成绩单独保留。",
+        "估计计分 136 项；真实完整候选概率仍为 3946 项。",
+        "0–100 quick 子集公开指数估计；不是官方全量指数。题组内任一子题失败则整条记录失败，其他可解子题的概率覆盖仍如实记录。",
+        "API 使用 label-only 兼容层：仅在 choice 的 argmax 已严格证明且缺少完整概率时，将计分器未使用的 conf 置空；完整概率路径与原生计分公式不变。这不是未经适配的原生输入验证。",
+        "完整计分覆盖与真实完整概率覆盖分别展示；Soft 分布及概率校准受未返回候选估计为零的假设影响。",
+        "分类校准含估计分布：观测2571，估计3609，缺失0；完整计分不等于完整概率观测。",
+        "复用已保存完整quick结果；本次新增API请求0；不是全量公开集成绩。"
+      ]
+    }
+  ]
+}

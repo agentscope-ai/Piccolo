@@ -1,0 +1,485 @@
+{
+  "schema_version": "jev.leaderboard.v1",
+  "benchmark_id": "decisionindex",
+  "title": "Decision Index Public",
+  "version": "0.3",
+  "metric": "decision_index",
+  "score_scale": [
+    0.0,
+    100.0
+  ],
+  "higher_is_better": true,
+  "axis_scale": [
+    0.0,
+    1.0
+  ],
+  "rows": [
+    {
+      "model_id": "oneshot-w22m05r02-v5best-avg50",
+      "model_name": "Ours",
+      "score": 63.89,
+      "status": "complete",
+      "metrics": {
+        "raw_index": 72.83
+      },
+      "axes": [
+        {
+          "id": "knowledge",
+          "label_en": "Knowledge and reasoning",
+          "label_zh": "知识与推理",
+          "score": 0.5241,
+          "metric": "area_skill",
+          "samples": 11
+        },
+        {
+          "id": "language",
+          "label_en": "Language comprehension",
+          "label_zh": "语言理解",
+          "score": 0.6684,
+          "metric": "area_skill",
+          "samples": 9
+        },
+        {
+          "id": "retrieval",
+          "label_en": "Retrieval and classification",
+          "label_zh": "检索与分类",
+          "score": 0.6444,
+          "metric": "area_skill",
+          "samples": 6
+        },
+        {
+          "id": "tools",
+          "label_en": "Tools and automation",
+          "label_zh": "工具与自动化",
+          "score": 0.8236,
+          "metric": "area_skill",
+          "samples": 5
+        },
+        {
+          "id": "arts",
+          "label_en": "Arts and human preference",
+          "label_zh": "艺术与人类偏好",
+          "score": 0.5113,
+          "metric": "area_skill",
+          "samples": 6
+        }
+      ],
+      "samples": 140178,
+      "errors": 0,
+      "evaluated_at": "2026-10-19T09:29:11+00:00",
+      "protocol": "authorized_existing_ours/Decision-Index-Public-0.3",
+      "notes": [
+        "Authorized reuse of Ours existing full Public result; not an official hosted leaderboard entry.",
+        "Base corpus hash and 37 area-panel benchmark IDs match official current Public.",
+        "Prior 64xA100 latency is not a current performance measurement."
+      ]
+    },
+    {
+      "model_id": "access-qwen38-27b",
+      "model_name": "Qwen3.8-27B (Logits)",
+      "logo": "./playground/logos/qwen.png",
+      "score": null,
+      "status": "pending",
+      "metrics": {},
+      "axes": [],
+      "samples": 0,
+      "errors": 0,
+      "evaluated_at": null,
+      "protocol": "official_public_lookup/no_self_inference",
+      "notes": [
+        "No matching model/version/protocol found in fetched official Public roster; null means no result, not zero.",
+        "Decision Index own inference is disabled. No future evaluation is scheduled by pending status."
+      ]
+    },
+    {
+      "model_id": "access-StartLux-Decision-v1.1-27B-Instant",
+      "model_name": "StartLux-Decision v1.1 27B Instant",
+      "score": 72.88,
+      "status": "complete",
+      "metrics": {},
+      "axes": [
+        {
+          "id": "knowledge",
+          "label_en": "Knowledge and reasoning",
+          "label_zh": "知识与推理",
+          "score": 0.6069,
+          "metric": "area_skill",
+          "samples": 11
+        },
+        {
+          "id": "language",
+          "label_en": "Language comprehension",
+          "label_zh": "语言理解",
+          "score": 0.7556,
+          "metric": "area_skill",
+          "samples": 9
+        },
+        {
+          "id": "retrieval",
+          "label_en": "Retrieval and classification",
+          "label_zh": "检索与分类",
+          "score": 0.748,
+          "metric": "area_skill",
+          "samples": 6
+        },
+        {
+          "id": "tools",
+          "label_en": "Tools and automation",
+          "label_zh": "工具与自动化",
+          "score": 0.8786,
+          "metric": "area_skill",
+          "samples": 5
+        },
+        {
+          "id": "arts",
+          "label_en": "Arts and human preference",
+          "label_zh": "艺术与人类偏好",
+          "score": 0.662,
+          "metric": "area_skill",
+          "samples": 6
+        }
+      ],
+      "samples": 110201,
+      "errors": 0,
+      "evaluated_at": "2026-10-16T19:00:10Z",
+      "protocol": "official_public_lookup/no_self_inference",
+      "notes": [
+        "Official Public score from engine startlux-decision-v1.1-27b-instant; Full score 69.12 is not used.",
+        "Source: [private reference redacted]",
+        "Official adapter/channel/calibration may differ from this local run."
+      ]
+    },
+    {
+      "model_id": "access-StartLux-Decision-v1.1-27B-AutoThink",
+      "model_name": "StartLux-Decision v1.1 27B AutoThink",
+      "score": null,
+      "status": "pending",
+      "metrics": {},
+      "axes": [],
+      "samples": 0,
+      "errors": 0,
+      "evaluated_at": null,
+      "protocol": "official_public_lookup/no_self_inference",
+      "notes": [
+        "No matching model/version/protocol found in fetched official Public roster; null means no result, not zero.",
+        "Decision Index own inference is disabled. No future evaluation is scheduled by pending status."
+      ]
+    },
+    {
+      "model_id": "access-strands-decider-26B-A4B-gemma4-v1-2610",
+      "model_name": "Strands Decider 26B-A4B (Gemma 4)",
+      "score": null,
+      "status": "pending",
+      "metrics": {},
+      "axes": [],
+      "samples": 0,
+      "errors": 0,
+      "evaluated_at": null,
+      "protocol": "official_public_lookup/no_self_inference",
+      "notes": [
+        "No matching model/version/protocol found in fetched official Public roster; null means no result, not zero.",
+        "Decision Index own inference is disabled. No future evaluation is scheduled by pending status."
+      ]
+    },
+    {
+      "model_id": "access-Clef-27B-original",
+      "model_name": "Cloudflare Clef (27B)",
+      "score": 61.71,
+      "status": "complete",
+      "metrics": {},
+      "axes": [
+        {
+          "id": "knowledge",
+          "label_en": "Knowledge and reasoning",
+          "label_zh": "知识与推理",
+          "score": 0.528,
+          "metric": "area_skill",
+          "samples": 11
+        },
+        {
+          "id": "language",
+          "label_en": "Language comprehension",
+          "label_zh": "语言理解",
+          "score": 0.6127,
+          "metric": "area_skill",
+          "samples": 9
+        },
+        {
+          "id": "retrieval",
+          "label_en": "Retrieval and classification",
+          "label_zh": "检索与分类",
+          "score": 0.6284,
+          "metric": "area_skill",
+          "samples": 6
+        },
+        {
+          "id": "tools",
+          "label_en": "Tools and automation",
+          "label_zh": "工具与自动化",
+          "score": 0.8071,
+          "metric": "area_skill",
+          "samples": 5
+        },
+        {
+          "id": "arts",
+          "label_en": "Arts and human preference",
+          "label_zh": "艺术与人类偏好",
+          "score": 0.4888,
+          "metric": "area_skill",
+          "samples": 6
+        }
+      ],
+      "samples": 110201,
+      "errors": 0,
+      "evaluated_at": "2026-10-16T19:00:10Z",
+      "protocol": "official_public_lookup/no_self_inference",
+      "notes": [
+        "Official Public score from engine clef; Full score 53.08 is not used.",
+        "Source: [private reference redacted]",
+        "Official adapter/channel/calibration may differ from this local run."
+      ]
+    },
+    {
+      "model_id": "access-microsoft--microsoft-decision-1",
+      "model_name": "Microsoft Decision-1",
+      "logo": "./playground/logos/microsoft.ico",
+      "score": null,
+      "status": "pending",
+      "metrics": {},
+      "axes": [],
+      "samples": 0,
+      "errors": 0,
+      "evaluated_at": null,
+      "protocol": "official_public_lookup/no_self_inference",
+      "notes": [
+        "No matching model/version/protocol found in fetched official Public roster; null means no result, not zero.",
+        "Decision Index own inference is disabled. No future evaluation is scheduled by pending status."
+      ]
+    },
+    {
+      "model_id": "access-inception--mercury-decide",
+      "model_name": "Mercury Decide (Inception)",
+      "logo": "./playground/logos/inception.png",
+      "score": null,
+      "status": "pending",
+      "metrics": {},
+      "axes": [],
+      "samples": 0,
+      "errors": 0,
+      "evaluated_at": null,
+      "protocol": "official_public_lookup/no_self_inference",
+      "notes": [
+        "No matching model/version/protocol found in fetched official Public roster; null means no result, not zero.",
+        "Decision Index own inference is disabled. No future evaluation is scheduled by pending status."
+      ]
+    },
+    {
+      "model_id": "access-openai--gpt-6-luna-decisions",
+      "model_name": "GPT-6 Luna Decisions",
+      "score": null,
+      "status": "pending",
+      "metrics": {},
+      "axes": [],
+      "samples": 0,
+      "errors": 0,
+      "evaluated_at": null,
+      "protocol": "official_public_lookup/no_self_inference",
+      "notes": [
+        "No matching model/version/protocol found in fetched official Public roster; null means no result, not zero.",
+        "Decision Index own inference is disabled. No future evaluation is scheduled by pending status."
+      ]
+    },
+    {
+      "model_id": "access-typesafe--jev-1.14",
+      "model_name": "Jev 1.14",
+      "logo": "./playground/logos/typesafe.png",
+      "score": 60.7,
+      "status": "complete",
+      "metrics": {},
+      "axes": [
+        {
+          "id": "knowledge",
+          "label_en": "Knowledge and reasoning",
+          "label_zh": "知识与推理",
+          "score": 0.5712,
+          "metric": "area_skill",
+          "samples": 11
+        },
+        {
+          "id": "language",
+          "label_en": "Language comprehension",
+          "label_zh": "语言理解",
+          "score": 0.6118,
+          "metric": "area_skill",
+          "samples": 9
+        },
+        {
+          "id": "retrieval",
+          "label_en": "Retrieval and classification",
+          "label_zh": "检索与分类",
+          "score": 0.6353,
+          "metric": "area_skill",
+          "samples": 6
+        },
+        {
+          "id": "tools",
+          "label_en": "Tools and automation",
+          "label_zh": "工具与自动化",
+          "score": 0.7378,
+          "metric": "area_skill",
+          "samples": 5
+        },
+        {
+          "id": "arts",
+          "label_en": "Arts and human preference",
+          "label_zh": "艺术与人类偏好",
+          "score": 0.3916,
+          "metric": "area_skill",
+          "samples": 6
+        }
+      ],
+      "samples": 110201,
+      "errors": 0,
+      "evaluated_at": "2026-10-16T19:00:10Z",
+      "protocol": "official_public_lookup/no_self_inference",
+      "notes": [
+        "Official Public score from engine jev; Full score 61.53 is not used.",
+        "Source: [private reference redacted]",
+        "Official adapter/channel/calibration may differ from this local run."
+      ]
+    },
+    {
+      "model_id": "access-qwen3.8-27b-chat-Direct-v1",
+      "model_name": "Qwen3.8-27B (Chat API)",
+      "score": null,
+      "status": "pending",
+      "metrics": {},
+      "axes": [],
+      "samples": 0,
+      "errors": 0,
+      "evaluated_at": null,
+      "protocol": "official_public_lookup/no_self_inference",
+      "notes": [
+        "No matching model/version/protocol found in fetched official Public roster; null means no result, not zero.",
+        "Decision Index own inference is disabled. No future evaluation is scheduled by pending status."
+      ]
+    },
+    {
+      "model_id": "access-vllm-sr--d3",
+      "model_name": "vLLM-SR d3 (27B)",
+      "score": 65.45,
+      "status": "complete",
+      "metrics": {},
+      "axes": [
+        {
+          "id": "knowledge",
+          "label_en": "Knowledge and reasoning",
+          "label_zh": "知识与推理",
+          "score": 0.5526,
+          "metric": "area_skill",
+          "samples": 11
+        },
+        {
+          "id": "language",
+          "label_en": "Language comprehension",
+          "label_zh": "语言理解",
+          "score": 0.6804,
+          "metric": "area_skill",
+          "samples": 9
+        },
+        {
+          "id": "retrieval",
+          "label_en": "Retrieval and classification",
+          "label_zh": "检索与分类",
+          "score": 0.6686,
+          "metric": "area_skill",
+          "samples": 6
+        },
+        {
+          "id": "tools",
+          "label_en": "Tools and automation",
+          "label_zh": "工具与自动化",
+          "score": 0.8257,
+          "metric": "area_skill",
+          "samples": 5
+        },
+        {
+          "id": "arts",
+          "label_en": "Arts and human preference",
+          "label_zh": "艺术与人类偏好",
+          "score": 0.5102,
+          "metric": "area_skill",
+          "samples": 6
+        }
+      ],
+      "samples": 110201,
+      "errors": 0,
+      "evaluated_at": "2026-10-16T19:00:10Z",
+      "protocol": "official_public_lookup/no_self_inference",
+      "notes": [
+        "Official Public score from engine vllm-sr-d3-v310; Full score 66.26 is not used.",
+        "Source: [private reference redacted]",
+        "Official adapter/channel/calibration may differ from this local run.",
+        "Official d3 v3.1.0 differs in runtime code from local main cf15549a; same weight hashes verified, no claim of exact runtime reproduction."
+      ]
+    },
+    {
+      "model_id": "access-perplexity-ai--pplx-decider-v1.2",
+      "model_name": "Perplexity Decider v1.2 (27B)",
+      "score": 67.74,
+      "status": "complete",
+      "metrics": {},
+      "axes": [
+        {
+          "id": "knowledge",
+          "label_en": "Knowledge and reasoning",
+          "label_zh": "知识与推理",
+          "score": 0.5529,
+          "metric": "area_skill",
+          "samples": 11
+        },
+        {
+          "id": "language",
+          "label_en": "Language comprehension",
+          "label_zh": "语言理解",
+          "score": 0.7188,
+          "metric": "area_skill",
+          "samples": 9
+        },
+        {
+          "id": "retrieval",
+          "label_en": "Retrieval and classification",
+          "label_zh": "检索与分类",
+          "score": 0.6808,
+          "metric": "area_skill",
+          "samples": 6
+        },
+        {
+          "id": "tools",
+          "label_en": "Tools and automation",
+          "label_zh": "工具与自动化",
+          "score": 0.8544,
+          "metric": "area_skill",
+          "samples": 5
+        },
+        {
+          "id": "arts",
+          "label_en": "Arts and human preference",
+          "label_zh": "艺术与人类偏好",
+          "score": 0.5624,
+          "metric": "area_skill",
+          "samples": 6
+        }
+      ],
+      "samples": 110201,
+      "errors": 0,
+      "evaluated_at": "2026-10-16T19:00:10Z",
+      "protocol": "official_public_lookup/no_self_inference",
+      "notes": [
+        "Official Public score from engine pplx-decider-v1.2; Full score 65.55 is not used.",
+        "Source: [private reference redacted]",
+        "Official adapter/channel/calibration may differ from this local run."
+      ]
+    }
+  ]
+}
