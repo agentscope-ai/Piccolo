@@ -10,31 +10,28 @@ Blink connects **observation, action, and feedback** in an inspectable decision 
 
 ## See decisions unfold
 
-Nine historical replays in one gallery: four completed-game examples from JevArena, a complete Mario run, and archived Jump Jump, Gomoku, Hex, and Dots & Boxes. The interactive players support pausing, seeking, and inspecting recorded steps.
+Eight historical replays in one gallery. The interactive players support pausing, seeking, and inspecting recorded steps.
 
 <table>
   <tr>
-    <td colspan="2" align="center"><strong>Mario</strong><br><a href="arena/web/showcase/traces/mario.json"><img src="assets/showcase/mario.gif" width="100%" alt="Mario"></a></td>
+    <td width="50%" align="center"><a href="arena/web/showcase/traces/mario.json"><img src="assets/showcase/mario.gif" width="100%" alt="Mario"></a></td>
+    <td width="50%" align="center"><a href="arena/web/showcase/traces/snake.json"><img src="assets/showcase/snake.gif" width="100%" alt="Snake"></a></td>
   </tr>
   <tr>
-    <td width="50%" align="center"><strong>2048 · target 128</strong><br><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/merge-2048.gif" width="100%" alt="2048 · target 128"></a></td>
-    <td width="50%" align="center"><strong>Sokoban</strong><br><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/sokoban.gif" width="100%" alt="Sokoban"></a></td>
+    <td width="50%" align="center"><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/merge-2048.gif" width="100%" alt="2048 · target 128"></a></td>
+    <td width="50%" align="center"><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/sokoban.gif" width="100%" alt="Sokoban"></a></td>
   </tr>
   <tr>
-    <td width="50%" align="center"><strong>Othello</strong><br><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/othello.gif" width="100%" alt="Othello"></a></td>
-    <td width="50%" align="center"><strong>Tetris</strong><br><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/tetris.gif" width="100%" alt="Tetris"></a></td>
+    <td width="50%" align="center"><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/tetris.gif" width="100%" alt="Tetris"></a></td>
+    <td width="50%" align="center"><a href="arena/web/showcase/traces/jump-jump.json"><img src="assets/showcase/jump-jump.gif" width="100%" alt="Jump Jump"></a></td>
   </tr>
   <tr>
-    <td width="50%" align="center"><strong>Jump Jump</strong><br><a href="arena/web/showcase/traces/jump-jump.json"><img src="assets/showcase/jump-jump.gif" width="100%" alt="Jump Jump"></a></td>
-    <td width="50%" align="center"><strong>Gomoku</strong><br><a href="arena/web/showcase/traces/gomoku.json"><img src="assets/showcase/gomoku.gif" width="100%" alt="Gomoku"></a></td>
-  </tr>
-  <tr>
-    <td width="50%" align="center"><strong>Hex</strong><br><a href="arena/web/showcase/traces/hex.json"><img src="assets/showcase/hex.gif" width="100%" alt="Hex"></a></td>
-    <td width="50%" align="center"><strong>Dots &amp; Boxes</strong><br><a href="arena/web/showcase/traces/dots-and-boxes.json"><img src="assets/showcase/dots-and-boxes.gif" width="100%" alt="Dots &amp; Boxes"></a></td>
+    <td width="50%" align="center"><a href="arena/web/showcase/traces/hex.json"><img src="assets/showcase/hex.gif" width="100%" alt="Hex"></a></td>
+    <td width="50%" align="center"><a href="arena/web/showcase/traces/dots-and-boxes.json"><img src="assets/showcase/dots-and-boxes.gif" width="100%" alt="Dots &amp; Boxes"></a></td>
   </tr>
 </table>
 
-These are **historical examples**, not an aggregate success rate or a comparison between models. The four original completed replays contain 116 transitions and 89 model calls; the additional examples preserve recorded actions, states, and outcomes from existing archives. GIFs sample saved states at a fixed pace, so their speed is not inference latency. See [provenance and reproduction](docs/SHOWCASE.md) for original identities and outcomes. [Earlier trajectories](arena/web/showcase/manifest.json), including a failed Tetris run, remain available.
+These are **historical examples**, not an aggregate success rate or a comparison between models. The examples preserve recorded actions, states, and outcomes from existing archives. GIFs sample saved states at a fixed pace, so their speed is not inference latency. See [provenance and reproduction](docs/SHOWCASE.md) for original identities and outcomes. [Earlier trajectories](arena/web/showcase/manifest.json), including a failed Tetris run, remain available.
 
 ## Try it
 

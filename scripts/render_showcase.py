@@ -22,16 +22,22 @@ class QuietHandler(http.server.SimpleHTTPRequestHandler):
         pass
 
 
-def render(root: Path) -> dict:
+def render(root: Path, game: str | None = None) -> dict:
     manifest = json.loads((root / 'arena/web/showcase/manifest.json').read_text())
     output = root / 'assets/showcase'
     output.mkdir(parents=True, exist_ok=True)
+    selected = [item for item in manifest['items'] if game is None or item['id'] == game]
+    if not selected:
+        raise ValueError('Unknown showcase: ' + str(game))
     handler = functools.partial(QuietHandler, directory=str(root / 'arena/web'))
     server = http.server.ThreadingHTTPServer(('127.0.0.1', 0), handler)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
     result = {'schema_version': 'blink.showcase-render.v1',
               'presentation': 'Game title and recorded states; no generic showcase banner or badge.', 'items': []}
+    if game and (output / 'render-manifest.json').exists():
+        previous = json.loads((output / 'render-manifest.json').read_text())
+        result['items'] = [item for item in previous['items'] if item['id'] != game]
     try:
         with sync_playwright() as playwright, tempfile.TemporaryDirectory(prefix='blink-showcase-') as work:
             browser = playwright.chromium.launch(headless=True, args=['--no-sandbox'],
@@ -39,7 +45,7 @@ def render(root: Path) -> dict:
             page = browser.new_page(viewport={'width': 940, 'height': 940}, device_scale_factor=1)
             errors = []
             page.on('pageerror', lambda error: errors.append(str(error)))
-            for item in manifest['items']:
+            for item in selected:
                 slug = item['id']
                 page.goto(f'http://127.0.0.1:{server.server_port}/showcase.html?game={slug}')
                 page.wait_for_function("document.documentElement.dataset.ready === 'true'")
@@ -85,4 +91,6 @@ def render(root: Path) -> dict:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--root', type=Path, default=ROOT)
-    render(parser.parse_args().root)
+    parser.add_argument('--game', help='Render only this game and retain other frame manifests')
+    args = parser.parse_args()
+    render(args.root, args.game)

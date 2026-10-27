@@ -210,6 +210,39 @@
       "poster_index": 7,
       "frame_duration_ms": 500,
       "gif": "assets/showcase/mario.gif"
+    },
+    {
+      "id": "snake",
+      "saved_states": 43,
+      "captured_indices": [
+        0,
+        2,
+        4,
+        5,
+        7,
+        9,
+        11,
+        13,
+        15,
+        16,
+        18,
+        20,
+        22,
+        24,
+        26,
+        27,
+        29,
+        31,
+        33,
+        35,
+        37,
+        38,
+        40,
+        42
+      ],
+      "poster_index": 22,
+      "frame_duration_ms": 500,
+      "gif": "assets/showcase/snake.gif"
     }
   ]
 }

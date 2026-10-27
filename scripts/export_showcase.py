@@ -71,6 +71,18 @@ def export(root: Path) -> dict:
         'recording': mario['recording'], 'missing_frames': False,
         'steps': len(mario['steps']), 'result': mario['result'],
     })
+    snake = json.loads((target / 'traces/snake.json').read_text())
+    if snake['missing_frames'] or not snake['verification']['verified']:
+        raise ValueError('Snake requires a complete verified public replay')
+    items.append({
+        'id': 'snake', 'title': 'Snake', 'kind': snake['kind'], 'trace': 'traces/snake.json',
+        'source': 'arena/web/showcase/traces/snake.json',
+        'source_run_id': snake['source']['run_id'], 'source_collection': 'public_episode',
+        'source_key': snake['id'], 'source_episode_sha256': snake['source']['episode_sha256'],
+        'seed': snake['seed'], 'participants': snake['participants'],
+        'recording': snake['recording'], 'missing_frames': False,
+        'steps': len(snake['steps']), 'result': snake['result'],
+    })
     (target / 'manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n')
     return {'trajectories': len(items), 'steps': sum(item['steps'] for item in items)}
 

@@ -1,6 +1,6 @@
 # Showcase 来源与复现
 
-README 与 Blog 将九个游戏集中放在同一组动图中：马里奥横跨一行，其余八项双列排列，包括 2048、推箱子、黑白棋、俄罗斯方块、跳一跳、五子棋、Hex 与点格棋。2048、推箱子、黑白棋、俄罗斯方块来自完整通关展示，跳一跳、五子棋、Hex、点格棋来自归档展示；马里奥来自另行核验的完整 episode。均为历史实验，不代表待发布 Blink 模型的成绩。
+README 与 Blog 集中展示八个游戏，按四行两列排列：马里奥、贪吃蛇、2048、推箱子、俄罗斯方块、跳一跳、Hex 与点格棋。动图外不另加游戏名称或图例，画面内的名称保留。黑白棋与五子棋已从正文合集移除，历史归档和复现资料继续保留。以下均为历史实验，不代表待发布 Blink 模型的成绩。
 
 导出的动图去掉 `COMPLETED GAME`、序号箭头和游戏切换栏，保留当前游戏、状态与动作。网页播放器继续保留交互导航。Blog 不再逐个介绍游戏，来源细节统一收录在本文。
 
@@ -87,10 +87,24 @@ python scripts/export_mario_showcase.py --check
 
 更新该样例时可运行 `python scripts/export_mario_showcase.py --episode /path/to/private-episode.json --source-run public-run-id`，再执行下方通用导出与渲染命令。原始输入留在仓库外；公开轨迹自带离线校验所需的事件，无需访问原始输入或调用模型。
 
+## 贪吃蛇回放（2026-10-27 替换五子棋）
+
+[贪吃蛇公开轨迹](../arena/web/showcase/traces/snake.json) 来自 `oneshot-sft-v9a17-20261022` 的 `snake_navigation-43-oneshot-sft-v9a17-presence-positive-retention`。保留 SFT v9-a17 身份、seed 43 和原实时规则：41 次模型调用与执行事件、39 个执行动作，吃到 3 个食物后碰撞结束，未达成 6 个食物的通关目标。展示保留失败终局，不把它标为通关。
+
+`scripts/export_snake_showcase.py` 使用共享引擎检查全部事件的公开输入、等待时间、动作到达和后继状态，再验证末态的公开投影与原始终局相等。原始文件摘要与校验事件写入公开轨迹；服务配置、私有路径与原始模型响应不导出。
+
+```bash
+python scripts/export_snake_showcase.py --check
+python scripts/export_showcase.py
+python scripts/render_showcase.py --game snake
+```
+
+更新来源时使用 `--episode /path/to/private-episode.json --source-run public-run-id`；原始输入不提交。`--game` 仅重新捕获指定游戏并保留其他素材的采样清单。
+
 ## 数据和画面
 
-- [轨迹清单](../arena/web/showcase/manifest.json) 记录源 run、源字段、参与者、录制类型、结果；马里奥使用条目内单独标明的来源与原始文件摘要。
-- `arena/web/showcase/traces/` 包含七条从旧归档逐项复制的完整 stream（检查 JSON 往返相等），以及马里奥的公开状态与校验事件。八条轨迹共 205 次记录转换。
+- [轨迹清单](../arena/web/showcase/manifest.json) 记录源 run、源字段、参与者、录制类型、结果；马里奥与贪吃蛇使用条目内单独标明的来源与原始文件摘要。
+- `arena/web/showcase/traces/` 包含七条从旧归档逐项复制的完整 stream（检查 JSON 往返相等），以及马里奥、贪吃蛇的公开状态与校验事件。九条轨迹共 246 次记录转换；正文只选用其中部分素材。
 - [渲染清单](../assets/showcase/render-manifest.json) 记录每张动图的原状态位置、封面位置和帧时长。
 - 动图最多均匀选 24 帧，包含初态和终态，每帧 500 ms；交互播放器可以查看全部已保存决策状态。
 - 画面复用 `arena/web/playground/renderers.js` 的只读回放入口。无模型调用、无自动选动作、无新游戏状态推进。

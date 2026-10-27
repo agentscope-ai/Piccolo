@@ -10,31 +10,28 @@ Blink 把**观察、动作与反馈**连接成可以检查的决策过程。Blin
 
 ## 看见决策过程
 
-九个历史回放集中展示不同环境中的决策过程：包含 JevArena 的四局完整通关 Showcase、新增马里奥通关回放，以及归档中的跳一跳、五子棋、Hex 与点格棋。交互播放器支持暂停、进度拖动与逐步查看。
+八个历史回放集中展示不同环境中的决策过程。交互播放器支持暂停、进度拖动与逐步查看。
 
 <table>
   <tr>
-    <td colspan="2" align="center"><strong>马里奥</strong><br><a href="arena/web/showcase/traces/mario.json"><img src="assets/showcase/mario.gif" width="100%" alt="马里奥"></a></td>
+    <td width="50%" align="center"><a href="arena/web/showcase/traces/mario.json"><img src="assets/showcase/mario.gif" width="100%" alt="马里奥"></a></td>
+    <td width="50%" align="center"><a href="arena/web/showcase/traces/snake.json"><img src="assets/showcase/snake.gif" width="100%" alt="贪吃蛇"></a></td>
   </tr>
   <tr>
-    <td width="50%" align="center"><strong>2048 · 目标 128</strong><br><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/merge-2048.gif" width="100%" alt="2048 · 目标 128"></a></td>
-    <td width="50%" align="center"><strong>推箱子</strong><br><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/sokoban.gif" width="100%" alt="推箱子"></a></td>
+    <td width="50%" align="center"><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/merge-2048.gif" width="100%" alt="2048 · 目标 128"></a></td>
+    <td width="50%" align="center"><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/sokoban.gif" width="100%" alt="推箱子"></a></td>
   </tr>
   <tr>
-    <td width="50%" align="center"><strong>黑白棋</strong><br><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/othello.gif" width="100%" alt="黑白棋"></a></td>
-    <td width="50%" align="center"><strong>俄罗斯方块</strong><br><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/tetris.gif" width="100%" alt="俄罗斯方块"></a></td>
+    <td width="50%" align="center"><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/tetris.gif" width="100%" alt="俄罗斯方块"></a></td>
+    <td width="50%" align="center"><a href="arena/web/showcase/traces/jump-jump.json"><img src="assets/showcase/jump-jump.gif" width="100%" alt="跳一跳"></a></td>
   </tr>
   <tr>
-    <td width="50%" align="center"><strong>跳一跳</strong><br><a href="arena/web/showcase/traces/jump-jump.json"><img src="assets/showcase/jump-jump.gif" width="100%" alt="跳一跳"></a></td>
-    <td width="50%" align="center"><strong>五子棋</strong><br><a href="arena/web/showcase/traces/gomoku.json"><img src="assets/showcase/gomoku.gif" width="100%" alt="五子棋"></a></td>
-  </tr>
-  <tr>
-    <td width="50%" align="center"><strong>Hex 六角棋</strong><br><a href="arena/web/showcase/traces/hex.json"><img src="assets/showcase/hex.gif" width="100%" alt="Hex 六角棋"></a></td>
-    <td width="50%" align="center"><strong>点格棋</strong><br><a href="arena/web/showcase/traces/dots-and-boxes.json"><img src="assets/showcase/dots-and-boxes.gif" width="100%" alt="点格棋"></a></td>
+    <td width="50%" align="center"><a href="arena/web/showcase/traces/hex.json"><img src="assets/showcase/hex.gif" width="100%" alt="Hex 六角棋"></a></td>
+    <td width="50%" align="center"><a href="arena/web/showcase/traces/dots-and-boxes.json"><img src="assets/showcase/dots-and-boxes.gif" width="100%" alt="点格棋"></a></td>
   </tr>
 </table>
 
-以上为**历史实验样例**，不能据此计算总体成功率或比较模型优劣。原四局完整 Showcase 共有 116 次记录转换、89 次模型调用；新增展示从现有归档逐项导出。动图按固定节奏采样，播放速度不表示推理延迟。来源、原模型身份与终局见 [Showcase 说明](docs/SHOWCASE.md)；[早期轨迹](arena/web/showcase/manifest.json) 仍包含失败样例。
+以上为**历史实验样例**，不能据此计算总体成功率或比较模型优劣。展示保留原始归档中的动作、状态与终局。动图按固定节奏采样，播放速度不表示推理延迟。来源、原模型身份与终局见 [Showcase 说明](docs/SHOWCASE.md)；[早期轨迹](arena/web/showcase/manifest.json) 仍包含失败样例。
 
 ## 快速体验
 

@@ -2,7 +2,7 @@
 
 模型参与游戏、操作工具或完成连续任务，需要根据当前状态选择动作，并接收动作执行后的反馈。当环境继续变化、对手作出回应或一次操作影响后续选择时，决策的合法性、执行时机与最终结果都需要被记录和检查。因此，构建面向交互任务的决策系统，需要同时考虑环境规则、模型接口与结果验证。
 
-Blink 围绕“观察—选择—执行—反馈”组织决策过程。当前仓库提供 Blink Arena，将交互试玩、共享游戏引擎、模型接入、评测与轨迹回放放到同一套环境中，并整理了九个游戏场景的历史回放展示。后续模型、训练与发布材料将沿这一结构补齐。
+Blink 围绕“观察—选择—执行—反馈”组织决策过程。当前仓库提供 Blink Arena，将交互试玩、共享游戏引擎、模型接入、评测与轨迹回放放到同一套环境中，并整理了八个游戏场景的历史回放展示。后续模型、训练与发布材料将沿这一结构补齐。
 
 **TODO：补充正式 Blink 模型的核心定位、架构与规模、训练方法，以及有完整实验支持的主要结论。**
 
@@ -41,27 +41,24 @@ Blink 围绕“观察—选择—执行—反馈”组织决策过程。当前�
 
 ## 03 Showcase：多种交互环境中的决策过程
 
-从马里奥的平台跳跃、数字合并与推箱规划，到连续跳跃、落子与回合对抗，九个展示集中呈现不同环境中的动作与反馈。交互播放器可暂停、拖动进度，查看局面如何随决策改变。
+从马里奥的平台跳跃、数字合并与推箱规划，到连续跳跃、落子与回合对抗，八个展示集中呈现不同环境中的动作与反馈。交互播放器可暂停、拖动进度，查看局面如何随决策改变。
 
 <table>
   <tr>
-    <td colspan="2" align="center"><strong>马里奥</strong><br><a href="../arena/web/showcase/traces/mario.json"><img src="../assets/showcase/mario.gif" width="100%" alt="马里奥"></a></td>
+    <td width="50%" align="center"><a href="../arena/web/showcase/traces/mario.json"><img src="../assets/showcase/mario.gif" width="100%" alt="马里奥"></a></td>
+    <td width="50%" align="center"><a href="../arena/web/showcase/traces/snake.json"><img src="../assets/showcase/snake.gif" width="100%" alt="贪吃蛇"></a></td>
   </tr>
   <tr>
-    <td width="50%" align="center"><strong>2048 · 目标 128</strong><br><a href="../arena/web/playground/data/home-decision.json"><img src="../assets/showcase/completed/merge-2048.gif" width="100%" alt="2048 · 目标 128"></a></td>
-    <td width="50%" align="center"><strong>推箱子</strong><br><a href="../arena/web/playground/data/home-decision.json"><img src="../assets/showcase/completed/sokoban.gif" width="100%" alt="推箱子"></a></td>
+    <td width="50%" align="center"><a href="../arena/web/playground/data/home-decision.json"><img src="../assets/showcase/completed/merge-2048.gif" width="100%" alt="2048 · 目标 128"></a></td>
+    <td width="50%" align="center"><a href="../arena/web/playground/data/home-decision.json"><img src="../assets/showcase/completed/sokoban.gif" width="100%" alt="推箱子"></a></td>
   </tr>
   <tr>
-    <td width="50%" align="center"><strong>黑白棋</strong><br><a href="../arena/web/playground/data/home-decision.json"><img src="../assets/showcase/completed/othello.gif" width="100%" alt="黑白棋"></a></td>
-    <td width="50%" align="center"><strong>俄罗斯方块</strong><br><a href="../arena/web/playground/data/home-decision.json"><img src="../assets/showcase/completed/tetris.gif" width="100%" alt="俄罗斯方块"></a></td>
+    <td width="50%" align="center"><a href="../arena/web/playground/data/home-decision.json"><img src="../assets/showcase/completed/tetris.gif" width="100%" alt="俄罗斯方块"></a></td>
+    <td width="50%" align="center"><a href="../arena/web/showcase/traces/jump-jump.json"><img src="../assets/showcase/jump-jump.gif" width="100%" alt="跳一跳"></a></td>
   </tr>
   <tr>
-    <td width="50%" align="center"><strong>跳一跳</strong><br><a href="../arena/web/showcase/traces/jump-jump.json"><img src="../assets/showcase/jump-jump.gif" width="100%" alt="跳一跳"></a></td>
-    <td width="50%" align="center"><strong>五子棋</strong><br><a href="../arena/web/showcase/traces/gomoku.json"><img src="../assets/showcase/gomoku.gif" width="100%" alt="五子棋"></a></td>
-  </tr>
-  <tr>
-    <td width="50%" align="center"><strong>Hex 六角棋</strong><br><a href="../arena/web/showcase/traces/hex.json"><img src="../assets/showcase/hex.gif" width="100%" alt="Hex 六角棋"></a></td>
-    <td width="50%" align="center"><strong>点格棋</strong><br><a href="../arena/web/showcase/traces/dots-and-boxes.json"><img src="../assets/showcase/dots-and-boxes.gif" width="100%" alt="点格棋"></a></td>
+    <td width="50%" align="center"><a href="../arena/web/showcase/traces/hex.json"><img src="../assets/showcase/hex.gif" width="100%" alt="Hex 六角棋"></a></td>
+    <td width="50%" align="center"><a href="../arena/web/showcase/traces/dots-and-boxes.json"><img src="../assets/showcase/dots-and-boxes.gif" width="100%" alt="点格棋"></a></td>
   </tr>
 </table>
 
@@ -115,7 +112,7 @@ Blink 围绕“观察—选择—执行—反馈”组织决策过程。当前�
 
 - **公众号：**沿用正文标题、开头两段和编号小节。配图依次为项目总览、决策流程、Showcase 合集、实验结果、体验入口。实验图在数据齐备后制作。
 - **小红书标题：**《让 AI 玩一局，看懂它怎么做决定》。建议 5 张图：封面、决策流程、Showcase 合集上、Showcase 合集下、体验入口。合集沿用正文分组，保留“历史精选样例”和任务目标。
-- **小红书配文底稿：**AI 做出一次选择，环境会怎样变化？Blink 把观察、动作与反馈放进可回放的决策过程。九个游戏展示从合并、推箱、跳跃到回合对抗的决策过程；你可以暂停、拖动，查看当时有哪些选择，以及动作之后发生了什么。这些是精选历史样例，Blink 模型仍在准备中。体验入口：Decision；环境源码与复现说明：Blink 仓库。
-- **现有素材：**正文使用的九张 GIF 及预览图分布在 `assets/showcase/completed/` 与 `assets/showcase/`，各自附逐帧来源清单。独立播放器的本机启动方式见 [中文 README](../README_zh.md#快速体验)。
+- **小红书配文底稿：**AI 做出一次选择，环境会怎样变化？Blink 把观察、动作与反馈放进可回放的决策过程。八个游戏展示从合并、推箱、跳跃到回合对抗的决策过程；你可以暂停、拖动，查看当时有哪些选择，以及动作之后发生了什么。这些是精选历史样例，Blink 模型仍在准备中。体验入口：Decision；环境源码与复现说明：Blink 仓库。
+- **现有素材：**正文使用的八张 GIF 及预览图分布在 `assets/showcase/completed/` 与 `assets/showcase/`，各自附逐帧来源清单。独立播放器的本机启动方式见 [中文 README](../README_zh.md#快速体验)。
 
 **TODO：制作公众号横版封面、小红书竖版图卡、总览图与官网二维码；复核平台版式、团队信息、对外可见链接及所有能力表述。**
