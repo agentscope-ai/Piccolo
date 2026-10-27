@@ -10,15 +10,31 @@ Blink 把**观察、动作与反馈**连接成可以检查的决策过程。Blin
 
 ## 看见决策过程
 
-从 JevArena 的新版 Showcase 引入四局完整历史对局。交互播放器可以查看观察、候选动作、原记录选择与执行反馈，支持拖动进度、倍速、逐步播放和直接查看结局。
+九个历史回放集中展示不同环境中的决策过程：包含 JevArena 的四局完整通关 Showcase、新增马里奥通关回放，以及归档中的跳一跳、五子棋、Hex 与点格棋。交互播放器支持暂停、进度拖动与逐步查看。
 
-| 2048 · 达到任务目标 128 | 推箱子 · 两个箱子全部归位 |
-| --- | --- |
-| [![2048 完整回放](assets/showcase/completed/merge-2048.gif)](arena/web/playground/data/home-decision.json) | [![推箱子完整回放](assets/showcase/completed/sokoban.gif)](arena/web/playground/data/home-decision.json) |
-| **黑白棋 · 完成 6×6 对局** | **俄罗斯方块 · 消除四行** |
-| [![黑白棋完整回放](assets/showcase/completed/othello.gif)](arena/web/playground/data/home-decision.json) | [![俄罗斯方块完整回放](assets/showcase/completed/tetris.gif)](arena/web/playground/data/home-decision.json) |
+<table>
+  <tr>
+    <td colspan="2" align="center"><strong>马里奥</strong><br><a href="arena/web/showcase/traces/mario.json"><img src="assets/showcase/mario.gif" width="100%" alt="马里奥"></a></td>
+  </tr>
+  <tr>
+    <td width="50%" align="center"><strong>2048 · 目标 128</strong><br><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/merge-2048.gif" width="100%" alt="2048 · 目标 128"></a></td>
+    <td width="50%" align="center"><strong>推箱子</strong><br><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/sokoban.gif" width="100%" alt="推箱子"></a></td>
+  </tr>
+  <tr>
+    <td width="50%" align="center"><strong>黑白棋</strong><br><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/othello.gif" width="100%" alt="黑白棋"></a></td>
+    <td width="50%" align="center"><strong>俄罗斯方块</strong><br><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/tetris.gif" width="100%" alt="俄罗斯方块"></a></td>
+  </tr>
+  <tr>
+    <td width="50%" align="center"><strong>跳一跳</strong><br><a href="arena/web/showcase/traces/jump-jump.json"><img src="assets/showcase/jump-jump.gif" width="100%" alt="跳一跳"></a></td>
+    <td width="50%" align="center"><strong>五子棋</strong><br><a href="arena/web/showcase/traces/gomoku.json"><img src="assets/showcase/gomoku.gif" width="100%" alt="五子棋"></a></td>
+  </tr>
+  <tr>
+    <td width="50%" align="center"><strong>Hex 六角棋</strong><br><a href="arena/web/showcase/traces/hex.json"><img src="assets/showcase/hex.gif" width="100%" alt="Hex 六角棋"></a></td>
+    <td width="50%" align="center"><strong>点格棋</strong><br><a href="arena/web/showcase/traces/dots-and-boxes.json"><img src="assets/showcase/dots-and-boxes.gif" width="100%" alt="点格棋"></a></td>
+  </tr>
+</table>
 
-这是**精选通关样例**，不能据此计算总体成功率或比较模型优劣。四局共有 116 次记录转换、89 次模型调用；对手落子和自动执行单独标记。动图按固定节奏采样已保存状态，播放速度不表示推理延迟。交互播放器保留全部记录步骤及俄罗斯方块执行帧。每局 checkpoint、种子、终局和采样方法见 [来源与复现](docs/SHOWCASE.md)。[早期轨迹](arena/web/showcase/manifest.json) 也继续保留，包括一次俄罗斯方块失败记录。
+以上为**历史实验样例**，不能据此计算总体成功率或比较模型优劣。原四局完整 Showcase 共有 116 次记录转换、89 次模型调用；新增展示从现有归档逐项导出。动图按固定节奏采样，播放速度不表示推理延迟。来源、原模型身份与终局见 [Showcase 说明](docs/SHOWCASE.md)；[早期轨迹](arena/web/showcase/manifest.json) 仍包含失败样例。
 
 ## 快速体验
 
@@ -30,7 +46,7 @@ Blink 把**观察、动作与反馈**连接成可以检查的决策过程。Blin
 python3 -m http.server 8080 --bind 127.0.0.1 --directory arena/web
 ```
 
-打开 **http://127.0.0.1:8080/completed-showcase.html**。支持中英文。启动完整 Arena 前，先停止这个静态服务器，避免占用同一端口。
+打开 **http://127.0.0.1:8080/completed-showcase.html** 查看四局完整通关回放（支持中英文）；**http://127.0.0.1:8080/showcase.html** 提供其余归档展示。启动完整 Arena 前，先停止这个静态服务器，避免占用同一端口。
 
 ### 运行 Blink Arena
 
@@ -90,7 +106,7 @@ python3.12 scripts/export_home_decision.py --check
 python3.12 -m unittest tests.test_home_decision -v
 ```
 
-安装 Playwright、Chromium 和 `ffmpeg` 后，从仓库根目录运行 `python scripts/render_completed_showcase.py` 重新生成新动图。旧版素材的复现方式见 [Showcase 文档](docs/SHOWCASE.md)。
+安装 Playwright、Chromium 和 `ffmpeg` 后，从仓库根目录运行 `python scripts/render_completed_showcase.py` 重新生成四局完整 Showcase 动图；运行 `python scripts/export_showcase.py` 与 `python scripts/render_showcase.py` 重建其余归档展示。旧版素材的复现方式见 [Showcase 文档](docs/SHOWCASE.md)。
 
 反馈问题时请附上游戏、种子、复现步骤及可分享的脱敏回放；修改展示时保留原参与者 ID 和终局结果。测试范围与已知问题见 [验证记录](docs/VERIFICATION.md)，后续发布材料见 [仓库说明](docs/REPOSITORY.md)。
 

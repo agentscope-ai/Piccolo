@@ -1,10 +1,8 @@
 # Blink：如何让模型在交互环境中做出可执行、可验证的决策？
 
-![Blink 完整决策回放：观察局面、选择动作、检查结果](../assets/showcase/completed/merge-2048.gif)
-
 模型参与游戏、操作工具或完成连续任务，需要根据当前状态选择动作，并接收动作执行后的反馈。当环境继续变化、对手作出回应或一次操作影响后续选择时，决策的合法性、执行时机与最终结果都需要被记录和检查。因此，构建面向交互任务的决策系统，需要同时考虑环境规则、模型接口与结果验证。
 
-Blink 围绕“观察—选择—执行—反馈”组织决策过程。当前仓库提供 Blink Arena，将交互试玩、共享游戏引擎、模型接入、评测与轨迹回放放到同一套环境中，并加入四局经过引擎校验的完整历史回放。后续模型、训练与发布材料将沿这一结构补齐。
+Blink 围绕“观察—选择—执行—反馈”组织决策过程。当前仓库提供 Blink Arena，将交互试玩、共享游戏引擎、模型接入、评测与轨迹回放放到同一套环境中，并整理了九个游戏场景的历史回放展示。后续模型、训练与发布材料将沿这一结构补齐。
 
 **TODO：补充正式 Blink 模型的核心定位、架构与规模、训练方法，以及有完整实验支持的主要结论。**
 
@@ -41,49 +39,35 @@ Blink 围绕“观察—选择—执行—反馈”组织决策过程。当前�
 
 **TODO：补充环境覆盖清单与数量、观测和动作空间的分类、支持的训练调用方式，以及“前端—共享引擎—评测—训练”结构图。现有 Rollout 接口之外的完整 Blink 训练方案仍需补齐。**
 
-## 03 轨迹展示：四局完整回放
+## 03 Showcase：多种交互环境中的决策过程
 
-Blink 引入了 JevArena 的完整对局 Showcase。播放器按“观察局面、选择动作、查看反馈”呈现记录，支持逐步播放、暂停、拖动进度、倍速与直接查看结局。
+从马里奥的平台跳跃、数字合并与推箱规划，到连续跳跃、落子与回合对抗，九个展示集中呈现不同环境中的动作与反馈。交互播放器可暂停、拖动进度，查看局面如何随决策改变。
 
-四局分别来自四个历史 checkpoint，共包含 116 次记录转换、89 次模型调用。固定对手、唯一合法动作和无需请求模型的执行区间分别标记，模型版本与种子随回放保留。
+<table>
+  <tr>
+    <td colspan="2" align="center"><strong>马里奥</strong><br><a href="../arena/web/showcase/traces/mario.json"><img src="../assets/showcase/mario.gif" width="100%" alt="马里奥"></a></td>
+  </tr>
+  <tr>
+    <td width="50%" align="center"><strong>2048 · 目标 128</strong><br><a href="../arena/web/playground/data/home-decision.json"><img src="../assets/showcase/completed/merge-2048.gif" width="100%" alt="2048 · 目标 128"></a></td>
+    <td width="50%" align="center"><strong>推箱子</strong><br><a href="../arena/web/playground/data/home-decision.json"><img src="../assets/showcase/completed/sokoban.gif" width="100%" alt="推箱子"></a></td>
+  </tr>
+  <tr>
+    <td width="50%" align="center"><strong>黑白棋</strong><br><a href="../arena/web/playground/data/home-decision.json"><img src="../assets/showcase/completed/othello.gif" width="100%" alt="黑白棋"></a></td>
+    <td width="50%" align="center"><strong>俄罗斯方块</strong><br><a href="../arena/web/playground/data/home-decision.json"><img src="../assets/showcase/completed/tetris.gif" width="100%" alt="俄罗斯方块"></a></td>
+  </tr>
+  <tr>
+    <td width="50%" align="center"><strong>跳一跳</strong><br><a href="../arena/web/showcase/traces/jump-jump.json"><img src="../assets/showcase/jump-jump.gif" width="100%" alt="跳一跳"></a></td>
+    <td width="50%" align="center"><strong>五子棋</strong><br><a href="../arena/web/showcase/traces/gomoku.json"><img src="../assets/showcase/gomoku.gif" width="100%" alt="五子棋"></a></td>
+  </tr>
+  <tr>
+    <td width="50%" align="center"><strong>Hex 六角棋</strong><br><a href="../arena/web/showcase/traces/hex.json"><img src="../assets/showcase/hex.gif" width="100%" alt="Hex 六角棋"></a></td>
+    <td width="50%" align="center"><strong>点格棋</strong><br><a href="../arena/web/showcase/traces/dots-and-boxes.json"><img src="../assets/showcase/dots-and-boxes.gif" width="100%" alt="点格棋"></a></td>
+  </tr>
+</table>
 
-### 2048：合并数字与保留空间
+以上均为历史实验样例，保留原模型版本与终局结果；2048 的任务目标为 128。动图按固定节奏采样已保存状态，播放速度不表示推理延迟。这些展示用于观察决策过程，不构成总体成功率或待发布 Blink 模型的成绩。来源、完整轨迹与验证方式见 [Showcase 说明](SHOWCASE.md)。
 
-![2048：从初态到达到任务目标 128](../assets/showcase/completed/merge-2048.gif)
-
-2048 要求在上、下、左、右的可用动作中连续选择，同时考虑当前合并和后续空间。这局历史 SFT 样例使用目标为 **128** 的短局任务，在 65 次模型调用后达成目标，终局积分为 760。
-
-*图注：SFT v9-a17，seed 44；任务目标是 128。动图按固定节奏采样，全部步骤保留在交互播放器中。*
-
-### 推箱子：让当前动作保留后续可行性
-
-![推箱子：将两个箱子放到目标位置](../assets/showcase/completed/sokoban.gif)
-
-推箱子中，一次错误推动可能让后续目标无法完成。这局历史 RL iter31 样例经过 4 次模型决策，将两个箱子全部放到目标位置。一项候选可以包含走到箱子旁并推动的执行过程，因此 4 次决策对应了 14 步环境移动。
-
-*图注：RL R9 / iter_0000031，seed 43；模型选择与环境移动分别计数。*
-
-### 黑白棋：保留对手回应与完整终局
-
-![6×6 黑白棋：包含对手落子与最终胜负](../assets/showcase/completed/othello.gif)
-
-这局 6×6 黑白棋由历史 RL iter19 checkpoint 执白方 O。完整记录包含 22 次转换、9 次模型调用，最终白方获胜。对手落子与唯一合法动作的执行也包含在轨迹中，便于检查双方行动如何共同改变局面。
-
-*图注：RL R6 / iter_0000019，seed 47；固定对手、强制动作与模型调用分别标记。*
-
-### 俄罗斯方块：把决策期间的时间纳入回放
-
-![俄罗斯方块：包含下落、锁定和消行](../assets/showcase/completed/tetris.gif)
-
-俄罗斯方块在等待模型时仍可能继续下落。这局历史 GRPO iter6 样例包含 25 次记录转换、11 次模型调用，最终完成消除 4 行的任务。完整播放器依据原时钟记录重建下落、锁定和消行，呈现动作选择与实际执行之间的关系。
-
-*图注：GRPO N3 / iter_0000006，seed 46；本文 GIF 展示采样状态，交互播放器保留完整执行帧。播放速度不代表推理延迟。*
-
-四局均为**精选历史成功样例**，用于展示决策过程和回放能力。它们不构成总体成功率，也不能据此比较四个版本的能力，或作为待发布 Blink 模型的成绩。早期展示还保留了一次俄罗斯方块堆顶失败记录，支持沿相同路径分析失败过程。
-
-随附离线校验会使用仓库内的引擎重放动作，核对候选、前后状态、自然终局与预算状态；俄罗斯方块还会检查时钟和执行帧。检查无需重新调用模型。轨迹与素材来源见 [Showcase 说明](SHOWCASE.md)。
-
-**TODO：制作可公开分享的演示视频与四局汇总图；根据实际使用情况补充更有代表性的成功和失败案例。**
+**TODO：制作可公开分享的合集视频；根据实际使用情况继续补充更有代表性的交互场景。**
 
 ## 04 模型训练与实验结果
 
@@ -129,9 +113,9 @@ Blink 引入了 JevArena 的完整对局 Showcase。播放器按“观察局面�
 
 所有 **TODO** 需补齐、核实或删除后再发布。模型未发布时保留准备状态；正式实验结论需要与完整结果对应。
 
-- **公众号：**沿用正文标题、开头两段和编号小节。配图依次为展示动图、项目总览、决策流程、四局回放、实验结果、体验入口。实验图在数据齐备后制作。
-- **小红书标题：**《让 AI 玩一局，看懂它怎么做决定》。建议 7 张图：封面、决策流程、2048、推箱子、黑白棋、俄罗斯方块、体验入口。每张游戏图沿用本文图注，并保留“历史精选样例”和任务目标。
-- **小红书配文底稿：**AI 做出一次选择，环境会怎样变化？Blink 把观察、动作与反馈放进可回放的决策过程。四局游戏展示合并到 128、两个箱子归位、一局黑白棋和消除四行；你可以暂停、拖动，查看当时有哪些选择，以及动作之后发生了什么。这些是精选历史样例，Blink 模型仍在准备中。体验入口：Decision；环境源码与复现说明：Blink 仓库。
-- **现有素材：**`assets/showcase/completed/` 包含四张 GIF、四张终局 PNG 与逐帧来源清单。独立播放器的本机启动方式见 [中文 README](../README_zh.md#快速体验)。
+- **公众号：**沿用正文标题、开头两段和编号小节。配图依次为项目总览、决策流程、Showcase 合集、实验结果、体验入口。实验图在数据齐备后制作。
+- **小红书标题：**《让 AI 玩一局，看懂它怎么做决定》。建议 5 张图：封面、决策流程、Showcase 合集上、Showcase 合集下、体验入口。合集沿用正文分组，保留“历史精选样例”和任务目标。
+- **小红书配文底稿：**AI 做出一次选择，环境会怎样变化？Blink 把观察、动作与反馈放进可回放的决策过程。九个游戏展示从合并、推箱、跳跃到回合对抗的决策过程；你可以暂停、拖动，查看当时有哪些选择，以及动作之后发生了什么。这些是精选历史样例，Blink 模型仍在准备中。体验入口：Decision；环境源码与复现说明：Blink 仓库。
+- **现有素材：**正文使用的九张 GIF 及预览图分布在 `assets/showcase/completed/` 与 `assets/showcase/`，各自附逐帧来源清单。独立播放器的本机启动方式见 [中文 README](../README_zh.md#快速体验)。
 
 **TODO：制作公众号横版封面、小红书竖版图卡、总览图与官网二维码；复核平台版式、团队信息、对外可见链接及所有能力表述。**

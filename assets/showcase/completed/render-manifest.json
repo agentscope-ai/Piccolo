@@ -2,6 +2,7 @@
   "schema": "blink.completed-showcase-render.v1",
   "source": "arena/web/playground/data/home-decision.json",
   "source_sha256": "75895e17ec9c1bda1309d9b1a865f3a7c577c176ef16eb0e32363bf957570ad2",
+  "presentation": "Content-only cards: no completed-game banner, pager or game tabs.",
   "sampling": "State 0 is the initial state; state n is after transition n-1. Fixed 500 ms per frame; final state held for 2 seconds.",
   "items": [
     {

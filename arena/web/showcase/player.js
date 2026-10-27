@@ -17,7 +17,7 @@
       if(ticket!==generation)return;
       $('position').textContent=`State ${position+1} / ${frames.length} · seed ${selected.seed}`;
       const action=item.step?.action;
-      $('action').textContent=action==null?(position===0?'Initial state':position===frames.length-1?'Final state':'Recorded state'):'Action · '+(typeof action==='object'?JSON.stringify(action):action);
+      $('action').textContent=action==null?(position===0?'Initial state':position===frames.length-1?'Final state':'Recorded state'):(item.step.action_applied===false?'Discarded action · ':'Action · ')+(typeof action==='object'?JSON.stringify(action):action);
       $('seek').value=String(position);
       document.documentElement.dataset.frame=String(position);
     };

@@ -1,6 +1,8 @@
 # Showcase 来源与复现
 
-当前首页使用下文的完整对局展示；早期四条轨迹继续保留。两组均为历史实验，不代表待发布 Blink 模型的成绩。
+README 与 Blog 将九个游戏集中放在同一组动图中：马里奥横跨一行，其余八项双列排列，包括 2048、推箱子、黑白棋、俄罗斯方块、跳一跳、五子棋、Hex 与点格棋。2048、推箱子、黑白棋、俄罗斯方块来自完整通关展示，跳一跳、五子棋、Hex、点格棋来自归档展示；马里奥来自另行核验的完整 episode。均为历史实验，不代表待发布 Blink 模型的成绩。
+
+导出的动图去掉 `COMPLETED GAME`、序号箭头和游戏切换栏，保留当前游戏、状态与动作。网页播放器继续保留交互导航。Blog 不再逐个介绍游戏，来源细节统一收录在本文。
 
 ## 完整对局展示（2026-10-27）
 
@@ -51,11 +53,11 @@ python arena/tests/browser_home_replays.py --url http://127.0.0.1:8080 --out var
 
 更换回放时，导出器支持仓库外私有选择文件，见 `arena/scripts/export_home_decision.py --help`；原评测数据、私有路径和选择文件不得提交。
 
-## 早期展示（2026-10-26）
+## 归档展示（2026-10-26，2026-10-27 扩展）
 
 展示使用随仓库提供的 `arena/leaderboard/arena-replays.json`，包含 132 场历史对局与 45 条复用 episode。原文件仅压缩 JSON 排版，解析后的内容不变；不重新执行策略、不补跑模型、不重新计分。
 
-选取四类已有完整可视状态的轨迹。原录制类型均为 `reconstructed_verified`：归档状态由原导出器重建并验证；本次直接渲染这些已保存状态，不把它们描述为原始屏幕录像。
+选取七条已有完整可视状态的轨迹。原录制类型均为 `reconstructed_verified`：归档状态由原导出器重建并验证；本次直接渲染这些已保存状态，不把它们描述为原始屏幕录像。
 
 | 展示 | 归档位置 | 记录步骤数 | 原结果 |
 | --- | --- | ---: | --- |
@@ -63,13 +65,32 @@ python arena/tests/browser_home_replays.py --url http://127.0.0.1:8080 --out var
 | 2048 | `episodes["merge_2048-42-oneshot27b-game-rl-native-iter17"]` | 91 | 916 分；该归档任务目标为 128 方块 |
 | 跳一跳 | `episodes["jump_jump-42-oneshot27b-game-rl-native-iter17"]` | 8 | 到达 8 个平台 |
 | 俄罗斯方块 | `episodes["tetris_placement-42-oneshot27b-game-rl-native-iter17"]` | 14 | 堆顶失败、0 消行；步骤含环境帧，非 14 次模型判断 |
+| 五子棋 19×19 | `replays["00004"].streams[0]` | 7 | X 胜 |
+| Hex 7×7 | `replays["00006"].streams[0]` | 31 | X 胜 |
+| 点格棋 3×3 | `replays["00008"].streams[0]` | 14 | O 胜 |
 
-所有示例 seed 为 42。历史 ID 保留用于精确追溯；它们不是待发布 Blink 模型的 ID。这四条轨迹是展示样本，不能用于计算模型总体成功率。
+所有示例 seed 为 42，合计 193 条记录步骤。历史 ID 保留用于精确追溯；它们不是待发布 Blink 模型的 ID。这七条轨迹是展示样本，不能用于计算模型总体成功率。
+
+## 马里奥完整回放（2026-10-27 新增）
+
+[马里奥公开轨迹](../arena/web/showcase/traces/mario.json) 来自 `oneshot-sft-v9a17-20261022` 的 `mario_platformer-44-oneshot-sft-v9a17-presence-positive-retention`。保留原模型 ID、seed 44、`mario-map-v2-curriculum` 的 easy 地图与实时等待规则。
+
+这局包含 12 次模型调用和执行事件，其中 11 个动作被执行，1 个回复因敌人方向改变被拒绝；终局进度 100%，自然通关，未耗尽预算。拒绝的动作保留原标记，并在播放器中显示 `Discarded action`。这是精选历史样例，不能用于比较模型优劣或推算总体成功率。
+
+导出时用当前仓库的共享引擎重新播放初态、观测、动作到达与终态，严格模式 38 次状态比较通过，未使用浮点容差放宽。原始 episode 的 SHA-256 为 `655f4cf910b9b36f9b3e204b3f905a4a14456c0992c509cf7627aaf483c76088`。公开文件只保留游戏状态、候选、动作、执行结果和复现所需的时钟字段；模型服务配置、私有路径与原始响应均未导出。
+
+在仓库根目录离线复核（Python 3.12、Node.js 与 Arena 依赖）：
+
+```bash
+python scripts/export_mario_showcase.py --check
+```
+
+更新该样例时可运行 `python scripts/export_mario_showcase.py --episode /path/to/private-episode.json --source-run public-run-id`，再执行下方通用导出与渲染命令。原始输入留在仓库外；公开轨迹自带离线校验所需的事件，无需访问原始输入或调用模型。
 
 ## 数据和画面
 
-- [轨迹清单](../arena/web/showcase/manifest.json) 记录源 run、源字段、参与者、录制类型、结果。
-- `arena/web/showcase/traces/` 保存从原归档逐项复制的完整 stream，导出时检查 JSON 往返相等。
+- [轨迹清单](../arena/web/showcase/manifest.json) 记录源 run、源字段、参与者、录制类型、结果；马里奥使用条目内单独标明的来源与原始文件摘要。
+- `arena/web/showcase/traces/` 包含七条从旧归档逐项复制的完整 stream（检查 JSON 往返相等），以及马里奥的公开状态与校验事件。八条轨迹共 205 次记录转换。
 - [渲染清单](../assets/showcase/render-manifest.json) 记录每张动图的原状态位置、封面位置和帧时长。
 - 动图最多均匀选 24 帧，包含初态和终态，每帧 500 ms；交互播放器可以查看全部已保存决策状态。
 - 画面复用 `arena/web/playground/renderers.js` 的只读回放入口。无模型调用、无自动选动作、无新游戏状态推进。

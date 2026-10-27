@@ -1,5 +1,6 @@
 {
   "schema_version": "blink.showcase-render.v1",
+  "presentation": "Game title and recorded states; no generic showcase banner or badge.",
   "items": [
     {
       "id": "othello",
@@ -110,6 +111,105 @@
       "poster_index": 8,
       "frame_duration_ms": 500,
       "gif": "assets/showcase/tetris.gif"
+    },
+    {
+      "id": "gomoku",
+      "saved_states": 9,
+      "captured_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "poster_index": 4,
+      "frame_duration_ms": 500,
+      "gif": "assets/showcase/gomoku.gif"
+    },
+    {
+      "id": "hex",
+      "saved_states": 33,
+      "captured_indices": [
+        0,
+        1,
+        3,
+        4,
+        6,
+        7,
+        8,
+        10,
+        11,
+        13,
+        14,
+        15,
+        17,
+        18,
+        19,
+        21,
+        22,
+        24,
+        25,
+        26,
+        28,
+        29,
+        31,
+        32
+      ],
+      "poster_index": 17,
+      "frame_duration_ms": 500,
+      "gif": "assets/showcase/hex.gif"
+    },
+    {
+      "id": "dots-and-boxes",
+      "saved_states": 16,
+      "captured_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "poster_index": 8,
+      "frame_duration_ms": 500,
+      "gif": "assets/showcase/dots-and-boxes.gif"
+    },
+    {
+      "id": "mario",
+      "saved_states": 14,
+      "captured_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "poster_index": 7,
+      "frame_duration_ms": 500,
+      "gif": "assets/showcase/mario.gif"
     }
   ]
 }

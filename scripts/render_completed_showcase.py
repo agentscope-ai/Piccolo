@@ -37,6 +37,7 @@ def render(root: Path) -> dict:
     report = {"schema": "blink.completed-showcase-render.v1",
               "source": str(source.relative_to(root)),
               "source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+              "presentation": "Content-only cards: no completed-game banner, pager or game tabs.",
               "sampling": "State 0 is the initial state; state n is after transition n-1. Fixed 500 ms per frame; final state held for 2 seconds.",
               "items": []}
     try:
@@ -48,6 +49,10 @@ def render(root: Path) -> dict:
             page.on("pageerror", lambda error: errors.append(str(error)))
             page.goto(f"http://127.0.0.1:{server.server_port}/completed-showcase.html")
             page.wait_for_selector(".home-demo-timeline")
+            # Export clean cards; the interactive page keeps its navigation.
+            page.add_style_tag(content=".home-demo-top,.home-demo-game-tabs{display:none!important}")
+            assert not page.locator('.home-demo-top').is_visible()
+            assert not page.locator('.home-demo-game-tabs').is_visible()
             capture = page.locator("#homeDecisionDemo")
 
             def seek(position):
@@ -60,7 +65,7 @@ def render(root: Path) -> dict:
 
             for game_index, clip in enumerate(archive["clips"]):
                 slug = SLUGS[clip["game"]]
-                page.locator(".home-demo-game-tabs button").nth(game_index).click()
+                page.locator(".home-demo-game-tabs button").nth(game_index).evaluate("node => node.click()")
                 if clip["game"] == "tetris_placement":
                     page.wait_for_function("document.querySelector('.jev-native-replay')?.contentDocument?.querySelector('canvas')?.width > 0")
                 count = len(clip["steps"]) + 1

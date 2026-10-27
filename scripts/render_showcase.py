@@ -6,6 +6,7 @@ import argparse
 import functools
 import http.server
 import json
+import os
 from pathlib import Path
 import subprocess
 import tempfile
@@ -29,10 +30,12 @@ def render(root: Path) -> dict:
     server = http.server.ThreadingHTTPServer(('127.0.0.1', 0), handler)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
-    result = {'schema_version': 'blink.showcase-render.v1', 'items': []}
+    result = {'schema_version': 'blink.showcase-render.v1',
+              'presentation': 'Game title and recorded states; no generic showcase banner or badge.', 'items': []}
     try:
         with sync_playwright() as playwright, tempfile.TemporaryDirectory(prefix='blink-showcase-') as work:
-            browser = playwright.chromium.launch(headless=True, args=['--no-sandbox'])
+            browser = playwright.chromium.launch(headless=True, args=['--no-sandbox'],
+                                                 channel=os.environ.get('BLINK_BROWSER_CHANNEL'))
             page = browser.new_page(viewport={'width': 940, 'height': 940}, device_scale_factor=1)
             errors = []
             page.on('pageerror', lambda error: errors.append(str(error)))
@@ -40,15 +43,21 @@ def render(root: Path) -> dict:
                 slug = item['id']
                 page.goto(f'http://127.0.0.1:{server.server_port}/showcase.html?game={slug}')
                 page.wait_for_function("document.documentElement.dataset.ready === 'true'")
+                page.add_style_tag(content='.card-head .eyebrow,.card-head .badge{display:none!important}.card-head h2{margin:0}')
                 count = page.evaluate('window.BlinkShowcase.count')
                 indices = sorted({round(i * (count - 1) / (min(count, 24) - 1)) for i in range(min(count, 24))})
                 folder = Path(work) / slug
                 folder.mkdir()
+                first_frame = None
                 for ordinal, index in enumerate(indices):
                     page.evaluate('(index)=>window.BlinkShowcase.seek(index)', index)
                     for frame in page.frames:
                         frame.evaluate('document.fonts.ready')
-                    page.locator('#capture').screenshot(path=str(folder / f'{ordinal:03d}.png'))
+                    frame = page.locator('#capture').screenshot(path=str(folder / f'{ordinal:03d}.png'))
+                    if ordinal == 0:
+                        first_frame = frame
+                assert first_frame != frame, (slug, 'unchanged initial and final frames')
+                assert page.locator('#error').inner_text() == ''
                 # Keep the original final result in the trace; the poster is only a middle frame.
                 poster = indices[len(indices) // 2]
                 page.evaluate('(index)=>window.BlinkShowcase.seek(index)', poster)

@@ -12,6 +12,9 @@ SELECTION = (
     ('merge-2048', '2048', 'episodes', 'merge_2048-42-oneshot27b-game-rl-native-iter17'),
     ('jump-jump', 'Jump Jump', 'episodes', 'jump_jump-42-oneshot27b-game-rl-native-iter17'),
     ('tetris', 'Tetris', 'episodes', 'tetris_placement-42-oneshot27b-game-rl-native-iter17'),
+    ('gomoku', 'Gomoku', 'replays', '00004'),
+    ('hex', 'Hex', 'replays', '00006'),
+    ('dots-and-boxes', 'Dots & Boxes', 'replays', '00008'),
 )
 
 
@@ -54,6 +57,20 @@ def export(root: Path) -> dict:
         'playback': 'Original renderers, saved decision states, fixed playback pace; not wall-clock video.',
         'items': items,
     }
+    mario_path = target / 'traces/mario.json'
+    mario = json.loads(mario_path.read_text())
+    if mario['missing_frames'] or not mario['verification']['strict_match']:
+        raise ValueError('Mario requires a complete verified public replay')
+    items.append({
+        'id': 'mario', 'title': 'Mario', 'kind': mario['kind'], 'trace': 'traces/mario.json',
+        'source': 'arena/web/showcase/traces/mario.json',
+        'source_run_id': mario['source']['run_id'],
+        'source_collection': 'public_episode', 'source_key': mario['id'],
+        'source_episode_sha256': mario['source']['episode_sha256'],
+        'seed': mario['seed'], 'participants': mario['participants'],
+        'recording': mario['recording'], 'missing_frames': False,
+        'steps': len(mario['steps']), 'result': mario['result'],
+    })
     (target / 'manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n')
     return {'trajectories': len(items), 'steps': sum(item['steps'] for item in items)}
 

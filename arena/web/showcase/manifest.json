@@ -142,6 +142,99 @@
           "scoring_revision": "realtime-completion-progress-time-v1"
         }
       }
+    },
+    {
+      "id": "gomoku",
+      "title": "Gomoku",
+      "kind": "gomoku_19x19",
+      "trace": "traces/gomoku.json",
+      "source_collection": "replays",
+      "source_key": "00004",
+      "source_stream_index": 0,
+      "seed": 42,
+      "participants": [
+        "oneshot27b-game-rl-native-iter17",
+        "oneshot27b-control-reviewed-sft-iter310"
+      ],
+      "recording": "reconstructed_verified",
+      "missing_frames": false,
+      "steps": 7,
+      "result": {
+        "winner": "X",
+        "steps": 7,
+        "status": "complete"
+      }
+    },
+    {
+      "id": "hex",
+      "title": "Hex",
+      "kind": "hex_7x7",
+      "trace": "traces/hex.json",
+      "source_collection": "replays",
+      "source_key": "00006",
+      "source_stream_index": 0,
+      "seed": 42,
+      "participants": [
+        "oneshot27b-game-rl-native-iter17",
+        "oneshot27b-control-reviewed-sft-iter310"
+      ],
+      "recording": "reconstructed_verified",
+      "missing_frames": false,
+      "steps": 31,
+      "result": {
+        "winner": "X",
+        "steps": 31,
+        "status": "complete"
+      }
+    },
+    {
+      "id": "dots-and-boxes",
+      "title": "Dots & Boxes",
+      "kind": "dots_and_boxes_3x3",
+      "trace": "traces/dots-and-boxes.json",
+      "source_collection": "replays",
+      "source_key": "00008",
+      "source_stream_index": 0,
+      "seed": 42,
+      "participants": [
+        "oneshot27b-game-rl-native-iter17",
+        "oneshot27b-control-reviewed-sft-iter310"
+      ],
+      "recording": "reconstructed_verified",
+      "missing_frames": false,
+      "steps": 14,
+      "result": {
+        "winner": "O",
+        "steps": 14,
+        "status": "complete"
+      }
+    },
+    {
+      "id": "mario",
+      "title": "Mario",
+      "kind": "mario_platformer",
+      "trace": "traces/mario.json",
+      "source": "arena/web/showcase/traces/mario.json",
+      "source_run_id": "oneshot-sft-v9a17-20261022",
+      "source_collection": "public_episode",
+      "source_key": "mario_platformer-44-oneshot-sft-v9a17-presence-positive-retention",
+      "source_episode_sha256": "655f4cf910b9b36f9b3e204b3f905a4a14456c0992c509cf7627aaf483c76088",
+      "seed": 44,
+      "participants": [
+        "oneshot-sft-v9a17-presence-positive-retention"
+      ],
+      "recording": "recorded_states_verified",
+      "missing_frames": false,
+      "steps": 12,
+      "result": {
+        "status": "complete",
+        "outcome": "win",
+        "terminal": true,
+        "budget_exhausted": false,
+        "model_calls": 12,
+        "steps": 11,
+        "score": 100
+      }
     }
   ]
 }

@@ -10,15 +10,31 @@ Blink connects **observation, action, and feedback** in an inspectable decision 
 
 ## See decisions unfold
 
-Four complete historical games, imported from JevArena's showcase. The interactive player exposes observations, candidate actions, recorded choices, and outcomes, with seeking, playback speed, and a jump-to-ending control.
+Nine historical replays in one gallery: four completed-game examples from JevArena, a complete Mario run, and archived Jump Jump, Gomoku, Hex, and Dots & Boxes. The interactive players support pausing, seeking, and inspecting recorded steps.
 
-| 2048 · reach the task's target of 128 | Sokoban · put both boxes on target |
-| --- | --- |
-| [![2048 complete replay](assets/showcase/completed/merge-2048.gif)](arena/web/playground/data/home-decision.json) | [![Sokoban complete replay](assets/showcase/completed/sokoban.gif)](arena/web/playground/data/home-decision.json) |
-| **Othello · finish a 6×6 game** | **Tetris · clear four lines** |
-| [![Othello complete replay](assets/showcase/completed/othello.gif)](arena/web/playground/data/home-decision.json) | [![Tetris complete replay](assets/showcase/completed/tetris.gif)](arena/web/playground/data/home-decision.json) |
+<table>
+  <tr>
+    <td colspan="2" align="center"><strong>Mario</strong><br><a href="arena/web/showcase/traces/mario.json"><img src="assets/showcase/mario.gif" width="100%" alt="Mario"></a></td>
+  </tr>
+  <tr>
+    <td width="50%" align="center"><strong>2048 · target 128</strong><br><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/merge-2048.gif" width="100%" alt="2048 · target 128"></a></td>
+    <td width="50%" align="center"><strong>Sokoban</strong><br><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/sokoban.gif" width="100%" alt="Sokoban"></a></td>
+  </tr>
+  <tr>
+    <td width="50%" align="center"><strong>Othello</strong><br><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/othello.gif" width="100%" alt="Othello"></a></td>
+    <td width="50%" align="center"><strong>Tetris</strong><br><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/tetris.gif" width="100%" alt="Tetris"></a></td>
+  </tr>
+  <tr>
+    <td width="50%" align="center"><strong>Jump Jump</strong><br><a href="arena/web/showcase/traces/jump-jump.json"><img src="assets/showcase/jump-jump.gif" width="100%" alt="Jump Jump"></a></td>
+    <td width="50%" align="center"><strong>Gomoku</strong><br><a href="arena/web/showcase/traces/gomoku.json"><img src="assets/showcase/gomoku.gif" width="100%" alt="Gomoku"></a></td>
+  </tr>
+  <tr>
+    <td width="50%" align="center"><strong>Hex</strong><br><a href="arena/web/showcase/traces/hex.json"><img src="assets/showcase/hex.gif" width="100%" alt="Hex"></a></td>
+    <td width="50%" align="center"><strong>Dots &amp; Boxes</strong><br><a href="arena/web/showcase/traces/dots-and-boxes.json"><img src="assets/showcase/dots-and-boxes.gif" width="100%" alt="Dots &amp; Boxes"></a></td>
+  </tr>
+</table>
 
-These are **selected successful episodes**, not an aggregate success rate or a model comparison. The four clips contain 116 recorded transitions and 89 model calls; opponent turns and automatic execution are labeled separately. GIFs sample saved states at a fixed pace, so their speed is not inference latency. The full player retains every recorded step and Tetris execution frames. [Provenance and reproduction](docs/SHOWCASE.md) explain each checkpoint, seed, outcome, and sampling rule. [Earlier examples](arena/web/showcase/manifest.json), including a failed Tetris run, remain available.
+These are **historical examples**, not an aggregate success rate or a comparison between models. The four original completed replays contain 116 transitions and 89 model calls; the additional examples preserve recorded actions, states, and outcomes from existing archives. GIFs sample saved states at a fixed pace, so their speed is not inference latency. See [provenance and reproduction](docs/SHOWCASE.md) for original identities and outcomes. [Earlier trajectories](arena/web/showcase/manifest.json), including a failed Tetris run, remain available.
 
 ## Try it
 
@@ -30,7 +46,7 @@ Python 3 is sufficient for this static, read-only preview:
 python3 -m http.server 8080 --bind 127.0.0.1 --directory arena/web
 ```
 
-Open **http://127.0.0.1:8080/completed-showcase.html**. No model, API key, or backend service is needed. Stop this server before starting Arena on the same port.
+Open **http://127.0.0.1:8080/completed-showcase.html** for the four completed replays, or **http://127.0.0.1:8080/showcase.html** for the other archived examples. No model, API key, or backend service is needed. Stop this server before starting Arena on the same port.
 
 ### Run Blink Arena
 
@@ -90,7 +106,7 @@ python3.12 scripts/export_home_decision.py --check
 python3.12 -m unittest tests.test_home_decision -v
 ```
 
-To rebuild images, install Playwright, its Chromium browser, and `ffmpeg`, then run `python scripts/render_completed_showcase.py` from the repository root. [Showcase notes](docs/SHOWCASE.md) also cover the earlier asset set.
+To rebuild images, install Playwright, its Chromium browser, and `ffmpeg`, then run `python scripts/render_completed_showcase.py` from the repository root. Run `python scripts/export_showcase.py` and `python scripts/render_showcase.py` for the other archived examples. [Showcase notes](docs/SHOWCASE.md) also cover the earlier asset set.
 
 For a useful issue or contribution, include the game, seed, steps to reproduce, and an anonymized replay when available. Keep original participant IDs and outcomes intact. See [verification](docs/VERIFICATION.md) for tested scope and known limitations, and [repository notes](docs/REPOSITORY.md) for remaining release work.
 
