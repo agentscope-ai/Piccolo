@@ -286,7 +286,18 @@ if(!window.__JEV_REPLAY_FRAME__)window.JevReplayRenderer=(()=>{
     if(p<1)raf=requestAnimationFrame(tick);else{raf=0;paint(state);settle=null;resolve();}
    }catch(error){raf=0;settle=null;reject(error);}}raf=requestAnimationFrame(tick);});
   }
-  return {update,stop,destroy(){stop();destroyed=true;iframe.remove();},get frame(){return iframe;}};
+  // Deterministic sampling for complete timeline exports, using the live renderers.
+  function sample({before,after,action},progress){
+   stop();const p=Math.max(0,Math.min(1,progress));
+   if(p===0){paint(before);return;}if(p===1){paint(after);return;}
+   if(world){paint(interpolate(before,after,p));return;}
+   if(kind==='merge_2048'){win.JevSceneTransition.draw(before,after,action,p);return;}
+   if(['jump_jump','snake_navigation','sokoban_puzzle','tetris_placement'].includes(kind)){
+    paint(after,{before,progress:p,action});return;
+   }
+   paint(p<.5?before:after);
+  }
+  return {update,sample,stop,destroy(){stop();destroyed=true;iframe.remove();},get frame(){return iframe;}};
  }
  return {mount};
 })();

@@ -242,26 +242,26 @@
       "kind": "snake_navigation",
       "trace": "traces/snake.json",
       "source": "arena/web/showcase/traces/snake.json",
-      "source_run_id": "oneshot-sft-v9a17-20261022",
+      "source_run_id": "jev-game-rl-online-20261016-v1",
       "source_collection": "public_episode",
-      "source_key": "snake_navigation-43-oneshot-sft-v9a17-presence-positive-retention",
-      "source_episode_sha256": "f98d1deb775b382fc87f926649cef2048a3654890fee33e6e2a7d00b7cfabc11",
-      "seed": 43,
+      "source_key": "formal-sft310-20261016-v5-policy-0-chunk-1267595044154995115-trial-0-attempt-0",
+      "source_episode_sha256": "1374bd1f4126ba358e29b5c9d32817f628d7fcc06ba1ec888d1a7c78e2b2e962",
+      "seed": 1194410000,
       "participants": [
-        "oneshot-sft-v9a17-presence-positive-retention"
+        "formal-sft310-20261016-v5/policy-0"
       ],
       "recording": "recorded_states_verified",
       "missing_frames": false,
-      "steps": 41,
+      "steps": 51,
       "result": {
         "status": "complete",
-        "outcome": "loss",
+        "outcome": "win",
         "terminal": true,
         "budget_exhausted": false,
-        "model_calls": 41,
-        "steps": 39,
-        "score": 3,
-        "failure_reason": "collision"
+        "model_calls": 51,
+        "steps": 51,
+        "score": 6,
+        "failure_reason": null
       }
     }
   ]

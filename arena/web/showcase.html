@@ -25,6 +25,18 @@
     .controls{display:flex;align-items:center;gap:12px;margin:18px 0}.controls input{min-width:40px;flex:1;accent-color:#3d5b62}
     .record{font-size:12px;overflow-wrap:anywhere}#error{color:#a84635}#notice{max-width:850px}
     @media(max-width:600px){main{padding:20px 12px}h1{font-size:29px}#stage{height:320px}.card-head{padding:16px}.badge{font-size:10px}.card-foot{padding:12px 16px}}
+
+    .card-head{display:none}.replay-body{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);height:400px}
+    .game-view{min-width:0;background:#f4f6ed;display:flex;flex-direction:column;justify-content:center}
+    #game-title{font-size:20px;margin:15px 18px 4px}#stage{height:340px;min-height:0}
+    #stage iframe{width:100%!important;height:auto!important;aspect-ratio:900/540}
+    #decision{border-left:1px solid #e3e7dc;padding:22px 18px;display:flex;flex-direction:column;min-height:0}
+    .phase-label{color:#ab603c;text-transform:uppercase;font-size:11px;letter-spacing:1.5px;font-weight:700}
+    h3{font-size:20px;margin:12px 0 16px}#candidates{display:flex;align-content:flex-start;gap:6px;flex-wrap:wrap;overflow:auto;flex:1}
+    .candidate{border:1px solid #cbd5c7;padding:7px 10px;border-radius:7px;background:#fffefa;color:#536862;font-size:13px;line-height:1.2;overflow-wrap:anywhere}
+    .candidate.selected{background:#4b7168;color:#fff;border-color:#4b7168}.candidate.rejected{background:#a75b45;border-color:#a75b45}
+    #feedback{font-size:13px;color:#536862;min-height:44px;line-height:1.5;padding-top:12px;overflow-wrap:anywhere}
+    @media(max-width:600px){.replay-body{height:auto;grid-template-columns:1fr}#stage{height:280px}#decision{height:300px;border-left:0;border-top:1px solid #e3e7dc}}
   </style>
   <script>window.JevI18n={lang:'en',t:(en)=>en,onChange(){},register(){}};</script>
 </head>
@@ -35,11 +47,12 @@
   <nav id="games" aria-label="Trajectory selection"></nav>
   <section id="capture" aria-label="Archived trajectory">
     <div class="card-head"><div><span class="eyebrow">BLINK / TRAJECTORY SHOWCASE</span><h2 id="title">Loading…</h2></div><span class="badge">Archived replay</span></div>
-    <div id="stage"></div>
+    <div class="replay-body"><div class="game-view"><h2 id="game-title"></h2><div id="stage"></div></div>
+    <aside id="decision"><div class="phase-label" id="phase">Observe</div><h3>Choose an action</h3><div id="candidates"></div><div id="feedback"></div></aside></div>
     <div class="card-foot"><span id="position">—</span><span id="action">—</span></div>
   </section>
   <div class="controls"><button id="play" disabled>Play</button><input id="seek" type="range" min="0" max="0" value="0" aria-label="Replay position" disabled><button id="restart" disabled>Restart</button></div>
   <p id="error" role="alert"></p><p class="record" id="source"></p>
-  <p class="record"><a href="https://decisionplayground.agentscope.io/">Decision ↗</a> · <a href="./">Open Arena ↗</a></p><p class="record">Playback shows saved decision states at a fixed pace, not original wall-clock speed. No model requests are made. <a href="./showcase/manifest.json">Source manifest ↗</a></p>
-</main><script src="./playground/renderers.js?v=blink-20261026"></script><script src="./showcase/player.js?v=blink-20261026"></script></body>
+  <p class="record"><a href="https://decisionplayground.agentscope.io/">Decision ↗</a> · <a href="./">Open Arena ↗</a></p><p class="record">Playback includes every archived decision, movement and result at 2× speed, with short pauses for reading. No model requests are made. <a href="./showcase/full-manifest.json">Source manifest ↗</a></p>
+</main><script src="./playground/renderers.js?v=blink-full-20261027"></script><script src="./showcase/player.js?v=blink-full-20261027"></script></body>
 </html>

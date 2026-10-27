@@ -1,0 +1,36 @@
+{
+  "items": [
+    {
+      "id": "mario",
+      "trace": "full/mario.json"
+    },
+    {
+      "id": "snake",
+      "trace": "full/snake.json"
+    },
+    {
+      "id": "merge-2048",
+      "trace": "full/merge-2048.json"
+    },
+    {
+      "id": "sokoban",
+      "trace": "full/sokoban.json"
+    },
+    {
+      "id": "tetris",
+      "trace": "full/tetris.json"
+    },
+    {
+      "id": "jump-jump",
+      "trace": "full/jump-jump.json"
+    },
+    {
+      "id": "hex",
+      "trace": "full/hex.json"
+    },
+    {
+      "id": "dots-and-boxes",
+      "trace": "full/dots-and-boxes.json"
+    }
+  ]
+}

@@ -2,9 +2,26 @@
 
 README 与 Blog 集中展示八个游戏，按四行两列排列：马里奥、贪吃蛇、2048、推箱子、俄罗斯方块、跳一跳、Hex 与点格棋。动图外不另加游戏名称或图例，画面内的名称保留。黑白棋与五子棋已从正文合集移除，历史归档和复现资料继续保留。以下均为历史实验，不代表待发布 Blink 模型的成绩。
 
-导出的动图去掉 `COMPLETED GAME`、序号箭头和游戏切换栏，保留当前游戏、状态与动作。网页播放器继续保留交互导航。Blog 不再逐个介绍游戏，来源细节统一收录在本文。
+导出的动图去掉 `COMPLETED GAME`、序号箭头和游戏切换栏，保留当前游戏、状态、动作与右侧候选框。网页播放器继续保留交互导航。Blog 不再逐个介绍游戏，来源细节统一收录在本文。
 
-## 完整对局展示（2026-10-27）
+## 当前动图：完整时间线与候选动作
+
+八张动图均使用 [统一播放器](../arena/web/showcase.html)：左侧游戏画面，右侧候选动作、选中项和执行反馈。按记录顺序播放全部 **210 次转换**，没有选择性跳步或截断；保留开局、等待、动作执行与终局。2× 播放并加入短阅读停顿，GIF 为 12 fps，不代表模型实际推理速度。
+
+[完整时间线](../arena/web/showcase/full/) 记录每一步的三个阶段及连续执行帧。马里奥逐一重建第 0–2083 个物理帧，并严格核对所有原始观测、到达与执行边界；贪吃蛇保留全部 49 次身体移动；推箱子保留 14 次实际行走和推箱移动；俄罗斯方块展开全部时钟执行帧。棋盘与跳一跳保留每次原始决策及完整动作过渡。历史棋盘初态本身含已有棋子，播放从归档初态开始。
+
+[渲染清单](../assets/showcase/render-manifest.json) 列出每个阶段对应的 GIF 帧号、完整连续的步骤索引、源文件摘要和时长。初态停留 0.5 秒，终态停留 2 秒。主文档仍为四行两列，不另加图注。
+
+```bash
+python scripts/export_mario_showcase.py --check
+python scripts/export_snake_showcase.py --check
+python scripts/export_full_showcase.py
+BLINK_BROWSER_CHANNEL=chrome python scripts/render_showcase.py
+```
+
+可用 `--game snake` 等参数只重建指定游戏；没有 `--game` 时重建全部八项。生成目标包含 `assets/showcase/` 和 `assets/showcase/completed/`，沿用 README 的图片路径。
+
+## 完整对局来源（2026-10-27）
 
 从 JevArena 已提交的首页 Showcase 迁入播放器、样式与公开归档，对应来源提交 `5cc08eb`（完整回放数据引入于 `926adff`）。迁入不修改原工作区；数据文件逐字节保留，导出器适配本仓库的 Python 包路径，同时迁入 Tetris v1–v4 时钟版本的渲染兼容。历史 `oneshot.home-decision.v3` schema 和原模型 ID 保留。
 
@@ -19,8 +36,8 @@ README 与 Blog 集中展示八个游戏，按四行两列排列：马里奥、�
 
 - [完整归档](../arena/web/playground/data/home-decision.json) 保留初态、每步候选与动作、后继状态、模型标识、时钟与终局。
 - [独立播放器](../arena/web/completed-showcase.html) 与 Arena 的 Blog 页签复用 `home-demo.js`，支持中英文、进度、倍速、终局与键盘切换。Tetris 使用已有只读渲染器。
-- GIF 仅按固定节奏采样状态，不能作为推理速度演示；独立播放器保留全部步骤及 Tetris 执行帧。
-- `assets/showcase/completed/render-manifest.json` 记录归档 SHA-256、原转换位置、初态/终态及帧时长。PNG 保留各局终态。
+- 当前 GIF 使用上方统一时间线导出；旧版固定状态采样已替换。原独立播放器及来源归档仍保留。
+- `assets/showcase/completed/render-manifest.json` 记录完整渲染清单中对应三张活动素材的源摘要、全部步骤、阶段与帧位置。PNG 保留各局终态。
 
 离线验证不需要模型、训练目录或密钥：
 
@@ -75,7 +92,7 @@ python arena/tests/browser_home_replays.py --url http://127.0.0.1:8080 --out var
 
 [马里奥公开轨迹](../arena/web/showcase/traces/mario.json) 来自 `oneshot-sft-v9a17-20261022` 的 `mario_platformer-44-oneshot-sft-v9a17-presence-positive-retention`。保留原模型 ID、seed 44、`mario-map-v2-curriculum` 的 easy 地图与实时等待规则。
 
-这局包含 12 次模型调用和执行事件，其中 11 个动作被执行，1 个回复因敌人方向改变被拒绝；终局进度 100%，自然通关，未耗尽预算。拒绝的动作保留原标记，并在播放器中显示 `Discarded action`。这是精选历史样例，不能用于比较模型优劣或推算总体成功率。
+这局包含 12 次模型调用和执行事件，其中 11 个动作被执行，1 个回复因敌人方向改变被拒绝；终局进度 100%，自然通关，未耗尽预算。拒绝的动作保留原标记，并在播放器中保留动作拒绝标记。这是精选历史样例，不能用于比较模型优劣或推算总体成功率。
 
 导出时用当前仓库的共享引擎重新播放初态、观测、动作到达与终态，严格模式 38 次状态比较通过，未使用浮点容差放宽。原始 episode 的 SHA-256 为 `655f4cf910b9b36f9b3e204b3f905a4a14456c0992c509cf7627aaf483c76088`。公开文件只保留游戏状态、候选、动作、执行结果和复现所需的时钟字段；模型服务配置、私有路径与原始响应均未导出。
 
@@ -87,27 +104,29 @@ python scripts/export_mario_showcase.py --check
 
 更新该样例时可运行 `python scripts/export_mario_showcase.py --episode /path/to/private-episode.json --source-run public-run-id`，再执行下方通用导出与渲染命令。原始输入留在仓库外；公开轨迹自带离线校验所需的事件，无需访问原始输入或调用模型。
 
-## 贪吃蛇回放（2026-10-27 替换五子棋）
+## 贪吃蛇通关回放（2026-10-27）
 
-[贪吃蛇公开轨迹](../arena/web/showcase/traces/snake.json) 来自 `oneshot-sft-v9a17-20261022` 的 `snake_navigation-43-oneshot-sft-v9a17-presence-positive-retention`。保留 SFT v9-a17 身份、seed 43 和原实时规则：41 次模型调用与执行事件、39 个执行动作，吃到 3 个食物后碰撞结束，未达成 6 个食物的通关目标。展示保留失败终局，不把它标为通关。
+[贪吃蛇公开轨迹](../arena/web/showcase/traces/snake.json) 来自我们自己的 `jev-game-rl-online-20261016-v1` 历史运行，策略标识 `formal-sft310-20261016-v5/policy-0`，seed 为 `1194410000`。原始记录为 `jev.rollout.receipt.v1`，`policy_origin=student`、`on_policy=true`、`rule_takeover_count=0`；这是实际历史 rollout，并非外部基线，也不作为独立评测集成绩。
 
-`scripts/export_snake_showcase.py` 使用共享引擎检查全部事件的公开输入、等待时间、动作到达和后继状态，再验证末态的公开投影与原始终局相等。原始文件摘要与校验事件写入公开轨迹；服务配置、私有路径与原始模型响应不导出。
+本局 **51 次决策、49 次身体移动，吃满 6 个苹果自然获胜**，游戏内时钟为 51.1 秒。它替换此前选错的 SFT v9-a17 / seed 43 失败轨迹。导出器用当前共享引擎逐一验证初态、每次观测/到达/执行后状态和终态，共 **155 处公开状态完全相等**；早期归档只存公开投影，缺少的请求间时长由相邻记录的游戏时钟精确恢复。没有重新调用模型或改变原动作。
+
+公开文件保留原始 episode 的 SHA-256、候选、动作和时钟；服务配置、私有路径、原始模型响应不导出。导出器强制要求胜利、目标食物数、自然终局，失败样例不能再通过此入口生成。
 
 ```bash
 python scripts/export_snake_showcase.py --check
-python scripts/export_showcase.py
+python scripts/export_full_showcase.py --game snake
 python scripts/render_showcase.py --game snake
 ```
 
-更新来源时使用 `--episode /path/to/private-episode.json --source-run public-run-id`；原始输入不提交。`--game` 仅重新捕获指定游戏并保留其他素材的采样清单。
+更换来源时先用 `--episode /path/to/private-episode.json --source-run public-run-id` 导出经验证的公开轨迹；原始输入不提交。
 
 ## 数据和画面
 
 - [轨迹清单](../arena/web/showcase/manifest.json) 记录源 run、源字段、参与者、录制类型、结果；马里奥与贪吃蛇使用条目内单独标明的来源与原始文件摘要。
-- `arena/web/showcase/traces/` 包含七条从旧归档逐项复制的完整 stream（检查 JSON 往返相等），以及马里奥、贪吃蛇的公开状态与校验事件。九条轨迹共 246 次记录转换；正文只选用其中部分素材。
+- `arena/web/showcase/traces/` 包含七条从旧归档逐项复制的完整 stream（检查 JSON 往返相等），以及马里奥、贪吃蛇的公开状态与校验事件。九条归档轨迹共 256 次记录转换；正文只选用其中部分素材。
 - [渲染清单](../assets/showcase/render-manifest.json) 记录每张动图的原状态位置、封面位置和帧时长。
-- 动图最多均匀选 24 帧，包含初态和终态，每帧 500 ms；交互播放器可以查看全部已保存决策状态。
-- 画面复用 `arena/web/playground/renderers.js` 的只读回放入口。无模型调用、无自动选动作、无新游戏状态推进。
+- 当前八项 GIF 遍历全部决策与执行区间，具体覆盖位置见 v2 渲染清单；剩余旧素材仅作为历史归档，不在正文合集展示。
+- 画面复用 `arena/web/playground/renderers.js` 的只读回放入口。不调用模型或重新选择动作。连续画面由保存的执行帧，或相同引擎按原始动作和时钟重建，边界状态必须与原始记录一致。
 
 ## 重现
 
@@ -118,6 +137,7 @@ python -m pip install playwright
 python -m playwright install chromium
 # 系统需已安装 ffmpeg。
 python scripts/export_showcase.py
+python scripts/export_full_showcase.py
 python scripts/render_showcase.py
 ```
 
