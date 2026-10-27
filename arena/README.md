@@ -1,8 +1,10 @@
 # Blink Arena
 
-Blink 的交互与评测组件。模型尚未确定；随附榜单和轨迹属于历史实验。README 展示素材及其来源见 [Blink 首页](../README.md) 和 [轨迹说明](../docs/SHOWCASE.md)。
+Blink 的交互与评测组件。访问 [Decision 官网](https://decisionplayground.agentscope.io/)，或按下文在本机运行。模型发布仍在准备中，随附榜单和轨迹属于历史实验。
 
-游戏试玩、Blink Arena 天梯、Benchmark Leaderboard 和 MBTI 的独立源码仓库。前端、HTTP 服务和共享游戏引擎一起交付；模型服务在页面里填写，启动时不需要 checkpoint、模型地址或模型密钥。
+新版完整对局 Showcase 已接入 Blog 页签，也可打开 `/completed-showcase.html` 独立查看：2048（目标 128）、推箱子、6×6 黑白棋和俄罗斯方块，支持逐步播放、拖动与终局查看。来源与离线验证见 [轨迹说明](../docs/SHOWCASE.md)，项目介绍见 [Blog](../docs/blog.md)。早期回放继续保留在 `/showcase.html`。
+
+这里包含游戏试玩、Blink Arena 天梯、Benchmark Leaderboard 和 MBTI。前端、HTTP 服务和共享游戏引擎一起交付；模型服务在页面里填写，启动时不需要 checkpoint、模型地址或模型密钥。
 
 验证范围见 [发布检查记录](docs/RELEASE_CHECK.md)。Docker 容器构建与真实域名 HTTPS 尚未实测。训练数据审计与 loss 看板不在本仓库范围内。
 
@@ -42,7 +44,7 @@ docker compose up --build -d
 | 结构化决策接口 | 接受 `jev.decision.v1` 请求，返回合法选项 ID，可选返回完整概率分布 |
 | OpenAI 兼容接口 | 接受 Chat Completions 请求，返回 `choices[0].message.content` 中的 `{"action":"选项 ID"}` |
 
-端点与密钥只在浏览器内存中；密钥只发给填写的模型服务，不发送给 Jev 后端。模型接口须使用与游戏页面不同的 origin，并允许页面来源的 CORS 请求；HTTPS 页面应连接可用的 HTTPS 模型接口。评测期间保持连接页面打开，关闭或刷新页面后需要重新填写连接。
+端点与密钥只在浏览器内存中；密钥只发给填写的模型服务，不发送给 Arena 后端。模型接口须使用与游戏页面不同的 origin，并允许页面来源的 CORS 请求；HTTPS 页面应连接可用的 HTTPS 模型接口。评测期间保持连接页面打开，关闭或刷新页面后需要重新填写连接。
 
 模型密钥不写入配置文件、榜单、浏览器持久存储或评测结果。模型显示名称可以自由取名，服务返回的模型身份必须和配置的 `served_model` 精确一致。接口字段和响应例子见 [API 文档](docs/API.md)。
 

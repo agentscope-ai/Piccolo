@@ -1,6 +1,16 @@
-# Blink 初始整理范围
+# Blink 仓库范围
 
-日期：2026-10-26。
+更新日期：2026-10-27。
+
+## 当前内容
+
+仓库包含可独立运行的 Blink Arena、历史结果与回放、JevArena 完整对局 Showcase、素材复现脚本和安全审批接入框架。[Decision](https://decisionplayground.agentscope.io/) 为官网入口；本仓库的验证只覆盖本机版本，不意味着已更新官网部署。
+
+新增 [Blog 母稿](blog.md)，供公众号与小红书复用。文中的粗体 TODO 是发布前待补齐项，不是已有能力。
+
+模型发布相关目录均有 Coming soon README：`models/`（模型卡与权重）、`inference/`（模型服务）、`training/`（训练方案）、`data/`（数据发布）、`evaluation/`（正式评测）、`examples/`（模型接入示例）。Arena 内已有数据、评测和环境 API 仍在原位置，这些预留目录承接正式 Blink 版本的材料。
+
+## 初始迁入记录（2026-10-26）
 
 ## 前端迁入
 
@@ -15,10 +25,10 @@
 
 - 中英文 README、Blink 图标及四组有来源的轨迹 Showcase。
 - 独立只读轨迹播放器，复用已有渲染器；导出与渲染脚本可重现 README 动图。
-- `inference/`、`training/` 仅放 `.gitkeep`。未选择模型，也未新增推理或训练实现。
+- 初次整理时 `inference/`、`training/` 仅有 `.gitkeep`；现已补充 README，但仍未新增模型推理或训练实现。
 - `skills/blink-safety-review/` 提供未来模型发布后的下载助手、动作审查客户端、QwenPaw ToolGuard 附加检查器及导入说明。模型发布清单保持未配置。
 
-此次只整理本地仓库；不修改原工作区源码，不推送、不部署、不启动模型，也不改变现有 QwenPaw 配置。原应用的历史发布检查记录留在原工作区；本仓库使用 [当前验证记录](VERIFICATION.md)。
+初次迁入已按用户要求发布到 `agentscope-ai/Blink`。仓库整理不修改原工作区源码，不启动模型，不改变现有 QwenPaw 配置。原应用的历史发布检查记录留在原工作区；本仓库使用 [当前验证记录](VERIFICATION.md)。
 
 ## 模型确定后的补齐项
 

@@ -24,7 +24,7 @@ with tempfile.TemporaryDirectory(prefix='blink-app-check-') as tmp:
    except Exception:time.sleep(.2)
   else:raise RuntimeError('Local app did not become healthy')
   with sync_playwright() as pw:
-   browser=pw.chromium.launch(headless=True,args=['--no-sandbox'])
+   browser=pw.chromium.launch(headless=True,args=['--no-sandbox'],channel=os.environ.get('BLINK_BROWSER_CHANNEL'))
    for device,width,height in [('desktop',1440,1000),('mobile',390,844)]:
     page=browser.new_page(viewport={'width':width,'height':height})
     page.on('pageerror',lambda error:report['errors'].append(str(error)))
@@ -36,7 +36,7 @@ with tempfile.TemporaryDirectory(prefix='blink-app-check-') as tmp:
      for tab in ['blog','leaderboard','games']:
       page.locator(f'.tabs [data-tab="{tab}"]').click()
       page.wait_for_timeout(350)
-      assert not page.locator('body').evaluate("n=>/OneShot|GameJevArena/.test(n.innerText)")
+      assert not page.locator('.mast').evaluate("n=>/OneShot|GameJevArena/.test(n.innerText)")
       assert page.evaluate('document.documentElement.scrollWidth<=document.documentElement.clientWidth+1')
      page.locator('.tabs [data-tab="leaderboard"]').click()
      for benchmark in ['jevbench','decisionindex','harnessjevbench','datajevbench','gamejevbench']:

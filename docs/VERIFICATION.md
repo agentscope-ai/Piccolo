@@ -1,6 +1,27 @@
 # Blink 验证记录
 
-验证日期：2026-10-26。仅启动临时 `127.0.0.1` 服务，检查完成后关闭。未调用真实模型、使用 GPU、公开部署或推送远端。
+本文保留分次验证结果。验证均使用本机 `127.0.0.1` 服务，不调用真实模型；仓库同步不等于官网部署。
+
+## 2026-10-27：完整 Showcase 与文档更新
+
+- 完整归档与 JevArena 来源提交中的文件逐字节相等，SHA-256 为 `75895e17ec9c1bda1309d9b1a865f3a7c577c176ef16eb0e32363bf957570ad2`。
+- `arena/scripts/export_home_decision.py --check`：4 局、4 个 checkpoint、116 次转换的动作、终局与时钟校验通过。
+- `python -m unittest tests.test_home_decision -v`：4 项通过，包括拒绝改动方块/动作、拒绝把预算耗尽标为获胜、区分模型与自动步骤。
+- 新独立播放器：1440px / 390px × 中英文 × 4 游戏，共 16 组通过；无 JS 异常、无横向溢出、无模型请求。终局、准确拖动、重置、Tetris 重力、快速切换、键盘、滑动和减少动态效果检查通过。
+- Arena 内嵌播放器：相同 16 组检查通过，另验证切换页面标签后暂停播放；两个入口合计 32 组，模型请求数为 0。
+- 旧整页回归：桌面/手机 × 中英文的 3 个标签与 5 个榜单、8 组早期 Showcase，以及榜单中的原始归档回放通过，无 JS 异常。
+- 新素材：从交互播放器生成 4 张 GIF、4 张终局 PNG；76 个不同采样状态，含终局停留共 88 帧。记录见 `assets/showcase/completed/render-manifest.json`。
+- 修复迁入播放器的进度条读取顺序：暂停刷新控件前保存目标位置；新增断言检查实际步号与拖到终局。补齐 Tetris v1–v4 的渲染识别和按记录时间插值。
+- 中英文 README、Blog、来源说明及占位 README 的本地 Markdown 链接检查通过；JS / Python 语法与 `git diff --check` 通过。
+- 发行范围检查通过：267 个 Arena 文件，私密内容规则未发现匹配。
+
+本次使用 Python 3.12、Playwright 1.63、本机 Chrome；服务依赖使用仓库要求的 FastAPI、Uvicorn、HTTPX、Pydantic、python-chess 与 OpenSpiel 版本，未安装或验证本次未用到的 TextArena / RLCard 插件。报告和截图保存在忽略目录 `var/completed-replay-check/`、`var/verification/`。
+
+本次没有重跑完整 Arena 测试，也没有验证新模型、训练或公开部署。下文全量测试的历史失败记录仍然有效。
+
+## 2026-10-26：初始迁入验证
+
+以下是初次整理时的本机检查，不代表本次重跑结果。
 
 ## 此次通过的检查
 

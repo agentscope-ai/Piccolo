@@ -1,6 +1,7 @@
 /* Shared Tetris renderer for play and recorded replay. No game clock or input. */
 window.JevTetrisRenderer=(()=>{
  const tr=(en,zh)=>window.JevI18n?.t(en,zh)??en;
+ const supports=g=>g?.kind==='tetris_placement'&&['tetris-realtime-v1','tetris-realtime-v2-visible-consequences','tetris-realtime-v3-persistent-intent','tetris-realtime-v4-latency-contract'].includes(g.engine_revision);
  const colors={I:'#68a8b8',O:'#d9af57',T:'#a38abf',S:'#80aa73',Z:'#c97d76',J:'#758fc4',L:'#ce9b69'};
  const shape=g=>PlayDraw.rotations(g.active?.piece||g.piece)[g.active?.rotation||0]||[];
  function landing(g){
@@ -62,7 +63,7 @@ window.JevTetrisRenderer=(()=>{
   const phase=!g.started?tr('Ready','待开始'):g.outcome?tr('Finished','已结束'):tr(({falling:'Falling',locking:'Locking',clearing:'Clearing'})[g.phase]||'Falling',({falling:'下落中',locking:'即将锁定',clearing:'消行中'})[g.phase]||'下落中');
   if(mobile){text(g.lines+' / 4 '+tr('lines','行'),32,85,23,'#426f60',700);text(phase,202,85,18);}
   else{text(String(g.lines).padStart(2,'0'),632,288,50,'#426f60',700);text('/ 04 '+tr('lines','行'),708,288,19);text(phase,635,350,20);text(g.steps+' / 40 '+tr('pieces','块'),635,390,18);}
-  if(!g.started&&!g.outcome){rect(ox+12,oy+bh/2-38,bw-24,76,8,'#f7f9efed');c.textAlign='center';text(tr('Press a key to start','按键开始下落'),ox+bw/2,oy+bh/2+7,mobile?24:22,'#426f60',600);c.textAlign='left';}
+  if(!g.started&&!g.outcome){rect(ox+12,oy+bh/2-38,bw-24,76,8,'#f7f9efed');c.textAlign='center';text(tr('Key or model to start','按键或模型开始下落'),ox+bw/2,oy+bh/2+7,mobile?24:22,'#426f60',600);c.textAlign='left';}
  }
- return {draw,visualState,position};
+ return {draw,visualState,position,supports};
 })();

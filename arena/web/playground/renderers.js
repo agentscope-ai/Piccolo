@@ -156,7 +156,7 @@ const PlayDraw=(()=>{
  txt('Gripper  '+g.tool.join(' · '),35,500,14,'#8199a6');txt(g.holding?'Holding':'Gripper open',35,475,15,g.holding?'#5a9686':'#91a5ad',500);txt('One cell per move',708,493,14,'#a0aeb5');
  const a0=p([4,6,-.74]),ax=p([6,6,-.74]),ay=p([4,4,-.74]);line([a0,ax],'#acbdc2',2);txt('Right +X',ax[0]+8,ax[1]+10,11,'#91a6af');line([a0,ay],'#acbdc2',2);txt('Back −Y',ay[0]+8,ay[1],11,'#91a6af');
  }
- function draw(g,o={}){if(g.kind==='tetris_placement'&&g.engine_revision==='tetris-realtime-v1'){window.JevTetrisRenderer.draw(g,o);return;}const canvas=document.getElementById('showcaseCanvas'),mobileSnake=g.kind==='snake_navigation'&&g.engine_revision&&window.innerWidth<=620,w=mobileSnake?540:900,h=mobileSnake?620:540;if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;}c=canvas.getContext('2d');c.clearRect(0,0,900,540);c.textAlign='left';c.textBaseline='alphabetic';if(g.kind==='jump_jump')jump(g,o);else if(g.kind==='snake_navigation')snake(g,o);else if(g.kind==='tetris_placement')tetris(g,o);else if(g.kind==='merge_2048')merge2048(g,o);else if(g.kind==='sokoban_puzzle')sokoban(g,o);else if(g.kind==='robot_pick_cola')robot(g,o)}
+ function draw(g,o={}){if(window.JevTetrisRenderer?.supports(g)){window.JevTetrisRenderer.draw(g,o);return;}const canvas=document.getElementById('showcaseCanvas'),mobileSnake=g.kind==='snake_navigation'&&g.engine_revision&&window.innerWidth<=620,w=mobileSnake?540:900,h=mobileSnake?620:540;if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;}c=canvas.getContext('2d');c.clearRect(0,0,900,540);c.textAlign='left';c.textBaseline='alphabetic';if(g.kind==='jump_jump')jump(g,o);else if(g.kind==='snake_navigation')snake(g,o);else if(g.kind==='tetris_placement')tetris(g,o);else if(g.kind==='merge_2048')merge2048(g,o);else if(g.kind==='sokoban_puzzle')sokoban(g,o);else if(g.kind==='robot_pick_cola')robot(g,o)}
  return {draw,rotations,landing};
 })();
 
@@ -194,7 +194,7 @@ window.JevNativeSceneDraw=(state,options)=>PlayDraw.draw(state,options);
 
 // Each replay owns its document and rendering state. No gameplay API is loaded.
 if(!window.__JEV_REPLAY_FRAME__)window.JevReplayRenderer=(()=>{
- const base=new URL('../',document.currentScript.src),version='tetris-realtime-20261016-v1';
+ const base=new URL('../',document.currentScript.src),version='blink-completed-replays-20261027';
  const asset=path=>new URL(path+'?v='+version,base).href;
  const escape=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const boardKinds=new Set(['othello_6x6','othello_8x8','gomoku_19x19','hex_7x7','dots_and_boxes_3x3']);
@@ -277,8 +277,8 @@ if(!window.__JEV_REPLAY_FRAME__)window.JevReplayRenderer=(()=>{
    return new Promise((resolve,reject)=>{settle=resolve;function tick(now){try{
     if(token!==epoch||destroyed)return;started??=now;const p=Math.min(1,(now-started)/duration),smooth=p*p*(3-2*p);
     if(recorded?.length>1){
-     let part=p*(recorded.length-1),i=Math.min(recorded.length-2,Math.floor(part)),q=part-i;if(kind==='tetris_placement'&&state.engine_revision==='tetris-realtime-v1'){const first=Number(recorded[0].elapsed),last=Number(recorded.at(-1).elapsed),time=first+(last-first)*p;i=0;while(i<recorded.length-2&&Number(recorded[i+1].elapsed)<=time)i++;const span=Number(recorded[i+1].elapsed)-Number(recorded[i].elapsed);q=span>0?Math.min(1,Math.max(0,(time-Number(recorded[i].elapsed))/span)):1;}const a=recorded[i],b=recorded[i+1];
-     if(kind==='sokoban_puzzle'||kind==='snake_navigation'||kind==='tetris_placement'&&state.engine_revision==='tetris-realtime-v1')paint(b,{before:a,progress:q});else paint(interpolate(a,b,q));
+     let part=p*(recorded.length-1),i=Math.min(recorded.length-2,Math.floor(part)),q=part-i;if(kind==='tetris_placement'&&win.JevTetrisRenderer?.supports(state)){const first=Number(recorded[0].elapsed),last=Number(recorded.at(-1).elapsed),time=first+(last-first)*p;i=0;while(i<recorded.length-2&&Number(recorded[i+1].elapsed)<=time)i++;const span=Number(recorded[i+1].elapsed)-Number(recorded[i].elapsed);q=span>0?Math.min(1,Math.max(0,(time-Number(recorded[i].elapsed))/span)):1;}const a=recorded[i],b=recorded[i+1];
+     if(kind==='sokoban_puzzle'||kind==='snake_navigation'||kind==='tetris_placement'&&win.JevTetrisRenderer?.supports(state))paint(b,{before:a,progress:q});else paint(interpolate(a,b,q));
     }else if(world||kind==='racing_sprint')paint(interpolate(before,state,p));
     else if(kind==='tetris_placement'||kind==='merge_2048'){win.JevSceneTransition.draw(before,state,payload.action,smooth);current=p>=1?state:before;}
     else if(transition)paint(state,{before,progress:smooth,action:payload.action});

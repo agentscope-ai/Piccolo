@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blink · Complete decision replays</title>
+  <meta name="description" content="Four complete historical game replays: inspect observations, decisions and outcomes in Blink Arena.">
+  <link rel="icon" href="./playground/logos/blink.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./playground/home-demo.css">
+  <link rel="stylesheet" href="./showcase/completed.css">
+</head>
+<body>
+  <main>
+    <header class="showcase-header">
+      <a class="showcase-brand" href="./"><img src="./playground/logos/blink.svg" alt="">Blink</a>
+      <div class="showcase-links">
+        <a href="https://decisionplayground.agentscope.io/">Decision ↗</a>
+        <button data-language="en" aria-pressed="true">EN</button>
+        <button data-language="zh" aria-pressed="false" lang="zh-CN">中文</button>
+      </div>
+    </header>
+    <section id="blogView" aria-labelledby="replayTitle">
+      <p class="showcase-kicker">BLINK / DECISIONS, IN MOTION</p>
+      <h1 id="replayTitle" data-en="Watch a decision become an outcome." data-zh="看见每一步决策，如何改变结局。">Watch a decision become an outcome.</h1>
+      <p class="showcase-intro" data-en="Four complete games. Follow the observation, inspect the available actions, and watch the recorded outcome. Seek, pause, or jump to the ending." data-zh="四局完整对局。从观察局面、选择动作，到查看环境反馈。你可以暂停、拖动进度，或直接查看结局。">Four complete games. Follow the observation, inspect the available actions, and watch the recorded outcome. Seek, pause, or jump to the ending.</p>
+      <div id="homeDecisionDemo" class="home-demo"></div>
+      <p class="showcase-note" data-en="Selected historical wins, not an aggregate benchmark or a result for the forthcoming Blink model. Original OneShot checkpoint names are preserved. The 2048 task targets 128; playback speed is adjustable and does not measure inference speed." data-zh="这些是精选历史通关样例，不是总体评测或待发布 Blink 模型的成绩。保留原 OneShot checkpoint 名称。2048 任务目标为 128；播放速度可调，不表示模型推理速度。">Selected historical wins, not an aggregate benchmark or a result for the forthcoming Blink model. Original OneShot checkpoint names are preserved. The 2048 task targets 128; playback speed is adjustable and does not measure inference speed.</p>
+    </section>
+    <footer class="showcase-links">
+      <a href="./" data-en="Open Arena" data-zh="进入 Arena">Open Arena</a>
+      <a href="./showcase.html" data-en="Earlier trajectories" data-zh="早期轨迹（含失败样例）">Earlier trajectories</a>
+      <a href="./playground/data/home-decision.json" data-en="Replay data" data-zh="回放数据">Replay data</a>
+      <a href="https://github.com/agentscope-ai/Blink">GitHub ↗</a>
+    </footer>
+  </main>
+  <script src="./showcase/completed.js"></script>
+  <script src="./playground/renderers.js"></script>
+  <script src="./playground/home-demo.js"></script>
+</body>
+</html>
