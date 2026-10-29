@@ -50,14 +50,14 @@ def render(root=ROOT, game=None):
                 page.goto(f'http://127.0.0.1:{server.server_port}/showcase.html?game={slug}')
                 page.wait_for_function("document.documentElement.dataset.ready==='true'")
                 for frame in page.frames:frame.evaluate('document.fonts.ready')
-                segments=page.evaluate('BlinkShowcase.timeline');duration=page.evaluate('BlinkShowcase.duration')
+                segments=page.evaluate('PiccoloShowcase.timeline');duration=page.evaluate('PiccoloShowcase.duration')
                 assert sorted({s['step'] for s in segments})==list(range(len(clip['steps'])))
                 folder=Path(temp)/slug;folder.mkdir();target=output/('completed' if slug in COMPLETED else '')
                 target.mkdir(parents=True,exist_ok=True)
                 ordinal=0;coverage=[]
                 def capture(t):
                     nonlocal ordinal
-                    state=page.evaluate('(t)=>BlinkShowcase.sample(t)',t)
+                    state=page.evaluate('(t)=>PiccoloShowcase.sample(t)',t)
                     assert page.locator('#stage iframe').evaluate("f=>{const c=[...f.contentDocument.querySelectorAll('canvas')].find(c=>c.getBoundingClientRect().width>0);return c.getBoundingClientRect().bottom<=f.clientHeight+1}"), 'Clipped game canvas'
                     page.locator('#capture').screenshot(path=str(folder/f'{ordinal:05d}.png'),animations='disabled')
                     ordinal+=1

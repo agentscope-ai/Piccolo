@@ -1,4 +1,4 @@
-/* Comparison workspace. Colors and typography inherit the shared Blink tokens. */
+/* Comparison workspace. Colors and typography inherit the shared Piccolo tokens. */
 #casesView,#embodiedView,#showcaseBrowse{display:none!important}
 #leaderboardView{min-width:0;color:var(--ink);font-size:13px;line-height:1.6}
 #leaderboardView .leaderboard-panel{padding:0;border:0!important;background:transparent;box-shadow:none!important}

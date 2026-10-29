@@ -101,7 +101,7 @@ def create_app(*, data=DATA, seed=SEED, web=WEB, config=None, prefix='', fronten
         await sessions.close()
         await providers.close()
 
-    app = FastAPI(title='Blink Arena API', version='1.0.0', lifespan=lifespan,
+    app = FastAPI(title='Piccolo Arena API', version='1.0.0', lifespan=lifespan,
                   openapi_url=prefix+'/api/openapi.json', docs_url=None, redoc_url=None)
     app.add_middleware(GZipMiddleware, minimum_size=1000)
     app.state.providers, app.state.connections = providers, connections
@@ -344,7 +344,7 @@ def create_app(*, data=DATA, seed=SEED, web=WEB, config=None, prefix='', fronten
         if (evaluations.root/'latest.json').is_file():
             archive = await asyncio.to_thread(Exporter(evaluations.root, Path(data)/'replay.js').export, data_only=True)
         if not archive and (evaluations.leaderboard_dir/'arena-replays.json').exists(): archive = json.loads((evaluations.leaderboard_dir/'arena-replays.json').read_text())
-        return Response('window.BlinkArenaReplayArchive='+json.dumps(archive or {},ensure_ascii=False)+';', media_type='application/javascript')
+        return Response('window.PiccoloArenaReplayArchive='+json.dumps(archive or {},ensure_ascii=False)+';', media_type='application/javascript')
 
     def board_payload(ident):
         item = board_sessions.get(ident)

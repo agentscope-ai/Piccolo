@@ -4,11 +4,11 @@ window.JevModelLabels=(()=>{
  // These are the user's release names, not dates inferred from filenames.
  // Both legacy SFT checkpoints are registered under the 20261010 directory.
  const releases={
-  'oneshot27b-100k-iter999':{name:'Blink 27B SFT-1012',step:1000},
-  'oneshot27b-100k-iter1971':{name:'Blink 27B SFT-1012',step:1972},
-  'oneshot27b-gameplay-terminal-rl4':{name:'Blink 27B RL-1012'},
-  'oneshot27b-control-reviewed-sft-iter310':{name:'Blink 27B SFT-1015'},
-  'oneshot27b-game-rl-native-iter17':{name:'Blink 27B RL-1019-iter17'}
+  'oneshot27b-100k-iter999':{name:'Piccolo 27B SFT-1012',step:1000},
+  'oneshot27b-100k-iter1971':{name:'Piccolo 27B SFT-1012',step:1972},
+  'oneshot27b-gameplay-terminal-rl4':{name:'Piccolo 27B RL-1012'},
+  'oneshot27b-control-reviewed-sft-iter310':{name:'Piccolo 27B SFT-1015'},
+  'oneshot27b-game-rl-native-iter17':{name:'Piccolo 27B RL-1019-iter17'}
  };
  const families={'qwen3.6-35b-a3b':'Qwen3.6 35B-A3B','qwen3.8-27b':'Qwen3.8 27B','qwen3.8-max':'Qwen3.8 Max'};
  const text=value=>typeof value==='string'?value:'';
@@ -19,17 +19,17 @@ window.JevModelLabels=(()=>{
   const supplied=identity&&typeof identity==='object'?identity:{};
   const info=supplied.model_identity||supplied.identity||supplied;
   const keys=[id,info.source_model,info.model_key,info.model_id,info.requested_model,info.served_model].map(text).filter(Boolean).map(value=>value.toLowerCase());
-  const fallbackLabel=(text(fallback)||text(record?.name)||text(record?.model)||text(id)||tr('Unknown model','未知模型')).replace(/QwenJev|OneShot/gi,'Blink');
+  const fallbackLabel=(text(fallback)||text(record?.name)||text(record?.model)||text(id)||tr('Unknown model','未知模型')).replace(/QwenJev|OneShot/gi,'Piccolo');
   const provider=text(info.provider||supplied.provider).toLowerCase();
   const path=text(info.model_path||info.checkpoint||info.checkpoint_path||supplied.checkpoint).toLowerCase();
   let release=keys.map(key=>releases[key]).find(Boolean);
   // Explicit recorded training generations may also identify archived rows whose ID differs.
   const newGeneration=path.match(/(?:^|\/)jev_(sft|rl)_27b_[^/]*_20261015(?:-v\d+)?\//);
-  if(newGeneration)release={name:'Blink 27B '+newGeneration[1].toUpperCase()+'-1015'};
-  else if(/(?:^|\/)jev_rl_27b_gameplay_20261012\//.test(path))release={name:'Blink 27B RL-1012'};
+  if(newGeneration)release={name:'Piccolo 27B '+newGeneration[1].toUpperCase()+'-1015'};
+  else if(/(?:^|\/)jev_rl_27b_gameplay_20261012\//.test(path))release={name:'Piccolo 27B RL-1012'};
   else if(!release&&/(?:^|\/)jev_sft_27b_100k_20261010\//.test(path)){
    const iter=path.match(/\/iter_(0000999|0001971)_hf(?:\/|$)/);
-   release={name:'Blink 27B SFT-1012',...(iter?{step:Number(iter[1])+1}:{})};
+   release={name:'Piccolo 27B SFT-1012',...(iter?{step:Number(iter[1])+1}:{})};
   }
   const fromId=keys.some(key=>key.startsWith('dashscope-')||key.endsWith('-dashscope'))?'dashscope'
     :keys.some(key=>key in releases||key==='qwen3.8-27b-base'||key==='qwen3.6-35b-a3b-base')||release?'local':'';

@@ -1,4 +1,4 @@
-"""Check the local Blink application; never call a model or publish a site."""
+"""Check the local Piccolo application; never call a model or publish a site."""
 import argparse,json,os,socket,subprocess,sys,tempfile,time,urllib.request
 from pathlib import Path
 from playwright.sync_api import sync_playwright
@@ -31,8 +31,8 @@ with tempfile.TemporaryDirectory(prefix='blink-app-check-') as tmp:
     page.goto(base,wait_until='networkidle')
     for lang in ['en','zh']:
      page.locator(f'[data-language="{lang}"]').click()
-     assert page.locator('.brand strong').inner_text().strip()=='Blink'
-     assert 'Blink' in page.title()
+     assert page.locator('.brand strong').inner_text().strip()=='Piccolo'
+     assert 'Piccolo' in page.title()
      for tab in ['blog','leaderboard','games']:
       page.locator(f'.tabs [data-tab="{tab}"]').click()
       page.wait_for_timeout(350)
@@ -42,16 +42,16 @@ with tempfile.TemporaryDirectory(prefix='blink-app-check-') as tmp:
      for benchmark in ['jevbench','decisionindex','harnessjevbench','datajevbench','gamejevbench']:
       page.locator(f'[data-benchmark="{benchmark}"]').click()
       page.wait_for_timeout(200)
-      assert not page.locator('body').evaluate("n=>/OneShot|GameJevArena|GameBlinkArena/.test(n.innerText)")
+      assert not page.locator('body').evaluate("n=>/OneShot|GameJevArena|GamePiccoloArena/.test(n.innerText)")
       assert page.evaluate('document.documentElement.scrollWidth<=document.documentElement.clientWidth+1')
      report['views'].append({'device':device,'language':lang,'tabs':3,'benchmarks':5})
      page.screenshot(path=str(art/f'blink-{device}-{lang}.png'))
     for slug in ['othello','merge-2048','jump-jump','tetris']:
      page.goto(base+'/showcase.html?game='+slug)
      page.wait_for_function("document.documentElement.dataset.ready==='true'")
-     n=page.evaluate('BlinkShowcase.count')
+     n=page.evaluate('PiccoloShowcase.count')
      initial=page.locator('#stage').screenshot()
-     page.evaluate('(n)=>BlinkShowcase.seek(n-1)',n)
+     page.evaluate('(n)=>PiccoloShowcase.seek(n-1)',n)
      final=page.locator('#stage').screenshot()
      assert initial!=final,(slug,'unchanged frame')
      assert page.locator('#position').inner_text().startswith(f'State {n} / {n}')

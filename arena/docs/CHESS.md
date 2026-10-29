@@ -4,7 +4,7 @@
 
 ## 与 StartLux 的关系
 
-参考 [StartLux-Decision](https://github.com/StartLuxLabs/Startlux-Decision) 的国际象棋决策组织：规则库生成合法着法，模型看到棋盘、子力、棋谱和可观察后果，再通过一次 Choice 选择着法。本版使用现有依赖 `python-chess` 处理规则，在 BlinkArena 的标准 Environment 中实现接线，没有复制一套训练专用棋局。
+参考 [StartLux-Decision](https://github.com/StartLuxLabs/Startlux-Decision) 的国际象棋决策组织：规则库生成合法着法，模型看到棋盘、子力、棋谱和可观察后果，再通过一次 Choice 选择着法。本版使用现有依赖 `python-chess` 处理规则，在 PiccoloArena 的标准 Environment 中实现接线，没有复制一套训练专用棋局。
 
 候选使用 UCI 作稳定 ID，SAN 作可读标签。每个合法着法均保留，候选附带吃子、易位、吃过路兵、升变、将军、将死、自动和棋与落点几何攻击事实。所有事实由当前公开棋盘和历史的一步规则执行计算。几何攻击明确注明可能来自被牵制棋子，不等同于必然能吃子；没有搜索排名、Stockfish 估分或教师答案。
 

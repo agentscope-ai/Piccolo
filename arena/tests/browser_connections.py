@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Exercise the model connection UI against a running local BlinkArena backend.
+"""Exercise the model connection UI against a running local PiccoloArena backend.
 
     python tests/browser_connections.py --base-url http://127.0.0.1:8092/
     python tests/browser_connections.py --base-url http://127.0.0.1:8093/jev/

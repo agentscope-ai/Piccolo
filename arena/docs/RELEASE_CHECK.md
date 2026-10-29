@@ -1,6 +1,6 @@
-# Blink Arena 发行检查
+# Piccolo Arena 发行检查
 
-本目录从现有前端整理而来。此次验证结果与已知历史失败统一记录在 [Blink 验证记录](../../docs/VERIFICATION.md)；上游旧版本的测试数字不作为当前版本的验收结论。
+本目录从现有前端整理而来。此次验证结果与已知历史失败统一记录在 [Piccolo 验证记录](../../docs/VERIFICATION.md)；上游旧版本的测试数字不作为当前版本的验收结论。
 
 ## 可重复运行
 
@@ -15,7 +15,7 @@ python scripts/build_release.py --check-only
 
 需要独立服务的测试须按测试说明设置 `JEV_TEST_URL`，未设置时会显式跳过。当前完整测试仍有已复现的上游旧断言失败，详见验证记录。
 
-在 Blink 仓库根目录运行新的浏览器检查：
+在 Piccolo 仓库根目录运行新的浏览器检查：
 
 ```bash
 python scripts/verify_frontend.py --server-python arena/.venv/bin/python
@@ -29,6 +29,6 @@ python scripts/verify_frontend.py --server-python arena/.venv/bin/python
 python scripts/build_release.py --output-dir ../dist
 ```
 
-此命令在 `arena/` 下执行，仅打包 Arena 组件。它使用发行文件清单并排除虚拟环境、运行数据、日志、凭据、缓存和内部交接文档；拒绝覆盖同名归档。完整 Blink 项目另含根目录 README、Showcase 素材及安全审批 Skill。
+此命令在 `arena/` 下执行，仅打包 Arena 组件。它使用发行文件清单并排除虚拟环境、运行数据、日志、凭据、缓存和内部交接文档；拒绝覆盖同名归档。完整 Piccolo 项目另含根目录 README、Showcase 素材及安全审批 Skill。
 
 本次没有构建 Docker 镜像、公开部署、调用真实模型或接通 QwenPaw 服务。历史轨迹展示不构成未来模型的能力验证。

@@ -263,7 +263,7 @@
     jobs.set(node,job);node.style.opacity='0';canvas.dataset.active=String(jobs.size);
     if(!frame)frame=requestAnimationFrame(tick);return true;
   }
-  window.BlinkDust={reveal:(node,direction=1,delay=0)=>start(node,'in',direction,delay),dissolve:(node,direction=1)=>start(node,'out',direction,0,true),cancel};
+  window.PiccoloDust={reveal:(node,direction=1,delay=0)=>start(node,'in',direction,delay),dissolve:(node,direction=1)=>start(node,'out',direction,0,true),cancel};
   window.addEventListener('resize',resize,{passive:true});
   window.addEventListener('scroll',cancel,{passive:true});
   document.addEventListener('visibilitychange',()=>{if(document.hidden)cancel();});

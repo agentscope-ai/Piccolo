@@ -1,7 +1,7 @@
-# Blink 项目约定
+# Piccolo 项目约定
 
 - 默认中文回复，项目说明使用 Markdown。
-- 对外项目名为 Blink，交互与评测组件名为 Blink Arena。
+- 对外项目名为 Piccolo，交互与评测组件名为 Piccolo Arena。
 - `arena/` 是可独立运行的前端、HTTP 服务和共享游戏引擎；Python 包为 `blink_arena`。
 - `models/`、`inference/`、`training/`、`data/`、`evaluation/` 与 `examples/` 暂用 README 说明待发布内容。模型尚未确定，不补造权重、参数、成绩或训练实现。
 - 复用共享引擎及已有轨迹，展示素材从实际归档状态渲染；不得把历史策略轨迹称为待发布模型的成绩。

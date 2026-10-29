@@ -20,7 +20,7 @@ def asset_directory():
         return packaged
     # The retained source-tools adapter can consume the sibling standalone
     # package; installed standalone releases resolve the first path above.
-    return location.parents[3] / 'BlinkArena' / 'web' / 'playground'
+    return location.parents[3] / 'PiccoloArena' / 'web' / 'playground'
 
 
 class WorldCoreDriver:

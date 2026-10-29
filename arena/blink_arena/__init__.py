@@ -1,4 +1,4 @@
-"""BlinkArena: portable games, model adapters and evaluation records."""
+"""PiccoloArena: portable games, model adapters and evaluation records."""
 from pathlib import Path
 import sys
 

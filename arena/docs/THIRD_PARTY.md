@@ -8,7 +8,7 @@
 | --- | --- | --- |
 | `web/playground/terraria.js` | [Xinji-Mai / Terramai · tasty-world.js](https://github.com/Xinji-Mai/Xinji-Mai.github.io/blob/master/assets/js/tasty-world.js) | 沿用 Terramai 像素沙盒的世界、物理和绘制基础，在此之上接入 Jev 公开观测、模型动作、种子、终局和重演控制。不是原商业游戏 Terraria 的代码或素材包。 |
 
-Terramai 的来源在 `jev_demo_showcases.py` 的 `terraria_survival` 元信息中明确记录，本地文件保留了原 Terramai 文件头及引擎骨架。上游仓库的 [LICENSE](https://github.com/Xinji-Mai/Xinji-Mai.github.io/blob/master/LICENSE) 是带站点模板版权声明的 MIT 文本；所引用的游戏文件未单独声明许可。这里保留精确代码与许可链接，不把模板的版权作者改写为游戏作者，也不据此给整个 BlinkArena 仓库指定统一许可证。
+Terramai 的来源在 `jev_demo_showcases.py` 的 `terraria_survival` 元信息中明确记录，本地文件保留了原 Terramai 文件头及引擎骨架。上游仓库的 [LICENSE](https://github.com/Xinji-Mai/Xinji-Mai.github.io/blob/master/LICENSE) 是带站点模板版权声明的 MIT 文本；所引用的游戏文件未单独声明许可。这里保留精确代码与许可链接，不把模板的版权作者改写为游戏作者，也不据此给整个 PiccoloArena 仓库指定统一许可证。
 
 ## 玩法、交互与绘制参考
 

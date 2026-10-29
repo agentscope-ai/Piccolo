@@ -60,7 +60,7 @@ UNO 在人工换位时显示交接遮罩。换位前不返回下一位玩家的�
 
 本机完整检查覆盖：
 
-- BlinkArena 全量 pytest，包括七项原生协议、隐私、种子与并发、HTTP 会话、双方 RL 席位、奖励结算、篡改拒绝及 240 步冷启动回放。
+- PiccoloArena 全量 pytest，包括七项原生协议、隐私、种子与并发、HTTP 会话、双方 RL 席位、奖励结算、篡改拒绝及 240 步冷启动回放。
 - 当前 HTML/JS 的 Chromium 检查：7 项可发现、专用渲染、人工操作、fixture 模型操作；私有游戏换位与分类导航同时检查。
 - 现有 Qwen tokenizer 与 SFT/RL formatter 的单 token Choice：7 游戏及数独两个阶段均通过。
 - CuES 注册表、奖励、RL 控制入口、前端集成与共享 episode runner 的回归。

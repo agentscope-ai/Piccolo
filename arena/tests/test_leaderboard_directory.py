@@ -33,7 +33,7 @@ def test_one_directory_serves_benchmarks_arena_and_replays(tmp_path):
         assert arena['by_game'] == original['by_game']
         replay = client.get('/playground/visible-control.js')
         assert replay.status_code == 200
-        archive = json.loads(replay.text.removeprefix('window.BlinkArenaReplayArchive=').removesuffix(';'))
+        archive = json.loads(replay.text.removeprefix('window.PiccoloArenaReplayArchive=').removesuffix(';'))
         assert archive == json.loads((directory / 'arena-replays.json').read_text())
 
 

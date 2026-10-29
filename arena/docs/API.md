@@ -264,7 +264,7 @@ curl --fail-with-body -sS -c "$jev_cookie_jar" -b "$jev_cookie_jar" \
 {
   "schema_version": "jev.leaderboard.v1",
   "benchmark_id": "arena",
-  "title": "Blink Arena",
+  "title": "Piccolo Arena",
   "version": "import-example-v1",
   "metric": "elo",
   "score_scale": [0, 3000],

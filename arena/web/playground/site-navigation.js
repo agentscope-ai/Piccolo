@@ -10,13 +10,13 @@
     const clear=()=>{animations.delete(animation);if(group.get(slot)===animation)group.delete(slot);if(!group.size&&slots.get(node)===group)slots.delete(node);};
     animation.finished.then(clear,clear);return animation;
   }
-  function cancelAll(){for(const animation of animations)animation.cancel();animations.clear();slots.clear();window.BlinkDust?.cancel();}
+  function cancelAll(){for(const animation of animations)animation.cancel();animations.clear();slots.clear();window.PiccoloDust?.cancel();}
   function reveal(node){motion(node,[{opacity:.5},{opacity:1}],{duration:200,easing:'cubic-bezier(.2,.7,.3,1)'});}
   function pageText(){return [document.getElementById('sitePageContent')].filter(Boolean);}
   function intro(view,direction=1,delay=60){
     // One paint group covers everything below the stationary glass tabs,
     // including canvases, iframe worlds, controls and the footer.
-    for(const node of pageText())if(!window.BlinkDust?.reveal(node,direction,delay))reveal(node);
+    for(const node of pageText())if(!window.PiccoloDust?.reveal(node,direction,delay))reveal(node);
   }
   intro(document.querySelector('.tabs button.active')?.dataset.tab||'blog',1,80);
   let gameTimer=0;
@@ -33,10 +33,10 @@
       if(!target||!current||target===current)return;
       const buttons=[...nav.querySelectorAll('button')],direction=buttons.indexOf(target)>buttons.indexOf(current)?1:-1;
       // Capture outgoing content while it still has layout, before app.js hides the old page.
-      cancelAll();for(const node of pageText(current.dataset.tab))window.BlinkDust?.dissolve(node,direction);
+      cancelAll();for(const node of pageText(current.dataset.tab))window.PiccoloDust?.dissolve(node,direction);
     },true);
     const indicatorClass=primary?'nav-glass':'nav-underline';
-    nav.setAttribute('role','tablist');if(primary)nav.setAttribute('aria-label','Blink');
+    nav.setAttribute('role','tablist');if(primary)nav.setAttribute('aria-label','Piccolo');
     function reflect(){
       frame=0;const selected=nav.querySelector('button.active');if(!selected||!nav.getClientRects().length)return;
       const buttons=[...nav.querySelectorAll('button')];

@@ -79,7 +79,7 @@ class Leaderboards:
             arena_updated_at = datetime.fromtimestamp(arena.stat().st_mtime, timezone.utc).isoformat()
         except FileNotFoundError:
             arena_updated_at = None
-        benchmarks.append({'id': 'gamejevbench', 'title': 'Blink Arena', 'groups': [], 'display_rows': [],
+        benchmarks.append({'id': 'gamejevbench', 'title': 'Piccolo Arena', 'groups': [], 'display_rows': [],
                            'updated_at': arena_updated_at, 'source_file': arena.name})
         latest = max((b['updated_at'] for b in benchmarks if b.get('updated_at')), default=None)
         return {'revision': 'jev.portable-leaderboards.v1', 'updated_at': latest,

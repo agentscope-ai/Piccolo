@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Read-only browser checks for imported tables and bilingual radar charts.
 
-Run against a local BlinkArena service. This does not connect a model or start an
+Run against a local PiccoloArena service. This does not connect a model or start an
 evaluation. Screenshots are written to the ignored var/browser directory.
 """
 import argparse
@@ -32,7 +32,7 @@ def main():
             page.on('pageerror', lambda error: errors.append(str(error)))
             page.on('console', lambda message: errors.append(message.text) if message.type == 'error' else None)
             page.goto(args.url, wait_until='domcontentloaded')
-            assert page.locator('.brand strong').inner_text() == 'Blink'
+            assert page.locator('.brand strong').inner_text() == 'Piccolo'
             assert page.locator('.tabs .tab').evaluate_all('(nodes)=>nodes.map(n=>n.dataset.tab)') == ['blog','leaderboard','games']
             assert page.locator('#blogView').is_visible()
             assert page.locator('[data-tab="games"]').inner_text() == 'Playground'

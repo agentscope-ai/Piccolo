@@ -1,12 +1,12 @@
-<p align="center"><img src="arena/web/playground/logos/blink.svg" width="72" alt="Blink"></p>
+<p align="center"><img src="arena/web/playground/logos/blink.svg" width="72" alt="Piccolo"></p>
 
-<h1 align="center">Blink</h1>
+<h1 align="center">Piccolo</h1>
 <p align="center"><strong>Decisions, in motion.</strong></p>
 <p align="center"><a href="https://decisionplayground.agentscope.io/">Decision · Website</a> · English / <a href="README_zh.md">简体中文</a> · <a href="docs/blog.md">Blog 中文</a> · <a href="arena/README.md">Arena docs</a></p>
 
-Blink connects **observation, action, and feedback** in an inspectable decision loop. Its Arena brings together interactive games, shared environment rules, model evaluation, and replayable trajectories. Explore the [Decision website](https://decisionplayground.agentscope.io/), or run the included Arena locally.
+Piccolo connects **observation, action, and feedback** in an inspectable decision loop. Its Arena brings together interactive games, shared environment rules, model evaluation, and replayable trajectories. Explore the [Decision website](https://decisionplayground.agentscope.io/), or run the included Arena locally.
 
-**Release status:** Arena code, historical replays, and the safety review integration scaffold are included. Blink model weights, a model card, dedicated inference and training recipes, and release evaluation are **coming soon**. Historical checkpoint names identify the recorded experiments; they are not the identity or results of a forthcoming Blink release.
+**Release status:** Piccolo-4B, Piccolo-9B, and Piccolo-27B are published as complete checkpoints, Q8_0 GGUFs, and Q4_K_M GGUFs. See [published models and QwenPaw setup](docs/MODELS.md). Training recipes and formal task benchmarks remain **coming soon**. Historical Arena checkpoint names identify the recorded experiments and do not establish results for this model release.
 
 ## See decisions unfold
 
@@ -45,7 +45,7 @@ python3 -m http.server 8080 --bind 127.0.0.1 --directory arena/web
 
 Open **http://127.0.0.1:8080/completed-showcase.html** for the four completed replays, or **http://127.0.0.1:8080/showcase.html** for the other archived examples. No model, API key, or backend service is needed. Stop this server before starting Arena on the same port.
 
-### Run Blink Arena
+### Run Piccolo Arena
 
 Use Python 3.12 and Node.js 22:
 
@@ -64,10 +64,10 @@ Open **http://127.0.0.1:8080/** to play manually, browse imported benchmark resu
 | --- | --- | --- |
 | Arena | Frontend, HTTP API, shared game engines, archived results and replays | See [Arena docs](arena/README.md) for supported behavior |
 | Model | Historical identities remain attached to their replays | [Model card, weights and terms](models/README.md) |
-| Inference | Arena can connect to an existing compatible service | [Blink model serving recipe](inference/README.md) |
+| Inference | Arena can connect to an existing compatible service | [Piccolo model serving recipe](inference/README.md) |
 | Training and data | Shared environment and rollout interfaces | [Training recipe](training/README.md), [data release](data/README.md) |
 | Evaluation | Existing Arena evaluation code and historical result files | [Release-specific settings and results](evaluation/README.md) |
-| Examples | Manual play, replay inspection, safety review scaffold | [End-to-end Blink model examples](examples/README.md) |
+| Examples | Manual play, replay inspection, safety review scaffold | [End-to-end Piccolo model examples](examples/README.md) |
 
 A placeholder directory documents planned work; it does not contain an executable implementation.
 
@@ -86,11 +86,11 @@ docs/                       Blog, provenance, release scope and verification
 scripts/                    Showcase rendering and frontend verification
 skills/blink-safety-review/  Action review integration scaffold
 models/                     Coming soon: model card, weights and release terms
-inference/                  Coming soon: Blink inference and serving
+inference/                  Coming soon: Piccolo inference and serving
 training/                   Coming soon: training recipes and configuration
 data/                       Coming soon: dataset documentation and release
 evaluation/                 Coming soon: release evaluation and results
-examples/                   Coming soon: Blink model integration examples
+examples/                   Coming soon: Piccolo model integration examples
 ```
 
 ## Reproduce and contribute

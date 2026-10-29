@@ -117,8 +117,8 @@ def build(root, output, name=None, *, check_only=False):
     if output.is_relative_to(root):
         raise ValueError('release output must be outside the source repository')
     output.mkdir(parents=True, exist_ok=True)
-    name = name or 'Blink-' + datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ') + '-rollout'
-    if not re.fullmatch(r'(?:Blink|BlinkArena)-[A-Za-z0-9._-]+', name):
+    name = name or 'Piccolo-' + datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ') + '-rollout'
+    if not re.fullmatch(r'(?:Piccolo|PiccoloArena)-[A-Za-z0-9._-]+', name):
         raise ValueError('invalid release name')
     archive, manifest = output / (name + '.tar.gz'), output / (name + '.manifest.json')
     if archive.exists() or manifest.exists():
@@ -129,7 +129,7 @@ def build(root, output, name=None, *, check_only=False):
         with os.fdopen(fd, 'wb') as raw:
             with tarfile.open(fileobj=raw, mode='w:gz', format=tarfile.PAX_FORMAT) as tar:
                 for relative, data, mtime, executable in payloads:
-                    member = tarfile.TarInfo('BlinkArena/' + relative)
+                    member = tarfile.TarInfo('PiccoloArena/' + relative)
                     member.size, member.mode, member.mtime = len(data), 0o755 if executable else 0o644, mtime // 1_000_000_000
                     tar.addfile(member, io.BytesIO(data))
             raw.flush()

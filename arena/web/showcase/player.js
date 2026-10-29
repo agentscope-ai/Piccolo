@@ -65,7 +65,7 @@
   for(const item of manifest.items){const b=document.createElement('button');b.dataset.id=item.id;b.textContent=item.id;b.onclick=()=>load(item.id).catch(fail);$('games').append(b);}
   $('seek').oninput=e=>{pause();sample(e.target.value);};$('restart').onclick=()=>{pause();sample(0);};
   $('play').onclick=()=>{if(playing){pause();return;}if(position>=duration)sample(0);playing=true;last=performance.now();$('play').textContent='Pause';raf=requestAnimationFrame(tick);};
-  window.BlinkShowcase={load,sample,seek:sample,get duration(){return duration;},get count(){return clip.steps.length;},get id(){return selected.id;},get timeline(){return timeline.map(({step,phase,start,end})=>({step:step.index,phase:phase.name,start,end}));}};
+  window.PiccoloShowcase={load,sample,seek:sample,get duration(){return duration;},get count(){return clip.steps.length;},get id(){return selected.id;},get timeline(){return timeline.map(({step,phase,start,end})=>({step:step.index,phase:phase.name,start,end}));}};
   await load(new URLSearchParams(location.search).get('game'));
  }catch(e){fail(e);}
 })();

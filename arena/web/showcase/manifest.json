@@ -4,7 +4,7 @@
   "source_run_id": "common-anchor-star-iter17-api3-20261019-v1",
   "source_revision": "jev-arena-replay-v1",
   "source_updated_at": 1792381721.6579611,
-  "scope": "Historical experiments, not results of the upcoming Blink model.",
+  "scope": "Historical experiments, not results of the upcoming Piccolo model.",
   "selection": "Fixed representative games with complete saved states; not a success-rate sample.",
   "playback": "Original renderers, saved decision states, fixed playback pace; not wall-clock video.",
   "items": [

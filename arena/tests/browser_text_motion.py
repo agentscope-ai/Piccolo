@@ -30,7 +30,7 @@ def main():
         initial=page.evaluate(PIXELS);assert initial['active']>0 and initial['pixels']>100,initial
         assert initial['pointer']=='none'
         brand=page.locator('.brand strong')
-        assert brand.inner_text()=='Blink'
+        assert brand.inner_text()=='Piccolo'
         page.locator('[data-language="zh"]').click()
         assert page.locator('.brand .eyebrow').text_content().strip()=='Decision Intelligence'
         assert page.locator('[data-tab="leaderboard"]').inner_text()=='Leaderboard'
@@ -40,7 +40,7 @@ def main():
         assert brand.evaluate('n=>getComputedStyle(n).opacity==="1"&&getComputedStyle(n).color!=="rgba(0, 0, 0, 0)"&&!n.getAnimations().length')
         page.screenshot(path=str(args.output/'intro-gather.png'))
         page.wait_for_function(RESTORED,timeout=15000)
-        assert page.locator('.brand strong').inner_text()=='Blink'
+        assert page.locator('.brand strong').inner_text()=='Piccolo'
         assert page.locator('.blog-kicker').count()==0
         assert page.evaluate("getComputedStyle(document.body).getPropertyValue('--fs-accent').trim().toLowerCase()")=='#b96e50'
         report.append({'intro':initial,'text_restored':True})

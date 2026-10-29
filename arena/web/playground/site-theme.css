@@ -1,4 +1,4 @@
-/* Blink · shared design primitives, chrome and interaction states. */
+/* Piccolo · shared design primitives, chrome and interaction states. */
 :root,body{
  --ink:#2b3d43;--muted:#66777b;--line:#e0e5e3;--blue:#48666b;--soft:#edf1f0;--bg:#f8f9f6;
  --pixel-ink:var(--ink);--pixel-edge:var(--line);--pixel-paper:#fff;--pixel-accent:#ebf0ee;

@@ -5,7 +5,7 @@ import uvicorn
 from .app import create_app
 
 def main():
-    parser = argparse.ArgumentParser(description='BlinkArena frontend and engine API')
+    parser = argparse.ArgumentParser(description='PiccoloArena frontend and engine API')
     parser.add_argument('--host', default='127.0.0.1')
     parser.add_argument('--port', type=int, default=8080)
     parser.add_argument('--prefix', default=os.environ.get('JEV_PREFIX',''))

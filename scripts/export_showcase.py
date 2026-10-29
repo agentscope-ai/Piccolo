@@ -52,7 +52,7 @@ def export(root: Path) -> dict:
         'source': 'arena/leaderboard/arena-replays.json',
         'source_run_id': archive['run_id'], 'source_revision': archive['revision'],
         'source_updated_at': archive['updated_at'],
-        'scope': 'Historical experiments, not results of the upcoming Blink model.',
+        'scope': 'Historical experiments, not results of the upcoming Piccolo model.',
         'selection': 'Fixed representative games with complete saved states; not a success-rate sample.',
         'playback': 'Original renderers, saved decision states, fixed playback pace; not wall-clock video.',
         'items': items,

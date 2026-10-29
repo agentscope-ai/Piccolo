@@ -2,7 +2,7 @@
 
 Coming soon.
 
-本目录预留：Blink 的训练方案、配置与复现步骤。
+本目录预留：Piccolo 的训练方案、配置与复现步骤。
 
 **TODO：数据配比；SFT / RL 方法；超参数与随机种子；硬件预算；checkpoint 选择。**
 

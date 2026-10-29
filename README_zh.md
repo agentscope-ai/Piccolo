@@ -1,12 +1,12 @@
-<p align="center"><img src="arena/web/playground/logos/blink.svg" width="72" alt="Blink"></p>
+<p align="center"><img src="arena/web/playground/logos/blink.svg" width="72" alt="Piccolo"></p>
 
-<h1 align="center">Blink</h1>
+<h1 align="center">Piccolo</h1>
 <p align="center"><strong>让决策动起来。</strong></p>
 <p align="center"><a href="https://decisionplayground.agentscope.io/">Decision · 官网</a> · <a href="README.md">English</a> / 简体中文 · <a href="docs/blog.md">项目 Blog</a> · <a href="arena/README.md">Arena 文档</a></p>
 
-Blink 把**观察、动作与反馈**连接成可以检查的决策过程。Blink Arena 汇集交互游戏、共享环境规则、模型评测和轨迹回放。你可以访问 [Decision 官网](https://decisionplayground.agentscope.io/)，也可以在本机运行仓库内的 Arena。
+Piccolo 把**观察、动作与反馈**连接成可以检查的决策过程。Piccolo Arena 汇集交互游戏、共享环境规则、模型评测和轨迹回放。你可以访问 [Decision 官网](https://decisionplayground.agentscope.io/)，也可以在本机运行仓库内的 Arena。
 
-**发布状态：**当前仓库包含 Arena 源码、历史回放与安全审批接入框架。Blink 模型权重、模型卡、专用推理与训练方案、正式发布评测仍在准备中。回放保留原 checkpoint 名称，用于标识历史实验，不代表待发布 Blink 模型的身份或成绩。
+**发布状态：**Piccolo-4B、Piccolo-9B、Piccolo-27B 的完整 checkpoint、Q8_0 与 Q4_K_M GGUF 均已发布，详见[模型列表与 QwenPaw 接入](docs/MODELS.md)。训练方案和正式任务基准仍待补齐；Arena 历史回放保留原 checkpoint 身份，不代表本次模型发布的成绩。
 
 ## 看见决策过程
 
@@ -45,7 +45,7 @@ python3 -m http.server 8080 --bind 127.0.0.1 --directory arena/web
 
 打开 **http://127.0.0.1:8080/completed-showcase.html** 查看四局完整通关回放（支持中英文）；**http://127.0.0.1:8080/showcase.html** 提供其余归档展示。启动完整 Arena 前，先停止这个静态服务器，避免占用同一端口。
 
-### 运行 Blink Arena
+### 运行 Piccolo Arena
 
 需要 Python 3.12 和 Node.js 22：
 
@@ -64,10 +64,10 @@ bash scripts/run.sh
 | --- | --- | --- |
 | Arena | 前端、HTTP API、共享游戏引擎、历史成绩和回放 | 已支持范围见 [Arena 文档](arena/README.md) |
 | 模型 | 历史回放保留原模型身份 | [模型卡、权重与条款](models/README.md) |
-| 推理 | Arena 可连接已有兼容服务 | [Blink 模型推理与服务方案](inference/README.md) |
+| 推理 | Arena 可连接已有兼容服务 | [Piccolo 模型推理与服务方案](inference/README.md) |
 | 训练与数据 | 共享环境、Rollout 接口 | [训练方案](training/README.md)、[数据发布说明](data/README.md) |
 | 评测 | Arena 现有评测代码与历史结果 | [正式发布配置与结果](evaluation/README.md) |
-| 示例 | 手动试玩、回放检查、安全审批接入框架 | [Blink 模型端到端示例](examples/README.md) |
+| 示例 | 手动试玩、回放检查、安全审批接入框架 | [Piccolo 模型端到端示例](examples/README.md) |
 
 上述待补齐模块已建立目录与 Coming soon README；占位文件不代表实现已交付。
 
@@ -86,11 +86,11 @@ docs/                       Blog、来源、发布范围与验证记录
 scripts/                    展示渲染与前端验证脚本
 skills/blink-safety-review/  动作安全审批接入框架
 models/                     Coming soon：模型卡、权重与条款
-inference/                  Coming soon：Blink 推理与服务
+inference/                  Coming soon：Piccolo 推理与服务
 training/                   Coming soon：训练方案与配置
 data/                       Coming soon：数据说明与发布
 evaluation/                 Coming soon：发布评测与结果
-examples/                   Coming soon：Blink 模型接入示例
+examples/                   Coming soon：Piccolo 模型接入示例
 ```
 
 ## 复现与参与

@@ -1,4 +1,4 @@
-"""Fixed Blink Arena ladder; enrollment appends matches without resetting Elo."""
+"""Fixed Piccolo Arena ladder; enrollment appends matches without resetting Elo."""
 import asyncio
 from pathlib import Path
 import time

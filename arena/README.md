@@ -1,10 +1,10 @@
-# Blink Arena
+# Piccolo Arena
 
-Blink 的交互与评测组件。访问 [Decision 官网](https://decisionplayground.agentscope.io/)，或按下文在本机运行。模型发布仍在准备中，随附榜单和轨迹属于历史实验。
+Piccolo 的交互与评测组件。访问 [Decision 官网](https://decisionplayground.agentscope.io/)，或按下文在本机运行。模型发布仍在准备中，随附榜单和轨迹属于历史实验。
 
 新版完整对局 Showcase 已接入 Blog 页签，也可打开 `/completed-showcase.html` 独立查看：2048（目标 128）、推箱子、6×6 黑白棋和俄罗斯方块，支持逐步播放、拖动与终局查看。来源与离线验证见 [轨迹说明](../docs/SHOWCASE.md)，项目介绍见 [Blog](../docs/blog.md)。早期回放继续保留在 `/showcase.html`。
 
-这里包含游戏试玩、Blink Arena 天梯、Benchmark Leaderboard 和 MBTI。前端、HTTP 服务和共享游戏引擎一起交付；模型服务在页面里填写，启动时不需要 checkpoint、模型地址或模型密钥。
+这里包含游戏试玩、Piccolo Arena 天梯、Benchmark Leaderboard 和 MBTI。前端、HTTP 服务和共享游戏引擎一起交付；模型服务在页面里填写，启动时不需要 checkpoint、模型地址或模型密钥。
 
 验证范围见 [发布检查记录](docs/RELEASE_CHECK.md)。Docker 容器构建与真实域名 HTTPS 尚未实测。训练数据审计与 loss 看板不在本仓库范围内。
 

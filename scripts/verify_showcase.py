@@ -28,12 +28,12 @@ try:
     page.goto(base+'/showcase.html?game='+slug);page.wait_for_function("document.documentElement.dataset.ready==='true'")
 
     for frame in page.frames:frame.evaluate('document.fonts.ready')
-    page.evaluate('BlinkShowcase.sample(0)')
-    initial=page.locator('#stage').screenshot();timeline=page.evaluate('BlinkShowcase.timeline');duration=page.evaluate('BlinkShowcase.duration')
+    page.evaluate('PiccoloShowcase.sample(0)')
+    initial=page.locator('#stage').screenshot();timeline=page.evaluate('PiccoloShowcase.timeline');duration=page.evaluate('PiccoloShowcase.duration')
     assert sorted({x['step'] for x in timeline})==list(range(len(clip['steps'])))
     for segment in timeline:
      if segment['phase']!='execute':continue
-     step=clip['steps'][segment['step']];page.evaluate('(t)=>BlinkShowcase.sample(t)',(segment['start']+segment['end'])/2)
+     step=clip['steps'][segment['step']];page.evaluate('(t)=>PiccoloShowcase.sample(t)',(segment['start']+segment['end'])/2)
      assert page.locator('#candidates .candidate').all_text_contents()==step['candidates']
      if step['action'] is not None:
       assert page.locator('#candidates .selected').inner_text()==str(step['action'])
@@ -52,8 +52,8 @@ try:
     page.locator('#play').click();page.wait_for_timeout(150);assert float(page.locator('#seek').input_value())>0;page.locator('#play').click()
     assert page.locator('#error').inner_text()==''
     report['replays'].append({'game':slug,'width':width,'steps':len(clip['steps']),'all_selected_options':True,'canvas_fits':True,'seek_restart_play':True})
-   page.evaluate("async()=>{await Promise.all(['hex','tetris','snake'].map(id=>BlinkShowcase.load(id)))}")
-   assert page.evaluate('BlinkShowcase.id')=='snake'
+   page.evaluate("async()=>{await Promise.all(['hex','tetris','snake'].map(id=>PiccoloShowcase.load(id)))}")
+   assert page.evaluate('PiccoloShowcase.id')=='snake'
    assert page.locator('#game-title').inner_text()=='Snake'
    page.close()
   browser.close()

@@ -36,7 +36,7 @@
   }
   const uiTranslations={"All games":"全部游戏","Replay":"回放","Load more":"更多对局","No matches for this game.":"该游戏暂无对局。","Waiting":"等待中","Evaluation running":"评测进行中","Pausing":"暂停中","Paused":"已暂停","Interrupted":"已中断","Complete with failures":"已完成（含失败）","Complete with errors":"已完成（含错误）","Complete":"已完成","Evaluation error":"评测错误","Registered":"已登记","Queued":"排队中","Pending":"待评测","Running":"进行中","Error":"错误","Blocked":"已阻塞","Scoring":"计分中","Archived":"归档","Incomplete":"未完成","Model enrolled":"模型已加入","Submitting…":"提交中…","Evaluate current model":"评测当前模型","Loading model…":"读取模型中…","Checking eligibility…":"检查准入中…","Enrolled.":"已加入。","This connection is not supported.":"当前连接暂不支持。","Connect the model first.":"请先连接模型。","This model cannot join yet.":"当前模型暂不能加入。","Previous results are reused.":"沿用已有结果。","new matches.":"场新增对局。","Pause":"暂停","Resume":"继续","Refresh":"刷新","Final game score":"游戏最终成绩","Final score":"最终成绩","Completion first":"优先比较是否通关","lower is better":"越低越好","higher is better":"越高越好","Gates reached; final horizontal position breaks ties":"已到达关卡数；平分时比较最终横向位置","Platforms reached":"已到达平台数","Lines cleared":"消除行数","Food collected":"吃到的食物数","Merge points":"合并得分","Boxes on targets":"目标上的箱子数","Level progress (%); native score breaks ties":"关卡进度（%）；平分时比较原生得分","Distance (m); remaining durability breaks ties":"行驶距离（米）；平分时比较剩余耐久度","Native payoff against the dealer":"对庄家的原生收益","board games":"棋盘游戏","direct matches":"直接对战","3 repeats per decision":"每次决策重复 3 次","Loading schedule…":"读取赛程中…","Same seed, reversed roles":"相同种子，交换执方","Direct match":"直接对战","Final-score comparison":"最终成绩比较","Waiting for schedule":"等待赛程","evaluation progress":"评测进度","Complete probabilities for all three repeats":"三次重复均有完整概率","Sample variance across aligned candidate probabilities; lower is better":"对齐候选概率的样本方差；越低越好","Per-game only":"仅分游戏计分","Incomplete coverage":"覆盖未完成","Not evaluated":"未评测","scored matches":"有效对局","W / D / L":"胜 / 平 / 负","Coverage / W–D–L":"覆盖 / 胜–平–负","Elo rankings":"Elo 排名","Overall · game-weighted":"综合 · 游戏等权","Overall ranking":"综合排名","No settled Elo results for this game.":"该游戏尚无已结算的 Elo 成绩。","Elo is a rating, not a win rate. Pending or incomplete coverage is excluded.":"Elo 是评级分，不是胜率。未评测或覆盖未完成的模型不列入柱图。","Axis starts at 0":"坐标轴从 0 开始","dashed line: initial Elo":"虚线：初始 Elo","Participant":"参赛者","Agreement":"三次一致率","Probability stability":"概率稳定度","Variance ↓":"方差 ↓","Failures":"失败数","No settled results yet.":"暂无已结算成绩。","Native score":"原生得分","Budget exhausted":"预算耗尽","Win":"胜","Loss":"负","Draw":"平局","Failure":"失败","Compare in order":"依次比较","Record":"记录","reused":"复用","new record":"新记录","Recent matches":"最近对局","recorded":"已记录","Error · unscored":"错误 · 未计分","Awaiting result":"等待结果","Same-seed final score":"同种子最终成绩","Roles reversed":"交换执方","Final scores and match records appear after settlement.":"对局结算后显示最终成绩与记录。","Repair running":"修复中","Repair complete":"修复完成","Repair blocked":"修复受阻","Repair paused":"修复已暂停","Repair pending":"等待修复","Repair queued":"修复排队中","Repair progress":"修复进度","Repaired":"已修复","Repairing failed matches":"正在修复失败对局","Updated":"更新于","Request failed":"请求失败","Could not load Arena":"天梯加载失败","Enrolling model…":"正在加入模型…","Requesting pause…":"正在请求暂停…","Resuming…":"正在继续…","Model enrolled. Previous results are reused.":"模型已加入，沿用已有结果。","Pause requested; current matches will finish.":"已请求暂停，当前对局结束后生效。","Schedule resumed.":"赛程已继续。","Action failed":"操作失败","Rule engine":"规则引擎","Local base":"本地基座","Gameplay RL":"游戏 RL","Reviewed SFT / iter":"审核数据 SFT / 迭代","Model":"模型","Othello 6×6":"黑白棋 6×6","Othello 8×8":"黑白棋 8×8","Gomoku":"五子棋","Hex":"六角棋","Dots and Boxes":"点格棋","Terraria":"泰拉瑞亚","Jump Jump":"跳一跳","Tetris":"俄罗斯方块","Snake":"贪吃蛇","Sokoban":"推箱子","Mario":"马里奥","Racing":"赛车","Dou Dizhu":"斗地主","Texas Hold’em":"德州扑克","Property Tycoon":"地产大亨","Liar’s Dice":"吹牛骰子","Blackjack":"二十一点","Golden Flower":"炸金花","Pig Dice":"小猪骰子","games":"游戏","matches":"对局","decisions":"次决策","wins":"获胜","Seed":"种子","vs.":"对阵"};
   Object.assign(uiTranslations,{'Realtime: 1 decision; other games: 3 probes':'实时游戏单次决策；其他游戏三次判断','shorter time breaks ties':'同进度用时较短优先','Elapsed':'用时','Level progress (%)':'关卡进度（%）','Gates reached':'已到达关卡数','Distance (m)':'行驶距离（米）'});
-  window.BlinkArenaI18n={createPresentationTranslator,entries:uiTranslations};
+  window.PiccoloArenaI18n={createPresentationTranslator,entries:uiTranslations};
   const localize=createPresentationTranslator(uiTranslations);
   const localizePanel=()=>{localize(byId('gameEloPanel'));window.JevMetricHelp?.arena();};
 
@@ -47,11 +47,11 @@
   const decimal = value => finite(value) ? value === 0 ? '0' : value.toPrecision(3) : '—';
   const stateNames={idle:'Waiting',archived:'Archived',running:'Evaluation running',pausing:'Pausing',paused:'Paused',interrupted:'Interrupted',complete:'Complete',complete_with_errors:'Complete with failures',error:'Evaluation error'};
   const gameLabels={othello_6x6:'Othello 6×6',othello_8x8:'Othello 8×8',gomoku_19x19:'Gomoku',hex_7x7:'Hex',dots_and_boxes_3x3:'Dots and Boxes',terraria_survival:'Terraria',jump_jump:'Jump Jump',tetris_placement:'Tetris',snake_navigation:'Snake',merge_2048:'2048',sokoban_puzzle:'Sokoban',mario_platformer:'Mario',racing_sprint:'Racing',doudizhu:'Dou Dizhu',texas_holdem:'Texas Hold’em',property_tycoon:'Property Tycoon',liars_dice:'Liar’s Dice',goofspiel:'Goofspiel',blackjack:'Blackjack',zha_jin_hua:'Golden Flower',pig_dice:'Pig Dice'};
-  const modelLabels={'rule-engine-v1':'Rule engine','qwen3.8-27b-base':'Qwen3.8-27B · Local base','qwen3.6-35b-a3b-base':'Qwen3.6-35B-A3B · Local base','qwen3.8-27b-dashscope':'Qwen3.8-27B · DashScope','qwen3.8-max-dashscope':'Qwen3.8-Max · DashScope','qwen3.6-35b-a3b-dashscope':'Qwen3.6-35B-A3B · DashScope','dashscope-qwen3.8-max':'Qwen3.8-Max · DashScope','dashscope-qwen3.6-35b-a3b':'Qwen3.6-35B-A3B · DashScope','oneshot27b-gameplay-terminal-rl4':'Blink 27B · Gameplay RL','oneshot27b-control-reviewed-sft-iter310':'Blink 27B · Reviewed SFT / iter 310'};
+  const modelLabels={'rule-engine-v1':'Rule engine','qwen3.8-27b-base':'Qwen3.8-27B · Local base','qwen3.6-35b-a3b-base':'Qwen3.6-35B-A3B · Local base','qwen3.8-27b-dashscope':'Qwen3.8-27B · DashScope','qwen3.8-max-dashscope':'Qwen3.8-Max · DashScope','qwen3.6-35b-a3b-dashscope':'Qwen3.6-35B-A3B · DashScope','dashscope-qwen3.8-max':'Qwen3.8-Max · DashScope','dashscope-qwen3.6-35b-a3b':'Qwen3.6-35B-A3B · DashScope','oneshot27b-gameplay-terminal-rl4':'Piccolo 27B · Gameplay RL','oneshot27b-control-reviewed-sft-iter310':'Piccolo 27B · Reviewed SFT / iter 310'};
   const modelLabel=(id,fallback,identity)=>window.JevModelLabels?.model(id,fallback,identity)||modelLabels[id]||(!/[\u3400-\u9fff]/.test(fallback||'')&&fallback)||id||'Model';
   const gameLabel=id=>gameLabels[id]||id;
   const scoreLabels={gates_reached:'Gates reached; final horizontal position breaks ties',platforms_reached:'Platforms reached',lines_cleared:'Lines cleared',foods_eaten:'Food collected',merge_points:'Merge points',boxes_on_targets:'Boxes on targets',progress_percent:'Level progress (%); native score breaks ties',distance_metres:'Distance (m); remaining durability breaks ties',native_return:'Native payoff against the dealer'};
-  window.BlinkArenaLabels={game:gameLabel,model:modelLabel};
+  window.PiccoloArenaLabels={game:gameLabel,model:modelLabel};
   let payload = null, loading = false, visible = false, scope = 'overall', requestVersion = 0;
   const participants = () => payload?.protocol?.participants?.length ? payload.protocol.participants : payload?.options?.participants?.length ? payload.options.participants : payload?.fixed_config?.baseline || [];
   const games = () => payload?.fixed_config?.games || payload?.options?.games || [];
@@ -170,7 +170,7 @@
       try{
         const response=await fetch('./playground/visible-control.js?run='+encodeURIComponent(run)+'&updated='+encodeURIComponent(payload.updated_at||0),{cache:'no-store'});
         if(!response.ok)throw Error('archive_unavailable');
-        const source=(await response.text()).trim(),prefix='window.BlinkArenaReplayArchive=';
+        const source=(await response.text()).trim(),prefix='window.PiccoloArenaReplayArchive=';
         if(!source.startsWith(prefix)||!source.endsWith(';'))throw Error('invalid_archive');
         let archive=JSON.parse(source.slice(prefix.length,-1));
         if(archive.encoding==='gzip-base64'){
@@ -199,7 +199,7 @@
     await loadReplayArchive();
     let match=matchRecords().find(row=>Number(row.ordinal)===ordinal),record=match&&replayForMatch(match);
     if(!record){await loadReplayArchive(true);match=matchRecords().find(row=>Number(row.ordinal)===ordinal);record=match&&replayForMatch(match);}
-    if(record&&window.BlinkArenaReplayView){replayError='';replayStatus();window.BlinkArenaReplayView.open(record);}
+    if(record&&window.PiccoloArenaReplayView){replayError='';replayStatus();window.PiccoloArenaReplayView.open(record);}
     else{replayError='unavailable';replayStatus();}
   }
   function renderMatches() {
@@ -449,6 +449,6 @@
     pause();destroyRenderer();replay=data&&typeof data==='object'?data:{};streamIndex=0;positions=new Map();resumeCurrent=false;opener=document.activeElement;ensureDialog();
     node('.arv-archive').open=false;node('.arv-body').scrollTop=0;renderUI();if(!dialog.open)dialog.showModal();paint({animate:false,reason:'open'});node('[data-arv-control="close"]').focus();
   }
-  window.BlinkArenaReplayView={open,close};
+  window.PiccoloArenaReplayView={open,close};
   window.JevI18n?.onChange(()=>{if(dialog?.open){renderUI();paint({animate:false,reason:'locale'});}});
 })();

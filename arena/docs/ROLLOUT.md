@@ -1,6 +1,6 @@
 # 标准在线训练接口
 
-同一个 BlinkArena 服务提供前端试玩和在线训练后端。运行 `python -m blink_arena` 即挂载 `/api/v1/rollouts`；服务不需要训练框架、checkpoint、模型地址或模型密钥。训练器自行调用当前策略，再把选中的动作及真实采样概率交回引擎。
+同一个 PiccoloArena 服务提供前端试玩和在线训练后端。运行 `python -m blink_arena` 即挂载 `/api/v1/rollouts`；服务不需要训练框架、checkpoint、模型地址或模型密钥。训练器自行调用当前策略，再把选中的动作及真实采样概率交回引擎。
 
 ## 调用顺序
 
