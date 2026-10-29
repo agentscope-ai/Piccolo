@@ -62,8 +62,14 @@ Piccolo 27B 在 JevBench 上取得 **92.21%** 的准确率，在 Decision Index 
 **只需三步，快速启动你的 Piccolo：**
 
 1. **从 QwenPaw Local 下载并安装中选择合适量级的 Piccolo**
+
+   ![在 QwenPaw Local 选择 Piccolo 量级并下载](../assets/qwenpaw/zh-model-download.jpg)
 2. **将工具审批模式改为决策模型模式**
+
+   ![工具审批模式已选中决策模型模式](../assets/qwenpaw/zh-automatic-review.jpg)
 3. **启用决策模型压缩上下文**
+
+   ![决策模型压缩开关已开启](../assets/qwenpaw/zh-context-compaction.jpg)
 
 只需三步，在 QwenPaw 上获取快速又安全的自动审批体验。
 

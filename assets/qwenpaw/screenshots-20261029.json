@@ -1,0 +1,43 @@
+{
+  "captured_at": "2026-10-29T11:47:17.157110+00:00",
+  "application": "QwenPaw local preview",
+  "language": "zh",
+  "capture": "Unedited browser JPEG screenshots",
+  "model_download_or_inference_performed": false,
+  "preview_settings_restored": {
+    "approval_mode": "auto",
+    "decision_compaction_enabled": false
+  },
+  "items": [
+    {
+      "step": 1,
+      "path": "zh-model-download.jpg",
+      "format": "JPEG",
+      "width": 1290,
+      "height": 747,
+      "bytes": 71271,
+      "sha256": "5a4bd1797fe11da53cd9758e64298e041e7af7d8a1d1da43a01401b6af61c5a7",
+      "visible_state": "Piccolo-4B-Q8_0 / Piccolo-9B-Q8_0 download entries visible"
+    },
+    {
+      "step": 2,
+      "path": "zh-automatic-review.jpg",
+      "format": "JPEG",
+      "width": 1290,
+      "height": 747,
+      "bytes": 56151,
+      "sha256": "481a3044cc25b301529b43318e21a7658f4f0631c1ed879d4553b6b16b83bcf2",
+      "visible_state": "Decision model approval mode selected"
+    },
+    {
+      "step": 3,
+      "path": "zh-context-compaction.jpg",
+      "format": "JPEG",
+      "width": 1290,
+      "height": 747,
+      "bytes": 49572,
+      "sha256": "c6d6b62d4495d4a8e2fe68582ba7ede1722fe639c5e42f365855aad410486cc7",
+      "visible_state": "Decision model compaction switch enabled"
+    }
+  ]
+}
