@@ -1,7 +1,7 @@
 """Public Python engine API, usable without FastAPI or a model service.
 
-RL clients consume engine.observe(state), never engine.public(state), as their
-policy input. Native realtime and browser engines expose their original runner
+RL clients use engine.model_input(state) for the current decision view, or
+engine.observe(state) for the full public/replay contract; never engine.public(state). Native realtime and browser engines expose their original runner
 and verifier through EngineSpec rather than a substitute turn-based simulator.
 """
 def __getattr__(name):

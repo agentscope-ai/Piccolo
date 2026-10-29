@@ -38,7 +38,10 @@ _SPECS = {
     'property_tycoon': ('total_assets', '终局现金与地产总资产', ['cash+property_value']),
     'pig_dice': ('banked_points', '终局已收下点数', ['scores[model_player]']),
     'doudizhu': ('terminal_result', '原生胜平负：胜1／平0.5／负0', ['outcome']),
+    'liars_dice': ('terminal_result', '原生胜平负：胜1／平0.5／负0', ['outcome']),
 }
+from jev_demo_games import GAMES as BOARD_GAMES
+_SPECS.update({kind: ('native_goal_result', '原生终局胜负', ['outcome']) for kind in BOARD_GAMES})
 from jev_selected_games import GAMES as SELECTED_GAMES
 _SPECS.update({kind: ('native_goal_result', '原生终局胜负', ['outcome']) for kind in SELECTED_GAMES})
 
@@ -57,7 +60,7 @@ def comparison_spec(kind):
             fields.append('health')
         elif kind == 'mario_platformer':
             fields.append('score')
-    fixed_opponent = (kind in SELECTED_GAMES and SELECTED_GAMES[kind][4]>1) or kind in ('chess', 'blackjack', 'texas_holdem', 'zha_jin_hua',
+    fixed_opponent = kind in BOARD_GAMES or kind == 'liars_dice' or (kind in SELECTED_GAMES and SELECTED_GAMES[kind][4]>1) or kind in ('chess', 'blackjack', 'texas_holdem', 'zha_jin_hua',
                               'property_tycoon', 'pig_dice', 'doudizhu')
     return {'revision': REVISION, 'kind': kind, 'metric': metric, 'score_label': label,
             'score_fields': list(fields), 'higher_is_better': True,
@@ -106,7 +109,11 @@ def _termination(kind, result, evidence):
     if result.get('outcome') not in ('win', 'draw', 'loss', 'budget_exhausted'):
         raise ValueError('invalid_native_episode_outcome')
     final_outcome = final.get('outcome')
-    if (kind in SELECTED_GAMES or kind == 'chess') and final_outcome == 'budget_exhausted': final_outcome = None
+    if kind in BOARD_GAMES:
+        if final.get('winner') not in (None, 'X', 'O', 'draw'):
+            raise ValueError('invalid_native_board_winner')
+        final_outcome = {'X': 'win', 'O': 'loss', 'draw': 'draw', None: None}[final.get('winner')]
+    if (kind in SELECTED_GAMES or kind in BOARD_GAMES or kind == 'chess') and final_outcome == 'budget_exhausted': final_outcome = None
     if final_outcome not in (None, 'win', 'loss', 'draw'):
         raise ValueError('invalid_native_terminal_outcome')
     budget = _budget_stop(kind, result)
@@ -137,7 +144,7 @@ def _score(kind, result):
     if type(side) is not int or side not in (0, 1, 2):
         raise ValueError('native_model_seat_missing')
     evidence = {'model_player': side}
-    if kind in SELECTED_GAMES or kind == 'chess':
+    if kind in SELECTED_GAMES or kind in BOARD_GAMES or kind in ('chess', 'liars_dice'):
         score = {'win': 1., 'draw': .5, 'loss': 0., 'budget_exhausted': 0.}[result['outcome']]
         key = [score]
         evidence['outcome'] = result['outcome']
@@ -269,7 +276,9 @@ async def run_episode(evaluator, kind, seed, model, browser=None):
 
     runner.predict = predict
     try:
-        if kind in WORLD:
+        if kind in BOARD_GAMES:
+            native = await runner._board(None, kind, seed, 'rule_engine', model)
+        elif kind in WORLD:
             from jev_engine_registry import get_engine
             if get_engine(kind).backend == 'browser' and browser is None:
                 raise ValueError('world_episode_requires_browser')

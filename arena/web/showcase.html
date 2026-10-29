@@ -26,17 +26,22 @@
     .record{font-size:12px;overflow-wrap:anywhere}#error{color:#a84635}#notice{max-width:850px}
     @media(max-width:600px){main{padding:20px 12px}h1{font-size:29px}#stage{height:320px}.card-head{padding:16px}.badge{font-size:10px}.card-foot{padding:12px 16px}}
 
-    .card-head{display:none}.replay-body{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);height:400px}
+    .card-head{display:none}.replay-body{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);height:460px}
     .game-view{min-width:0;background:#f4f6ed;display:flex;flex-direction:column;justify-content:center}
-    #game-title{font-size:20px;margin:15px 18px 4px}#stage{height:340px;min-height:0}
+    #game-title{font-size:20px;margin:15px 18px 4px}#stage{height:400px;min-height:0}
     #stage iframe{width:100%!important;height:auto!important;aspect-ratio:900/540}
-    #decision{border-left:1px solid #e3e7dc;padding:22px 18px;display:flex;flex-direction:column;min-height:0}
+    #decision{border-left:1px solid #e3e7dc;padding:18px;display:flex;flex-direction:column;min-height:0}
     .phase-label{color:#ab603c;text-transform:uppercase;font-size:11px;letter-spacing:1.5px;font-weight:700}
-    h3{font-size:20px;margin:12px 0 16px}#candidates{display:flex;align-content:flex-start;gap:6px;flex-wrap:wrap;overflow:auto;flex:1}
-    .candidate{border:1px solid #cbd5c7;padding:7px 10px;border-radius:7px;background:#fffefa;color:#536862;font-size:13px;line-height:1.2;overflow-wrap:anywhere}
-    .candidate.selected{background:#4b7168;color:#fff;border-color:#4b7168}.candidate.rejected{background:#a75b45;border-color:#a75b45}
-    #feedback{font-size:13px;color:#536862;min-height:44px;line-height:1.5;padding-top:12px;overflow-wrap:anywhere}
-    @media(max-width:600px){.replay-body{height:auto;grid-template-columns:1fr}#stage{height:280px}#decision{height:300px;border-left:0;border-top:1px solid #e3e7dc}}
+    h3{font-size:19px;margin:8px 0 5px}#probability-note{font-size:11px;color:#7b8981;margin:0 0 14px}
+    #candidates{display:flex;flex-direction:column;gap:7px;overflow:auto;flex:1;min-height:0}
+    .candidate{position:relative;isolation:isolate;border:1px solid #dde3d7;padding:10px;border-radius:7px;background:#f5f6ef;color:#536862;font-size:13px;line-height:1.2;display:flex;align-items:center;justify-content:space-between;gap:7px;flex-shrink:0;min-height:38px}
+    .candidate[hidden]{display:none}.candidate:before{content:'';position:absolute;z-index:-1;inset:0 auto 0 0;width:var(--probability,0%);background:#e0e7db;border-radius:6px}
+    .candidate-label{min-width:0;overflow-wrap:anywhere}.probability-value{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+    .candidate.selected{color:#254c42;border-color:#719d86;font-weight:600}.candidate.selected:before{background:#c3d9c9}
+    .candidate.rejected{color:#8f432c;border-color:#c79078}.candidate.rejected:before{background:#ecd3c5}
+    .more-candidates{padding:6px;border:0;background:transparent;text-align:right;font-size:11px;color:#75877c;min-height:26px}
+    #feedback{font-size:12px;color:#536862;min-height:36px;line-height:1.5;padding-top:10px;overflow-wrap:anywhere}
+    @media(max-width:600px){.replay-body{height:auto;grid-template-columns:1fr}#stage{height:280px}#decision{height:440px;border-left:0;border-top:1px solid #e3e7dc}}
   </style>
   <script>window.JevI18n={lang:'en',t:(en)=>en,onChange(){},register(){}};</script>
 </head>
@@ -46,9 +51,9 @@
   <p id="notice">Explore archived trajectories with the original game renderers. These are historical experiments; the Piccolo model release is still in preparation.</p>
   <nav id="games" aria-label="Trajectory selection"></nav>
   <section id="capture" aria-label="Archived trajectory">
-    <div class="card-head"><div><span class="eyebrow">BLINK / TRAJECTORY SHOWCASE</span><h2 id="title">Loading…</h2></div><span class="badge">Archived replay</span></div>
+    <div class="card-head"><div><span class="eyebrow">PICCOLO / TRAJECTORY SHOWCASE</span><h2 id="title">Loading…</h2></div><span class="badge">Archived replay</span></div>
     <div class="replay-body"><div class="game-view"><h2 id="game-title"></h2><div id="stage"></div></div>
-    <aside id="decision"><div class="phase-label" id="phase">Observe</div><h3>Choose an action</h3><div id="candidates"></div><div id="feedback"></div></aside></div>
+    <aside id="decision"><div class="phase-label" id="phase">Observe</div><h3>Candidate probabilities</h3><p id="probability-note"></p><div id="candidates"></div><div id="feedback"></div></aside></div>
     <div class="card-foot"><span id="position">—</span><span id="action">—</span></div>
   </section>
   <div class="controls"><button id="play" disabled>Play</button><input id="seek" type="range" min="0" max="0" value="0" aria-label="Replay position" disabled><button id="restart" disabled>Restart</button></div>

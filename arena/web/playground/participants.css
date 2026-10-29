@@ -1,0 +1,26 @@
+.participant-controls{display:flex;align-items:end;gap:12px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px solid #d8d5ce}
+.participant-controls[hidden],.social-duel-handoff[hidden]{display:none!important}
+.participant-controls select[hidden]{display:none!important}
+.participant-controls label{display:grid;gap:5px;font-size:13px;min-width:180px;max-width:100%}
+.participant-controls select{max-width:100%;min-height:38px;border:1px solid #cdc8bd;border-radius:7px;padding:6px 10px;background:#fff;color:inherit}
+.participant-controls button{min-height:38px;padding:7px 16px;border-radius:7px;background:#314e46;color:#fff;border:0;cursor:pointer}
+#participantNote{flex-basis:100%;margin:0;color:#6b6b63;font-size:12px}
+#participantTurn{align-self:center;font-size:13px}
+body #gamesView .participant-controls{display:flex;flex:1;flex-wrap:nowrap;align-items:center;gap:6px;min-width:0;margin:0;padding:0;border:0}
+body #gamesView .participant-controls select{flex:1;width:0;min-width:85px;max-width:none;min-height:36px;font-size:12px;padding:7px 8px}
+body #gamesView .participant-controls button{flex:none;min-height:36px;padding:7px 12px;font-size:12px}
+body #gamesView .participant-vs{font-size:11px;color:#8d7c69}
+@media(max-width:520px){body #gamesView .participant-controls{flex-basis:100%}}
+@media(max-width:520px){
+ body #gamesView .participant-controls:has(#participantThird:not([hidden])){display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+ body #gamesView .participant-controls:has(#participantThird:not([hidden])) select{width:100%;min-width:0}
+}
+/* Handoff covers only the hidden hand; the original table keeps its geometry. */
+.canvas-shell:has(>.social-duel-handoff){position:relative}
+.social-duel-handoff{position:absolute;z-index:2;left:50%;bottom:10%;transform:translateX(-50%);display:flex;align-items:center;gap:12px;padding:10px 14px;border:1px solid #d7c6a4;background:#fff9e8;box-shadow:0 2px 8px #0002;white-space:nowrap;font-size:13px}
+.social-duel-handoff button{padding:7px 12px;background:#314e46;color:white;border:0;cursor:pointer}
+
+/* Labels stay inside the existing status rows; no board geometry changes. */
+body #gamesView .participant-seat{display:inline;font:inherit;color:inherit;white-space:nowrap}
+body #gamesView .participant-seat+.participant-seat{margin-left:12px}
+body #gamesView .participant-seat[aria-current="true"]{color:#216c4e;font-weight:800;background:#e0efcf;box-shadow:0 0 0 2px #e0efcf;border-radius:2px}

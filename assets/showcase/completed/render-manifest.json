@@ -2,13 +2,17 @@
   "schema_version": "blink.showcase-render.v2",
   "fps": 12,
   "speed": 2,
+  "candidate_display": "Original candidate probabilities; highest six and selected action visible, remaining mass labeled.",
   "coverage": "Every archived decision and complete execution interval; no step selection or truncation.",
   "items": [
     {
       "id": "merge-2048",
       "source": "arena/web/showcase/full/merge-2048.json",
-      "source_sha256": "3142df8349236ad13195e512084ebaaff0ae07791545dcf4871a08708d943a7b",
+      "source_sha256": "62b91df71cfc68c111711befadebbc35d535594a52054c9a0112b2295e8b0e74",
       "steps": 65,
+      "probability_decisions": 65,
+      "probability_receipt": "probabilities/merge-2048.json",
+      "probability_receipt_sha256": "b61e84ec2fec6e8364c51e77949946a9d4dde7ac6b877b8628cb02973209580d",
       "captured_indices": [
         0,
         1,
@@ -1645,8 +1649,11 @@
     {
       "id": "sokoban",
       "source": "arena/web/showcase/full/sokoban.json",
-      "source_sha256": "d46111b988964235daf1fe690bb8adc3a0183fb07250f50c288ee8733569cf4d",
+      "source_sha256": "b6f2051ddfb4965539378e7e265cbc156218a6035c7783418a06d18e5403325c",
       "steps": 4,
+      "probability_decisions": 4,
+      "probability_receipt": "probabilities/sokoban.json",
+      "probability_receipt_sha256": "ef0a66698c26de56613e446a2427d1e7e8758f254ae9fa5081d42a7e5540f401",
       "captured_indices": [
         0,
         1,
@@ -1758,8 +1765,11 @@
     {
       "id": "tetris",
       "source": "arena/web/showcase/full/tetris.json",
-      "source_sha256": "ec17e4d7a98a492f9fe2761e2d1d9956898c4668842158626abf3589b604b147",
+      "source_sha256": "aa4d0791f2903036e4fa7e8f9b1811471f532c4d37755fe47556edaed81c6101",
       "steps": 25,
+      "probability_decisions": 11,
+      "probability_receipt": "probabilities/tetris.json",
+      "probability_receipt_sha256": "ef6f65b9e39226ee11f1bd95aab13b31c37e46ce2a83462a5e5f581ef465b4b6",
       "captured_indices": [
         0,
         1,

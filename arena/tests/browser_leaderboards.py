@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Read-only browser checks for imported tables and bilingual radar charts.
 
-Run against a local PiccoloArena service. This does not connect a model or start an
+Run against a local JevArena service. This does not connect a model or start an
 evaluation. Screenshots are written to the ignored var/browser directory.
 """
 import argparse
@@ -53,7 +53,8 @@ def main():
                 for benchmark, dimension_count in BENCHMARKS.items():
                     if benchmark != 'gamejevbench':
                         dimension_count = len({axis['id'] for row in expected_rows[benchmark].values() for axis in row.get('axes', [])})
-                    page.locator(f'[data-benchmark="{benchmark}"]').click()
+                    if benchmark == 'harnessjevbench': dimension_count = 6
+                    page.locator(f'#leaderboardTabs [data-benchmark="{benchmark}"]').click()
                     page.wait_for_function('expected => document.querySelectorAll(".lb-radar-axis").length === expected', arg=dimension_count if dimension_count >= 3 else 0)
                     page.evaluate('document.fonts.ready')
                     assert page.locator('#leaderboardStatus').get_attribute('data-updated-at') == timestamps[benchmark]
@@ -87,14 +88,15 @@ def main():
                         for index, ident in enumerate(rendered_ids):
                             if ident not in expected: continue
                             metrics = expected[ident]['metrics']
-                            for metric in ['accuracy', 'brier', 'ece']:
+                            columns = ['accuracy', 'soft_tv'] if benchmark == 'harnessjevbench' else ['native'] if benchmark == 'decisionindex' else ['accuracy', 'brier', 'ece']
+                            for metric in columns:
                                 value = metrics.get(metric, metrics.get('acc') if metric == 'accuracy' else None)
-                                if benchmark=='harnessjevbench' and metric=='accuracy':value=metrics.get('strict_task_accuracy',value)
+                                if metric == 'native' or (benchmark == 'harnessjevbench' and metric == 'accuracy'): value = expected[ident]['score']
                                 cell = rows.nth(index).locator(f'[data-metric="{metric}"]')
                                 if cell.count() != 1 or (cell.text_content().strip() == '—') != (value is None):
                                     failures.append(f'{size}/{language}/{benchmark}: {ident} {metric} missing-value display differs from data')
                                 elif value is not None:
-                                    expected_text=f'{100*value:.2f}%' if metric=='accuracy' else f'{value:.4f}'
+                                    expected_text=f'{100*value:.2f}%' if metric=='accuracy' else f'{value:.2f}' if metric=='native' else f'{value:.4f}'
                                     if cell.text_content().strip()!=expected_text:
                                         failures.append(f'{size}/{language}/{benchmark}: {ident} {metric} value differs from data')
                         if size == 'mobile':
@@ -201,14 +203,14 @@ def main():
                         assert page.locator('.lb-metrics-table tbody tr:visible').count() == 0
                         tools.locator('input').fill('')
                         tools.locator('[data-table-own]').click()
-                        assert page.locator('.lb-metrics-table tbody tr:visible').count() == len([key for key in expected if key in {'oneshot27b-control-reviewed-sft-iter310', 'oneshot27b-gameplay-terminal-rl4', 'oneshot27b-game-rl-native-iter17'}])
+                        assert page.locator('.lb-metrics-table tbody tr:visible').count() == len([key for key in expected if key in {'oneshot27b-control-reviewed-sft-iter310', 'oneshot27b-gameplay-terminal-rl4', 'oneshot27b-game-rl-native-iter17', 'blink-27b-1028', 'blink-9b-1028', 'blink-4b-1028'}])
                         tools.locator('[data-table-own]').click()
                         page.locator('.lb-metrics-table thead th[data-metric-help]').first.hover()
                         assert page.locator('#lbMetricTooltip').is_visible()
                         assert page.locator('#lbMetricTooltip').inner_text().strip()
                         page.keyboard.press('Escape')
                         assert not page.locator('#lbMetricTooltip').is_visible()
-                    assert page.locator('.lb-metrics-table .lb-rank:visible').count() == 0
+                    if benchmark != 'gamejevbench': assert page.locator('.lb-metrics-table .lb-rank:visible').count() == len(expected_rows[benchmark])
                     if benchmark == 'jevbench':
                         model = page.locator('[data-result-model="access-openai--gpt-6-luna-decisions"] .lb-model-name')
                         if model.count(): assert model.inner_text().strip() == expected_rows[benchmark]['access-openai--gpt-6-luna-decisions']['model_name']

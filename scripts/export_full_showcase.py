@@ -113,6 +113,13 @@ def build(slug):
     assert len(clip['steps']) == len(steps)
     clip['coverage'] = {'decisions': len(steps), 'indices': list(range(len(steps))),
                         'frame_receipts': sum(len(p.get('frames', [])) for s in clip['steps'] for p in s['phases'])}
+    from export_showcase_probabilities import validate
+    receipt = read(WEB / f'showcase/probabilities/{slug}.json')
+    clip['coverage']['probability_decisions'] = validate(clip, receipt)
+    clip['probability_receipt'] = f'probabilities/{slug}.json'
+    for step, row in zip(clip['steps'], receipt['steps']):
+        step['probabilities'] = row['probabilities']
+        step['probability_source'] = {k: v for k, v in row.items() if k not in ('index', 'action', 'probabilities')}
     return clip
 
 

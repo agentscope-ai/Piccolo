@@ -71,7 +71,7 @@ window.JevSnakeUI=(()=>{
   if(reference)return false;
   if(!model){if(!(action in showcaseSession.choices))return false;if(showcaseAuto||pending)stopAuto();driver.desired=action;void drain(driver);return true;}
   if(showcaseBusy||driver?.sending)return false;
-  const owner={id:showcaseSession.session_id};pending=owner;showcaseBusy=true;showcaseControls(true);clearError();$('lastDecision').textContent=tr('Model thinking · Snake keeps moving','模型思考中 · 贪吃蛇继续前进');
+  const owner={id:showcaseSession.session_id};pending=owner;showcaseBusy=true;showcaseControls(true);clearError();$('lastDecision').textContent=showcaseSession.world.started?tr('Model thinking · Snake keeps moving','模型思考中 · 贪吃蛇继续前进'):tr('First decision · Movement starts after the reply','首次判断中 · 回复后才开始移动');
   try{const result=await api('showcases/step',{session_id:owner.id,revision:showcaseSession.revision,action:null,model:true,reference:false});if(pending!==owner||!current(owner.id))return false;apply(result,true);return !!result.applied||result.discard_reason==='direction_changed_while_waiting'&&!result.world.outcome;}
   catch(e){if(pending===owner&&current(owner.id))error(e);return false;}
   finally{if(pending===owner){pending=null;showcaseBusy=false;showcaseControls(false);}}

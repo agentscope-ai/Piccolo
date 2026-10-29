@@ -51,7 +51,7 @@ def test_browser_connection_is_owned_strict_and_never_persists_credentials(serve
     assert r.status_code==200 and r.json()['probabilities']=={'a':.5,'b':.5}
     assert calls[0]['observation']=={'visible':True}
     with TestClient(app) as other:
-        assert other.get('/api/v1/models').json()=={'models':[]}
+        assert [m['id'] for m in other.get('/api/v1/models').json()['models']]==['oneshot-hosted']
         assert other.post('/api/v1/decisions',json=decision()).status_code==403
     for route in ['/api/health','/api/v1/connections','/api/openapi.json']:
         assert 'test-secret-value' not in c.get(route).text
@@ -99,24 +99,25 @@ def test_browser_queue_uses_metadata_without_keys(server):
         assert r.json()['accepted']
         assert future.result(timeout=5).json()['action']=='b'
     app.state.connections.entries['test-model']['last_poll']=time.monotonic()-46
-    assert not c.get('/api/v1/models').json()['models'][0]['ready']
+    assert not next(m for m in c.get('/api/v1/models').json()['models'] if m['id']=='test-model')['ready']
 
 
-def test_board_revision_and_repeated_decisions(server):
+def test_board_revision_and_single_interactive_decision(server):
     _,c,calls,_=server
     connect(c)
     game=c.post('/api/game/new',json={'kind':'othello_6x6','seed':42}).json()
     body={'session_id':game['session_id'],'revision':0,'model':True}
     result=c.post('/api/game/move',json=body,headers={'X-Demo-Model':'test-model'})
     assert result.status_code==200,result.text
-    assert len(calls)==3
-    assert result.json()['result']['decision_stability']['repeat_count']==3
+    assert len(calls)==1
+    assert result.json()['result']['decision_policy']['repeat_count']==1
+    assert 'decision_stability' not in result.json()['result']
     assert c.post('/api/game/move',json=body).status_code==409
     c.cookies.clear()
     assert c.post('/api/game/move',json={**body,'revision':1}).status_code==404
 
 
-@pytest.mark.parametrize('kind', ['gomoku_19x19', 'othello_6x6', 'othello_8x8', 'hex_7x7', 'dots_and_boxes_3x3'])
+@pytest.mark.parametrize('kind', ['othello_6x6', 'hex_7x7', 'dots_and_boxes_3x3'])
 def test_board_standard_start_and_explicit_seed_remain_distinct(server, kind):
     import jev_demo_games as board
     _, client, _, _ = server

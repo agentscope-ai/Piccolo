@@ -12,11 +12,13 @@ class Providers:
     def __init__(self, config: AppConfig):
         self.config = config
         self.models = {}
+        self.server_relays = {}
         self.slots = {}
         self.global_slots = asyncio.Semaphore(config.concurrency)
         self.browser_relays = {}
         self.availability = {}
         self.inflight = {}
+        self.pending_ids = set()
 
     async def close(self):
         tasks = [task for group in self.inflight.values() for task in group]
@@ -25,7 +27,7 @@ class Providers:
         self.inflight.clear()
 
     def configured(self, ident):
-        return bool(ident in self.models and ident in self.browser_relays
+        return bool(ident in self.models and (ident in self.browser_relays or ident in self.server_relays)
                     and self.availability.get(ident, lambda: False)())
 
     def public_models(self):
@@ -36,29 +38,36 @@ class Providers:
         spec = self.models.get(ident)
         if not spec: raise HTTPException(404, 'Unknown configured model')
         if body.model != spec.served_model: raise HTTPException(422, 'Model identity differs from registry')
-        if not self.configured(ident): raise HTTPException(503, 'Model connection unavailable; reconnect before evaluating')
+        if not self.configured(ident): raise HTTPException(503, {'code': 'hosted_model_not_configured'} if ident in self.server_relays else 'Model connection unavailable; reconnect before evaluating')
         # The captured registration object is the generation token. A queued
         # call may never run under a removed/replaced browser connection.
         slot = self.slots.get(ident)
         if slot is None: raise HTTPException(503, 'Model connection closed')
-        async with self.global_slots, slot:
-            if self.models.get(ident) is not spec: raise HTTPException(503, 'Model connection changed')
-            if not self.configured(ident): raise HTTPException(503, 'Model connection unavailable; reconnect before evaluating')
-            task = asyncio.create_task(self._request(ident, spec, body))
-            self.inflight.setdefault(ident, set()).add(task)
-            try:
-                return await task
-            except asyncio.CancelledError:
-                if self.models.get(ident) is not spec: raise HTTPException(503, 'Model connection closed') from None
-                raise
-            finally:
-                self.inflight.get(ident, set()).discard(task)
+        request_key = (ident, id(spec), body.request_id)
+        if request_key in self.pending_ids:
+            raise HTTPException(409, 'Duplicate pending request ID')
+        self.pending_ids.add(request_key)
+        try:
+            async with self.global_slots, slot:
+                if self.models.get(ident) is not spec: raise HTTPException(503, 'Model connection changed')
+                if not self.configured(ident): raise HTTPException(503, {'code': 'hosted_model_not_configured'} if ident in self.server_relays else 'Model connection unavailable; reconnect before evaluating')
+                task = asyncio.create_task(self._request(ident, spec, body))
+                self.inflight.setdefault(ident, set()).add(task)
+                try:
+                    return await task
+                except asyncio.CancelledError:
+                    if self.models.get(ident) is not spec: raise HTTPException(503, 'Model connection closed') from None
+                    raise
+                finally:
+                    self.inflight.get(ident, set()).discard(task)
+        finally:
+            self.pending_ids.discard(request_key)
 
     def invalidate(self, ident):
         for task in self.inflight.pop(ident, set()): task.cancel()
 
     async def _request(self, ident, spec, body):
-        relay = self.browser_relays.get(ident)
+        relay = self.server_relays.get(ident) or self.browser_relays.get(ident)
         if relay is None: raise HTTPException(503, 'Browser model connection unavailable')
         result = await relay(body)
         return self.validate_result(body, result)

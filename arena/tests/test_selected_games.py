@@ -35,7 +35,7 @@ def test_native_six_methods_json_choice_seed_and_no_mutation(kind):
 
 def test_no_additional_collected_games_are_registered():
     assert {e.kind for e in list_engines() if e.family=='selected'}==set(KINDS)
-    assert len(list_engines())==35
+    assert len(list_engines())==29
 
 
 def test_rng_restoration_and_concurrent_seeds():
@@ -193,16 +193,9 @@ def test_cold_replay_rejects_invalid_native_journal_and_handles_long_games():
         with pytest.raises(ValueError):e.public(bad)
 
 
-def test_go_reaches_native_terminal_through_both_seats():
-    async def run():
-        for kind in ('go',):
-            policy=Policy();job={'kind':kind,'seed':42,'side':0,'mode':'qwen3.8-max','episode_id':'natural-'+kind}
-            initial,final,trace,outcome,extra=await play(policy,job)
-            assert games._terminal(final)
-            assert outcome in ('win','loss','draw')
-            assert verify(job,initial,final,extra,trace)
-            if kind=='go':assert final['steps']==2
-    asyncio.run(run())
+def test_removed_go_cannot_start_through_registry_or_rl():
+    with pytest.raises(ValueError):get_engine('go')
+    with pytest.raises(ValueError):games.fresh('go',42)
 
 
 def test_public_only_fixture_solves_guess_number_and_sudoku():
@@ -242,7 +235,7 @@ def test_frontend_full_episode_evaluator_scores_selected_games(tmp_path):
         return {'value':next(iter(record['questions'][qid]['criteria']))}
     async def run():
         evaluator=GameEvaluator(predict,lambda:'fixture',lambda x:(x,{}),'http://127.0.0.1',out=tmp_path)
-        for kind in ('guess_the_number','go'):
+        for kind in ('guess_the_number',):
             result=await evaluator._python(None,kind,42,'rule_engine','fixture')
             assert result['replay_verified']
             assert comparison_spec(kind)['metric']=='native_goal_result'

@@ -1,12 +1,38 @@
 """Interactive pilot scenes using the same deployed checkpoint and schema."""
 import asyncio,copy,json,time,uuid
 from fastapi import HTTPException
+
+
+def interactive_model_error(error):
+    """Connection failures interrupt an action; only engine physics ends a game."""
+    status = error.status_code if isinstance(error, HTTPException) else 504 if isinstance(error, TimeoutError) else 502
+    detail = error.detail if isinstance(error, HTTPException) else None
+    allowed = {'hosted_model_not_configured', 'connection_failed', 'invalid_response', 'timeout', 'cancelled',
+               'authentication_failed', 'rate_limited', 'endpoint_not_found',
+               'upstream_unavailable', 'decision_repeat_failed'}
+    safe = {'code': 'timeout' if status == 504 else 'connection_failed'}
+    if isinstance(detail, dict) and detail.get('code') in allowed:
+        safe['code'] = detail['code']
+        if detail.get('cause') in allowed:
+            safe['cause'] = detail['cause']
+        if type(detail.get('sample_index')) is int and 0 <= detail['sample_index'] <= 2:
+            safe['sample_index'] = detail['sample_index']
+    return HTTPException(status, detail=safe)
+def display_decision_result(result, *, private=False, sealed=False):
+    """Keep measured decision evidence across handoff, without private input echoes."""
+    if result is None or sealed:
+        return None
+    if private:
+        return {key: value for key, value in result.items() if key != 'model_input'}
+    return result
+
 from pydantic import BaseModel,Field
 from jev_showcase_common import ROOT,SCENES,LIVE_ONLY_SCENES
 from jev_showcase_games import fresh as game_fresh,choices as game_choices,step as game_step,as_record as game_record
 import jev_demo_robot_pick as robot
 import jev_social_games as social_games
 import jev_agent_games as agent_games
+import jev_selected_games as selected_games
 import jev_probability_games as probability_games
 import jev_racing_game as racing
 import jev_racing_runtime as racing_runtime
@@ -18,8 +44,18 @@ from jev_gameplay_contract import adapt_record
 from typing import Literal, Annotated
 from jev_environment_seeds import condition_info
 from jev_engine_registry import get_engine, get_archived_engine, list_engines
+from blink_arena.model_inputs import project_record
 
 Seed = Annotated[int, Field(strict=True, ge=0, le=4294967295)]
+WORLD_OBSERVATION_MAX_BYTES = 256 * 1024
+
+
+def check_world_observation(state):
+    # Visible landing candidates and their latency scenarios exceed the old
+    # 24k-character cap. Preserve the complete observation with a bounded wire size.
+    size = len(json.dumps(state, ensure_ascii=False, separators=(',', ':')).encode('utf-8'))
+    if size > WORLD_OBSERVATION_MAX_BYTES:
+        raise HTTPException(413, '世界观测过长（最多 256 KiB）')
 
 def fresh(kind,seed,opponent='human'):
     engine=get_engine(kind)
@@ -39,6 +75,8 @@ def step(g,action,*,card_ids=None,controller=None):
     if controller is not None:kwargs['controller']=controller
     return get_engine(g['kind'],g).step(g,action,**kwargs)
 def as_record(g):
+    # Shared evaluator / legacy consumers require the native public contract.
+    # HTTP handlers project separately so --input-format original stays exact.
     return get_engine(g['kind'],g).observe(g)
 
 from jev_terraria_contract import OPTIONS as TERRA_OPTIONS,as_record as terra_record
@@ -51,6 +89,8 @@ SENSOR_SCENES={'robot_grasp_force':{'name':'机械臂 · 夹持状态','mode':'s
     'source_label':'数据集 · UMI-Gripper-Grasping（实测）'}}
 
 class New(BaseModel):
+    duel:bool=False
+    view_seat:Annotated[int,Field(strict=True,ge=0,le=2)]|None=None
     kind:str
     seq:int|None=None
     seed:Seed|None=None
@@ -58,6 +98,7 @@ class New(BaseModel):
 class Move(BaseModel):
     session_id:str
     revision:int
+    view_seat:Annotated[int,Field(strict=True,ge=0,le=2)]|None=None
     action:str|None=None
     model:bool=False
     reference:bool=False
@@ -77,16 +118,26 @@ class RacingControl(BaseModel):
 
 def install(app,prefix,getcase,predict,db):
     sessions={}
+    def set_view(s, seat):
+        if seat is None:return
+        if seat>=get_engine(s['world']['kind'],s['world']).seat_count:raise HTTPException(422,'Unknown view seat')
+        s['view_seat']=seat
     def payload(ident):
         s=sessions[ident];g=s['world']
+        if 'duel' in s:
+            return {**s['duel'].payload(s.get('view_seat')), 'session_id':ident, 'revision':s['revision'], 'environment':s.get('environment')}
         if g['kind']==racing.KIND:
-            r=as_record(g) if not g['outcome'] else None
+            r=project_record(as_record(g)) if not g['outcome'] else None
             opts=r['questions']['decision']['criteria'] if r else {}
         else:
             opts=choices(g)
-            r=as_record(g) if len(opts)>=2 else None
+            r=project_record(as_record(g)) if len(opts)>=2 else None
         engine=get_engine(g['kind'],g)
         world=engine.public(g,**({'include_trace':True} if engine.runtime else {}))
+        if s.get('view_seat') is not None:
+            from blink_arena.private_views import fixed_view
+            view=fixed_view(g,s['view_seat'])
+            if view is not None:world['fixed_view']=view
         return {'session_id':ident,'revision':s['revision'],'world':world,'choices':opts,
             'environment':s.get('environment'),
             'goal':engine.goal,'input':{'state':r['state'],'prompt':r['questions']['decision']['instructions'],'option':r['questions']['decision']['criteria']} if r else None}
@@ -103,11 +154,11 @@ def install(app,prefix,getcase,predict,db):
 
     @app.post(prefix+'/api/engines/{kind}/observe')
     async def engine_observation(kind:str,body:WorldObservation):
-        if len(json.dumps(body.state,ensure_ascii=False))>24000:raise HTTPException(413,'世界观测过长')
+        check_world_observation(body.state)
         try:engine=get_engine(kind)
         except (KeyError,ValueError):raise HTTPException(404,'未知游戏引擎')
         if not (engine.backend=='browser' or engine.backend=='worker' and engine.family=='world'):raise HTTPException(422,'原生环境请通过会话获取观测')
-        return {'schema_version':'jev.engine-observation.v1','record':engine.observe(body.state)}
+        return {'schema_version':'jev.engine-observation.v1','record':engine.model_input(body.state)}
 
     @app.get(prefix+'/api/showcases')
     async def listing():
@@ -141,11 +192,11 @@ def install(app,prefix,getcase,predict,db):
 
     @app.post(prefix+'/api/showcases/world')
     async def world_decision(body:WorldDecision):
-        if len(json.dumps(body.state,ensure_ascii=False))>24000:raise HTTPException(413,'世界观测过长')
+        check_world_observation(body.state)
         try:engine=get_engine(body.kind)
         except (KeyError,ValueError):raise HTTPException(422,'未知游戏引擎')
         if not (engine.backend=='browser' or engine.backend=='worker' and engine.family=='world'):raise HTTPException(422,'不是共享世界环境')
-        r=engine.observe(body.state)
+        r=engine.model_input(body.state)
         result=await predict(r,'decision');return {'result':result,'input':{'state':r['state'],'prompt':r['questions']['decision']['instructions'],'option':r['questions']['decision']['criteria']}}
 
     @app.post(prefix+'/api/showcases/new')
@@ -173,8 +224,13 @@ def install(app,prefix,getcase,predict,db):
         for ident in list(sessions):
             if sessions[ident]['updated']<time.monotonic()-86400 and not sessions[ident]['busy']:del sessions[ident]
         if len(sessions)>=1000:raise HTTPException(503,'当前对局过多')
-        ident=uuid.uuid4().hex;sessions[ident]={'world':g,'revision':0,'busy':False,'updated':time.monotonic(),
+        ident=uuid.uuid4().hex;session={'world':g,'revision':0,'busy':False,'updated':time.monotonic(),
             'environment':condition_info(body.kind,seed,replay=body.seq is not None)}
+        set_view(session,body.view_seat);sessions[ident]=session
+        if body.duel:
+            from blink_arena.social_duels import KINDS, SocialDuel
+            if body.kind in KINDS:
+                sessions[ident]['duel'] = SocialDuel(g)
         if body.kind==racing.KIND:racing_runtime.start(sessions[ident])
         if snake.is_realtime(g):
             snake_runtime.start(sessions[ident])
@@ -233,6 +289,7 @@ def install(app,prefix,getcase,predict,db):
                 if generation!=s.get('engine_request_generation',0):
                     return {**payload(body.session_id),'applied':False,'discard_reason':'cancelled','result':None}
             before,record=runtime.capture(s)
+            if record is not None:record=project_record(record)
             if engine.outcome(before):raise HTTPException(422,'本局已结束')
             if body.model and (record is None or not record['questions']['decision']['criteria']):
                 return {**payload(body.session_id),'result':None,'action':None,'applied':False,
@@ -246,14 +303,16 @@ def install(app,prefix,getcase,predict,db):
                     result=await asyncio.wait_for(predict(record,'decision'),runtime.MODEL_TIMEOUT_SECONDS)
                     action=result['value']
                     if action not in options:raise ValueError('invalid_registered_action')
-                except Exception as exc:failure='model_timeout' if isinstance(exc,TimeoutError) else 'model_error'
+                except Exception as exc:
+                    failure='model_timeout' if isinstance(exc,TimeoutError) else 'model_error'
+                    failure_error=interactive_model_error(exc)
             elif action not in options:raise HTTPException(422,'非法动作')
             if generation!=s.get('engine_request_generation',0):
                 runtime.tick(s);applied=False;reason='cancelled'
             elif failure:
                 runtime.tick(s);applied=False
-                if engine.outcome(s['world']):reason='game_finished_while_waiting'
-                else:runtime.fail(s,failure);reason=failure
+                if not engine.outcome(s['world']):raise failure_error
+                reason='game_finished_while_waiting'
             else:
                 receipt=runtime.commit(s,action,controller='model' if body.model else 'human',
                                        observed=before if body.model else None)
@@ -330,6 +389,7 @@ def install(app,prefix,getcase,predict,db):
         if generation!=s.get('racing_request_generation',0):
             return {**payload(body.session_id),'applied':False,'discard_reason':'cancelled','result':None}
         before,record=racing_runtime.capture(s)
+        if record is not None:record=project_record(record)
         if before['outcome']:
             return {**payload(body.session_id),'applied':False,'discard_reason':'terminal','result':None}
         captured_at=s['racing_clock_at']
@@ -346,10 +406,13 @@ def install(app,prefix,getcase,predict,db):
         except Exception as exc:
             if not body.model:raise HTTPException(422,'非法赛车动作')
             failure='model_timeout' if isinstance(exc,TimeoutError) else 'model_error'
+            failure_error=interactive_model_error(exc)
         if generation!=s.get('racing_request_generation',0):
             racing_runtime.tick(s);applied=False;reason='cancelled'
         elif failure:
-            racing_runtime.fail(s,failure);applied=False;reason=failure
+            racing_runtime.tick(s)
+            if not s['world']['outcome']:raise failure_error
+            applied=False;reason='game_finished_while_waiting'
         else:
             receipt=racing_runtime.commit(s,action);applied=receipt['applied'];reason=receipt['reason']
         arrived=s['world']
@@ -406,6 +469,7 @@ def install(app,prefix,getcase,predict,db):
             if generation!=s.get('snake_request_generation',0):
                 return {**payload(body.session_id),'applied':False,'discard_reason':'cancelled','result':None}
         before,record=snake_runtime.capture(s)
+        if record is not None:record=project_record(record)
         captured_at=s['snake_clock_at']
         if body.model:s['snake_next_decision_at']=captured_at+snake_runtime.MIN_DECISION_SECONDS
         if before['outcome']:
@@ -423,10 +487,13 @@ def install(app,prefix,getcase,predict,db):
                     if action not in options:raise ValueError('invalid_snake_action')
                 except Exception as exc:
                     failure='model_timeout' if isinstance(exc,TimeoutError) else 'model_error'
+                    failure_error=interactive_model_error(exc)
             if generation!=s.get('snake_request_generation',0):
                 snake_runtime.tick(s);applied=False;reason='cancelled'
             elif failure:
-                snake_runtime.fail(s,failure);applied=False;reason=failure
+                snake_runtime.tick(s)
+                if not s['world']['outcome']:raise failure_error
+                applied=False;reason='game_finished_while_waiting'
             else:
                 receipt=snake_runtime.commit(s,action,controller='model' if body.model else 'human')
                 applied=receipt['applied'];reason=receipt['reason']
@@ -489,6 +556,7 @@ def install(app,prefix,getcase,predict,db):
                 if generation!=s.get('tetris_request_generation',0):
                     return {**payload(body.session_id),'applied':False,'discard_reason':'cancelled','result':None}
             before,record=tetris_runtime.capture(s,for_policy=body.model)
+            if record is not None:record=project_record(record)
             captured_at=s['tetris_clock_at']
             if before['outcome'] or record is None:
                 return {**payload(body.session_id),'applied':False,
@@ -508,12 +576,13 @@ def install(app,prefix,getcase,predict,db):
                     if action not in options:raise ValueError('invalid_tetris_action')
                 except Exception as exc:
                     failure='model_timeout' if isinstance(exc,TimeoutError) else 'model_error'
+                    failure_error=interactive_model_error(exc)
             if generation!=s.get('tetris_request_generation',0):
                 tetris_runtime.tick(s);applied=False;reason='cancelled'
             elif failure:
                 tetris_runtime.tick(s)
-                reason='game_finished_while_waiting' if s['world']['outcome'] else failure
-                tetris_runtime.fail(s,failure);applied=False
+                if not s['world']['outcome']:raise failure_error
+                reason='game_finished_while_waiting';applied=False
             else:
                 receipt=tetris_runtime.commit(s,action,controller='model' if body.model else 'human',
                                               observed=before if body.model or body.piece_id is not None else None)
@@ -534,11 +603,24 @@ def install(app,prefix,getcase,predict,db):
         finally:
             if generation==s.get('tetris_request_generation',0):s['busy']=False
 
+    @app.post(prefix+'/api/showcases/view')
+    async def select_view(body:Move):
+        s=sessions.get(body.session_id)
+        if s is None:raise HTTPException(404,'对局已过期，请重新开局')
+        if s['busy'] or s['revision']!=body.revision:raise HTTPException(409,'棋局已变化，请稍后重试')
+        set_view(s,body.view_seat);s['updated']=time.monotonic()
+        return payload(body.session_id)
+
     @app.post(prefix+'/api/showcases/reveal')
     async def reveal(body:Move):
         s=sessions.get(body.session_id)
         if s is None:raise HTTPException(404,'对局已过期，请重新开局')
         if s['busy'] or s['revision']!=body.revision:raise HTTPException(409,'棋局已变化，请稍后重试')
+        set_view(s,body.view_seat)
+        if 'duel' in s:
+            if not s['duel'].handoff:raise HTTPException(422,'当前无需交接')
+            s['duel'].handoff=False;s['revision']+=1
+            return payload(body.session_id)
         engine=get_engine(s['world']['kind'],s['world'])
         if not s['world'].get('handoff'):
             raise HTTPException(422,'当前无需交接')
@@ -553,10 +635,37 @@ def install(app,prefix,getcase,predict,db):
 
     @app.post(prefix+'/api/showcases/step')
     async def advance(body:Move):
+        if body.reference and body.model:raise HTTPException(422,'参考策略与模型决策不能同时请求')
         s=sessions.get(body.session_id)
         if s is None:raise HTTPException(404,'对局已过期，请重新开局')
+        if body.view_seat is not None:
+            if s['busy'] or s['revision']!=body.revision:raise HTTPException(409,'棋局已变化，请稍后重试')
+            set_view(s,body.view_seat)
         if body.card_ids is not None and (s['world']['kind']!='doudizhu' or body.model or body.reference):
             raise HTTPException(422,'具体牌选择仅适用于人工斗地主出牌')
+        if 'duel' in s:
+            if s['busy'] or s['revision']!=body.revision:raise HTTPException(409,'棋局已变化，请稍后重试')
+            duel=s['duel']
+            if duel.handoff:raise HTTPException(422,'请先显示当前玩家局面')
+            s['busy']=True
+            try:
+                record=duel.record()
+                if record is None:raise HTTPException(422,'本局已结束')
+                options=record['questions']['decision']['criteria'];result=None
+                actor=duel.actor;forced=body.model and len(options)==1
+                if body.reference:action=await asyncio.to_thread(duel.rule_action)
+                elif forced:action=next(iter(options))
+                elif body.model:
+                    result=await predict(record,'decision');action=result['value']
+                else:action=body.action
+                try:await duel.step(action,card_ids=body.card_ids)
+                except ValueError as exc:raise HTTPException(422,str(exc)) from exc
+                s.update(world=duel.world,revision=s['revision']+1,updated=time.monotonic())
+                return {**payload(body.session_id),'result':display_decision_result(result,private=True),
+                    'decision_timing':{'latency_seconds':result.get('latency_seconds')} if result else None,
+                    'action':action,'action_name':options[action],'actor_label':str(actor+1),
+                    'forced':forced,'controller':'rule_engine' if body.reference else 'model' if body.model else 'human','previous_input':None}
+            finally:s['busy']=False
         if tetris.is_realtime(s['world']):return await tetris_advance(body,s)
         if snake.is_realtime(s['world']):return await snake_advance(body,s)
         engine=get_engine(s['world']['kind'],s['world'])
@@ -576,12 +685,14 @@ def install(app,prefix,getcase,predict,db):
                 if body.model:raise HTTPException(422,'参考策略与模型决策不能同时请求')
                 if 'reference_action' in engine.capabilities:
                     action=await asyncio.to_thread(engine.environment.reference_action,s['world'])
+                elif engine.family=='agent':action=await asyncio.to_thread(agent_games.rule_action,s['world'])
+                elif engine.family=='selected':action=await asyncio.to_thread(selected_games.rule_action,s['world'])
                 elif s['world']['kind']=='robot_pick_cola':action=robot.best(s['world'])
                 else:raise HTTPException(422,'当前游戏未注册显式参考策略')
             elif body.model:
                 if len(options)==1:action=next(iter(options));forced=True
                 else:
-                    record=as_record(s['world'])
+                    record=project_record(as_record(s['world']))
                     decisions=record['questions']['decision']['criteria']
                     if len(decisions)==1:action=next(iter(decisions));forced=True
                     else:result=await predict(record,'decision');action=result['value']
@@ -589,7 +700,7 @@ def install(app,prefix,getcase,predict,db):
             hidden=s['world']['kind'] in agent_games.HIDDEN or 'private_turns' in engine.capabilities
             previous_input=None if hidden else payload(body.session_id)['input']
             provenance='controller_provenance' in engine.capabilities
-            controller=('rule_engine' if provenance and body.reference else
+            controller=('rule_engine' if body.reference and (provenance or engine.family in ('agent','selected')) else
                         'deterministic_execution' if provenance and forced else
                         'reference' if body.reference else 'model' if body.model else 'human')
             if engine.family=='agent':
@@ -604,8 +715,8 @@ def install(app,prefix,getcase,predict,db):
             except (ValueError,TypeError):raise HTTPException(422,'非法动作')
             s.update(world=g,revision=s['revision']+1,updated=time.monotonic())
             sealed=(g['kind']=='goofspiel' and g.get('_pending') is not None) or ('private_turns' in engine.capabilities and engine.environment.sealed(g))
-            return {**payload(body.session_id),'result':None if hidden and g.get('handoff') else result,
-                # Keep call timing available when private decisions are redacted.
+            return {**payload(body.session_id),'result':display_decision_result(result,private=hidden,sealed=sealed),
+                # Timing remains available even for a sealed action.
                 'decision_timing':{'latency_seconds':result.get('latency_seconds')} if result else None,
                 'action':None if sealed else action,'action_name':'已密封出牌' if sealed else options[action], 'actor_label':actor_label,
                 'forced':forced,'controller':controller,'previous_input':previous_input}

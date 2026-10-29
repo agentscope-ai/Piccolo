@@ -158,8 +158,14 @@
   let tableCache = null, animationEpoch = 0, animationRunning = false;
   const cloneTable = value => ({plays:value.plays.map(cards => cards ? cards.slice() : null),passed:value.passed.slice(),passes:value.passes,reset:value.reset,leader:value.leader});
   const emptyTable = () => ({plays:[null,null,null],passed:[false,false,false],passes:0,reset:false,leader:null});
-  const tableKey = g => g.kind + ':' + (typeof showcaseSession !== 'undefined' ? showcaseSession?.session_id || '' : '');
-  const roleName = player => player === 0 ? 'You · Landlord' : 'Farmer ' + (player === 1 ? 'A' : 'B');
+  const tableKey = g => g.kind + ':' + (typeof showcaseSession !== 'undefined' ? showcaseSession?.session_id || '' : '') + ':' + (g.view_seat ?? 0);
+  const seatId = relative => lastGame?.seat_ids?.[relative] ?? relative;
+  const seatActive = relative => !!lastGame?.duel && !lastGame.outcome && seatId(relative)===lastGame.active_seat;
+  const roleName = relative => lastGame?.duel && window.JevParticipants
+    ? JevParticipants.seatText(seatId(relative))
+    : lastGame?.seat_labels?.[relative] || (relative === 0 ? 'You · Landlord' : 'Farmer ' + (relative === 1 ? 'A' : 'B'));
+  const seatName = (relative,fallback) => lastGame?.duel ? (seatActive(relative)?'▶ ':'')+roleName(relative) : fallback;
+  const seatBorder = (relative,fallback) => seatActive(relative)?'#318658':fallback;
   const visibleCards = (ranks,ids) => ranks.map((rank,index)=>({rank,cardId:ids?.[index]??null}));
   function publicPlay(entry) {
     if (!entry || ![0,1,2].includes(entry.player) || typeof entry.move !== 'string') return null;
@@ -223,7 +229,7 @@
   function playedCards(table, player, flight) {
     const cards = table.plays[player], center = [450,190,710][player], y = player === 0 ? 275 : 194;
     const active = player === table.leader;
-    label(roleName(player) + (table.passed[player] ? ' · Pass' : cards ? ' · Played' : ''),center,y,12,active ? '#8b602f' : '#496b54',650,'center');
+    label(roleName(player) + (table.passed[player] ? ' · Pass' : cards ? ' · Played' : ''),center,y,12,active ? '#8b602f' : '#496b54',650,'center',240);
     if (!cards?.length) {
       label(table.passed[player] ? 'Pass' : 'Waiting',center,y+34,16,'#78917b',500,'center');
       return;
@@ -255,19 +261,20 @@
     ellipse(450,256,409,201,'#1b5a4b','#ffffff36',2);ellipse(450,256,381,176,null,'#ffffff1a',2);
     box(337,20,226,41,21,'#09282ae8','#d2af7355');
     label('Dou Dizhu · Turn '+String(g.steps+1).padStart(2,'0')+'',450,41,15,'#ead8ac',700,'center');
-    [['Farmer A',g.opponent_counts[0],46],['Farmer B',g.opponent_counts[1],664]].forEach(([name,count,x])=>{
-      box(x,78,190,107,16,'#0b3839df','#bfa47177',1.5);ellipse(x+29,105,17,17,'#d7bd87');
-      label('F',x+29,105,17,'#315348',800,'center');label(name,x+53,100,15,'#f6eeda',680);
+    [[g.seat_labels?.[1]||'Farmer A',g.opponent_counts[0],46],[g.seat_labels?.[2]||'Farmer B',g.opponent_counts[1],664]].forEach(([name,count,x],index)=>{
+      const relative=index+1;box(x,78,190,107,16,'#0b3839df',seatBorder(relative,'#bfa47177'),seatActive(relative)?3:1.5);ellipse(x+29,105,17,17,'#d7bd87');
+      label(name==='Landlord'?'L':'F',x+29,105,17,'#315348',800,'center');label(seatName(relative,name),x+53,100,13,seatActive(relative)?'#216c4e':'#f6eeda',seatActive(relative)?800:680,'left',130);
       label(count+' cards',x+53,123,12,'#bcd2c5');backs(x+39,133,count);
     });
     box(276,88,348,80,0,'#0a383adf','#c6a66c77',1.5);
     label('PUBLIC CARDS',450,108,13,'#6b7651',650,'center');
-    label(table.reset ? 'Trick over · New lead' : table.leader == null ? 'Select cards below' : roleName(table.leader)+' leads',450,140,16,'#315648',600,'center');
+    label(table.reset ? 'Trick over · New lead' : table.leader == null ? 'Select cards below' : roleName(table.leader)+' leads',450,140,16,'#315648',600,'center',320);
     [1,2,0].forEach(player=>playedCards(table,player,flight));
-    box(37,363,826,166,19,'#08292ad9','#e1c28a55',1.5);
-    label('Your hand · Landlord',67,391,16,'#fff5dc',700);label(g.hand.length+' cards',834,391,15,'#ead09a',700,'right');
-    const w=54,h=94,step=Math.min(37,(W-144-w)/Math.max(1,g.hand.length-1)),left=(W-step*(g.hand.length-1)-w)/2;
-    g.hand.forEach((value,i)=>{const selected=!extra.cardAnimation&&cardSelection.includes(i),x=left+i*step,y=selected?405:420;card(value,x,y,w,h,{selected,cardId:g.hand_card_ids?.[i]});cardHits.push({x,y,w:i===g.hand.length-1?w:step,h,i});});
+    box(37,363,826,166,19,'#08292ad9',seatBorder(0,'#e1c28a55'),seatActive(0)?3:1.5);
+    label(seatName(0,'Your hand · '+(g.seat_labels?.[0]||'Landlord')),67,391,16,seatActive(0)?'#216c4e':'#fff5dc',700,'left',640);label((g.hand_count??g.hand.length)+' cards',834,391,15,'#ead09a',700,'right');
+    const hand=g.handoff?Array(g.hand_count).fill(null):g.hand;
+    const w=54,h=94,step=Math.min(37,(W-144-w)/Math.max(1,hand.length-1)),left=(W-step*(hand.length-1)-w)/2;
+    hand.forEach((value,i)=>{const selected=!extra.cardAnimation&&cardSelection.includes(i),x=left+i*step,y=selected?405:420;card(value,x,y,w,h,{selected,face:!g.handoff,cardId:g.hand_card_ids?.[i]});cardHits.push({x,y,w:i===g.hand.length-1?w:step,h,i});});
     flyingPlay(flight);
     const publicSummary=table.plays.map((cards,player)=>roleName(player)+'：'+(cards?.length?cards.map(value=>(rankNames[value.rank]||value.rank)+(Number.isInteger(value.cardId)&&value.cardId<52?['♠','♥','♣','♦'][value.cardId%4]:'')).join(' '):'No play')+(table.passed[player]?', pass':'')).join('；');
     canvas.setAttribute('aria-label',JevPlayText.ui('Dou Dizhu table. Public cards: '+publicSummary+'. Select cards from your hand below.'));
@@ -282,10 +289,10 @@
     label('PRIVATE TABLE', 39, 38, 13, '#d6bc89', 780);
     label('VIRTUAL CHIPS  ·  HEADS UP', 861, 38, 12, '#a9b9ae', 550, 'right');
     const street = g.board.length === 0 ? 'Preflop' : g.board.length === 3 ? 'Flop' : g.board.length === 4 ? 'Turn' : 'River';
-    box(344, 21, 212, 53, 17, '#0d3537ed', '#a98d63aa');
-    label('Opponent', 362, 42, 14, '#fff8e8', 700);
+    box(344, 21, 212, 53, 17, '#0d3537ed', seatBorder(1,'#a98d63aa'),seatActive(1)?3:1);
+    label(seatName(1,'Opponent'),362,42,12,seatActive(1)?'#216c4e':'#fff8e8',700,'left',116);
     label(g.stacks[1] + ' chips', 539, 42, 14, '#f0d3a2', 700, 'right');
-    label(g.opponent_last || 'Waiting', 450, 64, 11, '#afcabe', 500, 'center');
+    label(g.duel?(seatActive(1)?JevI18n.t('To act','当前回合'):JevI18n.t('Waiting','等待行动')):g.opponent_last||'Waiting',450,64,11,'#afcabe',500,'center');
     card(g.opponent_hand && g.opponent_hand[0], 385, 82, 59, 82, { face: !!g.showdown, poker: true });
     card(g.opponent_hand && g.opponent_hand[1], 457, 82, 59, 82, { face: !!g.showdown, poker: true });
     box(374, 180, 152, 67, 17, '#082d30ea', '#d7b77f94', 1.5);
@@ -306,11 +313,11 @@
         label(String(i + 1).padStart(2, '0'), x + cardW / 2, 332, 16, '#97b5a4', 650, 'center');
       }
     }
-    box(25, 410, 192, 102, 15, '#0b3234df', '#8fb8a455');
-    label('Your chips', 45, 436, 12, '#aacbbb', 600);
+    box(25,410,192,102,15,'#0b3234df',seatBorder(0,'#8fb8a455'),seatActive(0)?3:1);
+    label(seatName(0,'Your chips'),45,436,12,seatActive(0)?'#216c4e':'#aacbbb',700,'left',152);
     label(g.stacks[0], 45, 474, 29, '#f9f5e5', 760);
-    label('Your hand', 450, 398, 13, '#deceaa', 700, 'center');
-    g.hand.forEach(function (value, i) { card(value, 376 + i * 78, 413, 69, 104, { poker: true }); });
+    label(seatName(0,'Your hand'),450,398,13,seatActive(0)?'#216c4e':'#deceaa',700,'center',360);
+    (g.handoff?[null,null]:g.hand).forEach(function (value, i) { card(value, 376 + i * 78, 413, 69, 104, { poker: true, face:!g.handoff }); });
     box(683, 410, 192, 102, 15, '#0b3234df', '#8fb8a455');
     label('To call', 704, 436, 12, '#aacbbb', 600);
     label(g.to_call || 'Check available', 704, 474, g.to_call ? 29 : 21, '#f2d39b', 760);
@@ -323,16 +330,16 @@
     ellipse(450, 275, 408, 210, '#15584c', '#dbc08d', 3);
     label('Zha Jin Hua · Three-card poker', 44, 39, 20, '#f4e6c4', 780);
     label('Virtual chips', 858, 39, 14, '#d7c49b', 550, 'right');
-    box(326, 73, 248, 139, 16, '#0e3438', '#d4ae70', 2);
-    label('Opponent  ·  ' + g.stacks[1] + ' chips', 450, 98, 16, '#f7e7c9', 700, 'center');
+    box(326,73,248,139,16,'#0e3438',seatBorder(1,'#d4ae70'),seatActive(1)?3:2);
+    label(seatName(1,'Opponent')+' · '+g.stacks[1]+' chips',450,98,14,seatActive(1)?'#216c4e':'#f7e7c9',700,'center',220);
     for (let i = 0; i < 3; i++)
       card(g.opponent_hand?.[i], 363 + i * 64, 118, 55, 77, { face: !!g.showdown, poker: true });
     box(338, 223, 224, 91, 18, '#0a3238', '#d5b878', 2);
     label('Pot', 450, 247, 14, '#bed6c8', 600, 'center');
     label(String(g.pot), 450, 282, 31, '#ffe3a8', 800, 'center');
     label('Round ' + g.round + ' / 5 · Stake ' + g.stake, 450, 341, 15, '#f1dfb6', 650, 'center');
-    box(302, 372, 296, 157, 17, '#0e3438', '#d4ae70', 2);
-    label('You · ' + g.stacks[0] + ' chips  ·  ' + (g.seen ? 'Seen' : 'Blind'), 450, 395, 16, '#f7e7c9', 700, 'center');
+    box(302,372,296,157,17,'#0e3438',seatBorder(0,'#d4ae70'),seatActive(0)?3:2);
+    label(seatName(0,'You')+' · '+g.stacks[0]+' chips · '+(g.seen?'Seen':'Blind'),450,395,14,seatActive(0)?'#216c4e':'#f7e7c9',700,'center',270);
     for (let i = 0; i < 3; i++)
       card(g.hand?.[i], 350 + i * 68, 421, 60, 93, { face: !!g.hand, poker: true });
     canvas.setAttribute('aria-label', JevPlayText.ui('Three-card poker. Opponent cards are revealed only at showdown.'));
@@ -356,10 +363,10 @@
   }
 
   function propertyPanel(x, side, cash, count, position, accent) {
-    box(x, 169, 162, 205, 17, '#fffaf1ed', '#ccbfa5', 1.5);
+    box(x,169,162,205,17,'#fffaf1ed',seatBorder(side,'#ccbfa5'),seatActive(side)?3:1.5);
     box(x + 64, 181, 34, 34, 13, accent);
     label(side === 0 ? 'Y' : 'R', x + 81, 198, 17, '#fff', 750, 'center');
-    label(side === 0 ? 'Your assets' : 'Opponent assets', x + 81, 232, 14, '#334d45', 700,'center',142);
+    label(seatName(side,side===0?'Your assets':'Opponent assets'),x+81,232,13,seatActive(side)?'#216c4e':'#334d45',700,'center',142);
     label('Cash', x + 20, 253, 12, '#52675a');
     label('$' + cash, x + 20, 286, 27, '#243f36', 750);
     ctx.strokeStyle = '#ddd4bf'; ctx.beginPath(); ctx.moveTo(x + 20, 309); ctx.lineTo(x + 142, 309); ctx.stroke();
@@ -448,6 +455,7 @@
   };
 
   PlayDraw.draw = function (g, extra = {}) {
+    if(g.duel && g.table) g=g.table;
     if(animationRunning&&!extra.cardAnimation){++animationEpoch;animationRunning=false;}
     if (!socialKinds.has(g.kind)) { lastGame = null; canvas.onclick = null; canvas.style.removeProperty('image-rendering'); ctx.setTransform(1,0,0,1,0,0); return originalDraw(g, extra); }
     lastGame = g; prepareCanvas();
@@ -458,8 +466,9 @@
     else if (g.kind === 'zha_jin_hua') drawZhaJinHua(g);
     else if (g.kind === 'pig_dice') drawPigDice(g);
     else drawProperty(g);
+    if(g.duel){canvas.setAttribute('aria-label',(g.seat_ids||[0,1]).map((_,i)=>seatName(i)).join('; ')+'; '+canvas.getAttribute('aria-label'));canvas.dataset.viewSeat=String(g.view_seat);canvas.dataset.activeSeat=String(g.active_seat);}
     canvas.onclick = function (event) {
-      if (g.kind !== 'doudizhu' || showcaseBusy || g.outcome) return;
+      if (g.kind !== 'doudizhu' || showcaseBusy || g.outcome || g.handoff || (g.duel && !window.JevParticipants?.canAct())) return;
       const bounds = canvas.getBoundingClientRect();
       const x = (event.clientX - bounds.left) * W / bounds.width;
       const y = (event.clientY - bounds.top) * H / bounds.height;

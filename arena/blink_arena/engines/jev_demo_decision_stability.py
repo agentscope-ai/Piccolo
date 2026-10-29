@@ -124,7 +124,16 @@ def probability_metrics(candidate_order, distributions, coverages=None):
 def _failure(error, index):
     # Provider exception text and headers may contain credentials or request data.
     status = error.status_code if isinstance(error, HTTPException) else 502
-    return HTTPException(status, detail={'code': 'decision_repeat_failed',
+    allowed = {'connection_failed', 'invalid_response', 'timeout', 'cancelled',
+               'authentication_failed', 'rate_limited', 'endpoint_not_found',
+               'upstream_unavailable'}
+    detail = error.detail if isinstance(error, HTTPException) else None
+    cause = detail.get('code') if isinstance(detail, dict) else None
+    if cause not in allowed:
+        cause = {401: 'authentication_failed', 403: 'authentication_failed',
+                 404: 'endpoint_not_found', 429: 'rate_limited',
+                 503: 'upstream_unavailable', 504: 'timeout'}.get(status, 'connection_failed')
+    return HTTPException(status, detail={'code': 'decision_repeat_failed', 'cause': cause,
         'error_type': type(error).__name__, 'sample_index': index})
 
 

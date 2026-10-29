@@ -1,7 +1,7 @@
 /* The server advances the clock. Drawing only interpolates received states. */
 window.JevTetrisUI=(()=>{
  const tr=(en,zh)=>window.JevI18n?.t(en,zh)??en,kind='tetris_placement';
- const isWorld=g=>g?.kind===kind&&['tetris-realtime-v1','tetris-realtime-v2-visible-consequences','tetris-realtime-v3-persistent-intent','tetris-realtime-v4-latency-contract'].includes(g.engine_revision);
+ const isWorld=g=>window.JevTetrisRenderer.supports(g);
  const active=()=>playTabVisible&&selectedPlay===kind&&isWorld(showcaseSession?.world);
  const current=session=>active()&&showcaseSession.session_id===session;
  const buttons={left:['← Left','← 左移'],rotate_ccw:['↶ Rotate','↶ 左旋'],rotate_cw:['↷ Rotate','↷ 右旋'],right:['Right →','右移 →'],soft_drop:['↓ Soft drop','↓ 软降'],hard_drop:['⤓ Hard drop','⤓ 直落']};
@@ -78,7 +78,7 @@ window.JevTetrisUI=(()=>{
   if(!model){if(!(action in buttons)||showcaseSession.world.phase==='clearing')return false;if(showcaseAuto||pending)stopAuto();
    if(driver.queue.length<12)driver.queue.push({action,piece_id:showcaseSession.world.active?.piece_id});void drain(driver);return true;}
   if(showcaseBusy||driver?.sending)return false;
-  const owner={id:showcaseSession.session_id};pending=owner;showcaseBusy=true;showcaseControls(true);clearError();$('lastDecision').textContent=tr('Model thinking · Pieces keep falling','模型思考中 · 方块继续下落');
+  const owner={id:showcaseSession.session_id};pending=owner;showcaseBusy=true;showcaseControls(true);clearError();$('lastDecision').textContent=showcaseSession.world.started?tr('Model thinking · Pieces keep falling','模型思考中 · 方块继续下落'):tr('First decision · Gravity starts after the reply','首次判断中 · 回复后开始重力下落');
   try{const result=await api('showcases/step',{session_id:owner.id,revision:showcaseSession.revision,action:null,model:true,reference:false});if(pending!==owner||!current(owner.id))return false;apply(result,true);return !!result.applied||['piece_changed_while_waiting','clearing','continuing_intent'].includes(result.discard_reason)&&!result.world.outcome;}
   catch(e){if(pending===owner&&current(owner.id))error(e);return false;}
   finally{if(pending===owner){pending=null;showcaseBusy=false;showcaseControls(false);}}

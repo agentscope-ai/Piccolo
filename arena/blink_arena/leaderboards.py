@@ -74,7 +74,10 @@ class Leaderboards:
                                'groups': [{'id': 'imported', 'current': True, 'rows': rows}], 'dataset': {},
                                'display_policy': 'portable JSON import', 'archived_group_count': 0})
         ratings = self.path('arena')
-        arena = ratings if ratings.exists() else self.data / 'arena.json'
+        independent = self.data / 'arena-independent.json'
+        published_elo = self.data / 'arena-elo.json'
+        arena = (published_elo if published_elo.exists() else independent if independent.exists()
+                 else ratings if ratings.exists() else self.data / 'arena.json')
         try:
             arena_updated_at = datetime.fromtimestamp(arena.stat().st_mtime, timezone.utc).isoformat()
         except FileNotFoundError:

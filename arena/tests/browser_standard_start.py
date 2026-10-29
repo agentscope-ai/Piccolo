@@ -68,9 +68,11 @@ def main():
             assert page.evaluate('gameState') is None
             featured = ['snake_navigation','sokoban_puzzle','blackjack','chess','tetris_placement','uno']
             assert page.locator('#gamePicker [data-kind]').evaluate_all('(ns)=>ns.map(n=>n.dataset.kind)') == featured
+            page.locator('#playBrowseGames').click()
             page.locator('#playFilters [data-filter="all"]').click()
             assert page.locator('#gamePicker [data-kind="iterated_rps"]').count() == 0
             kinds = page.locator('#gamePicker [data-kind]').evaluate_all('(ns)=>ns.map(n=>n.dataset.kind)')
+            page.locator('.play-library-close').click()
 
             def settle():
                 page.wait_for_function('!busy&&!showcaseBusy')
@@ -86,19 +88,33 @@ def main():
                     assert world['opening_plies'] == 0 and len(world['moves_uci']) == 0
                 assert page.locator('#playSeedStatus').inner_text() in ('Standard start', '标准开局')
 
+            def workspace_layout(content, *, seed_visible=True):
+                scene = page.locator(content)
+                assert scene.is_visible()
+                assert page.locator('#playWorkspaceBar').is_visible()
+                assert not page.locator('#playLibrary').is_visible()
+                bar = page.locator('#playWorkspaceBar').bounding_box()
+                assert bar['y'] + bar['height'] <= scene.bounding_box()['y'] + 1
+                if seed_visible:
+                    seed = page.locator('#playSeedTools')
+                    assert seed.is_visible()
+                    assert seed.evaluate('n=>n.parentElement.classList.contains("play-aside")')
+                    surface = scene.locator('.play-main,.board-wrap').first.bounding_box()
+                    assert seed.bounding_box()['x'] >= surface['x'] + surface['width'] - 1
+                else:
+                    assert not page.locator('#playSeedTools').is_visible()
+
             for kind in kinds:
-                page.locator('#playSearch').fill(kind)
-                page.locator(f'#gamePicker [data-kind="{kind}"]').click()
+                page.locator('#playQuickGame').select_option(kind)
                 settle()
                 if kind == 'mbti_text':
-                    assert page.locator('#mbtiPlay').is_visible()
-                    assert page.locator('#mbtiPlay').evaluate("n=>!!(n.compareDocumentPosition(document.querySelector('.play-library-tools'))&Node.DOCUMENT_POSITION_FOLLOWING)")
-                    results.append({'kind':kind, 'content_above_picker':True})
+                    workspace_layout('#mbtiPlay', seed_visible=False)
+                    results.append({'kind':kind, 'compact_game_switcher':True, 'seed_hidden':True})
                     continue
                 is_board = page.locator('#boardPlay').is_visible()
                 is_world = kind in ('mario_platformer', 'terraria_survival')
                 content = '#boardPlay' if is_board else '#showcasesView'
-                assert page.locator(content).evaluate("n=>!!(n.compareDocumentPosition(document.querySelector('.play-library-tools'))&Node.DOCUMENT_POSITION_FOLLOWING)")
+                workspace_layout(content)
                 if not is_world:
                     standard_request()
                 else:
@@ -122,10 +138,9 @@ def main():
                     assert snapshot['args'] == [None]
                     assert snapshot['obs']['decisions'] == 0
                     assert page.locator('#playSeedStatus').inner_text() in ('Standard start', '标准开局')
-                results.append({'kind':kind, 'standard_default':True, 'explicit_seed':True, 'restart_standard':True, 'content_above_picker':True})
+                results.append({'kind':kind, 'standard_default':True, 'explicit_seed':True, 'restart_standard':True, 'compact_game_switcher':True, 'seed_beside_content':True})
                 print(kind, 'PASS', flush=True)
-            page.locator('#playSearch').fill('chess')
-            page.locator('#gamePicker [data-kind="chess"]').click()
+            page.locator('#playQuickGame').select_option('chess')
             settle()
             # Change the position, then use the normal restart control.
             page.evaluate("()=>JevChessUI.step('e2e4',false)")
@@ -134,8 +149,10 @@ def main():
             page.locator('#showcaseNew').click()
             settle()
             standard_request()
+            page.locator('#playBrowseGames').click()
             page.locator('#playSearch').fill('')
             page.locator('#playFilters [data-filter="new"]').click()
+            page.locator('.play-library-close').click()
             page.evaluate('window.scrollTo(0,0)')
             page.screenshot(path=str(args.output/'desktop.png'), full_page=True)
             page.set_viewport_size({'width':390, 'height':844})

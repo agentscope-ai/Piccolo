@@ -7,8 +7,14 @@ import time
 import httpx
 
 
+class SystemOneError(ValueError):
+    def __init__(self, code, status=502):
+        super().__init__(code)
+        self.code, self.status = code, status
+
+
 class SystemOneClient:
-    def __init__(self, endpoint, model='jev-policy', *, concurrency=4, timeout=90):
+    def __init__(self, endpoint, model='jev-policy', *, concurrency=1, timeout=90):
         self.endpoint, self.model = endpoint, model
         self.http = httpx.AsyncClient(timeout=timeout, follow_redirects=False)
         self.capacity = asyncio.Semaphore(concurrency)
@@ -31,9 +37,22 @@ class SystemOneClient:
             'criteria': {key: criteria[key] for key in order}}}}
         started = time.perf_counter()
         async with self.capacity:
-            response = await self.http.post(self.endpoint, json=payload)
+            for attempt in range(3):
+                try:
+                    response = await self.http.post(self.endpoint, json=payload)
+                    if response.status_code not in (429, 502, 503, 504) or attempt == 2:
+                        break
+                except httpx.TimeoutException:
+                    raise
+                except httpx.TransportError:
+                    if attempt == 2:
+                        raise
+                await asyncio.sleep(.15 * (attempt + 1))
         if response.status_code != 200:
-            raise ValueError('systemone_http_' + str(response.status_code))
+            code = {401: 'authentication_failed', 403: 'authentication_failed',
+                    404: 'endpoint_not_found', 429: 'rate_limited', 504: 'timeout'}.get(
+                        response.status_code, 'upstream_unavailable')
+            raise SystemOneError(code, response.status_code if response.status_code in (401, 403, 404, 429, 503, 504) else 502)
         data = response.json()
         if data.get('model') != self.model:
             raise ValueError('served_model_mismatch')
@@ -57,7 +76,7 @@ class SystemOneClient:
                 'systemone_response': data}
 
 
-def create_bridge(endpoint, model='jev-policy'):
+def create_bridge(endpoint, model='jev-policy', *, allowed_origins=None):
     from contextlib import asynccontextmanager
     from fastapi import FastAPI, HTTPException
     from fastapi.middleware.cors import CORSMiddleware
@@ -72,7 +91,7 @@ def create_bridge(endpoint, model='jev-policy'):
 
     app = FastAPI(lifespan=lifespan)
     app.add_middleware(CORSMiddleware,
-        allow_origins=['http://127.0.0.1:8080'],
+        allow_origins=allowed_origins or ['https://decisionplayground.agentscope.io'],
         allow_methods=['POST', 'GET'], allow_headers=['Content-Type', 'X-Request-ID'],
         allow_private_network=True)
 
@@ -95,10 +114,14 @@ def create_bridge(endpoint, model='jev-policy'):
                     'model': model, 'action': result['value'],
                     'probabilities': {row['value']: row['probability'] for row in result['distribution']},
                     'usage': {k: v for k, v in result['usage'].items() if type(v) is int}}
+        except SystemOneError as error:
+            raise HTTPException(error.status, {'code': error.code}) from None
         except (ValueError, KeyError, TypeError):
-            raise HTTPException(422, 'Invalid model request or response') from None
+            raise HTTPException(422, {'code': 'invalid_response'}) from None
+        except httpx.TimeoutException:
+            raise HTTPException(504, {'code': 'timeout'}) from None
         except httpx.HTTPError:
-            raise HTTPException(502, 'System One service unavailable') from None
+            raise HTTPException(502, {'code': 'upstream_unavailable'}) from None
 
     app.post('/decide')(decide)
 
@@ -113,11 +136,12 @@ def main():
     import argparse
     import uvicorn
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--endpoint', default='http://127.0.0.1:30100/v1/systemone')
+    parser.add_argument('--endpoint', default='http://10.29.240.38:30000/v1/systemone')
     parser.add_argument('--model', default='jev-policy')
     parser.add_argument('--port', type=int, default=30101)
+    parser.add_argument('--allow-origin', action='append')
     args = parser.parse_args()
-    uvicorn.run(create_bridge(args.endpoint, args.model), host='127.0.0.1', port=args.port,
+    uvicorn.run(create_bridge(args.endpoint, args.model, allowed_origins=args.allow_origin), host='127.0.0.1', port=args.port,
                 access_log=False)
 
 

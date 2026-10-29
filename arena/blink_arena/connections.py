@@ -14,6 +14,11 @@ class Connections:
         return bool(entry and entry['owner'] == owner)
 
     def require(self, ident, owner):
+        if ident in self.providers.server_relays:
+            return {'transport': 'server'}
+        return self.require_browser(ident, owner)
+
+    def require_browser(self, ident, owner):
         if not self.owned(ident, owner): raise HTTPException(403, 'This browser does not own this model connection')
         return self.entries[ident]
 
@@ -23,7 +28,8 @@ class Connections:
         if len(self.entries) >= 64: raise HTTPException(429, 'Connection limit reached')
         spec = ModelConfig(id=body.model_id, name=body.name, adapter=body.adapter,
                            served_model=body.served_model,
-                           timeout_seconds=body.timeout_seconds, json_mode=body.json_mode)
+                           timeout_seconds=body.timeout_seconds, json_mode=body.json_mode,
+                           concurrency=body.concurrency)
         entry = {'owner': owner, 'transport': body.transport, 'created_at': time.time(),
                  'queue': asyncio.Queue(maxsize=128), 'pending': {}, 'last_poll': time.monotonic()}
         self.entries[spec.id] = entry
@@ -51,7 +57,7 @@ class Connections:
                 'served_model': spec.served_model, 'ready': True, 'credentials_persisted': False}
 
     async def poll(self, ident, owner):
-        entry = self.require(ident, owner)
+        entry = self.require_browser(ident, owner)
         entry['last_poll'] = time.monotonic()
         rows = []
         try: rows.append(await asyncio.wait_for(entry['queue'].get(), timeout=10))
@@ -62,15 +68,18 @@ class Connections:
         return {'requests': [r for r in rows if r['request_id'] in entry['pending']]}
 
     def complete(self, ident, owner, body):
-        entry = self.require(ident, owner)
+        entry = self.require_browser(ident, owner)
         future = entry['pending'].get(body.request_id)
         if future is None or future.done(): return {'accepted': False, 'reason': 'request_expired'}
-        if body.error: future.set_exception(HTTPException(502, 'Browser model request failed: '+body.error))
+        if body.error:
+            status = {'timeout': 504, 'authentication_failed': 401, 'rate_limited': 429,
+                      'endpoint_not_found': 404, 'upstream_unavailable': 503}.get(body.error, 502)
+            future.set_exception(HTTPException(status, {'code': body.error}))
         else: future.set_result(body.result)
         return {'accepted': True}
 
     def remove(self, ident, owner):
-        entry = self.require(ident, owner)
+        entry = self.require_browser(ident, owner)
         for future in entry['pending'].values():
             if not future.done(): future.set_exception(HTTPException(503, 'Model connection closed'))
         self.entries.pop(ident)
@@ -83,6 +92,9 @@ class Connections:
     def visible(self, owner):
         rows = []
         for model in self.providers.public_models():
+            if model['id'] in self.providers.server_relays:
+                rows.append({**model, 'transport': 'server', 'managed': True})
+                continue
             if not self.owned(model['id'], owner): continue
             entry = self.entries[model['id']]
             ready = time.monotonic()-entry['last_poll'] <= 45

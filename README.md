@@ -2,7 +2,7 @@
 
 <h1 align="center">Piccolo</h1>
 <p align="center"><strong>Decisions, in motion.</strong></p>
-<p align="center"><a href="https://decisionplayground.agentscope.io/">Decision · Website</a> · English / <a href="README_zh.md">简体中文</a> · <a href="docs/blog.md">Blog 中文</a> · <a href="arena/README.md">Arena docs</a></p>
+<p align="center"><a href="https://decisionplayground.agentscope.io/">Decision · Website</a> · English / <a href="README_zh.md">简体中文</a> · <a href="docs/piccolo-blog.md">Blog 中文</a> · <a href="arena/README.md">Arena docs</a></p>
 
 Piccolo connects **observation, action, and feedback** in an inspectable decision loop. Its Arena brings together interactive games, shared environment rules, model evaluation, and replayable trajectories. Explore the [Decision website](https://decisionplayground.agentscope.io/), or run the included Arena locally.
 
@@ -10,7 +10,7 @@ Piccolo connects **observation, action, and feedback** in an inspectable decisio
 
 ## See decisions unfold
 
-Eight historical replays in one gallery. The interactive players support pausing, seeking, and inspecting recorded steps.
+Eight complete historical replays in one gallery, with recorded candidate probabilities on the right. The interactive players support pausing, seeking, and inspecting every decision.
 
 <table>
   <tr>

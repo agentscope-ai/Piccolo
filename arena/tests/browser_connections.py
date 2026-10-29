@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Exercise the model connection UI against a running local PiccoloArena backend.
+"""Exercise the model connection UI against a running local JevArena backend.
 
     python tests/browser_connections.py --base-url http://127.0.0.1:8092/
     python tests/browser_connections.py --base-url http://127.0.0.1:8093/jev/
@@ -196,7 +196,7 @@ async def check(args, mock_url, seen):
             other = await browser.new_context()
             try:
                 listing = await other.request.get(args.base_url + 'api/v1/connections')
-                assert (await listing.json())['models'] == [], 'Connections visible to a different browser owner'
+                assert [m['id'] for m in (await listing.json())['models']] == ['oneshot-hosted'], 'Private connections visible to a different browser owner'
                 denied = await other.request.post(args.base_url + 'api/v1/decisions', data=decision(identities[1]))
                 assert denied.status == 403, 'Different browser owner could invoke the model'
             finally:

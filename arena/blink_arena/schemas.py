@@ -15,7 +15,7 @@ class ModelConfig(Contract):
     adapter: Literal['decision', 'openai']
     served_model: str = Field(min_length=1, max_length=200)
     timeout_seconds: float = Field(default=120, ge=1, le=600)
-    concurrency: int = Field(default=32, ge=1, le=64)
+    concurrency: int = Field(default=1, ge=1, le=32)
     json_mode: bool = True
 
 class AppConfig(Contract):
@@ -64,6 +64,7 @@ class ConnectionCreate(Contract):
     transport: Literal['browser'] = 'browser'
     json_mode: bool = True
     timeout_seconds: float = Field(default=120, ge=1, le=600)
+    concurrency: int = Field(default=1, ge=1, le=32)
 
     @field_validator('name')
     @classmethod
@@ -74,7 +75,9 @@ class ConnectionCreate(Contract):
 class RelayResult(Contract):
     request_id: str
     result: DecisionOutput | None = None
-    error: Literal['connection_failed', 'invalid_response', 'timeout', 'cancelled'] | None = None
+    error: Literal['connection_failed', 'invalid_response', 'timeout', 'cancelled',
+                   'authentication_failed', 'rate_limited', 'endpoint_not_found',
+                   'upstream_unavailable'] | None = None
 
     @model_validator(mode='after')
     def one_result(self):
@@ -135,7 +138,8 @@ class LeaderboardRow(Contract):
     metrics: dict[str, float | None] = Field(default_factory=dict)
     axes: list[Axis] = Field(default_factory=list)
     samples: int = Field(default=0, ge=0)
-    errors: int = Field(default=0, ge=0)
+    # External leaderboards may publish a score without per-request error counts.
+    errors: int | None = Field(default=0, ge=0)
     evaluated_at: str | None = None
     protocol: str = 'imported'
     notes: list[str] = Field(default_factory=list)

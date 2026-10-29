@@ -17,7 +17,8 @@ from blink_arena.schemas import AppConfig
 from fastapi.testclient import TestClient
 
 ROOT = Path(__file__).resolve().parents[1]
-GAMES = tuple(g['id'] for g in json.loads((ROOT / 'leaderboard/arena.json').read_text())['fixed_config']['games'])
+from jev_control_scope import active_games
+GAMES = tuple(g['id'] for g in json.loads((ROOT / 'leaderboard/arena.json').read_text())['fixed_config']['games'] if active_games([g['id']]))
 
 
 @pytest.fixture
@@ -50,7 +51,7 @@ def test_current_games_include_eight_selected_games(tmp_path):
         assert result['schema_version'] == 'jev.engine-registry.v1'
         from jev_selected_games import GAMES as selected
         assert {game['kind'] for game in result['games']} == set(GAMES) | set(selected) | {'chess'}
-        assert len(result['games']) == 29
+        assert len(result['games']) == 23
         for game in result['games']:
             assert game['interface_revision'] == 'jev.engine.environment.v1'
             assert not game['internal']
@@ -115,7 +116,6 @@ def test_all_live_games_create_step_replay_delete(client, game):
 
 
 @pytest.mark.parametrize('game,action,position', [
-    ('racing_sprint', 'straight:throttle', 'z'),
     ('snake_navigation', 'up', 'body'),
     ('tetris_placement', 'left', 'active'),
 ])
@@ -155,7 +155,7 @@ def test_worker_world_uses_real_time_bridge(client, game):
         response_json(client.delete(f'/api/v1/sessions/{ident}'))
 
 
-@pytest.mark.parametrize('game,repeats', [('othello_6x6', 3), ('tetris_placement', 1)])
+@pytest.mark.parametrize('game,repeats', [('othello_6x6', 1), ('tetris_placement', 1)])
 def test_model_session_uses_browser_relay_and_registered_repeat_policy(client, game, repeats):
     model_id = 'session-smoke-' + uuid.uuid4().hex[:12]
     response_json(client.post('/api/v1/connections', json={
@@ -186,8 +186,8 @@ def test_model_session_uses_browser_relay_and_registered_repeat_policy(client, g
         assert changed['applied'] and changed['result'] is not None
         assert len(calls) == repeats
         assert len({body['request_id'] for body in calls}) == repeats
-        if repeats == 3:
-            assert changed['result']['decision_stability']['repeat_count'] == 3
+        assert changed['result']['decision_policy']['repeat_count'] == 1
+        assert 'decision_stability' not in changed['result']
     finally:
         response_json(client.delete(f'/api/v1/sessions/{initial["session_id"]}'))
         response_json(client.delete(f'/api/v1/connections/{model_id}'))

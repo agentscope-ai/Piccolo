@@ -5,6 +5,7 @@ import json
 import unittest
 from pathlib import Path
 from export_snake_showcase import verify
+from export_showcase_probabilities import validate
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = ROOT/'arena/web/showcase'
@@ -22,6 +23,24 @@ def frames(phase):
 
 
 class FullShowcase(unittest.TestCase):
+    def test_probabilities_cover_every_model_call_and_reject_wrong_receipts(self):
+        count = 0
+        for item in read(BASE/'full-manifest.json')['items']:
+            clip = read(BASE/item['trace'])
+            receipt = read(BASE/clip['probability_receipt'])
+            count += validate(clip, receipt)
+            for step, row in zip(clip['steps'], receipt['steps']):
+                self.assertEqual(step['probabilities'], row['probabilities'])
+            index = next(i for i, s in enumerate(clip['steps']) if s['actor'] == 'model')
+            for mutation in ('action', 'candidate', 'sum', 'source'):
+                bad = copy.deepcopy(receipt)
+                if mutation == 'action': bad['steps'][index]['action'] = 'unrecorded-action'
+                elif mutation == 'candidate': bad['steps'][index]['probabilities']['unrecorded-action'] = 0
+                elif mutation == 'sum': bad['steps'][index]['probabilities'] = {k: 0 for k in bad['steps'][index]['probabilities']}
+                else: bad['replay_source_sha256'] = 'wrong-source'
+                with self.assertRaises(AssertionError): validate(clip, bad)
+        self.assertEqual(count, 195)
+
     def test_success_is_our_verified_student(self):
         stream = read(BASE/'traces/snake.json')
         self.assertTrue(verify(stream)['verified'])

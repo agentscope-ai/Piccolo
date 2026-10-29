@@ -9,7 +9,7 @@ from playwright.sync_api import sync_playwright
 ROOT = Path(__file__).resolve().parents[1]
 GAMES = [game['id'] for game in json.loads((ROOT / 'leaderboard/arena.json').read_text())['fixed_config']['games']]
 WORLDS = {'mario_platformer': ('marioFrame', 'JevMario'), 'terraria_survival': ('terrariaFrame', 'JevTerramai')}
-REALTIME = {'mario_platformer', 'terraria_survival', 'racing_sprint', 'snake_navigation', 'tetris_placement'}
+REALTIME = {'mario_platformer', 'terraria_survival', 'snake_navigation', 'tetris_placement'}
 
 
 def main():
@@ -27,6 +27,9 @@ def main():
             page.on('pageerror', lambda error: errors.append(str(error)))
             page.on('console', lambda message: errors.append(message.text) if message.type == 'error' else None)
             page.goto(args.url, wait_until='networkidle')
+            page.locator('[data-tab="games"]').click()
+            page.wait_for_function('catalog && showcaseKinds.length > 0 && !busy && !showcaseBusy')
+            page.locator('#playBrowseGames').click()
             page.wait_for_selector('#playFilters [data-filter="all"]')
             page.locator('#playFilters [data-filter="realtime"]').click()
             realtime = set(page.locator('#gamePicker [data-kind]').evaluate_all('(nodes) => nodes.map(node => node.dataset.kind)'))
@@ -36,10 +39,14 @@ def main():
             available = set(page.locator('#gamePicker [data-kind]').evaluate_all('(nodes) => nodes.map(node => node.dataset.kind)'))
             if available != set(GAMES) | {'mbti_text'}:
                 failures.append(f'{name}: picker differs from 21 games plus the MBTI text page')
+            page.locator('.play-library-close').click()
+            page.locator('#playLibrary').wait_for(state='hidden')
             for game in GAMES:
                 try:
-                    page.locator(f'#gamePicker [data-kind="{game}"]').click()
+                    page.locator('#playQuickGame').select_option(game)
                     page.wait_for_function('kind => selectedPlay === kind && !busy && !showcaseBusy', arg=game, timeout=30000)
+                    if page.locator('#playQuickGame').input_value() != game:
+                        failures.append(f'{name}/{game}: workspace selection not reflected')
                     selected = page.locator(f'#gamePicker [data-kind="{game}"]')
                     if selected.get_attribute('aria-pressed') != 'true':
                         failures.append(f'{name}/{game}: picker selection not reflected')

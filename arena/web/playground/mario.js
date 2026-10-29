@@ -15,7 +15,7 @@
   const solid=(x,y)=>tile(x,y)>0;
   const plantBody=plant=>plant.replayBody||plant;
   const snapshot=(...args)=>core.snapshot(...args);
-  function publish(){if(!replayOnly&&window.parent!==window)window.parent.postMessage({type:'jev-mario-state',observation:snapshot()},window.location.origin);}
+  function publish(){if(!replayOnly&&window.parent!==window)window.parent.postMessage({type:'jev-mario-state',generation:core.condition().generation,observation:snapshot(false)},window.location.origin);}
   function repaint(){if(!core)return;syncState();hud();draw();publish();}
   core=window.JevMarioCore.create({seedModule:window.JevWorldSeed,now:()=>performance.now(),viewportWidth:canvas.width,onChange:repaint,testHooks});
   function clearKeys(){keys.clear();pointers.clear();core.clearInput();document.querySelectorAll('[data-key]').forEach(b=>b.classList.remove('held'));}
@@ -27,7 +27,7 @@
   function hud(){
     document.getElementById('coins').textContent=String(collected).padStart(2,'0');
     document.getElementById('powerup').textContent=p&&p.shield?tr("Shield · 1 hit","护盾 · 1 次"):tr("No shield","无护盾");
-    document.getElementById('progress').textContent=(p?snapshot().progress:0)+'%';
+    document.getElementById('progress').textContent=(p?snapshot(false).progress:0)+'%';
     document.getElementById('event').textContent=eventLabel(event);
     document.getElementById('hint').textContent=outcome?eventLabel(event):modelStepping?(remaining?tr("Model intent · Until event/deadline","模型意图 · 至事件/期限"):locked?tr("Paused · Waiting for model","已暂停 · 等待模型"):tr("Paused · Arrow keys to resume","已暂停 · 方向键恢复")):modelAwaiting?tr("Model thinking · World continues","模型思考中 · 世界继续运行"):tr("← → / A D move · Space / W jump","← → / A D 移动 · 空格 / W 跳跃");
     document.querySelectorAll('[data-key]').forEach(b=>b.disabled=locked||!!outcome);

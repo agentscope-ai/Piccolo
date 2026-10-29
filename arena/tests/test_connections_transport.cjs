@@ -55,7 +55,7 @@ test('all browser models share a 32-request limit and never send keys to relay e
     }
     reported.push(JSON.parse(options.body)); return json({accepted: true});
   });
-  const config = {served_model: 'served-model', adapter: 'decision', endpoint: 'https://model.example/decide', api_key: 'test-only-secret', timeout_seconds: 5};
+  const config = {served_model: 'served-model', adapter: 'decision', endpoint: 'https://model.example/decide', api_key: 'test-only-secret', timeout_seconds: 5, concurrency: 32};
   const first = t.createBridge({...config, model_id: 'first'}), second = t.createBridge({...config, model_id: 'second'});
   try {
     await until(() => active === 32); assert.equal(dispatched, 32); releases.splice(0).forEach(release => release());
@@ -72,8 +72,27 @@ test('bridge sanitizes upstream failures without returning provider body', async
     reports.push(JSON.parse(options.body)); return json({accepted: true});
   });
   const bridge = t.createBridge({model_id: 'one', served_model: 'served-model', adapter: 'decision', endpoint: 'https://model.example/decide', timeout_seconds: 5});
-  try { await until(() => reports.length === 1); assert.equal(reports[0].error, 'connection_failed'); assert.equal(reports[0].request_id, 'failed'); assert.ok(!JSON.stringify(reports).includes('private')); }
+  try { await until(() => reports.length === 1); assert.equal(reports[0].error, 'authentication_failed'); assert.equal(reports[0].request_id, 'failed'); assert.ok(!JSON.stringify(reports).includes('private')); }
   finally { bridge.stop(); }
+});
+test('interactive browser connections serialize requests by default', async () => {
+  let polled=false,active=0,maximum=0,dispatched=0;
+  const releases=[],reports=[];
+  const t=load(async(url,options)=>{
+    const uri=new URL(url);
+    if(uri.hostname==='model.example'){
+      const body=JSON.parse(options.body);active++;dispatched++;maximum=Math.max(maximum,active);
+      await new Promise(resolve=>releases.push(resolve));active--;return json(result(body.request_id));
+    }
+    if(uri.pathname.endsWith('/requests')){if(polled)return never(options.signal);polled=true;return json({requests:[request('one'),request('two')]});}
+    reports.push(JSON.parse(options.body));return json({accepted:true});
+  });
+  const bridge=t.createBridge({model_id:'serial',served_model:'served-model',adapter:'decision',endpoint:'https://model.example/decide',timeout_seconds:5});
+  try{
+    await until(()=>dispatched===1);assert.equal(active,1);releases.shift()();
+    await until(()=>dispatched===2);releases.shift()();await until(()=>reports.length===2);
+    assert.equal(maximum,1);
+  }finally{bridge.stop();}
 });
 test('timeout returns the bounded timeout code', async () => {
   let polled = false; const reports = [];

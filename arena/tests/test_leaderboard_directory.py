@@ -13,7 +13,8 @@ from blink_arena.schemas import AppConfig, LeaderboardDocument
 
 def copied_results(tmp_path):
     target = tmp_path / 'published'
-    shutil.copytree(REPO / 'leaderboard', target, ignore=shutil.ignore_patterns('history'))
+    # Legacy import and archive tests deliberately exclude the newer published cohort.
+    shutil.copytree(REPO / 'leaderboard', target, ignore=shutil.ignore_patterns('history','arena-independent.json','arena-elo.json'))
     return target
 
 
@@ -29,11 +30,13 @@ def test_one_directory_serves_benchmarks_arena_and_replays(tmp_path):
         original = json.loads((directory / 'arena.json').read_text())
         arena = client.get('/api/elo').json()
         assert arena['run_id'] == original['run_id']
-        assert arena['overall'] == original['overall']
-        assert arena['by_game'] == original['by_game']
+        from blink_arena.game_scope import project_arena
+        expected = project_arena(original)
+        assert arena['overall'] == expected['overall']
+        assert arena['by_game'] == expected['by_game']
         replay = client.get('/playground/visible-control.js')
         assert replay.status_code == 200
-        archive = json.loads(replay.text.removeprefix('window.PiccoloArenaReplayArchive=').removesuffix(';'))
+        archive = json.loads(replay.text.removeprefix('window.JevArenaReplayArchive=').removesuffix(';'))
         assert archive == json.loads((directory / 'arena-replays.json').read_text())
 
 

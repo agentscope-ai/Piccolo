@@ -103,7 +103,7 @@ class Sessions:
     def record(self,item):
         engine=item['engine'];state=item['world']
         if engine.outcome(state) or len(engine.legal_actions(state))<2:return None
-        return engine.observe(state)
+        return engine.model_input(state)
 
     def private_turns(self, item):
         engine=item['engine']

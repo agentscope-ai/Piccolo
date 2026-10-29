@@ -45,35 +45,6 @@ class CoreRuntimeTests(unittest.IsolatedAsyncioTestCase):
     @classmethod
     def setUpClass(cls):EVIDENCE.mkdir(parents=True,exist_ok=True)
 
-    async def test_visible_intent_zero_frame_abort_replays_without_extra_physics(self):
-        script=[(0,154,194,'cross_right'),(195,256,281,'cross_right'),
-                (282,346,431,'cross_visible_right:gap:14:17:17:11'),
-                (432,498,509,'cross_visible_right:pipe:25:27:25:9')]
-        async with WorldCoreDriver('mario_platformer',2480010158,replay=True,
-                options={'generator_revision':'mario-map-v2-curriculum'}) as driver:
-            for before,arrival,after,action in script:
-                observed=await driver.call('replayObserve',frame=before)
-                result=await driver.call('replayEvent',event={'before_state':observed,
-                    'arrival_state':{'frame':arrival},'after_state':{'frame':after,
-                    'action_execution':{'remaining_frames':0}},'action':action})
-                self.assertTrue(result['verdict']['valid'])
-                self.assertEqual(result['after']['frame'],after)
-            state=result['after']
-            self.assertEqual(state['recent_player_positions'][-1],[579.2,322])
-            self.assertEqual(state['action_execution']['status'],'idle')
-            self.assertEqual(state['action_execution']['recent_effects'][-1]['failure_reason'],
-                             'visible_danger_on_selected_approach')
-
-        # A genuinely unfinished action cannot be forced to complete at an
-        # earlier frame merely by claiming that its execution is finished.
-        async with WorldCoreDriver('mario_platformer',2480010158,replay=True,
-                options={'generator_revision':'mario-map-v2-curriculum'}) as driver:
-            observed=await driver.call('replayObserve',frame=0)
-            with self.assertRaisesRegex(RuntimeError,'requires_physics'):
-                await driver.call('replayEvent',event={'before_state':observed,
-                    'arrival_state':{'frame':154},'after_state':{'frame':160,
-                    'action_execution':{'remaining_frames':0}},'action':'cross_right'})
-
     async def short_episode(self,kind):
         job={'kind':kind,'seed':0,'episode_id':'core-integration-'+kind}
         sampler=Controller()

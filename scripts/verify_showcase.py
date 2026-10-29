@@ -34,9 +34,22 @@ try:
     for segment in timeline:
      if segment['phase']!='execute':continue
      step=clip['steps'][segment['step']];page.evaluate('(t)=>PiccoloShowcase.sample(t)',(segment['start']+segment['end'])/2)
-     assert page.locator('#candidates .candidate').all_text_contents()==step['candidates']
-     if step['action'] is not None:
-      assert page.locator('#candidates .selected').inner_text()==str(step['action'])
+     shown=clip['steps'][int(page.locator('#candidates').get_attribute('data-source-step'))]
+     actual=page.locator('#candidates .candidate').evaluate_all('(nodes)=>nodes.map(x=>({action:x.dataset.action,probability:x.dataset.probability,visible:!x.hidden,text:x.innerText}))')
+     assert {x['action'] for x in actual}==set(shown['candidates'])
+     for row in actual:
+      expected=(shown.get('probabilities') or {}).get(row['action'])
+      assert (float(row['probability']) if row.get('probability') is not None else None)==expected
+      if expected is not None and row['visible']:assert '%' in row['text']
+     if shown['action'] is not None:
+      assert page.locator('#candidates .selected').get_attribute('data-action')==str(shown['action'])
+      assert page.locator('#candidates .selected').is_visible()
+     if segment['step']==0:
+      page.locator('#capture').screenshot(path=str(out/f'{slug}-probabilities-{width}.png'))
+      more=page.locator('.more-candidates')
+      if more.count():
+       more.click();assert all(page.locator('#candidates .candidate').evaluate_all('(nodes)=>nodes.map(x=>!x.hidden)'))
+       page.evaluate('PiccoloShowcase.sample(0)');page.evaluate('(t)=>PiccoloShowcase.sample(t)',(segment['start']+segment['end'])/2)
     # A canvas must fit inside its iframe: tall boards must never be cropped.
     assert page.locator('#stage iframe').evaluate('''f=>{const c=[...f.contentDocument.querySelectorAll('canvas')].find(c=>c.getBoundingClientRect().width>0);const r=c.getBoundingClientRect();return r.bottom<=f.clientHeight+1&&r.right<=f.clientWidth+1}'''),(slug,width,'clipped canvas')
     page.locator('#seek').focus();page.locator('#seek').press('End');assert 'Replay complete' in page.locator('#feedback').inner_text(),(slug,width,'slider end')
@@ -51,7 +64,7 @@ try:
     assert reset==initial,(slug,width,'reset pixels')
     page.locator('#play').click();page.wait_for_timeout(150);assert float(page.locator('#seek').input_value())>0;page.locator('#play').click()
     assert page.locator('#error').inner_text()==''
-    report['replays'].append({'game':slug,'width':width,'steps':len(clip['steps']),'all_selected_options':True,'canvas_fits':True,'seek_restart_play':True})
+    report['replays'].append({'game':slug,'width':width,'steps':len(clip['steps']),'all_selected_options':True,'all_probabilities_match_receipts':True,'canvas_fits':True,'seek_restart_play':True})
    page.evaluate("async()=>{await Promise.all(['hex','tetris','snake'].map(id=>PiccoloShowcase.load(id)))}")
    assert page.evaluate('PiccoloShowcase.id')=='snake'
    assert page.locator('#game-title').inner_text()=='Snake'

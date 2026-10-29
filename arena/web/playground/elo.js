@@ -1,5 +1,31 @@
+// Arena display names only. Registered IDs, checkpoints and replay records remain unchanged.
+(function (root) {
+  'use strict';
+  const aliases={
+    'oneshot-hosted':'Piccolo',
+    'oneshot-w22m05r02-v5best-avg50':'Piccolo (27B)',
+    'ours-w22m05r02-v5best-avg50':'Piccolo (27B)',
+    'oneshot-rl-r6-iter0000019':'Piccolo (27B)',
+    'oneshot27b-control-reviewed-sft-iter310':'Piccolo 27B SFT',
+    'oneshot27b-gameplay-terminal-rl4':'Piccolo 27B RL',
+    'oneshot27b-game-rl-native-iter17':'Piccolo 27B RL'
+  };
+  function arenaModelName(id,label) {
+    if(aliases[id])return aliases[id];
+    let value=String(label||id||'Model').trim();
+    if(/^(?:OneShot|QwenJev|Blink)(?:$|\s+\(?27B\)?(?:$|[\s·-]))/i.test(value))value=value.replace(/^(?:OneShot|QwenJev|Blink)\b/i,'Piccolo');
+    const release=value.match(/^Piccolo\s+27B\s+(RL|SFT)(?=$|[\s·-])/i);
+    if(release)return 'Piccolo 27B '+release[1].toUpperCase();
+    return value.replace(/(?:\s*[·|—–-]\s*|\s+\(?\s*)DashScope\s*\)?$/i,'').trim();
+  }
+  const api={model:arenaModelName};
+  if(typeof module!=='undefined'&&module.exports)module.exports=api;
+  if(root)root.JevArenaDisplay=api;
+})(typeof window==='undefined'?null:window);
+
 (function () {
   'use strict';
+  if(typeof document==='undefined')return;
   const byId = id => document.getElementById(id);
   // Translate only rendered UI nodes. Source identities, raw protocols and English radar axes stay intact.
   const tr=(en,zh,params)=>window.JevI18n?.t(en,zh,params)??en;
@@ -36,22 +62,25 @@
   }
   const uiTranslations={"All games":"全部游戏","Replay":"回放","Load more":"更多对局","No matches for this game.":"该游戏暂无对局。","Waiting":"等待中","Evaluation running":"评测进行中","Pausing":"暂停中","Paused":"已暂停","Interrupted":"已中断","Complete with failures":"已完成（含失败）","Complete with errors":"已完成（含错误）","Complete":"已完成","Evaluation error":"评测错误","Registered":"已登记","Queued":"排队中","Pending":"待评测","Running":"进行中","Error":"错误","Blocked":"已阻塞","Scoring":"计分中","Archived":"归档","Incomplete":"未完成","Model enrolled":"模型已加入","Submitting…":"提交中…","Evaluate current model":"评测当前模型","Loading model…":"读取模型中…","Checking eligibility…":"检查准入中…","Enrolled.":"已加入。","This connection is not supported.":"当前连接暂不支持。","Connect the model first.":"请先连接模型。","This model cannot join yet.":"当前模型暂不能加入。","Previous results are reused.":"沿用已有结果。","new matches.":"场新增对局。","Pause":"暂停","Resume":"继续","Refresh":"刷新","Final game score":"游戏最终成绩","Final score":"最终成绩","Completion first":"优先比较是否通关","lower is better":"越低越好","higher is better":"越高越好","Gates reached; final horizontal position breaks ties":"已到达关卡数；平分时比较最终横向位置","Platforms reached":"已到达平台数","Lines cleared":"消除行数","Food collected":"吃到的食物数","Merge points":"合并得分","Boxes on targets":"目标上的箱子数","Level progress (%); native score breaks ties":"关卡进度（%）；平分时比较原生得分","Distance (m); remaining durability breaks ties":"行驶距离（米）；平分时比较剩余耐久度","Native payoff against the dealer":"对庄家的原生收益","board games":"棋盘游戏","direct matches":"直接对战","3 repeats per decision":"每次决策重复 3 次","Loading schedule…":"读取赛程中…","Same seed, reversed roles":"相同种子，交换执方","Direct match":"直接对战","Final-score comparison":"最终成绩比较","Waiting for schedule":"等待赛程","evaluation progress":"评测进度","Complete probabilities for all three repeats":"三次重复均有完整概率","Sample variance across aligned candidate probabilities; lower is better":"对齐候选概率的样本方差；越低越好","Per-game only":"仅分游戏计分","Incomplete coverage":"覆盖未完成","Not evaluated":"未评测","scored matches":"有效对局","W / D / L":"胜 / 平 / 负","Coverage / W–D–L":"覆盖 / 胜–平–负","Elo rankings":"Elo 排名","Overall · game-weighted":"综合 · 游戏等权","Overall ranking":"综合排名","No settled Elo results for this game.":"该游戏尚无已结算的 Elo 成绩。","Elo is a rating, not a win rate. Pending or incomplete coverage is excluded.":"Elo 是评级分，不是胜率。未评测或覆盖未完成的模型不列入柱图。","Axis starts at 0":"坐标轴从 0 开始","dashed line: initial Elo":"虚线：初始 Elo","Participant":"参赛者","Agreement":"三次一致率","Probability stability":"概率稳定度","Variance ↓":"方差 ↓","Failures":"失败数","No settled results yet.":"暂无已结算成绩。","Native score":"原生得分","Budget exhausted":"预算耗尽","Win":"胜","Loss":"负","Draw":"平局","Failure":"失败","Compare in order":"依次比较","Record":"记录","reused":"复用","new record":"新记录","Recent matches":"最近对局","recorded":"已记录","Error · unscored":"错误 · 未计分","Awaiting result":"等待结果","Same-seed final score":"同种子最终成绩","Roles reversed":"交换执方","Final scores and match records appear after settlement.":"对局结算后显示最终成绩与记录。","Repair running":"修复中","Repair complete":"修复完成","Repair blocked":"修复受阻","Repair paused":"修复已暂停","Repair pending":"等待修复","Repair queued":"修复排队中","Repair progress":"修复进度","Repaired":"已修复","Repairing failed matches":"正在修复失败对局","Updated":"更新于","Request failed":"请求失败","Could not load Arena":"天梯加载失败","Enrolling model…":"正在加入模型…","Requesting pause…":"正在请求暂停…","Resuming…":"正在继续…","Model enrolled. Previous results are reused.":"模型已加入，沿用已有结果。","Pause requested; current matches will finish.":"已请求暂停，当前对局结束后生效。","Schedule resumed.":"赛程已继续。","Action failed":"操作失败","Rule engine":"规则引擎","Local base":"本地基座","Gameplay RL":"游戏 RL","Reviewed SFT / iter":"审核数据 SFT / 迭代","Model":"模型","Othello 6×6":"黑白棋 6×6","Othello 8×8":"黑白棋 8×8","Gomoku":"五子棋","Hex":"六角棋","Dots and Boxes":"点格棋","Terraria":"泰拉瑞亚","Jump Jump":"跳一跳","Tetris":"俄罗斯方块","Snake":"贪吃蛇","Sokoban":"推箱子","Mario":"马里奥","Racing":"赛车","Dou Dizhu":"斗地主","Texas Hold’em":"德州扑克","Property Tycoon":"地产大亨","Liar’s Dice":"吹牛骰子","Blackjack":"二十一点","Golden Flower":"炸金花","Pig Dice":"小猪骰子","games":"游戏","matches":"对局","decisions":"次决策","wins":"获胜","Seed":"种子","vs.":"对阵"};
   Object.assign(uiTranslations,{'Realtime: 1 decision; other games: 3 probes':'实时游戏单次决策；其他游戏三次判断','shorter time breaks ties':'同进度用时较短优先','Elapsed':'用时','Level progress (%)':'关卡进度（%）','Gates reached':'已到达关卡数','Distance (m)':'行驶距离（米）'});
-  window.PiccoloArenaI18n={createPresentationTranslator,entries:uiTranslations};
+  Object.assign(uiTranslations,{'Chess':'国际象棋','Checkers':'西洋跳棋','Xiangqi':'中国象棋','Guess the Number':'猜数字','Minesweeper':'扫雷','Sudoku':'数独'});
+  window.JevArenaI18n={createPresentationTranslator,entries:uiTranslations};
   const localize=createPresentationTranslator(uiTranslations);
   const localizePanel=()=>{localize(byId('gameEloPanel'));window.JevMetricHelp?.arena();};
 
   const html = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const count = value => typeof value === 'number' && Number.isFinite(value) ? value.toLocaleString('en-US') : '—';
   const finite = value => typeof value === 'number' && Number.isFinite(value);
+  const sortValue = value => finite(value)?String(value):'';
   const percent = value => finite(value) ? (value * 100).toFixed(1) + '%' : '—';
   const decimal = value => finite(value) ? value === 0 ? '0' : value.toPrecision(3) : '—';
   const stateNames={idle:'Waiting',archived:'Archived',running:'Evaluation running',pausing:'Pausing',paused:'Paused',interrupted:'Interrupted',complete:'Complete',complete_with_errors:'Complete with failures',error:'Evaluation error'};
   const gameLabels={othello_6x6:'Othello 6×6',othello_8x8:'Othello 8×8',gomoku_19x19:'Gomoku',hex_7x7:'Hex',dots_and_boxes_3x3:'Dots and Boxes',terraria_survival:'Terraria',jump_jump:'Jump Jump',tetris_placement:'Tetris',snake_navigation:'Snake',merge_2048:'2048',sokoban_puzzle:'Sokoban',mario_platformer:'Mario',racing_sprint:'Racing',doudizhu:'Dou Dizhu',texas_holdem:'Texas Hold’em',property_tycoon:'Property Tycoon',liars_dice:'Liar’s Dice',goofspiel:'Goofspiel',blackjack:'Blackjack',zha_jin_hua:'Golden Flower',pig_dice:'Pig Dice'};
   const modelLabels={'rule-engine-v1':'Rule engine','qwen3.8-27b-base':'Qwen3.8-27B · Local base','qwen3.6-35b-a3b-base':'Qwen3.6-35B-A3B · Local base','qwen3.8-27b-dashscope':'Qwen3.8-27B · DashScope','qwen3.8-max-dashscope':'Qwen3.8-Max · DashScope','qwen3.6-35b-a3b-dashscope':'Qwen3.6-35B-A3B · DashScope','dashscope-qwen3.8-max':'Qwen3.8-Max · DashScope','dashscope-qwen3.6-35b-a3b':'Qwen3.6-35B-A3B · DashScope','oneshot27b-gameplay-terminal-rl4':'Piccolo 27B · Gameplay RL','oneshot27b-control-reviewed-sft-iter310':'Piccolo 27B · Reviewed SFT / iter 310'};
-  const modelLabel=(id,fallback,identity)=>window.JevModelLabels?.model(id,fallback,identity)||modelLabels[id]||(!/[\u3400-\u9fff]/.test(fallback||'')&&fallback)||id||'Model';
+  const modelLabel=(id,fallback,identity)=>window.JevArenaDisplay.model(id,window.JevModelLabels?.model(id,fallback,identity)||modelLabels[id]||(!/[\u3400-\u9fff]/.test(fallback||'')&&fallback)||id||'Model');
+  Object.assign(gameLabels,{chess:'Chess',checkers:'Checkers',xiangqi:'Xiangqi',guess_the_number:'Guess the Number',minesweeper:'Minesweeper',sudoku:'Sudoku',uno:'UNO'});
   const gameLabel=id=>gameLabels[id]||id;
   const scoreLabels={gates_reached:'Gates reached; final horizontal position breaks ties',platforms_reached:'Platforms reached',lines_cleared:'Lines cleared',foods_eaten:'Food collected',merge_points:'Merge points',boxes_on_targets:'Boxes on targets',progress_percent:'Level progress (%); native score breaks ties',distance_metres:'Distance (m); remaining durability breaks ties',native_return:'Native payoff against the dealer'};
-  window.PiccoloArenaLabels={game:gameLabel,model:modelLabel};
+  window.JevArenaLabels={game:gameLabel,model:modelLabel};
   let payload = null, loading = false, visible = false, scope = 'overall', requestVersion = 0;
   const participants = () => payload?.protocol?.participants?.length ? payload.protocol.participants : payload?.options?.participants?.length ? payload.options.participants : payload?.fixed_config?.baseline || [];
   const games = () => payload?.fixed_config?.games || payload?.options?.games || [];
@@ -101,14 +130,20 @@
     const metric=row.stability||{},decisions=Number(metric.decisions||0),probabilityDecisions=Number(metric.probability_decisions||0);
     const agreement=decisions>0?percent(metric.agreement_rate):'—',probability=probabilityDecisions>0?percent(metric.probability_stability):'—';
     const variance=probabilityDecisions>0?decimal(metric.mean_probability_variance):'—';
-    return '<td class="elo-stability" title="'+count(decisions)+' decisions"><strong>'+agreement+'</strong></td><td class="elo-stability" title="Complete probabilities for all three repeats: '+count(probabilityDecisions)+' / '+count(decisions)+' decisions"><strong>'+probability+'</strong></td><td class="elo-stability" title="Sample variance across aligned candidate probabilities; lower is better"><strong>'+variance+'</strong></td>';
+    return '<td class="elo-stability" data-sort-value="'+sortValue(decisions>0?metric.agreement_rate:null)+'" title="'+count(decisions)+' decisions"><strong>'+agreement+'</strong></td><td class="elo-stability" data-sort-value="'+sortValue(probabilityDecisions>0?metric.probability_stability:null)+'" title="Complete probabilities for all three repeats: '+count(probabilityDecisions)+' / '+count(decisions)+' decisions"><strong>'+probability+'</strong></td><td class="elo-stability" data-sort-value="'+sortValue(probabilityDecisions>0?metric.mean_probability_variance:null)+'" title="Sample variance across aligned candidate probabilities; lower is better"><strong>'+variance+'</strong></td>';
   }
   function rowMarkup(row) {
+    if(row.status==='pending'){
+      const identity=window.JevModelLogo?.identity(row,participantName(row.id))||html(participantName(row.id));
+      return '<tr data-result-model="'+html(row.id)+'" data-model-sort="'+html(participantName(row.id))+'"><td class="lb-rank">—</td><td><strong class="lb-model-name" data-i18n-raw>'+identity+'</strong></td><td class="lb-score elo-unrated" data-sort-value="">—</td><td data-sort-value="">—</td>'+stabilityCells(row)+'</tr>';
+    }
     const limitedScope=isEngine(row.id)&&scope==='overall';
     const required=limitedScope?games().filter(game=>game.engine_supported).length:Math.max(Number(row.required_games||0),scope==='overall'?games().length:0),covered=Number(row.coverage||0);
     const completeCoverage=required>0&&covered>=required,hasRating=!limitedScope&&finite(row.rating)&&(scope!=='overall'||completeCoverage);
     const coverage=scope==='overall'?count(covered)+' / '+count(required)+(limitedScope?' board games':' games'):count(Number(row.played||0))+' scored matches';
-    return '<tr><td class="lb-rank">'+(!limitedScope&&finite(row.rank)&&(scope!=='overall'||completeCoverage)?html(row.rank):'—')+'</td><td><strong class="lb-model-name" data-i18n-raw>'+(window.JevModelLogo?.markup(row.logo)||'')+'<span>'+html(participantName(row.id))+'</span></strong></td><td class="lb-score'+(hasRating?'':' elo-unrated')+'">'+(hasRating?row.rating.toFixed(1):limitedScope?'Per-game only':scope==='overall'&&covered>0&&!completeCoverage?'Incomplete coverage':'Not evaluated')+'</td><td>'+coverage+'<small>W / D / L '+count(row.match_counts_available===false?null:Number(row.wins||0))+' / '+count(row.match_counts_available===false?null:Number(row.draws||0))+' / '+count(row.match_counts_available===false?null:Number(row.losses||0))+'</small></td>'+stabilityCells(row)+'</tr>';
+    const matchCounts=row.match_counts_available===false?'W / D / L — / — / —':'W / D / L '+count(Number(row.wins||0))+' / '+count(Number(row.draws||0))+' / '+count(Number(row.losses||0));
+    const identity=window.JevModelLogo?.identity(row,participantName(row.id))||(window.JevModelLogo?.markup(row.logo)||'')+'<span>'+html(participantName(row.id))+'</span>';
+    return '<tr data-result-model="'+html(row.id)+'" data-model-sort="'+html(participantName(row.id))+'"><td class="lb-rank">'+(!limitedScope&&finite(row.rank)&&(scope!=='overall'||completeCoverage)?html(row.rank):'—')+'</td><td><strong class="lb-model-name" data-i18n-raw>'+identity+'</strong></td><td data-sort-value="'+sortValue(hasRating?row.rating:null)+'" class="lb-score'+(hasRating?'':' elo-unrated')+'">'+(hasRating?row.rating.toFixed(1):limitedScope?'Per-game only':scope==='overall'&&covered>0&&!completeCoverage?'Incomplete coverage':'Not evaluated')+'</td><td data-sort-value="'+sortValue(scope==='overall'?row.coverage:row.played)+'">'+coverage+'<small>'+matchCounts+'</small></td>'+stabilityCells(row)+'</tr>';
   }
   function renderRankings() {
     const kindIds = games().length ? games().map(item => item.id) : payload?.protocol?.kinds || [];
@@ -119,15 +154,17 @@
     document.querySelectorAll('#gameEloPanel .elo-table thead th').forEach((node,index)=>{node.textContent=headers[index]||node.textContent;});
     byId('eloRankHeading').textContent = scope === 'overall' ? 'Overall ranking' : gameName(scope);
     const commonAnchor=payload?.protocol?.run_type==='common-anchor-star-v1';
+    const nativeComparisons=payload?.protocol?.run_type==='same-seed-native-score-comparisons-v1';
     const controlRows=payload?.snapshot?.control_audit?.rows||[];
     const recordedControls=controlRows.map(row=>participantName(row.model_id)+' ≥ '+count(row.recorded_c_actions)).join(' · ');
     const controlNote=recordedControls?tr(' Recorded rule takeovers C (lower bounds): ',' 已记录规则接管 C（下界）：')+recordedControls+tr('. Missing control audits remain unknown; these counts do not establish pure model performance.','。缺失控制审计的片段保留为未知，这些计数不代表纯模型表现。'):'';
-    byId('eloRankingNote').textContent=commonAnchor?tr('Common anchor: SFT-1015. Each reference model plays this anchor, with seats reversed in direct games. Opponents and match counts differ; interpret Elo within this registered schedule.','共同锚点：SFT-1015。各参照模型与此锚点比较，直接对战交换席位。各模型的对手范围和对局数不同，Elo 应结合本次登记赛程解读。')+controlNote:'';
+    byId('eloRankingNote').textContent=commonAnchor?tr('Common anchor: Piccolo 27B SFT. Each reference model plays this anchor, with seats reversed in direct games. Opponents and match counts differ; interpret Elo within this registered schedule.','共同锚点：Piccolo 27B SFT。各参照模型与此锚点比较，直接对战交换席位。各模型的对手范围和对局数不同，Elo 应结合本次登记赛程解读。')+controlNote:'';
+    if(nativeComparisons)byId('eloRankingNote').textContent=tr('Elo uses same-game, same-seed native final-score comparisons from '+count(payload.completed)+' recorded games ('+count(payload.protocol.seeds)+' seeds per model and game). Comparisons are computed offline from these source episodes. Errors are unscored; each source episode contributes stability once.','Elo 基于已有 '+count(payload.completed)+' 局的同游戏、同种子原生终局成绩比较（每模型每游戏 '+count(payload.protocol.seeds)+' 个种子），使用原始对局离线计算。错误不计分；稳定性按原始对局去重统计。');
     if(payload?.game_scope?.historical_subset){
       byId('eloRankingNote').textContent += tr(' Historical subset: ',' 历史子集：')+count(payload.game_scope.games.length)+tr(' games. Retired games are excluded; overall Elo is recomputed from the remaining per-game ratings. This is not a new evaluation.',' 款游戏。已移除下线游戏，总 Elo 按保留游戏重新计算；这不是新一轮模型评测。');
       if(payload.source_control_audit)byId('eloRankingNote').textContent += tr(' The source snapshot contains rule takeovers; their counts cover the original game scope and do not establish pure model performance for this subset.',' 原始快照含规则接管记录；其计数覆盖旧游戏范围，不能据此将当前子集成绩视为纯模型表现。');
     }
-    byId('eloRankingNote').hidden=!commonAnchor&&!payload?.game_scope?.historical_subset;
+    byId('eloRankingNote').hidden=!commonAnchor&&!nativeComparisons&&!payload?.game_scope?.historical_subset;
     const rows = scope === 'overall' ? payload?.overall || [] : payload?.by_game?.[scope] || [];
     byId('eloRows').innerHTML = rows.length ? rows.map(rowMarkup).join('') : '<tr><td colspan="7" class="lb-empty-cell">No settled results yet.</td></tr>';
     localizePanel();
@@ -152,7 +189,7 @@
   let matchGame='all',matchLimit=20,replayArchive=null,replayLoading=null,replayError='',replayLastFetch=0;
   function matchRecords(){
     const rows=new Map();
-    if(replayArchive?.run_id===payload?.run_id)for(const row of replayArchive.matches)rows.set(Number(row.ordinal),row);
+    if(replayArchive?.run_id&&replayArchive.run_id===payload?.run_id)for(const row of replayArchive.matches||[])rows.set(Number(row.ordinal),row);
     for(const row of payload?.matches||[])rows.set(Number(row.ordinal),row);
     return [...rows.values()].sort((a,b)=>Number(b.ordinal)-Number(a.ordinal));
   }
@@ -161,6 +198,7 @@
     node.textContent=replayLoading?tr('Loading replay archive…','读取回放归档…'):replayError?tr('Replay archive unavailable. Open a record to retry.','回放归档暂不可用，点击对局可重试。'):'';
   }
   async function loadReplayArchive(force=false){
+    if(payload?.replay_available===false)return false;
     if(replayLoading)return replayLoading;
     const run=payload?.run_id;if(!run)return false;
     const current=replayArchive?.run_id===run;
@@ -170,7 +208,7 @@
       try{
         const response=await fetch('./playground/visible-control.js?run='+encodeURIComponent(run)+'&updated='+encodeURIComponent(payload.updated_at||0),{cache:'no-store'});
         if(!response.ok)throw Error('archive_unavailable');
-        const source=(await response.text()).trim(),prefix='window.PiccoloArenaReplayArchive=';
+        const source=(await response.text()).trim(),prefix='window.JevArenaReplayArchive=';
         if(!source.startsWith(prefix)||!source.endsWith(';'))throw Error('invalid_archive');
         let archive=JSON.parse(source.slice(prefix.length,-1));
         if(archive.encoding==='gzip-base64'){
@@ -199,7 +237,7 @@
     await loadReplayArchive();
     let match=matchRecords().find(row=>Number(row.ordinal)===ordinal),record=match&&replayForMatch(match);
     if(!record){await loadReplayArchive(true);match=matchRecords().find(row=>Number(row.ordinal)===ordinal);record=match&&replayForMatch(match);}
-    if(record&&window.PiccoloArenaReplayView){replayError='';replayStatus();window.PiccoloArenaReplayView.open(record);}
+    if(record&&window.JevArenaReplayView){replayError='';replayStatus();window.JevArenaReplayView.open(record);}
     else{replayError='unavailable';replayStatus();}
   }
   function renderMatches() {
@@ -251,8 +289,9 @@
     try {
       const data = await api('elo');
       if (version !== requestVersion) return;
-      payload = data;
       if (/^(Could not load Arena: |Evaluation error: )/.test(lastMessage.text) && !data.error_type) message('');
+      if(data.schema_version==='jev.arena.published-elo.v1'&&JSON.stringify(data)===JSON.stringify(payload))return;
+      payload = data;
       render();
       if(byId('eloMatchHistory').open)void loadReplayArchive();
     } catch (error) {
@@ -274,9 +313,10 @@
 /* Replay UI reuses isolated original game renderers; archive inputs remain read-only. */
 (function () {
   'use strict';
+  if(typeof document==='undefined')return;
   const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const t=(en,zh)=>window.JevI18n?.t(en,zh)??en;
-  const model=id=>id?window.JevModelLabels?.model(id,id)||String(id):'—';
+  const model=id=>id?window.JevArenaLabels.model(id,id):'—';
   const json=value=>{try{return JSON.stringify(value,null,2)}catch{return String(value)}};
   const finite=value=>typeof value==='number'&&Number.isFinite(value);
   const games={othello_6x6:['Othello 6×6','黑白棋 6×6'],othello_8x8:['Othello 8×8','黑白棋 8×8'],gomoku_19x19:['Gomoku','五子棋'],hex_7x7:['Hex','六角棋'],dots_and_boxes_3x3:['Dots and Boxes','点格棋'],jump_jump:['Jump Jump','跳一跳'],terraria_survival:['Terraria','泰拉瑞亚'],tetris_placement:['Tetris','俄罗斯方块'],snake_navigation:['Snake','贪吃蛇'],merge_2048:['2048','2048'],sokoban_puzzle:['Sokoban','推箱子'],mario_platformer:['Mario','马里奥'],racing_sprint:['Racing','赛车'],doudizhu:['Dou Dizhu','斗地主'],texas_holdem:['Texas Hold’em','德州扑克'],property_tycoon:['Property Tycoon','地产大亨'],liars_dice:['Liar’s Dice','吹牛骰子'],goofspiel:['Goofspiel','竞价纸牌'],blackjack:['Blackjack','二十一点'],zha_jin_hua:['Golden Flower','炸金花'],pig_dice:['Pig Dice','小猪骰子']};
@@ -449,6 +489,6 @@
     pause();destroyRenderer();replay=data&&typeof data==='object'?data:{};streamIndex=0;positions=new Map();resumeCurrent=false;opener=document.activeElement;ensureDialog();
     node('.arv-archive').open=false;node('.arv-body').scrollTop=0;renderUI();if(!dialog.open)dialog.showModal();paint({animate:false,reason:'open'});node('[data-arv-control="close"]').focus();
   }
-  window.PiccoloArenaReplayView={open,close};
+  window.JevArenaReplayView={open,close};
   window.JevI18n?.onChange(()=>{if(dialog?.open){renderUI();paint({animate:false,reason:'locale'});}});
 })();

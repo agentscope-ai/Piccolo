@@ -116,7 +116,7 @@ def test_explicit_draw_claim_is_a_first_class_http_action(monkeypatch):
         assert state['world']['termination'] == 'claimed_fifty_moves'
 
 
-@pytest.mark.parametrize('kind', ['liars_dice', 'goofspiel'])
+@pytest.mark.parametrize('kind', ['liars_dice'])
 def test_old_private_agent_handoff_and_redaction_survive(kind):
     with client_for() as client:
         response = client.post('/api/showcases/new', json={'kind': kind, 'seed': 42})

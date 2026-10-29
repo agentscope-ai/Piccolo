@@ -28,7 +28,7 @@ window.JevSelectedGames=(()=>{
  function panel(){if(!root){root=node('section',undefined,'selected-game');root.id='selectedGameBoard';$('showcaseCanvas').after(root)}root.hidden=false;root.replaceChildren();return root}
  function reveal(){if(showcaseBusy)return;showcaseBusy=true;showcaseControls(true);api('showcases/reveal',{session_id:showcaseSession.session_id,revision:showcaseSession.revision}).then(s=>{showcaseSession=s;renderShowcaseGame()}).catch(error).finally(()=>{showcaseBusy=false;showcaseControls(false)})}
  function boardRows(g){if(g.board)return g.board;const lines=g.board_text.split('\n');if(g.kind==='xiangqi')return lines.filter(l=>l.length===9).map(l=>[...l]);if(g.kind==='checkers')return lines.filter(l=>/^[1-8]/.test(l)).map(l=>[...l.slice(1)]);return lines.filter(l=>/^\s*[1-9]\s+[+.XOxo]+\s*$/.test(l)).map(l=>[...l.trim().split(/\s+/)[1]])}
- function piece(g,v){if(v===null)return '';if(g.kind==='minesweeper')return v<0?'✹':v===0?'':String(v);if(g.kind==='sudoku')return v===0?'':String(v);if(g.kind==='go')return ['.','+'].includes(v)?'':v.toLowerCase()==='x'?'●':'○';if(g.kind==='checkers')return v==='.'?'':v==='o'?'○':v==='+'?'●':v==='8'?'♔':v==='*'?'♚':v;const zh={r:'車',h:'馬',e:'象',a:'士',g:'將',c:'砲',s:'卒',R:'車',H:'馬',E:'相',A:'仕',G:'帥',C:'炮',S:'兵'};return zh[v]||''}
+ function piece(g,v){if(v===null)return '';if(g.kind==='minesweeper')return v<0?'💣':v===0?'':String(v);if(g.kind==='sudoku')return v===0?'':String(v);if(g.kind==='go')return ['.','+'].includes(v)?'':v.toLowerCase()==='x'?'●':'○';if(g.kind==='checkers')return v==='.'?'':v==='o'?'○':v==='+'?'●':v==='8'?'♔':v==='*'?'♚':v;const zh={r:'車',h:'馬',e:'象',a:'士',g:'將',c:'砲',s:'卒',R:'車',H:'馬',E:'相',A:'仕',G:'帥',C:'炮',S:'兵'};return zh[v]||''}
  function xiangqiBoard(){
   const ns='http://www.w3.org/2000/svg';
   function svg(tag,attrs){const el=document.createElementNS(ns,tag);for(const [k,v] of Object.entries(attrs))el.setAttribute(k,v);return el}
@@ -53,12 +53,12 @@ window.JevSelectedGames=(()=>{
   if(g.kind==='xiangqi'&&(m=/\((\d+),(\d+)\)-\((\d+),(\d+)\)/.exec(label)))moves.push({action,from:[+m[1],+m[2]],to:[+m[3],+m[4]]});
  }return moves}
  function render(g,options,act){if(!kinds.has(g.kind)){hide();return false}
-  const signature=JSON.stringify([g,options,window.JevI18n?.lang]);
+  const signature=JSON.stringify([g,options,window.JevI18n?.lang,window.JevParticipants?.isDuel()?JevParticipants.badges():null]);
   if(root&&rendered===signature){root.hidden=false;return true}
   rendered=signature;const p=panel();
   if(position!==g.kind+':'+g.steps){sourceCell=null;position=g.kind+':'+g.steps}
-  const title=node('div',g.name+' · '+(g.seat_count>1?(g.player_name||'玩家 '+(g.player+1)):'单人挑战'),'selected-heading');p.append(title);
-  if(g.handoff){p.append(node('p','请将界面交给下一位玩家。上一位的私有信息已收起。'));const b=node('button','显示玩家 '+(g.player+1)+' 的局面','selected-reveal');b.onclick=reveal;p.append(b);return true}
+  const title=node('div',g.name+' · '+(g.seat_count>1?(g.player_name||'玩家 '+(g.player+1)):'单人挑战'),'selected-heading');if(window.JevParticipants?.isDuel()){const roles=g.kind==='xiangqi'?['红方','黑方']:g.kind==='checkers'?['白方','黑方']:undefined;title.innerHTML=JevParticipants.badges(roles?.map(ui));}p.append(title);
+  if(g.handoff&&!g.fixed_view){p.append(node('p','请将界面交给下一位玩家。上一位的私有信息已收起。'));const b=node('button','显示玩家 '+(g.player+1)+' 的局面','selected-reveal');b.onclick=reveal;p.append(b);return true}
   if(g.action_feedback?.length){
    const feedback=node('div',undefined,'selected-feedback');feedback.setAttribute('role','status');
    feedback.append(node('strong','已知动作反馈'));
@@ -67,20 +67,24 @@ window.JevSelectedGames=(()=>{
    p.append(feedback);
   }
   if(g.kind==='uno'){
+   const view=g.fixed_view||{seat:g.player,hand:g.hand,hand_counts:g.hand_counts,target:g.target},seat=view.seat;
+   const seatName=i=>window.JevParticipants?.isDuel()?JevParticipants.seatMarker(i):ui(i===seat?'你的手牌':'对手');
    const table=node('div',undefined,'uno-table'),opponent=node('div',undefined,'uno-opponent');
-   opponent.append(node('strong','对手 · '+g.hand_counts[1-g.player]+' 张'));
-   const backs=node('div',undefined,'uno-backs');for(let i=0;i<Math.min(7,g.hand_counts[1-g.player]);i++)backs.append(node('span','UNO','uno-back'));opponent.append(backs);table.append(opponent);
-   const discard=node('div',undefined,'uno-discard');discard.append(node('strong','当前顶牌'),unoCard(g.target),node('span','当前颜色 · '+colors[g.target[0]],'uno-active-color'));table.append(discard);p.append(table);
-   p.append(node('h3','你的手牌 · '+g.hand_counts[g.player]+' 张','uno-hand-title'));
-   const hand=node('div',undefined,'selected-hand');for(const card of g.hand){
+   opponent.append(node('strong',seatName(1-seat)+' · '+view.hand_counts[1-seat]+' 张'));
+   const backs=node('div',undefined,'uno-backs');for(let i=0;i<Math.min(7,view.hand_counts[1-seat]);i++)backs.append(node('span','UNO','uno-back'));opponent.append(backs);table.append(opponent);
+   const discard=node('div',undefined,'uno-discard');discard.append(node('strong','当前顶牌'),unoCard(view.target),node('span','当前颜色 · '+colors[view.target[0]],'uno-active-color'));table.append(discard);p.append(table);
+   p.append(node('h3',seatName(seat)+' · '+view.hand_counts[seat]+' 张','uno-hand-title'));
+   const hand=node('div',undefined,'selected-hand');
+   if(view.concealed)for(let i=0;i<view.hand_counts[seat];i++)hand.append(node('span','UNO','uno-card uno-back'));
+   for(const card of view.hand){
     const c=unoCard(card,'button'),type=card.split('-')[1];
     const entries=Object.entries(options).filter(([,label])=>type.startsWith('wild')?label.split('-')[1]===type:label===card);
-    c.disabled=!!g.outcome||entries.length===0;c.classList.toggle('uno-playable',!c.disabled);
+    c.disabled=!!g.outcome||entries.length===0||(window.JevParticipants?.isDuel()&&!JevParticipants.canAct());c.classList.toggle('uno-playable',!c.disabled);
     if(entries.length===1){c.dataset.action=entries[0][0];c.onclick=()=>{if(!showcaseBusy)act(entries[0][0])}}
     else if(entries.length){c.title+=' · 在下方选择出牌后的颜色';c.onclick=()=>{const first=$('showcaseActions').querySelector('[data-action="'+entries[0][0]+'"]');first?.focus();first?.scrollIntoView({block:'nearest',behavior:'smooth'})}}
     hand.append(c);
    }p.append(hand);
-   p.append(node('p','亮框手牌可出；万能牌在下方选择颜色后出牌。','uno-hint'));return true;
+   p.append(node('p',window.JevParticipants?.isDuel()?JevParticipants.seatMarker(JevParticipants.actor()):'亮框手牌可出；万能牌在下方选择颜色后出牌。','uno-hint'));return true;
   }
   if(g.kind==='guess_the_number'){
    p.append(node('p',g.minimum+'–'+g.maximum+' · 剩余 '+g.remaining+' 次'));
@@ -90,7 +94,9 @@ window.JevSelectedGames=(()=>{
   gridKind=g.kind;gridElement=grid;grid.replaceChildren();grid.style.setProperty('--columns',rows[0]?.length||9);const moves=mappings(g,options);
   if(g.kind==='xiangqi'){grid.append(xiangqiBoard());grid.setAttribute('aria-label',ui('中国象棋')+' · 9 × 10')}
   function mark(){grid.querySelectorAll('button').forEach(b=>{const cell=[+b.dataset.row,+b.dataset.col];b.classList.toggle('origin',sourceCell&&String(cell)===String(sourceCell));b.classList.toggle('destination',moves.some(m=>String(m.from)===String(sourceCell)&&String(m.to)===String(cell)))})}
-  rows.forEach((row,r)=>row.forEach((v,c)=>{const b=node('button',piece(g,v),'selected-cell');b.dataset.row=r;b.dataset.col=c;if(g.kind==='xiangqi'&&/[A-Z]/.test(v))b.classList.add('red-piece');b.setAttribute('aria-label',(r+1)+'行 '+(c+1)+'列 '+(piece(g,v)||'空格'));if(g.kind==='checkers')b.classList.toggle('dark',(r+c)%2===1);if(g.kind==='minesweeper')b.classList.toggle('covered',v===null);if(g.kind==='sudoku'){b.classList.toggle('origin',String(g.selected)===String([r,c]));if(c===2||c===5)b.classList.add('box-right');if(r===2||r===5)b.classList.add('box-bottom')}
+  // Native Minesweeper leaves a hit mine covered; only mark coordinates already disclosed by action feedback.
+  const hitMines=new Set((g.kind==='minesweeper'?g.action_feedback||[]:[]).flatMap(item=>{const m=/^You hit a mine at \((\d+), (\d+)\)\.$/.exec(item.reason);return m?[+m[1]+':'+(+m[2])]:[]}));
+  rows.forEach((row,r)=>row.forEach((v,c)=>{const hit=hitMines.has(r+':'+c),symbol=hit?'💣':piece(g,v);const b=node('button',symbol,'selected-cell');b.dataset.row=r;b.dataset.col=c;if(g.kind==='xiangqi'&&/[A-Z]/.test(v))b.classList.add('red-piece');b.setAttribute('aria-label',(r+1)+'行 '+(c+1)+'列 '+(hit?(window.JevI18n?.lang==='zh'?'踩中炸弹':'Mine hit'):(symbol||'空格')));if(g.kind==='checkers')b.classList.toggle('dark',(r+c)%2===1);if(g.kind==='minesweeper'){b.classList.toggle('covered',v===null&&!hit);b.classList.toggle('mine-hit',hit);if(hit)b.title=window.JevI18n?.lang==='zh'?'踩中炸弹':'Mine hit';}if(g.kind==='sudoku'){b.classList.toggle('origin',String(g.selected)===String([r,c]));if(c===2||c===5)b.classList.add('box-right');if(r===2||r===5)b.classList.add('box-bottom')}
    let action=null;if(g.kind==='minesweeper')action='['+r+' '+c+']';else if(g.kind==='sudoku')action='cell:'+r+':'+c;else if(g.kind==='go'){const coord='abcdefghj'[c]+(rows.length-r);action=Object.keys(options).find(k=>options[k].toLowerCase().endsWith(' '+coord))}
    if(action&&action in options){b.dataset.action=action;b.onclick=()=>{if(!showcaseBusy)act(action)}}
    else if(moves.length){b.onclick=()=>{if(showcaseBusy)return;const target=moves.find(m=>String(m.from)===String(sourceCell)&&String(m.to)===String([r,c]));if(target){sourceCell=null;act(target.action)}else{sourceCell=moves.some(m=>String(m.from)===String([r,c]))?[r,c]:null;mark()}}}

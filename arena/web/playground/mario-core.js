@@ -508,20 +508,17 @@
       }
       return frame;
     }
-    function advanceTo(target) {
+    function advanceTo(target, options={}) {
       if (!Number.isSafeInteger(target)||target<frame) throw new RangeError('advanceTo requires a future integer frame');
       while(frame<target&&!outcome)stepFrame();
+      // A selected intent can reject a changed visible danger before physics
+      // advances a frame. Live act() resolves that transition; replay must
+      // execute it too, including its feedback and action history.
+      if(options.completeAction&&remaining>0&&!outcome){
+        stepFrame();
+        if(frame!==target||remaining>0)throw new Error('replay_action_completion_frame_mismatch');
+      }
       return frame;
-    }
-    function settleActionAtFrame(target) {
-      if(frame!==target||!remaining)throw Error('no_pending_action_at_replay_boundary');
-      // A visible-intent safety check can release the selected action without
-      // advancing physics. A live timer executes that check on its next tick;
-      // frame-only replay must execute the same check at the recorded boundary.
-      // Never accept another physics frame as a zero-frame completion.
-      advanceSelectedAction();
-      if(frame!==target||remaining)throw Error('action_boundary_requires_physics');
-      return snapshot();
     }
     function setInput(key, down, fresh=true) {
       if(!['left','right','jump'].includes(key))return false;
@@ -531,7 +528,7 @@
       keys.add(key);if(key==='jump'&&fresh)jumpQueued=true;return true;
     }
     function renderState(){return {T,H,FLOOR,W,GOAL,tiles,coins,enemies,plants:plants.map(plantBody),powerups,popups,p,camera,frame,collected,powerupsCollected,score,outcome,event,decisions,active,locked,modelStepping,modelAwaiting,remaining,command};}
-    Object.assign(api,{tick,advanceTo,settleActionAtFrame,terminal:()=>outcome,renderState,setInput,clearInput:clearKeys,
+    Object.assign(api,{tick,advanceTo,terminal:()=>outcome,renderState,setInput,clearInput:clearKeys,
       setVisibility(value){visibilityHidden=!!value;if(visibilityHidden)clearKeys();},
       setViewport(width){if(!Number.isFinite(width)||width<=0)throw new RangeError('invalid viewport width');viewportWidth=width;camera=clamp(p.x-viewportWidth*.32,0,W*T-viewportWidth);return viewportWidth;}});
     // Explicitly injected fixture hooks are used only by offline browser tests.

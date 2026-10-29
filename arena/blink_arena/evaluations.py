@@ -156,6 +156,20 @@ class Evaluations:
         return project_arena(self._status())
 
     def _status(self):
+        published_elo = _read(self.leaderboard_dir/'arena-elo.json')
+        if published_elo is not None:
+            from .privacy import assert_public_document
+            if published_elo.get('schema_version') != 'jev.arena.published-elo.v1':
+                raise ValueError('unknown_published_elo_schema')
+            assert_public_document(published_elo)
+            return published_elo
+        published = _read(self.leaderboard_dir/'arena-independent.json')
+        if published is not None:
+            from .privacy import assert_public_document
+            if published.get('schema_version') != 'jev.arena.independent-results.v1':
+                raise ValueError('unknown_published_independent_results_schema')
+            assert_public_document(published)
+            return published
         runner = self.latest()
         if runner: return runner.status()
         from .leaderboards import Leaderboards

@@ -6,6 +6,7 @@
   const tr = (en, zh) => window.JevI18n?.t(en, zh) ?? en;
   const motion = matchMedia('(prefers-reduced-motion: reduce)');
   const direction = {left: ['Left', '向左', '←'], up: ['Up', '向上', '↑'], right: ['Right', '向右', '→'], down: ['Down', '向下', '↓']};
+  const modelName = model => String(model?.name || '').replace(/^(?:Blink|OneShot|QwenJev)\b/i, 'Piccolo');
   let archive = null, data = null, gameIndex = 0, cursor = 0, phase = 0, playing = false, timer = 0, loading = false;
   let nativeRenderer = null, nativeMount = null, rendererEpoch = 0;
   const nodes = {};
@@ -167,7 +168,7 @@
       const flat = state.board.flat();
       nodes.scoreLabel.textContent = tr('Black · White', '黑子 · 白子');
       nodes.score.textContent = `${flat.filter(v => v === 'X').length} : ${flat.filter(v => v === 'O').length}`;
-      nodes.legend.textContent = tr(`OneShot plays ${data.model_side === 'X' ? 'Black' : 'White'}. Dots mark legal moves.`, `OneShot 执${data.model_side === 'X' ? '黑' : '白'}，圆点为合法位置。`);
+      nodes.legend.textContent = tr(`Piccolo plays ${data.model_side === 'X' ? 'Black' : 'White'}. Dots mark legal moves.`, `Piccolo 执${data.model_side === 'X' ? '黑' : '白'}，圆点为合法位置。`);
       board.setAttribute('aria-label', tr('Othello board: ', '黑白棋棋盘：') + state.board.map(row => row.join(' ')).join('; '));
       state.board.forEach((row, y) => row.forEach((value, x) => {
         const square = String.fromCharCode(97 + x) + (size - y);
@@ -205,15 +206,15 @@
     nodes.gamePosition.textContent = `${String(gameIndex + 1).padStart(2, '0')} / ${String(archive.clips.length).padStart(2, '0')}`;
     nodes.dots.forEach((button, i) => {
       const clip = archive.clips[i], name = tr(clip.name_en, clip.name_zh);
-      button.setAttribute('aria-label', `${name} · ${clip.models[0].name} · ${i + 1}/${archive.clips.length}`);
-      button.setAttribute('title', `${name} · ${clip.models[0].name}`); button.setAttribute('aria-pressed', String(i === gameIndex));
+      button.setAttribute('aria-label', `${name} · ${modelName(clip.models[0])} · ${i + 1}/${archive.clips.length}`);
+      button.setAttribute('title', `${name} · ${modelName(clip.models[0])}`); button.setAttribute('aria-pressed', String(i === gameIndex));
       const tab = nodes.gameButtons[i];
       tab.textContent = name; tab.setAttribute('aria-pressed', String(i === gameIndex));
-      tab.title = `${name} · ${clip.models[0].name}`;
+      tab.title = `${name} · ${modelName(clip.models[0])}`;
     });
     nodes.game.textContent = tr(data.name_en, data.name_zh);
     nodes.seed.textContent = `SEED ${data.seed}`;
-    nodes.model.textContent = data.models[0].name;
+    nodes.model.textContent = modelName(data.models[0]);
     nodes.model.title = `${data.models[0].id} · ${data.models[0].checkpoint}`;
     nodes.result.textContent = tr('Victory · full replay', '已获胜 · 完整轨迹');
     renderBoard(state, step);
@@ -337,7 +338,7 @@
     });
     nodes.result = make('small', 'home-demo-result', decision);
     nodes.timeline = make('input', 'home-demo-timeline', decision); nodes.timeline.type = 'range'; nodes.timeline.min = '0'; nodes.timeline.step = '1';
-    nodes.timeline.oninput = () => { const position = Number(nodes.timeline.value); stop(); cursor = position; phase = 2; render(); };
+    nodes.timeline.oninput = () => { stop(); cursor = Number(nodes.timeline.value); phase = 2; render(); };
     const controls = make('div', 'home-demo-controls', decision);
     nodes.play = make('button', 'home-demo-play', controls); nodes.next = make('button', 'home-demo-next', controls); nodes.reset = make('button', 'home-demo-reset', controls);
     nodes.finish = make('button', 'home-demo-finish', controls);

@@ -24,12 +24,15 @@ HTTP 客户端通过 `GET /api/v1/games` 获取同一份可公开的 descriptor�
 | --- | --- | --- |
 | `reset(seed, options=None)` | 种子与该引擎支持的选项 → 原生状态 | 创建对局 |
 | `legal_actions(state)` | 状态 → 动作 ID 与描述的字典 | 引擎合法动作集合 |
-| `observe(state)` / `as_record(state)` | 状态 → 公开 `jev.training.v1` 记录 | 供策略决策 |
+| `observe(state)` / `as_record(state)` | 状态 → 完整公开 `jev.training.v1` 记录 | 原始输入、历史兼容与严格回放 |
+| `model_input(state, input_format="selected-v1")` | 状态 → 当前模型决策输入 | 与前端相同的意图/预测视图 |
 | `step(state, action, **kwargs)` | 状态与动作 → 推进结果 | 回合游戏推进；浏览器引擎委托给 driver |
 | `public(state)` | 状态 → 前端展示快照 | UI / 调试展示 |
 | `outcome(state, side=None)` | 状态与可选席位 → 终局结果或 `None` | 判断是否结束 |
 
-策略输入必须使用 `observe`，不能把完整原生状态或 UI 用的 `public` 快照直接发给模型。原生状态可能含暗牌、随机数状态或其他私有字段。候选顺序来自 `questions.decision.option_order`；不存在该字段时使用 `criteria` 的顺序。部分游戏提供合法动作的受限候选子集，策略必须从本次观测的 `criteria` 中选择，不能用更大的 `legal_actions` 集合替换它。
+新策略输入使用 `model_input`；复现旧输入可使用 `observe` 或 `model_input(..., input_format="original")`，不能把完整原生状态或 UI 用的 `public` 快照直接发给模型。原生状态可能含暗牌、随机数状态或其他私有字段。候选顺序来自 `questions.decision.option_order`；不存在该字段时使用 `criteria` 的顺序。部分游戏提供合法动作的受限候选子集，策略必须从本次观测的 `criteria` 中选择，不能用更大的 `legal_actions` 集合替换它。
+
+意图投影只读取完整公开观测，不读取隐藏状态；动作 ID、候选顺序和物理规则保持不变。已有 rollout runner 为严格回放保留原始观测；策略回调可用 `blink_arena.model_inputs.project_record(record, "selected-v1")` 取得与网页一致的输入，并另存实际发送记录。压缩字段与前后评测见 [模型输入优化](MODEL_INPUT_INTENT_20261021.md)。
 
 种子通常是 uint32；仅特定棋盘起局支持 `None`。`reset` 的附加选项由具体适配器验证，不接受未定义选项。
 
@@ -43,7 +46,7 @@ from blink_arena.engine import get_engine
 engine = get_engine("sokoban_puzzle")
 assert engine.backend == "native" and engine.clock == "turn"
 state = engine.reset(42)
-record = engine.observe(state)
+record = engine.model_input(state)
 question = record["questions"]["decision"]
 candidate_ids = question.get("option_order") or list(question["criteria"])
 action = candidate_ids[0]  # 示例选择；真实策略读取 record 后返回动作 ID。

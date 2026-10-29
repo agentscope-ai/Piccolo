@@ -51,7 +51,7 @@ body .home-demo-controls .home-demo-reset{border-color:transparent!important;bac
 .home-demo-candidates{margin-top:9px;gap:5px;min-height:30px}
 .home-demo-candidate{padding:5px 7px;font-size:10px;gap:4px}
 .home-demo-latency{margin-top:8px;min-height:29px;font-size:9px}
-body .home-demo-controls button{font-size:10px;padding:7px 9px;min-height:34px}
+body .home-demo-controls button{font-size:11px;padding:7px 10px;min-height:36px}
 body .home-demo-controls .home-demo-play{min-width:110px}
 .home-demo-controls{gap:6px}
 @container(max-width:400px){.home-demo-layout{gap:20px}.home-demo-controls{padding-left:29px}}
@@ -101,10 +101,10 @@ body .home-demo-game-nav button:focus-visible,.home-demo-candidates:focus-visibl
 /* A quiet presentation frame, with direct access to all four games. */
 .home-demo{background:#fffdf8;border-radius:9px;padding:20px;box-shadow:0 14px 48px -24px #6c483b30}
 .home-demo-top{margin-bottom:12px}
-.home-demo-game-position{font-size:10px;letter-spacing:1.3px;font-variant-numeric:tabular-nums;margin:0 4px;color:#968573}
+.home-demo-game-position{font-size:11px;letter-spacing:1.3px;font-variant-numeric:tabular-nums;margin:0 4px;color:#746c61}
 body .home-demo-game-nav .home-demo-game-dot{display:none}
 .home-demo-game-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin:0 0 23px;border-bottom:1px solid #e9e1d6}
-body .home-demo-game-tabs button{min-width:0;padding:8px 3px 11px;min-height:35px;font-size:10px;border:0!important;border-radius:0!important;background:transparent!important;color:#877a6b;position:relative;box-shadow:none!important}
+body .home-demo-game-tabs button{min-width:0;padding:9px 3px 12px;min-height:38px;font-size:11px;border:0!important;border-radius:0!important;background:transparent!important;color:#746c61;position:relative;box-shadow:none!important}
 .home-demo-game-tabs button::after{content:"";position:absolute;bottom:-1px;left:12%;right:12%;height:2px;background:var(--home-demo-copper);transform:scaleX(0);transition:transform 180ms ease-out}
 body .home-demo-game-tabs button[aria-pressed=true]{color:var(--home-demo-copper);font-weight:600}
 .home-demo-game-tabs button[aria-pressed=true]::after{transform:scaleX(1)}
@@ -120,9 +120,14 @@ body .home-demo-game-tabs button[aria-pressed=true]{color:var(--home-demo-copper
 @container(max-width:400px){.home-demo-game-tabs{margin-bottom:18px}.home-demo-game-tabs button{font-size:11px}.home-demo{padding:16px}.home-demo-game-position{font-size:9px}}
 @media(prefers-reduced-motion:reduce){.home-demo-game-tabs button::after{transition:none}}
 @container(min-width:401px){.home-demo-stage-copy{min-height:30px}.home-demo-stage,.home-demo-stage:last-of-type{padding-bottom:10px}.home-demo-game-tabs{margin-bottom:18px}.home-demo-decision>.home-demo-counter{margin-bottom:8px}}
-.home-demo-model{display:block;margin:-6px 0 10px;color:var(--home-demo-copper);font-size:10px;line-height:1.5}
-.home-demo-result{display:block;margin:2px 0 5px;color:var(--home-demo-copper);font-size:10px}
+.home-demo-model{display:block;margin:-6px 0 10px;color:var(--home-demo-copper);font-size:11px;line-height:1.5}
+.home-demo-result{display:block;margin:2px 0 5px;color:var(--home-demo-copper);font-size:11px}
 .home-demo-timeline{display:block;width:100%;height:20px;margin:0 0 7px;accent-color:var(--home-demo-copper);cursor:pointer}
-body .home-demo-controls .home-demo-speed{width:auto;min-height:34px;padding:5px;border:1px solid var(--home-demo-line);border-radius:3px;background:#fcfaf5;color:var(--home-demo-ink);font-size:10px}
+body .home-demo-controls .home-demo-speed{width:auto;min-height:36px;padding:5px;border:1px solid var(--home-demo-line);border-radius:3px;background:#fcfaf5;color:var(--home-demo-ink);font-size:11px}
 .home-demo-board-native{display:flex;align-items:center;padding:0;overflow:hidden;background:#f7f4e7}
 .home-demo-board-native .jev-native-replay{width:100%!important;height:100%!important;min-height:0!important;border-radius:0!important;pointer-events:none}
+@media(min-width:901px) and (max-height:820px){
+ .home-demo .home-demo-game-tabs{margin-bottom:10px}
+ .home-demo-top{padding-bottom:10px}
+ .home-demo-stage,.home-demo-stage:last-of-type{padding-bottom:8px}
+}

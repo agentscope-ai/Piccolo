@@ -2,7 +2,7 @@
 @font-face{font-family:'Inter';font-style:normal;font-weight:100 900;font-display:swap;src:url('./fonts/InterVariable.woff2') format('woff2')}
 /* Compatibility alias for existing canvas renderers; the rendered face is Inter. */
 @font-face{font-family:'Jev Comic';font-style:normal;font-weight:100 900;font-display:swap;src:url('./fonts/InterVariable.woff2') format('woff2')}
-:root{--jev-font:'Inter',-apple-system,PiccoloMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei','Noto Sans CJK SC',sans-serif}
+:root{--jev-font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei','Noto Sans CJK SC',sans-serif}
 html{font-synthesis:none;text-size-adjust:100%;-webkit-text-size-adjust:100%}
 html body,html body *{font-family:var(--jev-font)!important}
 body{font-optical-sizing:auto;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-kerning:normal;text-rendering:optimizeLegibility}

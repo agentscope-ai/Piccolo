@@ -12,6 +12,14 @@ window.JevModelLabels=(()=>{
  };
  const families={'qwen3.6-35b-a3b':'Qwen3.6 35B-A3B','qwen3.8-27b':'Qwen3.8 27B','qwen3.8-max':'Qwen3.8 Max'};
  const text=value=>typeof value==='string'?value:'';
+ const ownIds=new Set(['oneshot-hosted','oneshot-w22m05r02-v5best-avg50','ours-w22m05r02-v5best-avg50','oneshot-rl-r6-iter0000019',...Object.keys(releases)]);
+ // Normalize recorded first-party display labels without rewriting API identities.
+ // Browser-connected user models bypass this helper and retain their chosen name.
+ function displayName(id,label){
+  const value=text(label);
+  const own=ownIds.has(text(id).toLowerCase())||/^(?:OneShot|QwenJev|Blink)(?:$|\s+(?:\(?27B\)?)(?:$|[\s·-]))/i.test(value);
+  return own?value.replace(/^(?:OneShot|QwenJev|Blink)\b/i,'Piccolo'):value;
+ }
  function model(id,fallback,identity){
   const record=id&&typeof id==='object'?id:null;
   if(record){identity=identity||record.model_identity||record.identity||record;fallback=fallback??record.name??record.model;id=record.id??record.model_key??record.model_id??record.source_model;}
@@ -19,7 +27,7 @@ window.JevModelLabels=(()=>{
   const supplied=identity&&typeof identity==='object'?identity:{};
   const info=supplied.model_identity||supplied.identity||supplied;
   const keys=[id,info.source_model,info.model_key,info.model_id,info.requested_model,info.served_model].map(text).filter(Boolean).map(value=>value.toLowerCase());
-  const fallbackLabel=(text(fallback)||text(record?.name)||text(record?.model)||text(id)||tr('Unknown model','未知模型')).replace(/QwenJev|OneShot/gi,'Piccolo');
+  const fallbackLabel=displayName(id,text(fallback)||text(record?.name)||text(record?.model)||text(id)||tr('Unknown model','未知模型'));
   const provider=text(info.provider||supplied.provider).toLowerCase();
   const path=text(info.model_path||info.checkpoint||info.checkpoint_path||supplied.checkpoint).toLowerCase();
   let release=keys.map(key=>releases[key]).find(Boolean);
@@ -42,7 +50,7 @@ window.JevModelLabels=(()=>{
   if(source==='official')return fallbackLabel==='jev-official'? 'Jev API':fallbackLabel;
   return fallbackLabel;
  }
- return {model};
+ return {model,displayName};
 })();
 /* Temporary, browser-owned connections. No credentials are written to storage. */
 window.ConnectUI = (() => {
@@ -56,7 +64,7 @@ window.ConnectUI = (() => {
   const headers = model => model ? {'X-Demo-Model': model} : {};
   const selectedModel = () => typeof modelName === 'undefined' ? get('modelSelect')?.value || '' : modelName;
   const activeWork = () => working || (typeof busy !== 'undefined' && busy) || (typeof batchRunning !== 'undefined' && batchRunning) || (typeof showcaseBusy !== 'undefined' && showcaseBusy);
-  const modelLabel = model => model.transport ? (model.name || model.id) : window.JevModelLabels.model(model.id, model.name, model);
+  const modelLabel = model => model.transport && !model.managed ? (model.name || model.id) : window.JevModelLabels.model(model.id, model.name, model);
   const messages = {
     loading: ['Loading connections…', '正在读取连接…'],
     saving: ['Connecting…', '正在连接…'],
@@ -66,6 +74,7 @@ window.ConnectUI = (() => {
     same_origin_endpoint: ['Use a model API on a separate origin from this game site.', '请使用与游戏站点独立的模型接口地址，避免向游戏服务器发送密钥。'],
     invalid_model: ['Fill in the model ID, display name and exact served model.', '请填写模型 ID、展示名和实际服务模型名。'],
     invalid_id: ['Model ID may contain letters, digits, dots, underscores and hyphens; start with a letter or digit.', '模型 ID 只能包含字母、数字、点、下划线和连字符，并以字母或数字开头。'],
+    invalid_concurrency: ['Concurrent requests must be between 1 and 32.', '请求并发应为 1 至 32 的整数。'],
     invalid_timeout: ['Timeout must be between 1 and 600 seconds.', '超时应在 1 至 600 秒之间。'],
     invalid_key: ['API keys cannot contain line breaks, control characters or non-ASCII characters.', 'API key 不能包含换行、控制字符或非 ASCII 字符。'],
     conflict: ['This model ID is already connected. Disconnect it first or use another ID.', '该模型 ID 已有连接，请先断开或使用其他 ID。'],
@@ -105,7 +114,7 @@ window.ConnectUI = (() => {
       const row = document.createElement('div'); row.className = 'connected-model';
       const info = document.createElement('div'); info.className = 'connected-model-info';
       const name = document.createElement('strong'); name.textContent = modelLabel(model);
-      const detail = document.createElement('span'); detail.textContent = model.id + ' · ' + tr('Browser direct', '浏览器直连') + (model.ready === false ? tr(' · Reconnect', ' · 需重连') : '');
+      const detail = document.createElement('span'); detail.textContent = model.id + ' · ' + (model.managed ? tr('Provided by this site', '本站模型') : tr('Browser direct', '浏览器直连')) + (model.ready === false ? (model.managed ? tr(' · Awaiting server setup', ' · 等待服务端配置') : tr(' · Reconnect', ' · 需重连')) : '');
       info.append(name, detail);
       const use = document.createElement('button'); use.type = 'button'; use.className = 'connection-use';
       use.textContent = model.id === selectedModel() ? tr('Selected', '已选择') : tr('Use', '使用');
@@ -115,7 +124,7 @@ window.ConnectUI = (() => {
       remove.textContent = tr('Disconnect', '断开'); remove.disabled = working;
       remove.setAttribute('aria-label', tr('Disconnect ', '断开 ') + modelLabel(model));
       remove.onclick = () => disconnect(model.id);
-      row.append(info, use, remove); list.append(row);
+      row.append(info, use); if (!model.managed) row.append(remove); list.append(row);
     }
   }
   function fields() {
@@ -161,15 +170,17 @@ window.ConnectUI = (() => {
     top.value = desired;
     top.disabled = !models.length || (typeof batchRunning !== 'undefined' && batchRunning);
     renderConnections();
+    window.JevParticipants?.refresh();
     return desired;
   }
   async function save(event) {
     event.preventDefault();
     if (activeWork()) { message('wait', true); return; }
     const form = get('connectionForm'); if (!form.reportValidity()) return;
-    const spec = {model_id: get('connectionModelId').value.trim(), name: get('connectionName').value.trim(), served_model: get('connectionServedModel').value.trim(), adapter: get('connectionAdapter').value, transport: 'browser', endpoint: get('connectionEndpoint').value.trim(), api_key: get('connectionApiKey').value.trim(), json_mode: get('connectionJsonMode').checked, timeout_seconds: Number(get('connectionTimeout').value)};
+    const spec = {model_id: get('connectionModelId').value.trim(), name: get('connectionName').value.trim(), served_model: get('connectionServedModel').value.trim(), adapter: get('connectionAdapter').value, transport: 'browser', endpoint: get('connectionEndpoint').value.trim(), api_key: get('connectionApiKey').value.trim(), json_mode: get('connectionJsonMode').checked, timeout_seconds: Number(get('connectionTimeout').value), concurrency: Number(get('connectionConcurrency').value)};
     if (!spec.model_id || !spec.name || !spec.served_model) { message('invalid_model', true); return; }
     if (!/^[a-zA-Z0-9][a-zA-Z0-9_.-]{0,100}$/.test(spec.model_id)) { message('invalid_id', true); return; }
+    if (!Number.isInteger(spec.concurrency) || spec.concurrency < 1 || spec.concurrency > 32) { message('invalid_concurrency', true); return; }
     if (!Number.isFinite(spec.timeout_seconds) || spec.timeout_seconds < 1 || spec.timeout_seconds > 600) { message('invalid_timeout', true); return; }
     try { spec.endpoint = window.JevConnectionTransport.endpoint(spec.endpoint); } catch (error) { message(error.code === 'same_origin_endpoint' ? error.code : 'invalid_endpoint', true); return; }
     if (/[^\x20-\x7e]/.test(spec.api_key)) { message('invalid_key', true); return; }
@@ -177,7 +188,7 @@ window.ConnectUI = (() => {
     try {
       // Explicit metadata whitelist: endpoint and key never enter a same-origin request.
       const body = {model_id: spec.model_id, name: spec.name, served_model: spec.served_model,
-        adapter: spec.adapter, transport: 'browser', json_mode: spec.json_mode, timeout_seconds: spec.timeout_seconds};
+        adapter: spec.adapter, transport: 'browser', json_mode: spec.json_mode, timeout_seconds: spec.timeout_seconds, concurrency: spec.concurrency};
       await request('', body);
       bridges.set(spec.model_id, window.JevConnectionTransport.createBridge({...spec, onStatus: code => {
         if (code === 'disconnected') { bridges.delete(spec.model_id); revision++; }
@@ -222,5 +233,5 @@ window.ConnectUI = (() => {
   });
   window.addEventListener('pagehide', () => { for (const bridge of bridges.values()) bridge.stop(); bridges.clear(); clearKey(); });
   window.JevI18n?.onChange(repaintLocale);
-  return {headers, syncModels, modelLabel, open, get provider() { return 'custom'; }, get revision() { return revision; }, get configured() { return models.some(model => model.id === selectedModel() && model.ready !== false); }};
+  return {headers, syncModels, modelLabel, open, get models() { return models.slice(); }, get provider() { return 'custom'; }, get revision() { return revision; }, get configured() { return models.some(model => model.id === selectedModel() && model.ready !== false); }};
 })();

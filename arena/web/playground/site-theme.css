@@ -1,4 +1,4 @@
-/* Piccolo · shared design primitives, chrome and interaction states. */
+/* Blink · shared design primitives, chrome and interaction states. */
 :root,body{
  --ink:#2b3d43;--muted:#66777b;--line:#e0e5e3;--blue:#48666b;--soft:#edf1f0;--bg:#f8f9f6;
  --pixel-ink:var(--ink);--pixel-edge:var(--line);--pixel-paper:#fff;--pixel-accent:#ebf0ee;
@@ -67,7 +67,7 @@ body .playground-connection-row .model-switch select{color:#586f72;border-color:
 .playground-connection-row .status{font-size:11px;color:#818d8f}
 body .playground-connections .model-details{display:block;border:0!important;border-top:1px solid var(--line)!important;border-radius:0!important;margin:12px 0 0;padding:10px 0 0;background:transparent;box-shadow:none!important}
 body .playground-connections .model-details summary{text-align:left;color:#839092;font-size:11px}
-body .play-library-tools{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:24px 0 0;margin:28px 0 16px;border-top:1px solid var(--line)}
+body .play-library-tools{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0;margin:0 0 16px;border:0}
 body .play-filters{display:flex;gap:4px;flex-wrap:wrap}
 body .play-filters button{min-height:34px;font-size:12px;padding:6px 10px;font-weight:500;border:1px solid transparent!important;background:transparent;box-shadow:none!important;color:var(--fs-text-tertiary)}
 body .play-filters button.active{background:var(--fs-accent-soft)!important;border-color:#e8c6b7!important;box-shadow:none!important;color:#995137}
@@ -136,8 +136,8 @@ body .dpad [data-terra-dir=right]{grid-column:3;grid-row:2}
 body .move-history b{color:#7d9396}
 body .thinking{border:1px solid var(--fs-border);background:#ffffffeb;border-radius:8px;box-shadow:none;color:#738689;font-size:11px}
 body .thinking span{background:#a2b7ba}
-body .play-seed-footer{margin:26px 0 0;padding:20px;border:1px solid var(--fs-border)!important;background:#ffffff8a;border-radius:12px!important}
-body .play-seed-footer label{font-size:12px;font-weight:500}
+body .play-seed-setup{margin:0 0 22px;padding:20px;border:1px solid var(--fs-border)!important;background:#ffffff8a;border-radius:12px!important}
+body .play-seed-setup label{font-size:12px;font-weight:500}
 body .play-seed-footer input,body .play-seed-footer button,body #boardPlay .game-info select{border:1px solid var(--fs-border);background:#fff;box-shadow:none;font-weight:400;color:#4f6568;min-height:38px;font-size:12px}
 body .play-seed-footer #playSeedApply{background:#edf2f0;border-color:#dde6e2;box-shadow:none}
 body .play-seed-footer #playSeedStatus{margin-top:12px;color:var(--fs-text-tertiary);font-size:11px}

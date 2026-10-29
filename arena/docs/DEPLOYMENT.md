@@ -17,7 +17,7 @@ docker compose ps
 
 需要安装支持 `docker compose` 的 Compose 插件。服务端口默认仅发布到主机回环地址，Compose 允许同网络 Caddy 的转发头，以正确识别 HTTPS 和同源请求。如果调整为直接公开后端端口，应将 `FORWARDED_ALLOW_IPS` 限定为实际反向代理地址。
 
-模型地址始终按用户浏览器能访问的地址填写。浏览器里的 `127.0.0.1` 指用户浏览器所在机器，不是 Docker 容器或网站服务器。
+用户自带模型的地址按用户浏览器能访问的地址填写。浏览器里的 `127.0.0.1` 指用户浏览器所在机器，不是 Docker 容器或网站服务器。
 
 ## DSW 反向代理
 
@@ -41,6 +41,10 @@ DOMAIN=games.example.com docker compose --profile domain up --build -d
 随后访问 `https://games.example.com/`。模型地址、模型名和 API key 在前端填写，后端连接接口不接受模型端点或密钥。
 
 `deploy/Caddyfile` 将请求保留原路径转发到 `jev:8080`。域名解析和端口满足条件时，Caddy 自动申请并续期 HTTPS 证书；证书保存在独立数据卷。[Caddy Automatic HTTPS](https://caddyserver.com/docs/automatic-https)
+
+## 本站 Blink
+
+在服务环境设置 `DASHSCOPE_API_KEY` 后重启现有后端即可。Git 内不包含真实 Key 或临时 Token；配置必须随自动部署保留，且不能进入静态资源。具体环境变量、验收命令与服务器 agent prompt 见 [HOSTED_MODEL.md](HOSTED_MODEL.md)。
 
 ## 浏览器模型连接
 

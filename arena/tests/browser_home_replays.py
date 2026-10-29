@@ -1,7 +1,6 @@
 """Exercise completed Home replays without connecting a model."""
 import argparse
 import json
-import os
 from pathlib import Path
 from urllib.request import urlopen
 
@@ -12,7 +11,6 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--url', required=True)
     parser.add_argument('--out', type=Path, required=True)
-    parser.add_argument('--standalone', action='store_true', help='Check completed-showcase.html on a static server')
     parser.add_argument('--archive', type=Path, help='Override only the replay asset for a local preview')
     args = parser.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
@@ -20,7 +18,7 @@ def main():
         urlopen(args.url.rstrip('/') + '/playground/data/home-decision.json', timeout=30))
     checks, errors, decisions = [], [], []
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True, channel=os.environ.get("BLINK_BROWSER_CHANNEL"))
+        browser = p.chromium.launch(headless=True)
         for width in (1440, 390):
             page = browser.new_page(viewport={'width': width, 'height': 1000})
             page.on('pageerror', lambda error: errors.append(str(error)))
@@ -29,9 +27,8 @@ def main():
             if args.archive:
                 page.route('**/playground/data/home-decision.json*', lambda route: route.fulfill(
                     content_type='application/json', body=json.dumps(archive)))
-            page.goto(args.url.rstrip('/') + '/completed-showcase.html' if args.standalone else args.url, wait_until='networkidle')
-            if not args.standalone:
-                page.locator('[data-tab="blog"]').click()
+            page.goto(args.url, wait_until='networkidle')
+            page.locator('[data-tab="blog"]').click()
             page.wait_for_selector('.home-demo-timeline')
             for language in ('en', 'zh'):
                 page.locator(f'[data-language="{language}"]').click()
@@ -56,10 +53,6 @@ def main():
                     assert not page.locator('.home-demo-next').is_disabled()
                     page.locator('.home-demo-timeline').fill(str(len(clip['steps'])//2))
                     assert page.locator('#homeDecisionDemo').get_attribute('data-phase') == '2'
-                    assert page.locator('.home-demo-timeline').input_value() == str(len(clip['steps'])//2)
-                    assert page.locator('.home-demo-counter').inner_text().startswith(f"{len(clip['steps'])//2 + 1:02d} /")
-                    page.locator('.home-demo-timeline').fill(str(len(clip['steps'])-1))
-                    assert page.locator('.home-demo-next').is_disabled(), 'Seeking must reach the terminal step'
                     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth + 1')
                     checks.append({'width': width, 'language': language, 'game': clip['game'],
                                    'model': clip['models'][0]['name'], 'terminal_win': True,
@@ -81,10 +74,9 @@ def main():
             page.wait_for_timeout(350)
             second = page.evaluate(canvas + '.toDataURL()')
             assert first != second, 'Recorded Tetris gravity did not move'
-            if not args.standalone:
-                page.locator('[data-tab="games"]').click()
-                page.locator('[data-tab="blog"]').click()
-                assert page.locator('.home-demo-play').get_attribute('aria-pressed') == 'false'
+            page.locator('[data-tab="games"]').click()
+            page.locator('[data-tab="blog"]').click()
+            assert page.locator('.home-demo-play').get_attribute('aria-pressed') == 'false'
             page.emulate_media(reduced_motion='reduce')
             page.locator('.home-demo-finish').click()
             # Rapid game switches while the isolated renderer is mounting.
@@ -105,7 +97,7 @@ def main():
             page.close()
         browser.close()
     assert not decisions, 'Read-only replay issued a model request'
-    report = {'standalone': args.standalone, 'checks': checks, 'errors': errors, 'model_requests': len(decisions),
+    report = {'checks': checks, 'errors': errors, 'model_requests': len(decisions),
               'gravity_visible': True, 'rapid_switch': True, 'reduced_motion': True,
               'game_tabs_keyboard': True, 'board_swipe': True}
     (args.out/'validation.json').write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n')

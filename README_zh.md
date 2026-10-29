@@ -2,7 +2,7 @@
 
 <h1 align="center">Piccolo</h1>
 <p align="center"><strong>让决策动起来。</strong></p>
-<p align="center"><a href="https://decisionplayground.agentscope.io/">Decision · 官网</a> · <a href="README.md">English</a> / 简体中文 · <a href="docs/blog.md">项目 Blog</a> · <a href="arena/README.md">Arena 文档</a></p>
+<p align="center"><a href="https://decisionplayground.agentscope.io/">Decision · 官网</a> · <a href="README.md">English</a> / 简体中文 · <a href="docs/piccolo-blog.md">项目 Blog</a> · <a href="arena/README.md">Arena 文档</a></p>
 
 Piccolo 把**观察、动作与反馈**连接成可以检查的决策过程。Piccolo Arena 汇集交互游戏、共享环境规则、模型评测和轨迹回放。你可以访问 [Decision 官网](https://decisionplayground.agentscope.io/)，也可以在本机运行仓库内的 Arena。
 
@@ -10,7 +10,7 @@ Piccolo 把**观察、动作与反馈**连接成可以检查的决策过程。Pi
 
 ## 看见决策过程
 
-八个历史回放集中展示不同环境中的决策过程。交互播放器支持暂停、进度拖动与逐步查看。
+八个完整历史回放集中展示不同环境中的决策过程，右侧呈现真实候选概率。交互播放器支持暂停、进度拖动与逐步查看。
 
 <table>
   <tr>

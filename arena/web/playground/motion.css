@@ -1,0 +1,27 @@
+/* Content is visible by default. JavaScript alone opts pending sections in. */
+@media (prefers-reduced-motion: no-preference) {
+  .home-page [data-motion].is-motion-pending {opacity:0}
+  body .tabs .tab::after {
+    transform:scaleX(.65);transform-origin:left center;
+    transition:opacity 160ms ease,transform 200ms ease;
+  }
+  body .tabs .tab.active::after {transform:scaleX(1)}
+  body .home-page button.primary {
+    transition:background-color 180ms ease,border-color 180ms ease,transform 180ms ease;
+  }
+  body .home-page button.primary:hover {transform:translateY(-2px)}
+  body .home-page button.primary:active {transform:translateY(0)}
+  .home-page :is(.home-inline-link,.home-text-action)>span[aria-hidden=true],
+  .home-page .home-result-arrow {display:inline-block;transition:transform 180ms ease}
+  .home-page :is(.home-inline-link,.home-text-action):hover>span[aria-hidden=true],
+  .home-page .home-result:hover .home-result-arrow {transform:translate(2px,-2px)}
+  #leaderboardView .lb-sort-indicator {transition:color 160ms ease}
+  #leaderboardView .lb-sort-button:hover .lb-sort-indicator {color:var(--fs-accent,#a65f3e)}
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-page [data-motion].is-motion-pending {opacity:1}
+  body .tabs .tab::after,
+  body .home-page button.primary,
+  .home-page :is(.home-inline-link,.home-text-action)>span[aria-hidden=true],
+  .home-page .home-result-arrow {transition:none!important;transform:none!important}
+}

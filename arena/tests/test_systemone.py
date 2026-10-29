@@ -5,6 +5,23 @@ from blink_arena.systemone import SystemOneClient, create_bridge
 
 
 class SystemOneTests(unittest.IsolatedAsyncioTestCase):
+    async def test_transient_read_failure_is_retried_without_inventing_an_action(self):
+        client = SystemOneClient('http://model/v1/systemone')
+        await client.http.aclose()
+        calls = []
+        def handler(request):
+            calls.append(1)
+            if len(calls) == 1:
+                raise httpx.ReadError('fixture disconnect', request=request)
+            return httpx.Response(200, json={'model': 'jev-policy', 'answers': {'q': {
+                'type': 'choice', 'choice': 'b', 'probabilities': {'a': .1, 'b': .9}}}})
+        client.http = httpx.AsyncClient(transport=httpx.MockTransport(handler))
+        self.addAsyncCleanup(client.close)
+        result = await client.predict({'state': {}, 'questions': {'q': {'type': 'choice',
+            'instructions': 'Choose', 'criteria': {'a': 'A', 'b': 'B'}}}}, 'q')
+        self.assertEqual(result['value'], 'b')
+        self.assertEqual(len(calls), 2)
+
     async def test_preserves_action_ids_and_explicit_option_order(self):
         client = SystemOneClient('http://model/v1/systemone')
         await client.http.aclose()
@@ -50,7 +67,7 @@ class SystemOneTests(unittest.IsolatedAsyncioTestCase):
 class BridgeTests(unittest.TestCase):
     def test_private_network_preflight_and_single_legal_action(self):
         with TestClient(create_bridge('http://unreachable.invalid/v1/systemone')) as client:
-            origin = 'http://127.0.0.1:8080'
+            origin = 'https://decisionplayground.agentscope.io'
             response = client.options('/decide', headers={'Origin': origin,
                 'Access-Control-Request-Method': 'POST',
                 'Access-Control-Request-Headers': 'content-type,x-request-id',

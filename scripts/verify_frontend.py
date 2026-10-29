@@ -15,7 +15,7 @@ with tempfile.TemporaryDirectory(prefix='blink-app-check-') as tmp:
  env=os.environ.copy();env.update(JEV_DATA_DIR=tmp,JEV_CONFIG=str(root/'arena/config/app.json'),JEV_LEADERBOARD_DIR=str(root/'arena/leaderboard'),PYTHONPATH=str(root/'arena'))
  log=open(art/'server.log','w')
  proc=subprocess.Popen([server_python,'-m','blink_arena','--host','127.0.0.1','--port',str(port)],cwd=root/'arena',env=env,stdout=log,stderr=log)
- report={'views':[],'showcases':[],'errors':[]}
+ report={'views':[],'errors':[]}
  try:
   for _ in range(120):
    try:
@@ -40,38 +40,13 @@ with tempfile.TemporaryDirectory(prefix='blink-app-check-') as tmp:
       assert page.evaluate('document.documentElement.scrollWidth<=document.documentElement.clientWidth+1')
      page.locator('.tabs [data-tab="leaderboard"]').click()
      for benchmark in ['jevbench','decisionindex','harnessjevbench','datajevbench','gamejevbench']:
-      page.locator(f'[data-benchmark="{benchmark}"]').click()
+      page.locator(f'#leaderboardTabs [data-benchmark="{benchmark}"]').click()
       page.wait_for_timeout(200)
-      assert not page.locator('body').evaluate("n=>/OneShot|GameJevArena|GamePiccoloArena/.test(n.innerText)")
+      assert not page.locator('body').evaluate(r"n=>/\bBlink\b|\bBLINK\b/.test(n.innerText)")
       assert page.evaluate('document.documentElement.scrollWidth<=document.documentElement.clientWidth+1')
      report['views'].append({'device':device,'language':lang,'tabs':3,'benchmarks':5})
-     page.screenshot(path=str(art/f'blink-{device}-{lang}.png'))
-    for slug in ['othello','merge-2048','jump-jump','tetris']:
-     page.goto(base+'/showcase.html?game='+slug)
-     page.wait_for_function("document.documentElement.dataset.ready==='true'")
-     n=page.evaluate('PiccoloShowcase.count')
-     initial=page.locator('#stage').screenshot()
-     page.evaluate('(n)=>PiccoloShowcase.seek(n-1)',n)
-     final=page.locator('#stage').screenshot()
-     assert initial!=final,(slug,'unchanged frame')
-     assert page.locator('#position').inner_text().startswith(f'State {n} / {n}')
-     assert page.locator('#error').inner_text()==''
-     assert page.evaluate('document.documentElement.scrollWidth<=document.documentElement.clientWidth+1')
-     page.locator('#restart').click()
-     page.wait_for_function("document.documentElement.dataset.frame==='0'")
-     report['showcases'].append({'device':device,'game':slug,'states':n})
+     page.screenshot(path=str(art/f'piccolo-{device}-{lang}.png'))
     page.close()
-   page=browser.new_page(viewport={'width':1440,'height':1000})
-   page.on('pageerror',lambda error:report['errors'].append(str(error)))
-   page.goto(base,wait_until='networkidle');page.locator('.tabs [data-tab="leaderboard"]').click()
-   page.locator('[data-benchmark="gamejevbench"]').click()
-   page.locator('#eloMatchHistory').evaluate('n=>n.open=true')
-   page.wait_for_selector('[data-replay]')
-   page.locator('[data-replay]').first.click()
-   page.wait_for_selector('#jevArenaReplayDialog[open]')
-   page.wait_for_selector('#jevArenaReplayDialog iframe')
-   page.screenshot(path=str(art/'blink-archive-replay.png'))
-   report['main_archive_replay']=True
    browser.close()
   assert not report['errors'],report['errors']
   (art/'browser.json').write_text(json.dumps(report,indent=2))

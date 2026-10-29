@@ -22,7 +22,7 @@ window.JevChessUI = (() => {
   function controllerName(controller) {
     return controller === 'model' ? tr('Model', '模型') : ['rule','reference','rule_engine'].includes(controller) ? tr('Rule engine', '规则引擎') : controller === 'qwen3.8-max' ? 'Qwen3.8-max' : tr('Human', '人类');
   }
-  function currentController() { return seats[color()]; }
+  function currentController() { return window.JevParticipants?.isDuel() ? (['human','rule'].includes(JevParticipants.controller())?JevParticipants.controller():'model') : seats[color()]; }
   function input(decision) {
     return decision ? {state:decision.observation, prompt:decision.question.instructions, option:decision.question.criteria} : null;
   }
@@ -73,6 +73,7 @@ window.JevChessUI = (() => {
     promotions = []; render(); root.querySelector('[data-square="' + square + '"]')?.focus();
   }
   function seatControls(p) {
+    if(window.JevParticipants?.isDuel())return;
     const row = node('div', undefined, 'jev-chess-seats');
     for (const side of ['white','black']) {
       const label = node('label', sideName(side));
@@ -93,7 +94,7 @@ window.JevChessUI = (() => {
     el('showcaseCanvas').classList.add('hidden'); window.JevSelectedGames?.hide();
     if (el('enginePublicState')) el('enginePublicState').hidden = true;
     seatControls(p);
-    const heading = node('div', status(g), 'jev-chess-status'); heading.setAttribute('role','status'); heading.setAttribute('aria-live','polite'); p.append(heading);
+    const heading = node('div', status(g), 'jev-chess-status'); if(window.JevParticipants?.isDuel()){heading.innerHTML=JevParticipants.badges([sideName('white'),sideName('black')]);if(g.outcome||g.in_check||g.check)heading.append(node('span',' · '+status(g)));} heading.setAttribute('role','status'); heading.setAttribute('aria-live','polite'); p.append(heading);
     const legal = moves(), grid = node('div', undefined, 'jev-chess-board');
     grid.setAttribute('role','group'); grid.setAttribute('aria-label',tr('Chess board','国际象棋棋盘'));
     const ranks = flipped ? [1,2,3,4,5,6,7,8] : [8,7,6,5,4,3,2,1];
@@ -252,6 +253,7 @@ window.JevChessUI = (() => {
     finally { showcaseBusy = false; showcaseControls(false); schedule(); }
   }
   function schedule() {
+    if(window.JevParticipants?.isDuel()){JevParticipants.schedule();return;}
     clearTimeout(timer); timer = null;
     if (!running || !active() || !playTabVisible || showcaseBusy || !view || view.terminal || currentController() === 'human') return;
     timer = setTimeout(() => {

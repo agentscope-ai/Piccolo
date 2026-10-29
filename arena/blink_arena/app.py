@@ -67,6 +67,12 @@ def create_app(*, data=DATA, seed=SEED, web=WEB, config=None, prefix='', fronten
         raise ValueError('JEV_PUBLIC_ORIGIN must be an HTTP(S) origin without a path')
     config = config or AppConfig.model_validate_json(CONFIG.read_text())
     providers = Providers(config)
+    from .hosted_model import HostedModel
+    hosted = HostedModel()
+    providers.models[hosted.spec.id] = hosted.spec
+    providers.server_relays[hosted.spec.id] = hosted.decide
+    providers.slots[hosted.spec.id] = asyncio.Semaphore(hosted.spec.concurrency)
+    providers.availability[hosted.spec.id] = lambda: hosted.ready
     connections = Connections(providers)
     legacy_owners = {}
     board_sessions = {}
@@ -75,12 +81,23 @@ def create_app(*, data=DATA, seed=SEED, web=WEB, config=None, prefix='', fronten
     def selected_model(): return model_context.get()
 
     async def predict(record, qid, model=None):
+        from .model_inputs import project_record
+        record = project_record(record)
+        ident = model or selected_model()
+        connections.require(ident, owner_context.get())
+        result = await providers.predict(record, qid, model=ident)
+        return {**result, 'decision_policy': {'revision': 'jev.interactive-single.v1',
+                'repeat_count': 1, 'option_order': 'original', 'reason': 'interactive_play'}}
+
+    async def evaluation_predict(record, qid, model=None):
+        from .model_inputs import project_record
+        record = project_record(record)
         ident = model or selected_model()
         connections.require(ident, owner_context.get())
         return await repeated_predict(providers.predict, record, qid, model=ident)
 
     sessions = Sessions(predict, frontend)
-    evaluations = Evaluations(data, seed, providers, predict, frontend, selected_model, leaderboard_dir=leaderboard_dir)
+    evaluations = Evaluations(data, seed, providers, evaluation_predict, frontend, selected_model, leaderboard_dir=leaderboard_dir)
     leaderboards = Leaderboards(data, seed, directory=leaderboard_dir)
     from .rollouts import Rollouts
     from jev_engine_rollout_backend import install as install_rollouts
@@ -100,13 +117,15 @@ def create_app(*, data=DATA, seed=SEED, web=WEB, config=None, prefix='', fronten
         await evaluations.close()
         await sessions.close()
         await providers.close()
+        await hosted.close()
 
-    app = FastAPI(title='Piccolo Arena API', version='1.0.0', lifespan=lifespan,
+    app = FastAPI(title='PiccoloArena API', version='1.0.0', lifespan=lifespan,
                   openapi_url=prefix+'/api/openapi.json', docs_url=None, redoc_url=None)
     app.add_middleware(GZipMiddleware, minimum_size=1000)
     app.state.providers, app.state.connections = providers, connections
     app.state.sessions, app.state.evaluations, app.state.leaderboards = sessions, evaluations, leaderboards
     app.state.rollouts = rollouts
+    app.state.hosted_model = hosted
     install_rollouts(app, prefix, rollouts, owner_resolver=lambda request: owner_context.get())
 
     @app.exception_handler(RequestValidationError)
@@ -344,13 +363,13 @@ def create_app(*, data=DATA, seed=SEED, web=WEB, config=None, prefix='', fronten
         if (evaluations.root/'latest.json').is_file():
             archive = await asyncio.to_thread(Exporter(evaluations.root, Path(data)/'replay.js').export, data_only=True)
         if not archive and (evaluations.leaderboard_dir/'arena-replays.json').exists(): archive = json.loads((evaluations.leaderboard_dir/'arena-replays.json').read_text())
-        return Response('window.PiccoloArenaReplayArchive='+json.dumps(archive or {},ensure_ascii=False)+';', media_type='application/javascript')
+        return Response('window.JevArenaReplayArchive='+json.dumps(archive or {},ensure_ascii=False)+';', media_type='application/javascript')
 
     def board_payload(ident):
         item = board_sessions.get(ident)
         if not item or item['owner'] != owner_context.get(): raise HTTPException(404, 'Session not found')
         state = item['world']; engine=get_engine(state['game'],state)
-        record = engine.observe(state) if not engine.outcome(state) and len(engine.legal_actions(state))>=2 else None
+        record = engine.model_input(state) if not engine.outcome(state) and len(engine.legal_actions(state))>=2 else None
         return {'session_id':ident,'revision':item['revision'],'game':engine.public(state),'environment':item['environment'],
                 'input':None if record is None else {'state':record['state'],'prompt':record['questions']['decision']['instructions'], 'option':record['questions']['decision']['criteria']}}
 
@@ -369,6 +388,7 @@ def create_app(*, data=DATA, seed=SEED, web=WEB, config=None, prefix='', fronten
 
     @app.post(prefix+'/api/game/move')
     async def board_move(body: showcases.Move):
+        if body.reference and body.model: raise HTTPException(422,'Choose rule engine or model')
         board_payload(body.session_id)
         item = board_sessions[body.session_id]
         if body.revision != item['revision'] or item['busy']: raise HTTPException(409,'Game changed or action in progress')
@@ -376,14 +396,22 @@ def create_app(*, data=DATA, seed=SEED, web=WEB, config=None, prefix='', fronten
         try:
             engine=get_engine(item['world']['game'],item['world'])
             legal = engine.legal_actions(item['world']); forced = len(legal)==1
-            result = None; action = body.action
-            if body.model:
+            result = None; action = body.action; previous_input = None
+            if body.reference:
+                from jev_board_algorithm_opponent import choose
+                if not legal: raise HTTPException(422,'Game is over')
+                action = await asyncio.to_thread(choose,item['world'],legal,item['environment'].get('seed'),item['revision'])
+            elif body.model:
                 if forced: action=next(iter(legal))
                 elif legal:
-                    result = await predict(engine.observe(item['world']),'decision'); action=result['value']
+                    record = engine.model_input(item['world'])
+                    question = record['questions']['decision']
+                    previous_input = {'state':record['state'], 'prompt':question['instructions'], 'option':question['criteria']}
+                    result = await predict(record,'decision'); action=result['value']
             if action not in legal: raise HTTPException(422,'Illegal game action')
             item['world'] = engine.step(item['world'],action); item['revision'] += 1
-            return {**board_payload(body.session_id),'action':action,'result':result,'forced':forced}
+            return {**board_payload(body.session_id),'action':action,'result':result,'forced':forced,'previous_input':previous_input,
+                    'controller':'rule_engine' if body.reference else 'model' if body.model else 'human'}
         finally: item['busy'] = False
 
     def no_case(seq): raise HTTPException(404,'Training examples are not included')

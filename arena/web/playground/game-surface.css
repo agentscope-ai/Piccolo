@@ -1,0 +1,21 @@
+/* Game surfaces inherit the same paper, typography and controls as the site. */
+#gamesView{--game-paper:#fffdf8;--game-line:#ded9cf;--game-ink:#443b30;--game-accent:#a76543}
+#gamesView .canvas-shell,#gamesView .board-wrap,#gamesView .selected-game{background:var(--game-paper);border-color:var(--game-line)!important;border-radius:8px!important;box-shadow:none!important}
+#gamesView .scene-header h2{font-family:var(--fs-display-font,Georgia,serif);font-weight:400;letter-spacing:-.5px}
+#gamesView :is(.goal-card,.decision-card){border-color:var(--game-line)!important;background:var(--game-paper);box-shadow:none!important}
+#gamesView :is(.scene-controls button,.model-controller button,#newGame,#showcaseNew){min-height:44px;font-size:12px;font-weight:500;border-radius:6px!important}
+#gamesView .scene-controls{gap:8px;padding:16px 0 8px}
+#gamesView .dpad button{min-width:64px;min-height:44px}
+#gamesView :is(.control-hint,.decision-time,.decision-average){font-size:11px;line-height:1.7;color:#827568}
+#gamesView :is(.scene-stats strong,.game-turn){font-variant-numeric:tabular-nums;color:var(--game-ink)}
+#gamesView :is(#showcaseOutcome,#gameOutcome):not(.hidden){padding:16px 18px;border:1px solid var(--game-line);border-radius:8px;background:#f1f3eb;color:#435840;box-shadow:none}
+#gamesView :is(#showcaseOutcome,#gameOutcome).loss{background:#f7eee7;border-color:#e2cbbc;color:#8f5539}
+#globalError:not(.hidden){padding:14px 18px;margin:0 0 20px;border:1px solid #dec2af;border-left:3px solid #a76543;border-radius:6px;background:#fbf2e9;color:#804c31;font-size:13px;line-height:1.7;overflow-wrap:anywhere}
+.connection-options small{display:block;font-size:11px;line-height:1.7;color:var(--muted);margin:6px 0 12px}
+@media(max-width:620px){
+ body #showcasesView[data-kind=merge_2048] .canvas-shell{overflow:hidden}
+ body #showcasesView[data-kind=merge_2048] #showcaseCanvas{display:block;width:100%;max-width:100%;height:auto;aspect-ratio:1}
+ body #showcasesView[data-kind=merge_2048] .control-hint::before{content:none}
+ #gamesView .scene-controls button{min-height:44px}
+ #gamesView .seed-toolbar :is(input,button){min-height:40px}
+}

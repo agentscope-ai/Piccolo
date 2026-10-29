@@ -75,6 +75,7 @@
     let spec = {...options, endpoint: endpoint(options.endpoint)};
     const id = spec.model_id, rootUrl = new URL('./api/v1/connections/' + encodeURIComponent(id) + '/', document.baseURI);
     const life = new AbortController(), pending = new Map();
+    const connectionScheduler = new Scheduler(spec.concurrency || 1);
     let running = true;
     const notify = typeof options.onStatus === 'function' ? options.onStatus : () => {};
     options = null; // Do not retain a second copy of connection credentials after stop().
@@ -88,7 +89,7 @@
         try { response = await fetch(url, {method: 'POST', headers, body: JSON.stringify(payload), signal, credentials: 'omit', cache: 'no-store', redirect: 'error'}); }
         catch { if (signal.aborted) throw failure('cancelled'); if (attempt === 2) throw failure('connection_failed'); await delay(1000 * (attempt + 1), signal); continue; }
         if ([429, 502, 503, 504].includes(response.status) && attempt < 2) { await delay(1000 * (attempt + 1), signal); continue; }
-        if (!response.ok) throw failure('connection_failed');
+        if (!response.ok) throw failure(({401:'authentication_failed',403:'authentication_failed',404:'endpoint_not_found',422:'invalid_response',429:'rate_limited',502:'upstream_unavailable',503:'upstream_unavailable',504:'timeout'})[response.status] || 'connection_failed');
         let data; try { data = await response.json(); } catch { throw failure('invalid_response'); }
         return decode(request, {adapter}, data);
       }
@@ -111,8 +112,8 @@
       const timeout = setTimeout(() => { timedOut = true; controller.abort(); }, (spec.timeout_seconds || 120) * 1000);
       pending.set(request.request_id, controller);
       let body;
-      try { body = {request_id: request.request_id, result: await scheduler.run(() => remote(request, controller.signal), controller.signal)}; }
-      catch (error) { body = {request_id: request.request_id, error: timedOut ? 'timeout' : ['invalid_response', 'connection_failed', 'cancelled'].includes(error.code) ? error.code : 'invalid_response'}; }
+      try { body = {request_id: request.request_id, result: await connectionScheduler.run(() => scheduler.run(() => remote(request, controller.signal), controller.signal), controller.signal)}; }
+      catch (error) { body = {request_id: request.request_id, error: timedOut ? 'timeout' : ['invalid_response', 'connection_failed', 'cancelled', 'authentication_failed', 'rate_limited', 'endpoint_not_found', 'upstream_unavailable', 'timeout'].includes(error.code) ? error.code : 'invalid_response'}; }
       finally { clearTimeout(timeout); pending.delete(request.request_id); }
       if (running) await report(body);
     }

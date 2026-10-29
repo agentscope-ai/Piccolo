@@ -2,13 +2,17 @@
   "schema_version": "blink.showcase-render.v2",
   "fps": 12,
   "speed": 2,
+  "candidate_display": "Original candidate probabilities; highest six and selected action visible, remaining mass labeled.",
   "coverage": "Every archived decision and complete execution interval; no step selection or truncation.",
   "items": [
     {
       "id": "mario",
       "source": "arena/web/showcase/full/mario.json",
-      "source_sha256": "5d921b0f008f1694ab8967c1709ac3b5d4ab84064f877197757497fac7716f3f",
+      "source_sha256": "09fbb03b8cd84510a242e4342231d00f6b4be5351c492f08bd955f4c468a5b50",
       "steps": 12,
+      "probability_decisions": 12,
+      "probability_receipt": "probabilities/mario.json",
+      "probability_receipt_sha256": "784c0db2c9d9214f8707203a54b0fb67cdb8071ea2b80a422b23d84ab53475d3",
       "captured_indices": [
         0,
         1,
@@ -232,8 +236,11 @@
     {
       "id": "snake",
       "source": "arena/web/showcase/full/snake.json",
-      "source_sha256": "4d7621813f67595370b035cd3c16a96305ea17f86ca30e3e52a2e19bfa4b24df",
+      "source_sha256": "794d38ff5c5e04d270fc325f600e13ab5db0e9e6d9c8ebf97397d4a917163891",
       "steps": 51,
+      "probability_decisions": 51,
+      "probability_receipt": "probabilities/snake.json",
+      "probability_receipt_sha256": "b974fdd35a5aebea0e6a46315514dc8527d7f7c141f25677667506b021942de5",
       "captured_indices": [
         0,
         1,
@@ -1520,8 +1527,11 @@
     {
       "id": "merge-2048",
       "source": "arena/web/showcase/full/merge-2048.json",
-      "source_sha256": "3142df8349236ad13195e512084ebaaff0ae07791545dcf4871a08708d943a7b",
+      "source_sha256": "62b91df71cfc68c111711befadebbc35d535594a52054c9a0112b2295e8b0e74",
       "steps": 65,
+      "probability_decisions": 65,
+      "probability_receipt": "probabilities/merge-2048.json",
+      "probability_receipt_sha256": "b61e84ec2fec6e8364c51e77949946a9d4dde7ac6b877b8628cb02973209580d",
       "captured_indices": [
         0,
         1,
@@ -3158,8 +3168,11 @@
     {
       "id": "sokoban",
       "source": "arena/web/showcase/full/sokoban.json",
-      "source_sha256": "d46111b988964235daf1fe690bb8adc3a0183fb07250f50c288ee8733569cf4d",
+      "source_sha256": "b6f2051ddfb4965539378e7e265cbc156218a6035c7783418a06d18e5403325c",
       "steps": 4,
+      "probability_decisions": 4,
+      "probability_receipt": "probabilities/sokoban.json",
+      "probability_receipt_sha256": "ef0a66698c26de56613e446a2427d1e7e8758f254ae9fa5081d42a7e5540f401",
       "captured_indices": [
         0,
         1,
@@ -3271,8 +3284,11 @@
     {
       "id": "tetris",
       "source": "arena/web/showcase/full/tetris.json",
-      "source_sha256": "ec17e4d7a98a492f9fe2761e2d1d9956898c4668842158626abf3589b604b147",
+      "source_sha256": "aa4d0791f2903036e4fa7e8f9b1811471f532c4d37755fe47556edaed81c6101",
       "steps": 25,
+      "probability_decisions": 11,
+      "probability_receipt": "probabilities/tetris.json",
+      "probability_receipt_sha256": "ef6f65b9e39226ee11f1bd95aab13b31c37e46ce2a83462a5e5f581ef465b4b6",
       "captured_indices": [
         0,
         1,
@@ -3909,8 +3925,11 @@
     {
       "id": "jump-jump",
       "source": "arena/web/showcase/full/jump-jump.json",
-      "source_sha256": "613b6dd4551801a08ec2ad02d5037c09a82770e67ad9143fb8f14e7d980770f2",
+      "source_sha256": "ccb9787abe6419ee5db270d6dfe553631b4e09cedd5b4c3af91133b4718496d5",
       "steps": 8,
+      "probability_decisions": 8,
+      "probability_receipt": "probabilities/jump-jump.json",
+      "probability_receipt_sha256": "4e5cac5bca5c3d259a167a8ecc06ff5ecfd9f0b51862b548a476e18ce3cc84e4",
       "captured_indices": [
         0,
         1,
@@ -4122,8 +4141,11 @@
     {
       "id": "hex",
       "source": "arena/web/showcase/full/hex.json",
-      "source_sha256": "78b8b5ffce2564d9af6ada7fb5e929661da8a7d0b3034d485906efa3303f1737",
+      "source_sha256": "67ca99839dc99244803148b21633d1d8e6a7f9946c18435676037dadf722810d",
       "steps": 31,
+      "probability_decisions": 31,
+      "probability_receipt": "probabilities/hex.json",
+      "probability_receipt_sha256": "a27b9bbec4555f2c2889a4ba8bd75c7f891d900ade49aae3923b7800a6d57235",
       "captured_indices": [
         0,
         1,
@@ -4910,8 +4932,11 @@
     {
       "id": "dots-and-boxes",
       "source": "arena/web/showcase/full/dots-and-boxes.json",
-      "source_sha256": "d1f6814da8cf77b57d43881dd10ced2c3fafdc34a98fa9e5cae5cba43141ac62",
+      "source_sha256": "bfbcbe4c7eaedcba2567610a4998c17860ab83f3f977f38a352041e594ba7eb7",
       "steps": 14,
+      "probability_decisions": 13,
+      "probability_receipt": "probabilities/dots-and-boxes.json",
+      "probability_receipt_sha256": "72d8dfd37005be7ae8da3bf81117bf4f634b25eea70fb80e6813e747f9fea22d",
       "captured_indices": [
         0,
         1,

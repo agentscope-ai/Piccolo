@@ -1,0 +1,247 @@
+/* Blink publication theme. Load after site-theme.css, before page-specific Home styles. */
+:root,body{
+ --ink:#25231f;--muted:#69645c;--line:#ded9cf;--blue:#9b5839;--soft:#eee9df;--bg:#f7f5ef;
+ --pixel-ink:var(--ink);--pixel-edge:var(--line);--pixel-paper:#fffdf8;--pixel-accent:#eee9df;
+ --play-ink:var(--ink);--play-accent:#a05d3c;--play-line:var(--line);--play-soft:#f0ebe2;
+ --fs-text-secondary:#615c54;--fs-text-tertiary:#777167;--fs-paper:#fffdf8;--fs-border:#ded9cf;
+ --fs-tint:#f0ece3;--fs-accent:#a65f3e;--fs-accent-soft:#f0e2d5;--fs-deep:#25231f;
+ --fs-sage:#898575;--fs-blue:#827c73;--fs-radius:6px;--fs-shadow:none;
+ --publication-serif:'Iowan Old Style',Georgia,'Baskerville','Songti SC','Noto Serif CJK SC',serif;
+}
+html body{background:var(--bg);color:var(--ink)}
+body .shell{max-width:1328px;padding:28px 44px}
+body p{color:var(--muted)}
+body a{color:var(--fs-accent)}
+::selection{background:#e9d4c1;color:#32251c}
+
+/* typography.css assigns Inter to every element with !important; display headings opt out. */
+html body :is(h1,h2),html body :is(h1,h2) *,
+html body :is(.lb-radar-heading,.lb-group-heading,.elo-heading,.blog-report-title) h3,
+html body :is(.lb-radar-heading,.lb-group-heading,.elo-heading,.blog-report-title) h3 *{
+ font-family:var(--publication-serif)!important;font-weight:400
+}
+html body .lb-radar-heading h3 .lb-benchmark-version{font-family:var(--jev-font)!important}
+body .playground-heading h2,body .blog-heading h2,#leaderboardView .lb-heading h2{
+ font-size:46px;font-weight:400;line-height:1.13;letter-spacing:-1.6px;color:var(--ink)
+}
+body .blog-heading h2:after,body .playground-heading h2:after,#leaderboardView .lb-heading h2:after{display:none}
+body .playground-heading{margin-bottom:28px}
+body .playground-heading .muted{font-size:14px;line-height:1.8;margin-top:12px;max-width:70ch}
+body .eyebrow,body .scene-kicker{color:var(--fs-text-tertiary)}
+
+/* Brand, pages and language share one quiet masthead. */
+body .mast{
+ display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;
+ gap:24px;min-height:62px;margin:0 0 48px;padding:0 0 22px;border-bottom:1px solid var(--line)
+}
+body .brand{justify-self:start;gap:10px;min-width:0}
+body .brand strong{color:var(--ink);font-size:22px;font-weight:620;letter-spacing:-.8px}
+body .brand .eyebrow{font-size:9px;letter-spacing:1.05px;color:var(--fs-text-tertiary)}
+body .mast .logo{width:34px;height:34px;background:var(--ink);border-radius:4px!important;color:var(--bg);box-shadow:none}
+body .mast .logo:after{background:#bd8058;width:4px;height:4px;right:4px;bottom:4px}
+body .mast-controls{justify-self:end;flex-direction:row;align-items:center;gap:0}
+body .language-switch{width:82px;padding:0;border:0;background:transparent;border-radius:0;gap:3px}
+body .language-switch button{height:32px;min-height:32px;font-size:11px;color:var(--muted);padding:0 5px}
+body .language-switch button[aria-pressed=true]{background:#ebe5da;color:var(--ink);box-shadow:none}
+body .tabs{
+ display:flex;justify-self:center;align-items:stretch;gap:26px;width:auto;padding:0;margin:0;
+ border:0;border-radius:0;background:transparent;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none
+}
+body .tabs .tab{
+ width:auto;min-width:0;height:38px;padding:0 3px;border-radius:0!important;font-size:13px;font-weight:500;
+ color:var(--muted);background:transparent!important;box-shadow:none!important
+}
+body .tabs .tab:after{
+ content:"";position:absolute;left:3px;right:3px;bottom:-2px;height:2px;background:var(--fs-accent);opacity:0;transition:opacity 160ms
+}
+body .tabs .tab.active{color:var(--fs-accent);font-weight:500}
+body .tabs .tab.active:after{opacity:1}
+body .tabs .tab:hover{color:var(--ink)}
+.nav-glass,.nav-wind-light,.nav-underline,.lb-pixel-atmosphere,.lb-pixel-effects,.fs-sand-canvas{display:none!important}
+
+/* Opaque controls, warm borders and a consistent copper focus. */
+body button,body input,body select,body textarea{border-radius:5px!important;accent-color:var(--fs-accent)}
+body button{background:var(--fs-paper);border-color:var(--line);color:var(--ink);box-shadow:none;transition:background-color 140ms,border-color 140ms,color 140ms}
+body button:hover{background:#f1ece2;border-color:#c7b7a5;color:var(--ink)}
+body button:not(:disabled):active{background:#eae2d5;box-shadow:none!important}
+body :is(select,input,textarea){background:#fffdf9;border-color:var(--line);color:var(--ink);box-shadow:none}
+body :is(select,input,textarea):focus{border-color:#a97853;box-shadow:0 0 0 3px #a65f3e10}
+body :is(button,select,input,textarea,summary,a):focus-visible{outline:2px solid var(--fs-accent);outline-offset:3px}
+body input::placeholder{color:#8c857a}
+body summary{color:var(--muted)}
+body .panel,body .goal-card,body .connection-dialog{background:var(--fs-paper);border-color:var(--line)!important;box-shadow:none!important}
+body .connection-dialog{box-shadow:0 20px 65px #30271b26!important;border-radius:10px!important}
+body .connection-dialog::backdrop,body .arv-dialog::backdrop{background:#29251f55;backdrop-filter:none}
+body .notice:not(.error){background:#ede8de;color:var(--muted)}
+body .content,body .result{background:#f4f0e8;border-color:var(--line);color:var(--ink)}
+body .foot{border-color:var(--line);margin-top:48px;padding-top:22px;color:var(--fs-text-tertiary)}
+body .foot a{color:var(--muted)}
+
+/* Data series keep distinct colours; chart labels and structure use the publication palette. */
+#leaderboardStatus{color:var(--fs-text-tertiary);margin-top:13px;margin-bottom:22px}
+#leaderboardRefresh{background:var(--fs-paper);color:var(--muted);border-color:var(--line)}
+#leaderboardView .lb-tabs{border-color:var(--line);gap:8px;margin-bottom:30px}
+#leaderboardView .lb-tab{color:var(--muted);height:50px;padding-block:0}
+#leaderboardView .lb-tab strong{font-size:13px;font-weight:450}
+#leaderboardView .lb-tab.active{color:var(--fs-accent)}
+#leaderboardView .lb-tab.active strong{font-weight:550}
+#leaderboardView .lb-tab.active:after{display:block;content:"";position:absolute;left:12px;right:12px;bottom:0;height:2px;background:var(--fs-accent)}
+#leaderboardView .lb-tab:hover{color:var(--ink)}
+#leaderboardView .lb-radar-heading h3{font-size:30px;line-height:1.24;font-weight:400;letter-spacing:-.8px;color:var(--ink)}
+#leaderboardView .lb-radar-heading h3:before{display:none}
+.lb-radar-heading{gap:9px;margin-bottom:10px;min-height:40px}
+.lb-benchmark-description{font-size:13px;line-height:1.85;max-width:84ch;color:var(--muted);margin-bottom:26px}
+.lb-benchmark-about>summary{color:#797064}
+.lb-benchmark-about>summary:hover,.lb-benchmark-about[open]>summary{background:var(--fs-accent-soft);color:var(--fs-accent);border-color:#d9bea7}
+.lb-benchmark-about-body,.lb-model-picker-body,.lb-metric-tooltip{
+ background:#fffdf8;border-color:var(--line);border-radius:7px;color:var(--muted);box-shadow:0 10px 28px #352b1d12;backdrop-filter:none
+}
+.lb-model-picker>summary{background:var(--fs-paper);border-color:var(--line);border-radius:5px;color:var(--ink)}
+.lb-model-picker>summary:hover,.lb-model-picker[open]>summary{background:#f1eade;border-color:#cdbba7}
+#lbRadarSearch,.lb-table-search input{background:#fffdf9;color:var(--ink);border-color:var(--line)}
+.lb-radar-legend-row.selected{background:#f1ece2}
+.lb-radar-legend-item input{accent-color:var(--fs-accent)}
+#leaderboardView .lb-model-only:hover,#leaderboardView .lb-model-only:focus-visible{background:#eae1d4}
+.lb-comparison-grid{border-color:var(--line);border-radius:7px;background:var(--fs-paper);box-shadow:none}
+.lb-chart-card{padding:24px 26px 20px}
+.lb-chart-card+.lb-chart-card{box-shadow:-1px 0 var(--line)}
+.lb-chart-title h4{font-size:13px;color:var(--ink);font-weight:550}
+.lb-chart-title select{background:#f8f4eb;border-color:var(--line);color:var(--ink)}
+.lb-radar-grid{stroke:#e5dfd4}
+.lb-radar-grid:nth-of-type(4){stroke:#c7beaf}
+.lb-radar-spoke{stroke:#e8e1d6}
+.lb-radar-axis{fill:#4c473f}
+.lb-radar-axis.is-active,.lb-radar-axis:focus{fill:var(--fs-accent)}
+.lb-radar-tick{fill:#8c8275;stroke:#fffdf8}
+.lb-radar-callout{stroke:#d9cfc1}
+.lb-radar-dot{stroke:#fffdf8}
+.lb-radar-empty{background:#fffdf8ef;color:var(--muted)}
+.lb-bar-metric{border-color:var(--line);color:var(--muted)}
+.lb-bar-value{color:var(--ink)}
+.lb-bar-track{background:repeating-linear-gradient(to right,#eae4da 0,#eae4da 1px,transparent 1px,transparent 25%)}
+.lb-bar-identity,.lb-bar-unscored{color:#34302a}
+.lb-bar-unscored{background:#f8f4ec;border-color:#d8ccbb;color:var(--muted)}
+.lb-radar-table-scroll,.lb-table-scroll{border-color:var(--line);border-radius:6px;background:var(--fs-paper)}
+.lb-radar-table-scroll table,#leaderboardView .lb-table{background:var(--fs-paper);color:var(--ink)}
+.lb-radar-table-scroll th{background:#eee8dc;color:var(--ink)}
+.lb-radar-table-scroll td,.lb-radar-table-scroll th{border-color:var(--line)}
+#leaderboardView .lb-group-heading h3,#leaderboardView #gameEloPanel h3{
+ font-family:var(--publication-serif)!important;font-size:29px;line-height:1.3;font-weight:400;letter-spacing:-.65px;color:var(--ink)
+}
+#leaderboardView .lb-table th{background:#ebe4d8;color:#38332b;border-color:#d7cbbb;font-weight:550}
+#leaderboardView .lb-table td{border-color:#e9e2d6}
+#leaderboardView .lb-table tbody tr:hover{background:#f3eee4}
+#leaderboardView .lb-table td:nth-child(2)>strong{color:var(--ink)}
+#leaderboardView .lb-score,.lb-metric-value{color:#3e382f}
+#leaderboardView .lb-table th.lb-has-metric-help:hover{color:var(--fs-accent)}
+.lb-table-tools>button[aria-pressed=true]{border-color:#c8a084;background:var(--fs-accent-soft);color:var(--fs-accent)}
+.lb-protocol pre,.lb-game-cards li{background:#f4eee4;border-color:var(--line)}
+#leaderboardView #gameEloPanel .elo-configuration{background:#eee7db;color:var(--muted);border-color:var(--line)}
+#leaderboardView #gameEloPanel :is(.elo-chip,.elo-baseline-card,.elo-formula){background:#f9f5ed;border-color:var(--line);color:var(--muted)}
+#leaderboardView #gameEloPanel select{background:var(--fs-paper);color:var(--ink)}
+.lb-row-progress>div,.lb-progress,#leaderboardView #gameEloPanel .elo-baseline-bar{background:#e9dfd0}
+.lb-row-progress>div>span,.lb-progress span,#leaderboardView #gameEloPanel .elo-baseline-bar span{background:#b98661}
+.lb-bars,.lb-radar-legend,.lb-table-scroll,.lb-radar-chart{scrollbar-color:#c9bca9 transparent}
+
+/* Warm setup and scene chrome; game canvases retain their native colours. */
+body .playground-connections,body .play-seed-setup{background:#f0ebe1;border:1px solid var(--line)!important;border-radius:7px!important;box-shadow:none}
+body .playground-connection-row .model-switch>span,body .playground-connection-row .model-switch select{color:var(--ink)}
+body .playground-connection-row .status,body .playground-connections .model-details summary{color:var(--muted)}
+body .play-filters button{color:var(--muted);border-radius:4px!important}
+body .play-filters button.active{background:var(--fs-accent-soft)!important;border-color:#d8b79c!important;color:var(--fs-accent)}
+body .play-filters button:hover{background:#eee6d8;color:var(--ink)}
+body #playSearch{background:#fffdf9;border-color:var(--line)}
+body .unified-picker .picker-row button{background:#fcfaf5;border-color:var(--line)!important;border-radius:6px!important;color:var(--ink);box-shadow:none!important}
+body .unified-picker .picker-row button:hover{background:#fffdf8;border-color:#bda589!important;box-shadow:none!important}
+body .unified-picker .picker-row button.active{background:#f3e9dc!important;border-color:#b9825a!important;box-shadow:inset 0 0 0 1px #b9825a20!important}
+body .picker-row .game-symbol,body .unified-picker .picker-row button:nth-child(7n+1) .game-symbol{background:#ece6db;color:#84735e;border-radius:4px!important}
+body .unified-picker .picker-row button.active .game-symbol,body .unified-picker .picker-row button:hover .game-symbol{background:#e8d5c1;color:#955b36}
+body .picker-row .game-copy strong{color:var(--ink)}
+body .scene-header h2,body #showcasesView .scene-header h2{font-size:30px;font-weight:400;letter-spacing:-.7px;color:var(--ink)}
+body .scene-header p,body #boardPlay .game-info #gameRules{color:var(--muted)}
+body .canvas-shell,body #boardPlay .board-wrap{background:#f1ecdf;border-color:var(--line)!important;border-radius:7px!important;box-shadow:none}
+body .goal-card,body .decision-card,body .social-actions,body .message-editor{background:#fffdf8;border-color:var(--line);border-radius:7px!important;box-shadow:none}
+body .goal-card h3,body .game-turn,body .scene-stats strong,body #lastDecision{color:var(--ink)}
+body .model-controller .primary,body .social-primary,body .scene-controls .charge-button,
+body .game-info .primary,body .connection-actions .primary,body .tetris-control .drop{
+ background:var(--ink)!important;border-color:var(--ink)!important;color:#fffaf3;box-shadow:none!important
+}
+body .scene-controls button,body .social-actions__buttons button,body .model-controller .quiet{background:#fffdf8;border-color:var(--line)!important;color:var(--ink);box-shadow:none}
+body #newGame,body #showcaseNew{color:var(--fs-accent);background:#f2e6d9;border-color:#d9bca1!important}
+body #newGame:hover,body #showcaseNew:hover{background:#ecdbc8;border-color:#c99c77!important;color:#874b2e}
+body .play-seed-footer input,body .play-seed-footer button,body #boardPlay .game-info select{background:#fffdf8;color:var(--ink);border-color:var(--line)}
+body .play-seed-footer #playSeedApply{background:#e9dece;border-color:#d2bba1;color:#744a2f}
+body .move-history b{color:#8a6a51}
+body .thinking{background:#fffdf8f5;color:var(--muted);border-color:var(--line)}
+body .thinking span{background:#b48660}
+body .message-avatar{background:#eee3d2;color:#8d7254;border-color:var(--line)}
+body .terra-tools button[aria-pressed=true]{background:var(--fs-accent-soft);border-color:#bd8d68!important;color:var(--fs-accent)}
+body .blog-report{border-color:var(--line)}
+body .blog-report>summary:hover{background:#eee6d766}
+body .blog-report-title h3{color:var(--ink);font-weight:400}
+body .blog-report-arrow{color:var(--fs-accent)}
+body .blog-article{background:#fffdf8;border-color:var(--line);border-radius:7px}
+
+@media(max-width:1100px){
+ body .shell{padding:25px 28px}
+ body .mast{gap:20px}
+ body .tabs{gap:20px}
+ .lb-chart-card{padding:22px 19px 18px}
+}
+@media(max-width:760px){
+ body .shell{padding:21px 18px}
+ body .mast{grid-template-columns:minmax(0,1fr) auto;gap:17px 12px;margin-bottom:34px;padding-bottom:15px}
+ body .brand{grid-column:1;grid-row:1}
+ body .brand strong{font-size:21px}
+ body .brand .eyebrow{font-size:8px}
+ body .mast .logo{width:32px;height:32px}
+ body .mast-controls{grid-column:2;grid-row:1;width:auto}
+ body .mast .tabs{grid-column:1/-1;grid-row:2;justify-self:stretch;width:100%;gap:22px;margin:0}
+ body .tabs .tab{flex:0 1 auto;width:auto;height:34px;padding:0 2px;font-size:13px}
+ body .tabs .tab:after{left:2px;right:2px}
+ body .playground-heading h2,body .blog-heading h2,#leaderboardView .lb-heading h2{font-size:37px;letter-spacing:-1px}
+ body .playground-heading .muted{font-size:13px}
+ #leaderboardView .lb-tabs{margin-bottom:25px;gap:0}
+ #leaderboardView .lb-tab{height:46px}
+ #leaderboardView .lb-radar-heading h3{font-size:25px;letter-spacing:-.6px}
+ .lb-radar-heading{gap:5px;min-height:38px}
+ .lb-benchmark-description{font-size:12px;margin-bottom:21px}
+ .lb-chart-card{padding:19px 15px 17px}
+ .lb-chart-card+.lb-chart-card{box-shadow:none;border-top-color:var(--line)}
+ #leaderboardView .lb-group-heading h3,#leaderboardView #gameEloPanel h3{font-size:26px}
+ #leaderboardView .lb-table :is(th,td):nth-child(2){background:#fffdf8;border-right-color:var(--line)}
+ #leaderboardView .lb-table th:nth-child(2){background:#ebe4d8}
+ #leaderboardView .lb-table tr:hover td:nth-child(2){background:#f3eee4}
+ body .scene-header h2,body #showcasesView .scene-header h2{font-size:27px}
+ body .foot{margin-top:35px}
+}
+@media(max-width:600px){
+ .lb-radar-panel{grid-template-columns:minmax(0,1fr)}
+ .lb-radar-heading{grid-column:1}
+ .lb-model-picker{grid-column:1;justify-self:start;margin-bottom:14px}
+}
+@media(prefers-reduced-motion:reduce){body .tabs .tab:after{transition:none}}
+/* A compact Inter wordmark balances AgentScope's flowing team mark.
+   Display headings keep the publication serif; the brand uses the bundled UI face. */
+body .mast .brand{gap:12px;color:var(--ink);text-decoration:none}
+body .mast .brand-wordmark{display:flex;flex-direction:column;align-items:flex-start}
+body .mast .logo{width:44px;height:44px;background:none;color:inherit;border-radius:0!important;box-shadow:none}
+body .mast .logo:after{display:none}
+/* Compensate for clear space inside the official AgentScope SVG. */
+body .mast .logo img{display:block;width:54px;height:54px;max-width:none;margin:-5px}
+html body .mast .brand strong,html body .mast .brand strong *{
+ font-family:var(--jev-font)!important;font-size:35px;font-weight:640;line-height:1.05;
+ letter-spacing:-1.65px;font-optical-sizing:auto
+}
+body .mast .brand .eyebrow{display:block;font-size:8px;font-weight:500;letter-spacing:1.35px;line-height:1.5;margin-top:5px;color:#736b61}
+body.credits-page .mast{display:flex;justify-content:space-between}
+body.credits-page .brand{display:flex;align-items:center;gap:12px;color:var(--ink);font-size:32px}
+html body.credits-page .brand span{font-family:var(--jev-font)!important;font-weight:640;letter-spacing:-1.5px}
+body.credits-page .brand img{display:block;flex:none;width:48px;height:48px;max-width:none;margin:-5px}
+@media(max-width:760px){
+ body .mast .brand{gap:10px}
+ body .mast .logo{width:38px;height:38px}
+ body .mast .logo img{width:46px;height:46px;margin:-4px}
+ html body .mast .brand strong,html body .mast .brand strong *{font-size:30px;letter-spacing:-1.35px}
+ body .mast .brand .eyebrow{font-size:8px;letter-spacing:.9px;margin-top:4px}
+}

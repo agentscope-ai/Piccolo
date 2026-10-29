@@ -1,5 +1,7 @@
 # Terra v19 公开记录去重
 
+> 此文描述 v19 完整公开记录的无损去重。2026-10-21 起，前端及新策略可在其上使用 `engine.model_input()` 的意图视图；字段保留范围与评测见 [模型输入优化](MODEL_INPUT_INTENT_20261021.md)。`observe()` 与旧记录的严格回放仍遵守下方合同。
+
 入口仍为共享注册表 `get_engine('terraria_survival').observe(snapshot)`。前端、采样和RL使用同一条 `as_record → adapt_record → compact_record` 链路；物理快照、合法动作ID、动作执行、期限、奖励、可见性及实时调度均不变。
 
 新记录包含：

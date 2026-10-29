@@ -63,6 +63,8 @@ KINDS = tuple(active_games(engine.kind for engine in list_engines(include_intern
 _INITIAL_KINDS = KINDS
 
 EVALUATION_REVISION = 'frontend-full-game-eight-v11-retired6'
+from jev_control_scope import policy as _scope_policy
+GAME_SCOPE_REVISION = _scope_policy()['revision']
 
 GAME_ENGINE_REVISIONS = {tetris.KIND: tetris.REVISION,
     'chess': 'jev.chess.visible-one-ply.v1',
@@ -146,6 +148,7 @@ class GameEvaluator:
     async def _board(self, pool, kind, seed, mode, model):
         engine = get_engine(kind)
         game = engine.reset(seed)
+        initial_state = copy.deepcopy(engine.public(game)) if getattr(self, 'capture_final_state', False) else None
         model_side = _seat(kind, seed, mode)
         opening = game['_initialization']['plies']
         calls = 0
@@ -164,9 +167,12 @@ class GameEvaluator:
             if action not in options:
                 raise ValueError('动作不在公开候选中')
             game = engine.step(game, action)
-        return {'outcome': engine.outcome(game, model_side) or 'budget_exhausted',
+        result = {'outcome': engine.outcome(game, model_side) or 'budget_exhausted',
                 'model_calls': calls, 'opening_plies': opening, 'model_side': model_side,
                 'final_turn': game['turn']}
+        if getattr(self, 'capture_final_state', False):
+            result['model_player'] = 0 if model_side == 'X' else 1
+        return self._capture_final(result, engine.public(game), initial_state)
 
     async def _python(self, pool, kind, seed, mode, model):
         engine = get_engine(kind)

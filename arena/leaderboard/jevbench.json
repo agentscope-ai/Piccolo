@@ -15,1834 +15,352 @@
   ],
   "rows": [
     {
-      "model_id": "oneshot-w22m05r02-v5best-avg50",
-      "model_name": "Ours",
-      "score": 0.9047619047619048,
+      "model_id": "blink-27b-1028",
+      "model_name": "Piccolo-27B",
+      "logo": "./playground/logos/agentscope.svg",
+      "score": 0.922077922077922,
       "status": "complete",
       "metrics": {
-        "accuracy": 0.9047619047619048,
-        "brier": 0.13381410630686102,
-        "ece": 0.037673802634058805,
+        "accuracy": 0.922077922077922,
+        "accuracy_n": 231.0,
+        "correct": 213.0,
+        "brier": 0.12468634088231671,
+        "ece": 0.027878899129963844,
         "brier_n": 231.0,
-        "ece_n": 231.0
+        "ece_n": 231.0,
+        "valid": 231.0,
+        "strict_valid": 231.0,
+        "renormalized": 0.0,
+        "invalid_rate": 0.0
       },
       "axes": [
         {
           "id": "adequacy",
-          "label_en": "adequacy",
+          "label_en": "Adequacy",
           "label_zh": "充分性判断",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 12
         },
         {
           "id": "adversarial",
-          "label_en": "adversarial",
+          "label_en": "Adversarial judgment",
           "label_zh": "对抗判断",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 6
         },
         {
           "id": "ambiguous",
-          "label_en": "ambiguous",
-          "label_zh": "歧义判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 7
-        },
-        {
-          "id": "extraction",
-          "label_en": "extraction",
-          "label_zh": "信息提取",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 24
-        },
-        {
-          "id": "fact",
-          "label_en": "fact",
-          "label_zh": "事实判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "intent",
-          "label_en": "intent",
-          "label_zh": "意图识别",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 24
-        },
-        {
-          "id": "judge_hard",
-          "label_en": "judge_hard",
-          "label_zh": "复杂评判",
-          "score": 0.8235294117647058,
-          "metric": "family_accuracy",
-          "samples": 17
-        },
-        {
-          "id": "long_policy",
-          "label_en": "long_policy",
-          "label_zh": "长规则理解",
-          "score": 0.631578947368421,
-          "metric": "family_accuracy",
-          "samples": 19
-        },
-        {
-          "id": "multi_hop",
-          "label_en": "multi_hop",
-          "label_zh": "多步推理",
-          "score": 0.8888888888888888,
-          "metric": "family_accuracy",
-          "samples": 18
-        },
-        {
-          "id": "ordinal",
-          "label_en": "ordinal",
-          "label_zh": "有序评分",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "policy",
-          "label_en": "policy",
-          "label_zh": "规则判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "probability",
-          "label_en": "probability",
-          "label_zh": "概率判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 10
-        },
-        {
-          "id": "routing",
-          "label_en": "routing",
-          "label_zh": "路由选择",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "routing_hard",
-          "label_en": "routing_hard",
-          "label_zh": "复杂路由",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 5
-        },
-        {
-          "id": "temporal_numeric",
-          "label_en": "temporal_numeric",
-          "label_zh": "时间与数值",
-          "score": 0.3333333333333333,
-          "metric": "family_accuracy",
-          "samples": 15
-        },
-        {
-          "id": "tool_selection",
-          "label_en": "tool_selection",
-          "label_zh": "工具选择",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "tradeoff",
-          "label_en": "tradeoff",
-          "label_zh": "权衡决策",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 6
-        },
-        {
-          "id": "trap",
-          "label_en": "trap",
-          "label_zh": "陷阱识别",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 8
-        }
-      ],
-      "samples": 231,
-      "errors": 0,
-      "evaluated_at": "2026-10-19T11:19:15.345219+00:00",
-      "protocol": "JevBench-Public-231/self-run",
-      "notes": [
-        "Historical public-231 accuracy; not the current official v1.6.1 1500-item Capability score."
-      ]
-    },
-    {
-      "model_id": "access-qwen38-27b",
-      "model_name": "Qwen3.8-27B (Logits)",
-      "logo": "./playground/logos/qwen.png",
-      "score": 0.8441558441558441,
-      "status": "complete",
-      "metrics": {
-        "accuracy": 0.8441558441558441,
-        "brier": 0.21732725136415867,
-        "ece": 0.031961526258466634,
-        "brier_n": 231.0,
-        "ece_n": 231.0
-      },
-      "axes": [
-        {
-          "id": "adequacy",
-          "label_en": "adequacy",
-          "label_zh": "充分性判断",
-          "score": 0.8333333333333334,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "adversarial",
-          "label_en": "adversarial",
-          "label_zh": "对抗判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 6
-        },
-        {
-          "id": "ambiguous",
-          "label_en": "ambiguous",
-          "label_zh": "歧义判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 7
-        },
-        {
-          "id": "extraction",
-          "label_en": "extraction",
-          "label_zh": "信息提取",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 24
-        },
-        {
-          "id": "fact",
-          "label_en": "fact",
-          "label_zh": "事实判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "intent",
-          "label_en": "intent",
-          "label_zh": "意图识别",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 24
-        },
-        {
-          "id": "judge_hard",
-          "label_en": "judge_hard",
-          "label_zh": "复杂评判",
-          "score": 0.6470588235294118,
-          "metric": "family_accuracy",
-          "samples": 17
-        },
-        {
-          "id": "long_policy",
-          "label_en": "long_policy",
-          "label_zh": "长规则理解",
-          "score": 0.6842105263157895,
-          "metric": "family_accuracy",
-          "samples": 19
-        },
-        {
-          "id": "multi_hop",
-          "label_en": "multi_hop",
-          "label_zh": "多步推理",
-          "score": 0.7777777777777778,
-          "metric": "family_accuracy",
-          "samples": 18
-        },
-        {
-          "id": "ordinal",
-          "label_en": "ordinal",
-          "label_zh": "有序评分",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "policy",
-          "label_en": "policy",
-          "label_zh": "规则判断",
-          "score": 0.75,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "probability",
-          "label_en": "probability",
-          "label_zh": "概率判断",
-          "score": 0.6,
-          "metric": "family_accuracy",
-          "samples": 10
-        },
-        {
-          "id": "routing",
-          "label_en": "routing",
-          "label_zh": "路由选择",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "routing_hard",
-          "label_en": "routing_hard",
-          "label_zh": "复杂路由",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 5
-        },
-        {
-          "id": "temporal_numeric",
-          "label_en": "temporal_numeric",
-          "label_zh": "时间与数值",
-          "score": 0.4666666666666667,
-          "metric": "family_accuracy",
-          "samples": 15
-        },
-        {
-          "id": "tool_selection",
-          "label_en": "tool_selection",
-          "label_zh": "工具选择",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "tradeoff",
-          "label_en": "tradeoff",
-          "label_zh": "权衡决策",
-          "score": 0.5,
-          "metric": "family_accuracy",
-          "samples": 6
-        },
-        {
-          "id": "trap",
-          "label_en": "trap",
-          "label_zh": "陷阱识别",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 8
-        }
-      ],
-      "samples": 231,
-      "errors": 0,
-      "evaluated_at": "2026-10-19T12:05:19.257761+00:00",
-      "protocol": "JevBench-Public-231/self-run",
-      "notes": [
-        "Historical public-231 accuracy; not the current official v1.6.1 1500-item Capability score."
-      ]
-    },
-    {
-      "model_id": "access-StartLux-Decision-v1.1-27B-Instant",
-      "model_name": "StartLux-Decision v1.1 27B Instant",
-      "score": 0.9393939393939394,
-      "status": "complete",
-      "metrics": {
-        "accuracy": 0.9393939393939394,
-        "brier": 0.0885356719335457,
-        "ece": 0.023108337148219794,
-        "brier_n": 231.0,
-        "ece_n": 231.0
-      },
-      "axes": [
-        {
-          "id": "adequacy",
-          "label_en": "adequacy",
-          "label_zh": "充分性判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "adversarial",
-          "label_en": "adversarial",
-          "label_zh": "对抗判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 6
-        },
-        {
-          "id": "ambiguous",
-          "label_en": "ambiguous",
-          "label_zh": "歧义判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 7
-        },
-        {
-          "id": "extraction",
-          "label_en": "extraction",
-          "label_zh": "信息提取",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 24
-        },
-        {
-          "id": "fact",
-          "label_en": "fact",
-          "label_zh": "事实判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "intent",
-          "label_en": "intent",
-          "label_zh": "意图识别",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 24
-        },
-        {
-          "id": "judge_hard",
-          "label_en": "judge_hard",
-          "label_zh": "复杂评判",
-          "score": 0.8823529411764706,
-          "metric": "family_accuracy",
-          "samples": 17
-        },
-        {
-          "id": "long_policy",
-          "label_en": "long_policy",
-          "label_zh": "长规则理解",
-          "score": 0.8421052631578947,
-          "metric": "family_accuracy",
-          "samples": 19
-        },
-        {
-          "id": "multi_hop",
-          "label_en": "multi_hop",
-          "label_zh": "多步推理",
-          "score": 0.8888888888888888,
-          "metric": "family_accuracy",
-          "samples": 18
-        },
-        {
-          "id": "ordinal",
-          "label_en": "ordinal",
-          "label_zh": "有序评分",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "policy",
-          "label_en": "policy",
-          "label_zh": "规则判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "probability",
-          "label_en": "probability",
-          "label_zh": "概率判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 10
-        },
-        {
-          "id": "routing",
-          "label_en": "routing",
-          "label_zh": "路由选择",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "routing_hard",
-          "label_en": "routing_hard",
-          "label_zh": "复杂路由",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 5
-        },
-        {
-          "id": "temporal_numeric",
-          "label_en": "temporal_numeric",
-          "label_zh": "时间与数值",
-          "score": 0.5333333333333333,
-          "metric": "family_accuracy",
-          "samples": 15
-        },
-        {
-          "id": "tool_selection",
-          "label_en": "tool_selection",
-          "label_zh": "工具选择",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "tradeoff",
-          "label_en": "tradeoff",
-          "label_zh": "权衡决策",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 6
-        },
-        {
-          "id": "trap",
-          "label_en": "trap",
-          "label_zh": "陷阱识别",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 8
-        }
-      ],
-      "samples": 231,
-      "errors": 0,
-      "evaluated_at": "2026-10-19T12:05:19.215735+00:00",
-      "protocol": "JevBench-Public-231/self-run",
-      "notes": [
-        "Historical public-231 accuracy; not the current official v1.6.1 1500-item Capability score."
-      ]
-    },
-    {
-      "model_id": "access-StartLux-Decision-v1.1-27B-AutoThink",
-      "model_name": "StartLux-Decision v1.1 27B AutoThink",
-      "score": 0.9696969696969697,
-      "status": "complete",
-      "metrics": {
-        "accuracy": 0.9696969696969697,
-        "brier": 0.0576550922008265,
-        "ece": 0.02820495928167889,
-        "brier_n": 231.0,
-        "ece_n": 231.0
-      },
-      "axes": [
-        {
-          "id": "adequacy",
-          "label_en": "adequacy",
-          "label_zh": "充分性判断",
-          "score": 0.9166666666666666,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "adversarial",
-          "label_en": "adversarial",
-          "label_zh": "对抗判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 6
-        },
-        {
-          "id": "ambiguous",
-          "label_en": "ambiguous",
-          "label_zh": "歧义判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 7
-        },
-        {
-          "id": "extraction",
-          "label_en": "extraction",
-          "label_zh": "信息提取",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 24
-        },
-        {
-          "id": "fact",
-          "label_en": "fact",
-          "label_zh": "事实判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "intent",
-          "label_en": "intent",
-          "label_zh": "意图识别",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 24
-        },
-        {
-          "id": "judge_hard",
-          "label_en": "judge_hard",
-          "label_zh": "复杂评判",
-          "score": 0.8823529411764706,
-          "metric": "family_accuracy",
-          "samples": 17
-        },
-        {
-          "id": "long_policy",
-          "label_en": "long_policy",
-          "label_zh": "长规则理解",
-          "score": 0.9473684210526315,
-          "metric": "family_accuracy",
-          "samples": 19
-        },
-        {
-          "id": "multi_hop",
-          "label_en": "multi_hop",
-          "label_zh": "多步推理",
-          "score": 0.9444444444444444,
-          "metric": "family_accuracy",
-          "samples": 18
-        },
-        {
-          "id": "ordinal",
-          "label_en": "ordinal",
-          "label_zh": "有序评分",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "policy",
-          "label_en": "policy",
-          "label_zh": "规则判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "probability",
-          "label_en": "probability",
-          "label_zh": "概率判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 10
-        },
-        {
-          "id": "routing",
-          "label_en": "routing",
-          "label_zh": "路由选择",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "routing_hard",
-          "label_en": "routing_hard",
-          "label_zh": "复杂路由",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 5
-        },
-        {
-          "id": "temporal_numeric",
-          "label_en": "temporal_numeric",
-          "label_zh": "时间与数值",
-          "score": 0.8666666666666667,
-          "metric": "family_accuracy",
-          "samples": 15
-        },
-        {
-          "id": "tool_selection",
-          "label_en": "tool_selection",
-          "label_zh": "工具选择",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "tradeoff",
-          "label_en": "tradeoff",
-          "label_zh": "权衡决策",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 6
-        },
-        {
-          "id": "trap",
-          "label_en": "trap",
-          "label_zh": "陷阱识别",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 8
-        }
-      ],
-      "samples": 231,
-      "errors": 0,
-      "evaluated_at": "2026-10-19T14:45:43.196911+00:00",
-      "protocol": "JevBench-Public-231/self-run",
-      "notes": [
-        "Historical public-231 accuracy; not the current official v1.6.1 1500-item Capability score."
-      ]
-    },
-    {
-      "model_id": "access-strands-decider-26B-A4B-gemma4-v1-2610",
-      "model_name": "Strands Decider 26B-A4B (Gemma 4)",
-      "score": 0.9047619047619048,
-      "status": "complete",
-      "metrics": {
-        "accuracy": 0.9047619047619048,
-        "brier": 0.18982580571870383,
-        "ece": 0.14473855139050654,
-        "brier_n": 231.0,
-        "ece_n": 231.0
-      },
-      "axes": [
-        {
-          "id": "adequacy",
-          "label_en": "adequacy",
-          "label_zh": "充分性判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "adversarial",
-          "label_en": "adversarial",
-          "label_zh": "对抗判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 6
-        },
-        {
-          "id": "ambiguous",
-          "label_en": "ambiguous",
+          "label_en": "Ambiguity",
           "label_zh": "歧义判断",
           "score": 0.8571428571428571,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 7
         },
         {
           "id": "extraction",
-          "label_en": "extraction",
+          "label_en": "Extraction",
           "label_zh": "信息提取",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 24
         },
         {
           "id": "fact",
-          "label_en": "fact",
+          "label_en": "Facts",
           "label_zh": "事实判断",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 12
         },
         {
           "id": "intent",
-          "label_en": "intent",
+          "label_en": "Intent",
           "label_zh": "意图识别",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 24
         },
         {
           "id": "judge_hard",
-          "label_en": "judge_hard",
+          "label_en": "Hard judgment",
           "label_zh": "复杂评判",
-          "score": 0.8235294117647058,
-          "metric": "family_accuracy",
+          "score": 0.8823529411764706,
+          "metric": "accuracy",
           "samples": 17
         },
         {
           "id": "long_policy",
-          "label_en": "long_policy",
+          "label_en": "Long policy",
           "label_zh": "长规则理解",
           "score": 0.7368421052631579,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 19
         },
         {
           "id": "multi_hop",
-          "label_en": "multi_hop",
+          "label_en": "Multi-hop reasoning",
           "label_zh": "多步推理",
-          "score": 0.9444444444444444,
-          "metric": "family_accuracy",
+          "score": 0.8888888888888888,
+          "metric": "accuracy",
           "samples": 18
         },
         {
           "id": "ordinal",
-          "label_en": "ordinal",
+          "label_en": "Ordinal scoring",
           "label_zh": "有序评分",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 12
         },
         {
           "id": "policy",
-          "label_en": "policy",
+          "label_en": "Policy",
           "label_zh": "规则判断",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 12
         },
         {
           "id": "probability",
-          "label_en": "probability",
-          "label_zh": "概率判断",
-          "score": 0.8,
-          "metric": "family_accuracy",
-          "samples": 10
-        },
-        {
-          "id": "routing",
-          "label_en": "routing",
-          "label_zh": "路由选择",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "routing_hard",
-          "label_en": "routing_hard",
-          "label_zh": "复杂路由",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 5
-        },
-        {
-          "id": "temporal_numeric",
-          "label_en": "temporal_numeric",
-          "label_zh": "时间与数值",
-          "score": 0.4,
-          "metric": "family_accuracy",
-          "samples": 15
-        },
-        {
-          "id": "tool_selection",
-          "label_en": "tool_selection",
-          "label_zh": "工具选择",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "tradeoff",
-          "label_en": "tradeoff",
-          "label_zh": "权衡决策",
-          "score": 0.8333333333333334,
-          "metric": "family_accuracy",
-          "samples": 6
-        },
-        {
-          "id": "trap",
-          "label_en": "trap",
-          "label_zh": "陷阱识别",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 8
-        }
-      ],
-      "samples": 231,
-      "errors": 0,
-      "evaluated_at": "2026-10-19T12:05:19.264738+00:00",
-      "protocol": "JevBench-Public-231/self-run",
-      "notes": [
-        "Historical public-231 accuracy; not the current official v1.6.1 1500-item Capability score."
-      ]
-    },
-    {
-      "model_id": "access-Clef-27B-original",
-      "model_name": "Cloudflare Clef (27B)",
-      "score": 0.8744588744588745,
-      "status": "complete",
-      "metrics": {
-        "accuracy": 0.8744588744588745,
-        "brier": 0.16626977774427557,
-        "ece": 0.031513803144634644,
-        "brier_n": 231.0,
-        "ece_n": 231.0
-      },
-      "axes": [
-        {
-          "id": "adequacy",
-          "label_en": "adequacy",
-          "label_zh": "充分性判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "adversarial",
-          "label_en": "adversarial",
-          "label_zh": "对抗判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 6
-        },
-        {
-          "id": "ambiguous",
-          "label_en": "ambiguous",
-          "label_zh": "歧义判断",
-          "score": 0.7142857142857143,
-          "metric": "family_accuracy",
-          "samples": 7
-        },
-        {
-          "id": "extraction",
-          "label_en": "extraction",
-          "label_zh": "信息提取",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 24
-        },
-        {
-          "id": "fact",
-          "label_en": "fact",
-          "label_zh": "事实判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "intent",
-          "label_en": "intent",
-          "label_zh": "意图识别",
-          "score": 0.9583333333333334,
-          "metric": "family_accuracy",
-          "samples": 24
-        },
-        {
-          "id": "judge_hard",
-          "label_en": "judge_hard",
-          "label_zh": "复杂评判",
-          "score": 0.8235294117647058,
-          "metric": "family_accuracy",
-          "samples": 17
-        },
-        {
-          "id": "long_policy",
-          "label_en": "long_policy",
-          "label_zh": "长规则理解",
-          "score": 0.6842105263157895,
-          "metric": "family_accuracy",
-          "samples": 19
-        },
-        {
-          "id": "multi_hop",
-          "label_en": "multi_hop",
-          "label_zh": "多步推理",
-          "score": 0.7777777777777778,
-          "metric": "family_accuracy",
-          "samples": 18
-        },
-        {
-          "id": "ordinal",
-          "label_en": "ordinal",
-          "label_zh": "有序评分",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "policy",
-          "label_en": "policy",
-          "label_zh": "规则判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "probability",
-          "label_en": "probability",
+          "label_en": "Probability",
           "label_zh": "概率判断",
           "score": 0.9,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 10
         },
         {
           "id": "routing",
-          "label_en": "routing",
+          "label_en": "Routing",
           "label_zh": "路由选择",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 12
         },
         {
           "id": "routing_hard",
-          "label_en": "routing_hard",
+          "label_en": "Hard routing",
           "label_zh": "复杂路由",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 5
         },
         {
           "id": "temporal_numeric",
-          "label_en": "temporal_numeric",
+          "label_en": "Time and numbers",
           "label_zh": "时间与数值",
-          "score": 0.3333333333333333,
-          "metric": "family_accuracy",
+          "score": 0.5333333333333333,
+          "metric": "accuracy",
           "samples": 15
         },
         {
           "id": "tool_selection",
-          "label_en": "tool_selection",
+          "label_en": "Tool selection",
           "label_zh": "工具选择",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 12
         },
         {
           "id": "tradeoff",
-          "label_en": "tradeoff",
+          "label_en": "Trade-offs",
           "label_zh": "权衡决策",
-          "score": 0.6666666666666666,
-          "metric": "family_accuracy",
+          "score": 1.0,
+          "metric": "accuracy",
           "samples": 6
         },
         {
           "id": "trap",
-          "label_en": "trap",
+          "label_en": "Trap detection",
           "label_zh": "陷阱识别",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 8
         }
       ],
       "samples": 231,
       "errors": 0,
-      "evaluated_at": "2026-10-19T12:05:19.208502+00:00",
-      "protocol": "JevBench-Public-231/self-run",
+      "evaluated_at": "2026-10-28",
+      "protocol": "JevBench-Public231/historical-native-20261028",
       "notes": [
-        "Historical public-231 accuracy; not the current official v1.6.1 1500-item Capability score."
+        "Evaluated checkpoint: Blink-27B-1028; display name: Piccolo-27B.",
+        "Fresh local inference on 2026-10-28 using the frozen historical Public231 driver and scorer; original/easy/hard combined.",
+        "Valid outputs: 231/231. Correct answers: 213/231. Missing or invalid outputs remain in the denominator."
       ]
     },
     {
       "model_id": "access-microsoft--microsoft-decision-1",
       "model_name": "Microsoft Decision-1",
       "logo": "./playground/logos/microsoft.ico",
-      "score": 0.9134199134199135,
+      "score": 0.9004329004329005,
       "status": "complete",
       "metrics": {
-        "accuracy": 0.9134199134199135,
-        "brier": 0.1256735225785446,
-        "ece": 0.028699045102987347,
+        "accuracy": 0.9004329004329005,
+        "accuracy_n": 231.0,
+        "correct": 208.0,
+        "brier": 0.1308152036600466,
+        "ece": 0.022378267581963943,
         "brier_n": 231.0,
-        "ece_n": 231.0
+        "ece_n": 231.0,
+        "valid": 231.0,
+        "strict_valid": 231.0,
+        "renormalized": 0.0,
+        "invalid_rate": 0.0
       },
       "axes": [
         {
           "id": "adequacy",
-          "label_en": "adequacy",
+          "label_en": "Adequacy",
           "label_zh": "充分性判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
+          "score": 0.9166666666666666,
+          "metric": "accuracy",
           "samples": 12
         },
         {
           "id": "adversarial",
-          "label_en": "adversarial",
+          "label_en": "Adversarial judgment",
           "label_zh": "对抗判断",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 6
         },
         {
           "id": "ambiguous",
-          "label_en": "ambiguous",
+          "label_en": "Ambiguity",
           "label_zh": "歧义判断",
           "score": 0.8571428571428571,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 7
         },
         {
           "id": "extraction",
-          "label_en": "extraction",
+          "label_en": "Extraction",
           "label_zh": "信息提取",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 24
         },
         {
           "id": "fact",
-          "label_en": "fact",
+          "label_en": "Facts",
           "label_zh": "事实判断",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 12
         },
         {
           "id": "intent",
-          "label_en": "intent",
+          "label_en": "Intent",
           "label_zh": "意图识别",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 24
         },
         {
           "id": "judge_hard",
-          "label_en": "judge_hard",
+          "label_en": "Hard judgment",
           "label_zh": "复杂评判",
-          "score": 0.8235294117647058,
-          "metric": "family_accuracy",
+          "score": 0.7647058823529411,
+          "metric": "accuracy",
           "samples": 17
         },
         {
           "id": "long_policy",
-          "label_en": "long_policy",
+          "label_en": "Long policy",
           "label_zh": "长规则理解",
           "score": 0.7894736842105263,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 19
         },
         {
           "id": "multi_hop",
-          "label_en": "multi_hop",
+          "label_en": "Multi-hop reasoning",
           "label_zh": "多步推理",
           "score": 0.8333333333333334,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 18
         },
         {
           "id": "ordinal",
-          "label_en": "ordinal",
+          "label_en": "Ordinal scoring",
           "label_zh": "有序评分",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 12
         },
         {
           "id": "policy",
-          "label_en": "policy",
+          "label_en": "Policy",
           "label_zh": "规则判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
+          "score": 0.9166666666666666,
+          "metric": "accuracy",
           "samples": 12
         },
         {
           "id": "probability",
-          "label_en": "probability",
+          "label_en": "Probability",
           "label_zh": "概率判断",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 10
         },
         {
           "id": "routing",
-          "label_en": "routing",
+          "label_en": "Routing",
           "label_zh": "路由选择",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 12
         },
         {
           "id": "routing_hard",
-          "label_en": "routing_hard",
+          "label_en": "Hard routing",
           "label_zh": "复杂路由",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 5
         },
         {
           "id": "temporal_numeric",
-          "label_en": "temporal_numeric",
+          "label_en": "Time and numbers",
           "label_zh": "时间与数值",
           "score": 0.4666666666666667,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 15
         },
         {
           "id": "tool_selection",
-          "label_en": "tool_selection",
+          "label_en": "Tool selection",
           "label_zh": "工具选择",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 12
         },
         {
           "id": "tradeoff",
-          "label_en": "tradeoff",
+          "label_en": "Trade-offs",
           "label_zh": "权衡决策",
           "score": 0.8333333333333334,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 6
         },
         {
           "id": "trap",
-          "label_en": "trap",
+          "label_en": "Trap detection",
           "label_zh": "陷阱识别",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 8
         }
       ],
       "samples": 231,
       "errors": 0,
-      "evaluated_at": "2026-10-19T12:05:19.231049+00:00",
-      "protocol": "JevBench-Public-231/self-run",
+      "evaluated_at": "2026-10-28",
+      "protocol": "JevBench-Public231/historical-native-20261028",
       "notes": [
-        "Historical public-231 accuracy; not the current official v1.6.1 1500-item Capability score."
-      ]
-    },
-    {
-      "model_id": "access-inception--mercury-decide",
-      "model_name": "Mercury Decide (Inception)",
-      "logo": "./playground/logos/inception.png",
-      "score": 0.8961038961038961,
-      "status": "complete",
-      "metrics": {
-        "accuracy": 0.8961038961038961,
-        "brier": 0.15802308021756034,
-        "ece": 0.058875088970904266,
-        "brier_n": 231.0,
-        "ece_n": 231.0
-      },
-      "axes": [
-        {
-          "id": "adequacy",
-          "label_en": "adequacy",
-          "label_zh": "充分性判断",
-          "score": 0.9166666666666666,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "adversarial",
-          "label_en": "adversarial",
-          "label_zh": "对抗判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 6
-        },
-        {
-          "id": "ambiguous",
-          "label_en": "ambiguous",
-          "label_zh": "歧义判断",
-          "score": 0.8571428571428571,
-          "metric": "family_accuracy",
-          "samples": 7
-        },
-        {
-          "id": "extraction",
-          "label_en": "extraction",
-          "label_zh": "信息提取",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 24
-        },
-        {
-          "id": "fact",
-          "label_en": "fact",
-          "label_zh": "事实判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "intent",
-          "label_en": "intent",
-          "label_zh": "意图识别",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 24
-        },
-        {
-          "id": "judge_hard",
-          "label_en": "judge_hard",
-          "label_zh": "复杂评判",
-          "score": 0.8823529411764706,
-          "metric": "family_accuracy",
-          "samples": 17
-        },
-        {
-          "id": "long_policy",
-          "label_en": "long_policy",
-          "label_zh": "长规则理解",
-          "score": 0.7368421052631579,
-          "metric": "family_accuracy",
-          "samples": 19
-        },
-        {
-          "id": "multi_hop",
-          "label_en": "multi_hop",
-          "label_zh": "多步推理",
-          "score": 0.8888888888888888,
-          "metric": "family_accuracy",
-          "samples": 18
-        },
-        {
-          "id": "ordinal",
-          "label_en": "ordinal",
-          "label_zh": "有序评分",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "policy",
-          "label_en": "policy",
-          "label_zh": "规则判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "probability",
-          "label_en": "probability",
-          "label_zh": "概率判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 10
-        },
-        {
-          "id": "routing",
-          "label_en": "routing",
-          "label_zh": "路由选择",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "routing_hard",
-          "label_en": "routing_hard",
-          "label_zh": "复杂路由",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 5
-        },
-        {
-          "id": "temporal_numeric",
-          "label_en": "temporal_numeric",
-          "label_zh": "时间与数值",
-          "score": 0.2,
-          "metric": "family_accuracy",
-          "samples": 15
-        },
-        {
-          "id": "tool_selection",
-          "label_en": "tool_selection",
-          "label_zh": "工具选择",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "tradeoff",
-          "label_en": "tradeoff",
-          "label_zh": "权衡决策",
-          "score": 0.8333333333333334,
-          "metric": "family_accuracy",
-          "samples": 6
-        },
-        {
-          "id": "trap",
-          "label_en": "trap",
-          "label_zh": "陷阱识别",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 8
-        }
-      ],
-      "samples": 231,
-      "errors": 0,
-      "evaluated_at": "2026-10-19T12:05:19.223175+00:00",
-      "protocol": "JevBench-Public-231/self-run",
-      "notes": [
-        "Historical public-231 accuracy; not the current official v1.6.1 1500-item Capability score."
-      ]
-    },
-    {
-      "model_id": "access-openai--gpt-6-luna-decisions",
-      "model_name": "GPT-6 Luna Decisions",
-      "score": 0.8831168831168831,
-      "status": "complete",
-      "metrics": {
-        "accuracy": 0.8831168831168831,
-        "brier": 0.14394372294372293,
-        "ece": 0.016926406926406717,
-        "brier_n": 231.0,
-        "ece_n": 231.0
-      },
-      "axes": [
-        {
-          "id": "adequacy",
-          "label_en": "adequacy",
-          "label_zh": "充分性判断",
-          "score": 0.8333333333333334,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "adversarial",
-          "label_en": "adversarial",
-          "label_zh": "对抗判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 6
-        },
-        {
-          "id": "ambiguous",
-          "label_en": "ambiguous",
-          "label_zh": "歧义判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 7
-        },
-        {
-          "id": "extraction",
-          "label_en": "extraction",
-          "label_zh": "信息提取",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 24
-        },
-        {
-          "id": "fact",
-          "label_en": "fact",
-          "label_zh": "事实判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "intent",
-          "label_en": "intent",
-          "label_zh": "意图识别",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 24
-        },
-        {
-          "id": "judge_hard",
-          "label_en": "judge_hard",
-          "label_zh": "复杂评判",
-          "score": 0.9411764705882353,
-          "metric": "family_accuracy",
-          "samples": 17
-        },
-        {
-          "id": "long_policy",
-          "label_en": "long_policy",
-          "label_zh": "长规则理解",
-          "score": 0.6842105263157895,
-          "metric": "family_accuracy",
-          "samples": 19
-        },
-        {
-          "id": "multi_hop",
-          "label_en": "multi_hop",
-          "label_zh": "多步推理",
-          "score": 0.8333333333333334,
-          "metric": "family_accuracy",
-          "samples": 18
-        },
-        {
-          "id": "ordinal",
-          "label_en": "ordinal",
-          "label_zh": "有序评分",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "policy",
-          "label_en": "policy",
-          "label_zh": "规则判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "probability",
-          "label_en": "probability",
-          "label_zh": "概率判断",
-          "score": 0.7,
-          "metric": "family_accuracy",
-          "samples": 10
-        },
-        {
-          "id": "routing",
-          "label_en": "routing",
-          "label_zh": "路由选择",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "routing_hard",
-          "label_en": "routing_hard",
-          "label_zh": "复杂路由",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 5
-        },
-        {
-          "id": "temporal_numeric",
-          "label_en": "temporal_numeric",
-          "label_zh": "时间与数值",
-          "score": 0.26666666666666666,
-          "metric": "family_accuracy",
-          "samples": 15
-        },
-        {
-          "id": "tool_selection",
-          "label_en": "tool_selection",
-          "label_zh": "工具选择",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "tradeoff",
-          "label_en": "tradeoff",
-          "label_zh": "权衡决策",
-          "score": 0.8333333333333334,
-          "metric": "family_accuracy",
-          "samples": 6
-        },
-        {
-          "id": "trap",
-          "label_en": "trap",
-          "label_zh": "陷阱识别",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 8
-        }
-      ],
-      "samples": 231,
-      "errors": 0,
-      "evaluated_at": "2026-10-19T12:05:19.239132+00:00",
-      "protocol": "JevBench-Public-231/self-run",
-      "notes": [
-        "Historical public-231 accuracy; not the current official v1.6.1 1500-item Capability score."
-      ]
-    },
-    {
-      "model_id": "access-typesafe--jev-1.14",
-      "model_name": "Jev 1.14",
-      "logo": "./playground/logos/typesafe.png",
-      "score": 0.8787878787878788,
-      "status": "complete",
-      "metrics": {
-        "accuracy": 0.8787878787878788,
-        "brier": 0.14602597402597403,
-        "ece": 0.0536363636363643,
-        "brier_n": 231.0,
-        "ece_n": 231.0
-      },
-      "axes": [
-        {
-          "id": "adequacy",
-          "label_en": "adequacy",
-          "label_zh": "充分性判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "adversarial",
-          "label_en": "adversarial",
-          "label_zh": "对抗判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 6
-        },
-        {
-          "id": "ambiguous",
-          "label_en": "ambiguous",
-          "label_zh": "歧义判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 7
-        },
-        {
-          "id": "extraction",
-          "label_en": "extraction",
-          "label_zh": "信息提取",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 24
-        },
-        {
-          "id": "fact",
-          "label_en": "fact",
-          "label_zh": "事实判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "intent",
-          "label_en": "intent",
-          "label_zh": "意图识别",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 24
-        },
-        {
-          "id": "judge_hard",
-          "label_en": "judge_hard",
-          "label_zh": "复杂评判",
-          "score": 0.7647058823529411,
-          "metric": "family_accuracy",
-          "samples": 17
-        },
-        {
-          "id": "long_policy",
-          "label_en": "long_policy",
-          "label_zh": "长规则理解",
-          "score": 0.5789473684210527,
-          "metric": "family_accuracy",
-          "samples": 19
-        },
-        {
-          "id": "multi_hop",
-          "label_en": "multi_hop",
-          "label_zh": "多步推理",
-          "score": 0.8333333333333334,
-          "metric": "family_accuracy",
-          "samples": 18
-        },
-        {
-          "id": "ordinal",
-          "label_en": "ordinal",
-          "label_zh": "有序评分",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "policy",
-          "label_en": "policy",
-          "label_zh": "规则判断",
-          "score": 0.9166666666666666,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "probability",
-          "label_en": "probability",
-          "label_zh": "概率判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 10
-        },
-        {
-          "id": "routing",
-          "label_en": "routing",
-          "label_zh": "路由选择",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "routing_hard",
-          "label_en": "routing_hard",
-          "label_zh": "复杂路由",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 5
-        },
-        {
-          "id": "temporal_numeric",
-          "label_en": "temporal_numeric",
-          "label_zh": "时间与数值",
-          "score": 0.26666666666666666,
-          "metric": "family_accuracy",
-          "samples": 15
-        },
-        {
-          "id": "tool_selection",
-          "label_en": "tool_selection",
-          "label_zh": "工具选择",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "tradeoff",
-          "label_en": "tradeoff",
-          "label_zh": "权衡决策",
-          "score": 0.8333333333333334,
-          "metric": "family_accuracy",
-          "samples": 6
-        },
-        {
-          "id": "trap",
-          "label_en": "trap",
-          "label_zh": "陷阱识别",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 8
-        }
-      ],
-      "samples": 231,
-      "errors": 0,
-      "evaluated_at": "2026-10-19T12:05:19.272216+00:00",
-      "protocol": "JevBench-Public-231/self-run",
-      "notes": [
-        "Historical public-231 accuracy; not the current official v1.6.1 1500-item Capability score."
-      ]
-    },
-    {
-      "model_id": "access-qwen3.8-27b-chat-Direct-v1",
-      "model_name": "Qwen3.8-27B (Chat API)",
-      "score": 0.8701298701298701,
-      "status": "complete",
-      "metrics": {
-        "accuracy": 0.8701298701298701,
-        "brier": null,
-        "ece": null,
-        "brier_n": 0.0,
-        "ece_n": 0.0
-      },
-      "axes": [
-        {
-          "id": "adequacy",
-          "label_en": "adequacy",
-          "label_zh": "充分性判断",
-          "score": 0.9166666666666666,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "adversarial",
-          "label_en": "adversarial",
-          "label_zh": "对抗判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 6
-        },
-        {
-          "id": "ambiguous",
-          "label_en": "ambiguous",
-          "label_zh": "歧义判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 7
-        },
-        {
-          "id": "extraction",
-          "label_en": "extraction",
-          "label_zh": "信息提取",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 24
-        },
-        {
-          "id": "fact",
-          "label_en": "fact",
-          "label_zh": "事实判断",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "intent",
-          "label_en": "intent",
-          "label_zh": "意图识别",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 24
-        },
-        {
-          "id": "judge_hard",
-          "label_en": "judge_hard",
-          "label_zh": "复杂评判",
-          "score": 0.7647058823529411,
-          "metric": "family_accuracy",
-          "samples": 17
-        },
-        {
-          "id": "long_policy",
-          "label_en": "long_policy",
-          "label_zh": "长规则理解",
-          "score": 0.7894736842105263,
-          "metric": "family_accuracy",
-          "samples": 19
-        },
-        {
-          "id": "multi_hop",
-          "label_en": "multi_hop",
-          "label_zh": "多步推理",
-          "score": 0.7222222222222222,
-          "metric": "family_accuracy",
-          "samples": 18
-        },
-        {
-          "id": "ordinal",
-          "label_en": "ordinal",
-          "label_zh": "有序评分",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "policy",
-          "label_en": "policy",
-          "label_zh": "规则判断",
-          "score": 0.9166666666666666,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "probability",
-          "label_en": "probability",
-          "label_zh": "概率判断",
-          "score": 0.7,
-          "metric": "family_accuracy",
-          "samples": 10
-        },
-        {
-          "id": "routing",
-          "label_en": "routing",
-          "label_zh": "路由选择",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "routing_hard",
-          "label_en": "routing_hard",
-          "label_zh": "复杂路由",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 5
-        },
-        {
-          "id": "temporal_numeric",
-          "label_en": "temporal_numeric",
-          "label_zh": "时间与数值",
-          "score": 0.3333333333333333,
-          "metric": "family_accuracy",
-          "samples": 15
-        },
-        {
-          "id": "tool_selection",
-          "label_en": "tool_selection",
-          "label_zh": "工具选择",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 12
-        },
-        {
-          "id": "tradeoff",
-          "label_en": "tradeoff",
-          "label_zh": "权衡决策",
-          "score": 0.6666666666666666,
-          "metric": "family_accuracy",
-          "samples": 6
-        },
-        {
-          "id": "trap",
-          "label_en": "trap",
-          "label_zh": "陷阱识别",
-          "score": 1.0,
-          "metric": "family_accuracy",
-          "samples": 8
-        }
-      ],
-      "samples": 231,
-      "errors": 0,
-      "evaluated_at": "2026-10-19T13:44:45.176456+00:00",
-      "protocol": "JevBench-Public-231/self-run",
-      "notes": [
-        "Historical public-231 accuracy; not the current official v1.6.1 1500-item Capability score.",
-        "Hard label-only; no synthesized confidence calibration."
+        "Fresh local inference on 2026-10-28 using the frozen historical Public231 driver and scorer; original/easy/hard combined.",
+        "Valid outputs: 231/231. Correct answers: 208/231. Missing or invalid outputs remain in the denominator."
       ]
     },
     {
@@ -1852,163 +370,345 @@
       "status": "complete",
       "metrics": {
         "accuracy": 0.8961038961038961,
+        "accuracy_n": 231.0,
+        "correct": 207.0,
         "brier": 0.12968628682037667,
         "ece": 0.021667045606668753,
         "brier_n": 231.0,
-        "ece_n": 231.0
+        "ece_n": 231.0,
+        "valid": 231.0,
+        "strict_valid": 231.0,
+        "renormalized": 0.0,
+        "invalid_rate": 0.0
       },
       "axes": [
         {
           "id": "adequacy",
-          "label_en": "adequacy",
+          "label_en": "Adequacy",
           "label_zh": "充分性判断",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 12
         },
         {
           "id": "adversarial",
-          "label_en": "adversarial",
+          "label_en": "Adversarial judgment",
           "label_zh": "对抗判断",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 6
         },
         {
           "id": "ambiguous",
-          "label_en": "ambiguous",
+          "label_en": "Ambiguity",
           "label_zh": "歧义判断",
           "score": 0.8571428571428571,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 7
         },
         {
           "id": "extraction",
-          "label_en": "extraction",
+          "label_en": "Extraction",
           "label_zh": "信息提取",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 24
         },
         {
           "id": "fact",
-          "label_en": "fact",
+          "label_en": "Facts",
           "label_zh": "事实判断",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 12
         },
         {
           "id": "intent",
-          "label_en": "intent",
+          "label_en": "Intent",
           "label_zh": "意图识别",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 24
         },
         {
           "id": "judge_hard",
-          "label_en": "judge_hard",
+          "label_en": "Hard judgment",
           "label_zh": "复杂评判",
           "score": 0.7647058823529411,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 17
         },
         {
           "id": "long_policy",
-          "label_en": "long_policy",
+          "label_en": "Long policy",
           "label_zh": "长规则理解",
           "score": 0.631578947368421,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 19
         },
         {
           "id": "multi_hop",
-          "label_en": "multi_hop",
+          "label_en": "Multi-hop reasoning",
           "label_zh": "多步推理",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 18
         },
         {
           "id": "ordinal",
-          "label_en": "ordinal",
+          "label_en": "Ordinal scoring",
           "label_zh": "有序评分",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 12
         },
         {
           "id": "policy",
-          "label_en": "policy",
+          "label_en": "Policy",
           "label_zh": "规则判断",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 12
         },
         {
           "id": "probability",
-          "label_en": "probability",
+          "label_en": "Probability",
           "label_zh": "概率判断",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 10
         },
         {
           "id": "routing",
-          "label_en": "routing",
+          "label_en": "Routing",
           "label_zh": "路由选择",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 12
         },
         {
           "id": "routing_hard",
-          "label_en": "routing_hard",
+          "label_en": "Hard routing",
           "label_zh": "复杂路由",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 5
         },
         {
           "id": "temporal_numeric",
-          "label_en": "temporal_numeric",
+          "label_en": "Time and numbers",
           "label_zh": "时间与数值",
           "score": 0.2,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 15
         },
         {
           "id": "tool_selection",
-          "label_en": "tool_selection",
+          "label_en": "Tool selection",
           "label_zh": "工具选择",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 12
         },
         {
           "id": "tradeoff",
-          "label_en": "tradeoff",
+          "label_en": "Trade-offs",
           "label_zh": "权衡决策",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 6
         },
         {
           "id": "trap",
-          "label_en": "trap",
+          "label_en": "Trap detection",
           "label_zh": "陷阱识别",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 8
         }
       ],
       "samples": 231,
       "errors": 0,
-      "evaluated_at": "2026-10-19T14:03:17.960508+00:00",
-      "protocol": "JevBench-Public-231/self-run",
+      "evaluated_at": "2026-10-28",
+      "protocol": "JevBench-Public231/historical-native-20261028",
       "notes": [
-        "Historical public-231 accuracy; not the current official v1.6.1 1500-item Capability score."
+        "Fresh local inference on 2026-10-28 using the frozen historical Public231 driver and scorer; original/easy/hard combined.",
+        "Valid outputs: 231/231. Correct answers: 207/231. Missing or invalid outputs remain in the denominator."
+      ]
+    },
+    {
+      "model_id": "blink-9b-1028",
+      "model_name": "Piccolo-9B",
+      "logo": "./playground/logos/agentscope.svg",
+      "score": 0.8961038961038961,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.8961038961038961,
+        "accuracy_n": 231.0,
+        "correct": 207.0,
+        "brier": 0.15892080238191825,
+        "ece": 0.052145239472816726,
+        "brier_n": 231.0,
+        "ece_n": 231.0,
+        "valid": 231.0,
+        "strict_valid": 231.0,
+        "renormalized": 0.0,
+        "invalid_rate": 0.0
+      },
+      "axes": [
+        {
+          "id": "adequacy",
+          "label_en": "Adequacy",
+          "label_zh": "充分性判断",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "adversarial",
+          "label_en": "Adversarial judgment",
+          "label_zh": "对抗判断",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 6
+        },
+        {
+          "id": "ambiguous",
+          "label_en": "Ambiguity",
+          "label_zh": "歧义判断",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 7
+        },
+        {
+          "id": "extraction",
+          "label_en": "Extraction",
+          "label_zh": "信息提取",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 24
+        },
+        {
+          "id": "fact",
+          "label_en": "Facts",
+          "label_zh": "事实判断",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "intent",
+          "label_en": "Intent",
+          "label_zh": "意图识别",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 24
+        },
+        {
+          "id": "judge_hard",
+          "label_en": "Hard judgment",
+          "label_zh": "复杂评判",
+          "score": 0.7647058823529411,
+          "metric": "accuracy",
+          "samples": 17
+        },
+        {
+          "id": "long_policy",
+          "label_en": "Long policy",
+          "label_zh": "长规则理解",
+          "score": 0.631578947368421,
+          "metric": "accuracy",
+          "samples": 19
+        },
+        {
+          "id": "multi_hop",
+          "label_en": "Multi-hop reasoning",
+          "label_zh": "多步推理",
+          "score": 0.7777777777777778,
+          "metric": "accuracy",
+          "samples": 18
+        },
+        {
+          "id": "ordinal",
+          "label_en": "Ordinal scoring",
+          "label_zh": "有序评分",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "policy",
+          "label_en": "Policy",
+          "label_zh": "规则判断",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "probability",
+          "label_en": "Probability",
+          "label_zh": "概率判断",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 10
+        },
+        {
+          "id": "routing",
+          "label_en": "Routing",
+          "label_zh": "路由选择",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "routing_hard",
+          "label_en": "Hard routing",
+          "label_zh": "复杂路由",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 5
+        },
+        {
+          "id": "temporal_numeric",
+          "label_en": "Time and numbers",
+          "label_zh": "时间与数值",
+          "score": 0.4,
+          "metric": "accuracy",
+          "samples": 15
+        },
+        {
+          "id": "tool_selection",
+          "label_en": "Tool selection",
+          "label_zh": "工具选择",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "tradeoff",
+          "label_en": "Trade-offs",
+          "label_zh": "权衡决策",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 6
+        },
+        {
+          "id": "trap",
+          "label_en": "Trap detection",
+          "label_zh": "陷阱识别",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 8
+        }
+      ],
+      "samples": 231,
+      "errors": 0,
+      "evaluated_at": "2026-10-28",
+      "protocol": "JevBench-Public231/historical-native-20261028",
+      "notes": [
+        "Evaluated checkpoint: Blink-9B-1028; display name: Piccolo-9B.",
+        "Fresh local inference on 2026-10-28 using the frozen historical Public231 driver and scorer; original/easy/hard combined.",
+        "Valid outputs: 231/231. Correct answers: 207/231. Missing or invalid outputs remain in the denominator."
       ]
     },
     {
@@ -2018,163 +718,1213 @@
       "status": "complete",
       "metrics": {
         "accuracy": 0.8917748917748918,
+        "accuracy_n": 231.0,
+        "correct": 206.0,
         "brier": 0.12918342004658373,
         "ece": 0.026095377586423947,
         "brier_n": 231.0,
-        "ece_n": 231.0
+        "ece_n": 231.0,
+        "valid": 231.0,
+        "strict_valid": 231.0,
+        "renormalized": 0.0,
+        "invalid_rate": 0.0
       },
       "axes": [
         {
           "id": "adequacy",
-          "label_en": "adequacy",
+          "label_en": "Adequacy",
           "label_zh": "充分性判断",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 12
         },
         {
           "id": "adversarial",
-          "label_en": "adversarial",
+          "label_en": "Adversarial judgment",
           "label_zh": "对抗判断",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 6
         },
         {
           "id": "ambiguous",
-          "label_en": "ambiguous",
+          "label_en": "Ambiguity",
           "label_zh": "歧义判断",
           "score": 0.8571428571428571,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 7
         },
         {
           "id": "extraction",
-          "label_en": "extraction",
+          "label_en": "Extraction",
           "label_zh": "信息提取",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 24
         },
         {
           "id": "fact",
-          "label_en": "fact",
+          "label_en": "Facts",
           "label_zh": "事实判断",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 12
         },
         {
           "id": "intent",
-          "label_en": "intent",
+          "label_en": "Intent",
           "label_zh": "意图识别",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 24
         },
         {
           "id": "judge_hard",
-          "label_en": "judge_hard",
+          "label_en": "Hard judgment",
           "label_zh": "复杂评判",
           "score": 0.7647058823529411,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 17
         },
         {
           "id": "long_policy",
-          "label_en": "long_policy",
+          "label_en": "Long policy",
           "label_zh": "长规则理解",
           "score": 0.6842105263157895,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 19
         },
         {
           "id": "multi_hop",
-          "label_en": "multi_hop",
+          "label_en": "Multi-hop reasoning",
           "label_zh": "多步推理",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 18
         },
         {
           "id": "ordinal",
-          "label_en": "ordinal",
+          "label_en": "Ordinal scoring",
           "label_zh": "有序评分",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 12
         },
         {
           "id": "policy",
-          "label_en": "policy",
+          "label_en": "Policy",
           "label_zh": "规则判断",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 12
         },
         {
           "id": "probability",
-          "label_en": "probability",
+          "label_en": "Probability",
           "label_zh": "概率判断",
           "score": 0.9,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 10
         },
         {
           "id": "routing",
-          "label_en": "routing",
+          "label_en": "Routing",
           "label_zh": "路由选择",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 12
         },
         {
           "id": "routing_hard",
-          "label_en": "routing_hard",
+          "label_en": "Hard routing",
           "label_zh": "复杂路由",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 5
         },
         {
           "id": "temporal_numeric",
-          "label_en": "temporal_numeric",
+          "label_en": "Time and numbers",
           "label_zh": "时间与数值",
           "score": 0.13333333333333333,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 15
         },
         {
           "id": "tool_selection",
-          "label_en": "tool_selection",
+          "label_en": "Tool selection",
           "label_zh": "工具选择",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 12
         },
         {
           "id": "tradeoff",
-          "label_en": "tradeoff",
+          "label_en": "Trade-offs",
           "label_zh": "权衡决策",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 6
         },
         {
           "id": "trap",
-          "label_en": "trap",
+          "label_en": "Trap detection",
           "label_zh": "陷阱识别",
           "score": 1.0,
-          "metric": "family_accuracy",
+          "metric": "accuracy",
           "samples": 8
         }
       ],
       "samples": 231,
       "errors": 0,
-      "evaluated_at": "2026-10-19T14:01:19.984421+00:00",
-      "protocol": "JevBench-Public-231/self-run",
+      "evaluated_at": "2026-10-28",
+      "protocol": "JevBench-Public231/historical-native-20261028",
       "notes": [
-        "Historical public-231 accuracy; not the current official v1.6.1 1500-item Capability score."
+        "Fresh local inference on 2026-10-28 using the frozen historical Public231 driver and scorer; original/easy/hard combined.",
+        "Valid outputs: 231/231. Correct answers: 206/231. Missing or invalid outputs remain in the denominator."
+      ]
+    },
+    {
+      "model_id": "access-inception--mercury-decide",
+      "model_name": "Mercury Decide (Inception)",
+      "logo": "./playground/logos/inception.png",
+      "score": 0.8917748917748918,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.8917748917748918,
+        "accuracy_n": 231.0,
+        "correct": 206.0,
+        "brier": 0.16148700270732028,
+        "ece": 0.07152771105620243,
+        "brier_n": 231.0,
+        "ece_n": 231.0,
+        "valid": 231.0,
+        "strict_valid": 231.0,
+        "renormalized": 0.0,
+        "invalid_rate": 0.0
+      },
+      "axes": [
+        {
+          "id": "adequacy",
+          "label_en": "Adequacy",
+          "label_zh": "充分性判断",
+          "score": 0.9166666666666666,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "adversarial",
+          "label_en": "Adversarial judgment",
+          "label_zh": "对抗判断",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 6
+        },
+        {
+          "id": "ambiguous",
+          "label_en": "Ambiguity",
+          "label_zh": "歧义判断",
+          "score": 0.8571428571428571,
+          "metric": "accuracy",
+          "samples": 7
+        },
+        {
+          "id": "extraction",
+          "label_en": "Extraction",
+          "label_zh": "信息提取",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 24
+        },
+        {
+          "id": "fact",
+          "label_en": "Facts",
+          "label_zh": "事实判断",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "intent",
+          "label_en": "Intent",
+          "label_zh": "意图识别",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 24
+        },
+        {
+          "id": "judge_hard",
+          "label_en": "Hard judgment",
+          "label_zh": "复杂评判",
+          "score": 0.8823529411764706,
+          "metric": "accuracy",
+          "samples": 17
+        },
+        {
+          "id": "long_policy",
+          "label_en": "Long policy",
+          "label_zh": "长规则理解",
+          "score": 0.7368421052631579,
+          "metric": "accuracy",
+          "samples": 19
+        },
+        {
+          "id": "multi_hop",
+          "label_en": "Multi-hop reasoning",
+          "label_zh": "多步推理",
+          "score": 0.8888888888888888,
+          "metric": "accuracy",
+          "samples": 18
+        },
+        {
+          "id": "ordinal",
+          "label_en": "Ordinal scoring",
+          "label_zh": "有序评分",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "policy",
+          "label_en": "Policy",
+          "label_zh": "规则判断",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "probability",
+          "label_en": "Probability",
+          "label_zh": "概率判断",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 10
+        },
+        {
+          "id": "routing",
+          "label_en": "Routing",
+          "label_zh": "路由选择",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "routing_hard",
+          "label_en": "Hard routing",
+          "label_zh": "复杂路由",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 5
+        },
+        {
+          "id": "temporal_numeric",
+          "label_en": "Time and numbers",
+          "label_zh": "时间与数值",
+          "score": 0.13333333333333333,
+          "metric": "accuracy",
+          "samples": 15
+        },
+        {
+          "id": "tool_selection",
+          "label_en": "Tool selection",
+          "label_zh": "工具选择",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "tradeoff",
+          "label_en": "Trade-offs",
+          "label_zh": "权衡决策",
+          "score": 0.8333333333333334,
+          "metric": "accuracy",
+          "samples": 6
+        },
+        {
+          "id": "trap",
+          "label_en": "Trap detection",
+          "label_zh": "陷阱识别",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 8
+        }
+      ],
+      "samples": 231,
+      "errors": 0,
+      "evaluated_at": "2026-10-28",
+      "protocol": "JevBench-Public231/historical-native-20261028",
+      "notes": [
+        "Fresh local inference on 2026-10-28 using the frozen historical Public231 driver and scorer; original/easy/hard combined.",
+        "Valid outputs: 231/231. Correct answers: 206/231. Missing or invalid outputs remain in the denominator."
+      ]
+    },
+    {
+      "model_id": "access-strands-decider-26B-A4B-gemma4-v1-2610",
+      "model_name": "Strands Decider 26B-A4B (Gemma 4)",
+      "score": 0.8874458874458875,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.8874458874458875,
+        "accuracy_n": 231.0,
+        "correct": 205.0,
+        "brier": 0.19119904908181629,
+        "ece": 0.1392682110527893,
+        "brier_n": 231.0,
+        "ece_n": 231.0,
+        "valid": 231.0,
+        "strict_valid": 231.0,
+        "renormalized": 0.0,
+        "invalid_rate": 0.0
+      },
+      "axes": [
+        {
+          "id": "adequacy",
+          "label_en": "Adequacy",
+          "label_zh": "充分性判断",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "adversarial",
+          "label_en": "Adversarial judgment",
+          "label_zh": "对抗判断",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 6
+        },
+        {
+          "id": "ambiguous",
+          "label_en": "Ambiguity",
+          "label_zh": "歧义判断",
+          "score": 0.8571428571428571,
+          "metric": "accuracy",
+          "samples": 7
+        },
+        {
+          "id": "extraction",
+          "label_en": "Extraction",
+          "label_zh": "信息提取",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 24
+        },
+        {
+          "id": "fact",
+          "label_en": "Facts",
+          "label_zh": "事实判断",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "intent",
+          "label_en": "Intent",
+          "label_zh": "意图识别",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 24
+        },
+        {
+          "id": "judge_hard",
+          "label_en": "Hard judgment",
+          "label_zh": "复杂评判",
+          "score": 0.7647058823529411,
+          "metric": "accuracy",
+          "samples": 17
+        },
+        {
+          "id": "long_policy",
+          "label_en": "Long policy",
+          "label_zh": "长规则理解",
+          "score": 0.631578947368421,
+          "metric": "accuracy",
+          "samples": 19
+        },
+        {
+          "id": "multi_hop",
+          "label_en": "Multi-hop reasoning",
+          "label_zh": "多步推理",
+          "score": 0.9444444444444444,
+          "metric": "accuracy",
+          "samples": 18
+        },
+        {
+          "id": "ordinal",
+          "label_en": "Ordinal scoring",
+          "label_zh": "有序评分",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "policy",
+          "label_en": "Policy",
+          "label_zh": "规则判断",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "probability",
+          "label_en": "Probability",
+          "label_zh": "概率判断",
+          "score": 0.8,
+          "metric": "accuracy",
+          "samples": 10
+        },
+        {
+          "id": "routing",
+          "label_en": "Routing",
+          "label_zh": "路由选择",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "routing_hard",
+          "label_en": "Hard routing",
+          "label_zh": "复杂路由",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 5
+        },
+        {
+          "id": "temporal_numeric",
+          "label_en": "Time and numbers",
+          "label_zh": "时间与数值",
+          "score": 0.3333333333333333,
+          "metric": "accuracy",
+          "samples": 15
+        },
+        {
+          "id": "tool_selection",
+          "label_en": "Tool selection",
+          "label_zh": "工具选择",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "tradeoff",
+          "label_en": "Trade-offs",
+          "label_zh": "权衡决策",
+          "score": 0.8333333333333334,
+          "metric": "accuracy",
+          "samples": 6
+        },
+        {
+          "id": "trap",
+          "label_en": "Trap detection",
+          "label_zh": "陷阱识别",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 8
+        }
+      ],
+      "samples": 231,
+      "errors": 0,
+      "evaluated_at": "2026-10-28",
+      "protocol": "JevBench-Public231/historical-native-20261028",
+      "notes": [
+        "Fresh local inference on 2026-10-28 using the frozen historical Public231 driver and scorer; original/easy/hard combined.",
+        "Valid outputs: 231/231. Correct answers: 205/231. Missing or invalid outputs remain in the denominator."
+      ]
+    },
+    {
+      "model_id": "access-openai--gpt-6-luna-decisions",
+      "model_name": "GPT-6 Luna Decisions",
+      "score": 0.8831168831168831,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.8831168831168831,
+        "accuracy_n": 231.0,
+        "correct": 204.0,
+        "brier": 0.14394372294372293,
+        "ece": 0.016926406926406717,
+        "brier_n": 231.0,
+        "ece_n": 231.0,
+        "valid": 231.0,
+        "strict_valid": 231.0,
+        "renormalized": 0.0,
+        "invalid_rate": 0.0
+      },
+      "axes": [
+        {
+          "id": "adequacy",
+          "label_en": "Adequacy",
+          "label_zh": "充分性判断",
+          "score": 0.8333333333333334,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "adversarial",
+          "label_en": "Adversarial judgment",
+          "label_zh": "对抗判断",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 6
+        },
+        {
+          "id": "ambiguous",
+          "label_en": "Ambiguity",
+          "label_zh": "歧义判断",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 7
+        },
+        {
+          "id": "extraction",
+          "label_en": "Extraction",
+          "label_zh": "信息提取",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 24
+        },
+        {
+          "id": "fact",
+          "label_en": "Facts",
+          "label_zh": "事实判断",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "intent",
+          "label_en": "Intent",
+          "label_zh": "意图识别",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 24
+        },
+        {
+          "id": "judge_hard",
+          "label_en": "Hard judgment",
+          "label_zh": "复杂评判",
+          "score": 0.9411764705882353,
+          "metric": "accuracy",
+          "samples": 17
+        },
+        {
+          "id": "long_policy",
+          "label_en": "Long policy",
+          "label_zh": "长规则理解",
+          "score": 0.6842105263157895,
+          "metric": "accuracy",
+          "samples": 19
+        },
+        {
+          "id": "multi_hop",
+          "label_en": "Multi-hop reasoning",
+          "label_zh": "多步推理",
+          "score": 0.8333333333333334,
+          "metric": "accuracy",
+          "samples": 18
+        },
+        {
+          "id": "ordinal",
+          "label_en": "Ordinal scoring",
+          "label_zh": "有序评分",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "policy",
+          "label_en": "Policy",
+          "label_zh": "规则判断",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "probability",
+          "label_en": "Probability",
+          "label_zh": "概率判断",
+          "score": 0.7,
+          "metric": "accuracy",
+          "samples": 10
+        },
+        {
+          "id": "routing",
+          "label_en": "Routing",
+          "label_zh": "路由选择",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "routing_hard",
+          "label_en": "Hard routing",
+          "label_zh": "复杂路由",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 5
+        },
+        {
+          "id": "temporal_numeric",
+          "label_en": "Time and numbers",
+          "label_zh": "时间与数值",
+          "score": 0.26666666666666666,
+          "metric": "accuracy",
+          "samples": 15
+        },
+        {
+          "id": "tool_selection",
+          "label_en": "Tool selection",
+          "label_zh": "工具选择",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "tradeoff",
+          "label_en": "Trade-offs",
+          "label_zh": "权衡决策",
+          "score": 0.8333333333333334,
+          "metric": "accuracy",
+          "samples": 6
+        },
+        {
+          "id": "trap",
+          "label_en": "Trap detection",
+          "label_zh": "陷阱识别",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 8
+        }
+      ],
+      "samples": 231,
+      "errors": 0,
+      "evaluated_at": "2026-10-28",
+      "protocol": "JevBench-Public231/historical-native-20261028",
+      "notes": [
+        "Fresh local inference on 2026-10-28 using the frozen historical Public231 driver and scorer; original/easy/hard combined.",
+        "Valid outputs: 231/231. Correct answers: 204/231. Missing or invalid outputs remain in the denominator."
+      ]
+    },
+    {
+      "model_id": "access-typesafe--jev-1.14",
+      "model_name": "Jev 1.14",
+      "logo": "./playground/logos/typesafe.png",
+      "score": 0.8744588744588745,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.8744588744588745,
+        "accuracy_n": 231.0,
+        "correct": 202.0,
+        "brier": 0.14670953357087424,
+        "ece": 0.04982465346101733,
+        "brier_n": 231.0,
+        "ece_n": 231.0,
+        "valid": 231.0,
+        "strict_valid": 228.0,
+        "renormalized": 3.0,
+        "invalid_rate": 0.0
+      },
+      "axes": [
+        {
+          "id": "adequacy",
+          "label_en": "Adequacy",
+          "label_zh": "充分性判断",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "adversarial",
+          "label_en": "Adversarial judgment",
+          "label_zh": "对抗判断",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 6
+        },
+        {
+          "id": "ambiguous",
+          "label_en": "Ambiguity",
+          "label_zh": "歧义判断",
+          "score": 0.8571428571428571,
+          "metric": "accuracy",
+          "samples": 7
+        },
+        {
+          "id": "extraction",
+          "label_en": "Extraction",
+          "label_zh": "信息提取",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 24
+        },
+        {
+          "id": "fact",
+          "label_en": "Facts",
+          "label_zh": "事实判断",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "intent",
+          "label_en": "Intent",
+          "label_zh": "意图识别",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 24
+        },
+        {
+          "id": "judge_hard",
+          "label_en": "Hard judgment",
+          "label_zh": "复杂评判",
+          "score": 0.8235294117647058,
+          "metric": "accuracy",
+          "samples": 17
+        },
+        {
+          "id": "long_policy",
+          "label_en": "Long policy",
+          "label_zh": "长规则理解",
+          "score": 0.5263157894736842,
+          "metric": "accuracy",
+          "samples": 19
+        },
+        {
+          "id": "multi_hop",
+          "label_en": "Multi-hop reasoning",
+          "label_zh": "多步推理",
+          "score": 0.8333333333333334,
+          "metric": "accuracy",
+          "samples": 18
+        },
+        {
+          "id": "ordinal",
+          "label_en": "Ordinal scoring",
+          "label_zh": "有序评分",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "policy",
+          "label_en": "Policy",
+          "label_zh": "规则判断",
+          "score": 0.9166666666666666,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "probability",
+          "label_en": "Probability",
+          "label_zh": "概率判断",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 10
+        },
+        {
+          "id": "routing",
+          "label_en": "Routing",
+          "label_zh": "路由选择",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "routing_hard",
+          "label_en": "Hard routing",
+          "label_zh": "复杂路由",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 5
+        },
+        {
+          "id": "temporal_numeric",
+          "label_en": "Time and numbers",
+          "label_zh": "时间与数值",
+          "score": 0.26666666666666666,
+          "metric": "accuracy",
+          "samples": 15
+        },
+        {
+          "id": "tool_selection",
+          "label_en": "Tool selection",
+          "label_zh": "工具选择",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "tradeoff",
+          "label_en": "Trade-offs",
+          "label_zh": "权衡决策",
+          "score": 0.8333333333333334,
+          "metric": "accuracy",
+          "samples": 6
+        },
+        {
+          "id": "trap",
+          "label_en": "Trap detection",
+          "label_zh": "陷阱识别",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 8
+        }
+      ],
+      "samples": 231,
+      "errors": 0,
+      "evaluated_at": "2026-10-28",
+      "protocol": "JevBench-Public231/historical-native-20261028",
+      "notes": [
+        "Fresh local inference on 2026-10-28 using the frozen historical Public231 driver and scorer; original/easy/hard combined.",
+        "Valid outputs: 231/231. Correct answers: 202/231. Missing or invalid outputs remain in the denominator.",
+        "Three distributions are accepted by the pre-existing Public scorer normalization rule; strict validity is 228/231. This is separate from DataJevBench probability validation."
+      ]
+    },
+    {
+      "model_id": "access-Clef-27B-original",
+      "model_name": "Cloudflare Clef (27B)",
+      "score": 0.8744588744588745,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.8744588744588745,
+        "accuracy_n": 231.0,
+        "correct": 202.0,
+        "brier": 0.1667469475224374,
+        "ece": 0.013591878245145187,
+        "brier_n": 231.0,
+        "ece_n": 231.0,
+        "valid": 231.0,
+        "strict_valid": 231.0,
+        "renormalized": 0.0,
+        "invalid_rate": 0.0
+      },
+      "axes": [
+        {
+          "id": "adequacy",
+          "label_en": "Adequacy",
+          "label_zh": "充分性判断",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "adversarial",
+          "label_en": "Adversarial judgment",
+          "label_zh": "对抗判断",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 6
+        },
+        {
+          "id": "ambiguous",
+          "label_en": "Ambiguity",
+          "label_zh": "歧义判断",
+          "score": 0.7142857142857143,
+          "metric": "accuracy",
+          "samples": 7
+        },
+        {
+          "id": "extraction",
+          "label_en": "Extraction",
+          "label_zh": "信息提取",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 24
+        },
+        {
+          "id": "fact",
+          "label_en": "Facts",
+          "label_zh": "事实判断",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "intent",
+          "label_en": "Intent",
+          "label_zh": "意图识别",
+          "score": 0.9583333333333334,
+          "metric": "accuracy",
+          "samples": 24
+        },
+        {
+          "id": "judge_hard",
+          "label_en": "Hard judgment",
+          "label_zh": "复杂评判",
+          "score": 0.8235294117647058,
+          "metric": "accuracy",
+          "samples": 17
+        },
+        {
+          "id": "long_policy",
+          "label_en": "Long policy",
+          "label_zh": "长规则理解",
+          "score": 0.6842105263157895,
+          "metric": "accuracy",
+          "samples": 19
+        },
+        {
+          "id": "multi_hop",
+          "label_en": "Multi-hop reasoning",
+          "label_zh": "多步推理",
+          "score": 0.7777777777777778,
+          "metric": "accuracy",
+          "samples": 18
+        },
+        {
+          "id": "ordinal",
+          "label_en": "Ordinal scoring",
+          "label_zh": "有序评分",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "policy",
+          "label_en": "Policy",
+          "label_zh": "规则判断",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "probability",
+          "label_en": "Probability",
+          "label_zh": "概率判断",
+          "score": 0.9,
+          "metric": "accuracy",
+          "samples": 10
+        },
+        {
+          "id": "routing",
+          "label_en": "Routing",
+          "label_zh": "路由选择",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "routing_hard",
+          "label_en": "Hard routing",
+          "label_zh": "复杂路由",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 5
+        },
+        {
+          "id": "temporal_numeric",
+          "label_en": "Time and numbers",
+          "label_zh": "时间与数值",
+          "score": 0.3333333333333333,
+          "metric": "accuracy",
+          "samples": 15
+        },
+        {
+          "id": "tool_selection",
+          "label_en": "Tool selection",
+          "label_zh": "工具选择",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "tradeoff",
+          "label_en": "Trade-offs",
+          "label_zh": "权衡决策",
+          "score": 0.6666666666666666,
+          "metric": "accuracy",
+          "samples": 6
+        },
+        {
+          "id": "trap",
+          "label_en": "Trap detection",
+          "label_zh": "陷阱识别",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 8
+        }
+      ],
+      "samples": 231,
+      "errors": 0,
+      "evaluated_at": "2026-10-28",
+      "protocol": "JevBench-Public231/historical-native-20261028",
+      "notes": [
+        "Fresh local inference on 2026-10-28 using the frozen historical Public231 driver and scorer; original/easy/hard combined.",
+        "Valid outputs: 231/231. Correct answers: 202/231. Missing or invalid outputs remain in the denominator."
+      ]
+    },
+    {
+      "model_id": "blink-4b-1028",
+      "model_name": "Piccolo-4B",
+      "logo": "./playground/logos/agentscope.svg",
+      "score": 0.8701298701298701,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.8701298701298701,
+        "accuracy_n": 231.0,
+        "correct": 201.0,
+        "brier": 0.2008679437685674,
+        "ece": 0.06962973472536653,
+        "brier_n": 231.0,
+        "ece_n": 231.0,
+        "valid": 231.0,
+        "strict_valid": 231.0,
+        "renormalized": 0.0,
+        "invalid_rate": 0.0
+      },
+      "axes": [
+        {
+          "id": "adequacy",
+          "label_en": "Adequacy",
+          "label_zh": "充分性判断",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "adversarial",
+          "label_en": "Adversarial judgment",
+          "label_zh": "对抗判断",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 6
+        },
+        {
+          "id": "ambiguous",
+          "label_en": "Ambiguity",
+          "label_zh": "歧义判断",
+          "score": 0.8571428571428571,
+          "metric": "accuracy",
+          "samples": 7
+        },
+        {
+          "id": "extraction",
+          "label_en": "Extraction",
+          "label_zh": "信息提取",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 24
+        },
+        {
+          "id": "fact",
+          "label_en": "Facts",
+          "label_zh": "事实判断",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "intent",
+          "label_en": "Intent",
+          "label_zh": "意图识别",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 24
+        },
+        {
+          "id": "judge_hard",
+          "label_en": "Hard judgment",
+          "label_zh": "复杂评判",
+          "score": 0.6470588235294118,
+          "metric": "accuracy",
+          "samples": 17
+        },
+        {
+          "id": "long_policy",
+          "label_en": "Long policy",
+          "label_zh": "长规则理解",
+          "score": 0.7368421052631579,
+          "metric": "accuracy",
+          "samples": 19
+        },
+        {
+          "id": "multi_hop",
+          "label_en": "Multi-hop reasoning",
+          "label_zh": "多步推理",
+          "score": 0.7222222222222222,
+          "metric": "accuracy",
+          "samples": 18
+        },
+        {
+          "id": "ordinal",
+          "label_en": "Ordinal scoring",
+          "label_zh": "有序评分",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "policy",
+          "label_en": "Policy",
+          "label_zh": "规则判断",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "probability",
+          "label_en": "Probability",
+          "label_zh": "概率判断",
+          "score": 0.9,
+          "metric": "accuracy",
+          "samples": 10
+        },
+        {
+          "id": "routing",
+          "label_en": "Routing",
+          "label_zh": "路由选择",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "routing_hard",
+          "label_en": "Hard routing",
+          "label_zh": "复杂路由",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 5
+        },
+        {
+          "id": "temporal_numeric",
+          "label_en": "Time and numbers",
+          "label_zh": "时间与数值",
+          "score": 0.3333333333333333,
+          "metric": "accuracy",
+          "samples": 15
+        },
+        {
+          "id": "tool_selection",
+          "label_en": "Tool selection",
+          "label_zh": "工具选择",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 12
+        },
+        {
+          "id": "tradeoff",
+          "label_en": "Trade-offs",
+          "label_zh": "权衡决策",
+          "score": 0.6666666666666666,
+          "metric": "accuracy",
+          "samples": 6
+        },
+        {
+          "id": "trap",
+          "label_en": "Trap detection",
+          "label_zh": "陷阱识别",
+          "score": 1.0,
+          "metric": "accuracy",
+          "samples": 8
+        }
+      ],
+      "samples": 231,
+      "errors": 0,
+      "evaluated_at": "2026-10-28",
+      "protocol": "JevBench-Public231/historical-native-20261028",
+      "notes": [
+        "Evaluated checkpoint: Blink-4B-1028; display name: Piccolo-4B.",
+        "Fresh local inference on 2026-10-28 using the frozen historical Public231 driver and scorer; original/easy/hard combined.",
+        "Valid outputs: 231/231. Correct answers: 201/231. Missing or invalid outputs remain in the denominator."
       ]
     }
   ]

@@ -7,16 +7,42 @@
  function pause(){playing=false;cancelAnimationFrame(raf);$('play').textContent='Play';}
  function fail(e){pause();$('error').textContent=String(e.message||e);}
  function decode(phase){let state={};return (phase.frames||[]).map(delta=>state={...state,...delta});}
+ function label(id){
+  const common={up:'↑ Up',down:'↓ Down',left:'← Left',right:'→ Right',jump_right:'↗ Jump right',jump_left:'↖ Jump left',jump:'↑ Jump',wait:'Wait',cross_right:'Cross right',cross_right_guard:'Cross right · guarded'};
+  if(common[id])return common[id];
+  if(clip.id==='jump-jump')return `Hold ${id} ms`;
+  if(clip.id==='tetris'){const [r,c]=id.split(':');return `Rotation ${r} · column ${c}`;}
+  if(clip.id==='sokoban'){const [,x,y,d,tx,ty]=id.split(':');return `Box (${x},${y}) ${ {up:'↑',down:'↓',left:'←',right:'→'}[d]} · goal (${tx},${ty})`;}
+  return id;
+ }
+ function percentage(p){if(p===0)return '0%';if(p<.001)return '<0.1%';if(p<1&&p>.999)return '>99.9%';return (p*100).toFixed(1)+'%';}
  function panel(segment){
-  const s=segment.step;$('phase').textContent=segment.phase.name==='observe'?'01 · Observe':segment.phase.name==='choose'?'02 · Choose':'03 · Execute';
-  $('decision').querySelector('h3').textContent=s.actor==='opponent'?'Opponent move':s.actor==='automatic'?'Environment advances':'Choose an action';
+  const s=segment.step,automatic=s.actor==='automatic',forced=s.actor.startsWith('forced');
+  const shown=automatic?clip.steps.slice(0,s.index).reverse().find(x=>x.probabilities)||s:s;
+  const revealed=segment.phase.name!=='observe'||automatic,probs=shown.probabilities;
+  $('phase').textContent=automatic?'Environment advances':forced?'Only legal move':segment.phase.name==='observe'?'01 · Observe':segment.phase.name==='choose'?'02 · Decide':'03 · Execute';
+  $('decision').querySelector('h3').textContent=automatic?'Previous decision':forced?'Forced action':'Candidate probabilities';
+  $('probability-note').textContent=automatic?'No new model request':forced?'No model request':shown.probability_source?.mode==='representative_sample'?`Recorded pass ${shown.probability_source.sample_index+1} of ${shown.probability_source.repeat_count}`:'Recorded action probabilities';
+  $('candidates').dataset.sourceStep=String(shown.index);
   $('candidates').replaceChildren();
-  for(const id of s.candidates){const tag=document.createElement('span');tag.className='candidate';tag.textContent=id;tag.dataset.action=id;
-   if(segment.phase.name==='execute'&&String(s.action)===id){tag.classList.add('selected');if(!s.applied)tag.classList.add('rejected');}
+  const ids=[...shown.candidates].sort((a,b)=>(probs?.[b]??0)-(probs?.[a]??0));
+  const visible=new Set(ids.slice(0,6));
+  if(shown.action!=null&&!visible.has(String(shown.action))){visible.delete(ids[5]);visible.add(String(shown.action));}
+  for(const id of ids){const tag=document.createElement('div');tag.className='candidate';tag.dataset.action=id;tag.title=id;tag.hidden=!visible.has(id);
+   const value=probs?.[id],name=document.createElement('span'),number=document.createElement('span');
+   name.className='candidate-label';name.textContent=label(id);number.className='probability-value';number.textContent=revealed&&value!=null?percentage(value):'—';
+   if(value!=null){tag.dataset.probability=String(value);tag.style.setProperty('--probability',revealed?(value*100)+'%':'0%');}
+   tag.append(name,number);
+   if(revealed&&String(shown.action)===id){tag.classList.add('selected');if(!shown.applied)tag.classList.add('rejected');name.textContent='✓ '+name.textContent;}
    $('candidates').append(tag);
   }
-  const choice=$('candidates').querySelector('.selected');if(choice)$('candidates').scrollTop=Math.max(0,choice.offsetTop-$('candidates').offsetTop-80);else $('candidates').scrollTop=0;
-  $('feedback').textContent=segment.phase.name==='execute'?(s.action==null?'Automatic environment transition':(s.applied?'Selected: ':'Not applied: ')+s.action):(segment.phase.name==='choose'?'Comparing available actions…':'Reading the current game state');
+  if(ids.length>visible.size){const more=document.createElement('button');more.className='more-candidates';
+   const remaining=ids.filter(id=>!visible.has(id)),sum=probs?remaining.reduce((n,id)=>n+probs[id],0):null;
+   more.textContent=`${remaining.length} more options${revealed&&sum!=null?' · '+percentage(sum):''}`;
+   more.onclick=()=>{$('candidates').querySelectorAll('.candidate').forEach(x=>x.hidden=false);more.remove();};$('candidates').append(more);
+  }
+  $('candidates').scrollTop=0;
+  $('feedback').textContent=automatic?'The environment continues after the last action.':forced?'This is the only legal action.':revealed?(shown.applied?'Selected: ':'Not applied: ')+label(String(shown.action)):'Reading the current game state';
   $('position').textContent=`Step ${s.index+1} / ${clip.steps.length} · 2×`;
   $('action').textContent=segment.phase.name==='execute'?(s.action==null?'Clock advances':s.applied?'Action applied':'Action discarded'):'';
  }

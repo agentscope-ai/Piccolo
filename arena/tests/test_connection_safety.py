@@ -104,7 +104,7 @@ def test_browser_failure_accepts_only_a_bounded_error_code():
         with pytest.raises(HTTPException) as exc:
             await job
         assert exc.value.status_code == 502
-        assert exc.value.detail == 'Browser model request failed: connection_failed'
+        assert exc.value.detail == {'code': 'connection_failed'}
         await providers.close()
     asyncio.run(run())
 

@@ -64,6 +64,11 @@ class EngineSpec:
 
     as_record = observe
 
+    def model_input(self, state, *, input_format='selected-v1'):
+        """Shared decision view; observe() retains the full replay contract."""
+        from blink_arena.model_inputs import project_record
+        return project_record(self.observe(state), input_format)
+
     def step(self, state, action, **kwargs):
         return self.environment.step(state, action, **kwargs)
 
@@ -173,7 +178,7 @@ def register_engine(spec: EngineSpec, *, replace=False):
         spec = dataclass_replace(spec, source_modules=tuple(dict.fromkeys(
             (*spec.source_modules, _PLUGIN_CONTEXT[-1]))))
     if spec.kind in _RETIRED:
-        # Kept solely for explicit historical replay, never live engine lookup.
+        # Offline history keeps an explicit archive; no live/RL lookup can use it.
         _ARCHIVED[spec.kind] = dataclass_replace(spec, archived=True)
     else:
         _ENGINES[spec.kind] = spec

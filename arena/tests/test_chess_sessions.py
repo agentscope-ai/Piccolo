@@ -66,9 +66,9 @@ def test_chess_model_preserves_actual_input_probabilities_and_action_ownership(t
         assert moved['previous_input']['option'] == initial['legal_actions']
         assert calls and all(c['observation'] == initial['decision']['observation'] for c in calls)
         expected = list(initial['legal_actions'])
-        # The frontend intentionally probes three shuffled option orders. Each
-        # probe keeps the same UCI/label mapping and reports its actual input.
-        assert len(calls) == 3
+        # Interactive play uses one native decision with the original UCI order.
+        assert len(calls) == 1
+        assert [o['id'] for o in calls[0]['question']['options']] == expected
         assert all({o['id']: o['label'] for o in c['question']['options']} == initial['legal_actions'] for c in calls)
         result = moved['result']
         assert result['value'] == 'e2e4' and result['probability_coverage']['complete']

@@ -33,6 +33,8 @@
   }
   window.JevI18n?.onChange(renderStatus);
   function setBusy(disabled) {
+    disabled = !!(disabled || (typeof busy !== 'undefined' && busy) || (typeof showcaseBusy !== 'undefined' && showcaseBusy));
+    window.JevPlayWorkspace?.setBusy(disabled);
     for (const id of ['playSeed','playSeedApply','playSeedRandom','playSeedStandard']) el(id).disabled = disabled;
   }
   async function restart(mode) {

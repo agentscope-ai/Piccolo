@@ -23,7 +23,7 @@ except ImportError:
     import jev_demo_games as board
 
 REVISION = 'jev-arena-replay-v1'
-PREFIX = 'window.PiccoloArenaReplayArchive='
+PREFIX = 'window.JevArenaReplayArchive='
 from blink_arena.paths import REPO as BASE, WEB as DEFAULT_FRONT, DATA
 DEFAULT_WORLD_CACHE = DATA / "world-replays"
 DEFAULT_RAW_OUTPUT = DATA / "arena-replay.json"

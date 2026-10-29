@@ -49,16 +49,11 @@ def main():
             page.goto(f'http://127.0.0.1:{server.server_port}/?model={MODEL}')
             page.wait_for_function('modelReady&&typeof showcaseKinds!=="undefined"&&showcaseKinds.length>0&&!busy')
             page.locator('.tab[data-tab="games"]').click()
-            page.locator('#playFilters [data-filter="board"]').click()
-            for kind in ('checkers','go','xiangqi'):
-                assert page.locator(f'#gamePicker [data-kind="{kind}"]').is_visible()
-            page.locator('#playFilters [data-filter="new"]').click()
-            assert page.locator('#gamePicker [data-kind="iterated_rps"]').count()==0
-            assert page.locator('#gamePicker [data-kind]').evaluate_all('(nodes)=>nodes.map(n=>n.dataset.kind)') == [
-                'snake_navigation','sokoban_puzzle','blackjack','chess','tetris_placement','uno']
+            menu = page.locator('#playQuickGame option').evaluate_all('(nodes)=>nodes.map(n=>n.value)')
+            assert set(GAMES) <= set(menu)
+            assert not {'go','othello_8x8','gomoku_19x19','racing_sprint','goofspiel','pig_dice'} & set(menu)
             for kind in GAMES:
-                page.locator('#playSearch').fill(kind)
-                page.locator(f'#gamePicker [data-kind="{kind}"]').click()
+                page.locator('#playQuickGame').select_option(kind)
                 page.wait_for_function('k=>showcaseSession?.world.kind===k&&!showcaseBusy',arg=kind)
                 # A typed draft seed no longer changes a standard opening.
                 # Use the actual opt-in reset control for reproducible fixtures.
@@ -101,7 +96,7 @@ def main():
                 elif kind=='checkers':
                     page.locator('#showcaseActions details').evaluate('n=>n.open=true')
                     page.locator('#showcaseActions [data-action]').first.click()
-                elif kind in ('go','minesweeper','sudoku'):
+                elif kind in ('minesweeper','sudoku'):
                     page.locator('#selectedGameBoard [data-action]').first.click()
                 elif kind=='uno':
                     blue=page.evaluate('Object.keys(showcaseSession.choices).find(k=>showcaseSession.choices[k]==="b-wild")')
@@ -112,10 +107,6 @@ def main():
                     page.locator('.selected-reveal').click();page.wait_for_function('!showcaseBusy&&!showcaseSession.world.handoff')
                     assert page.evaluate('showcaseSession.world.target')=='b-wild'
                     assert '蓝色' in page.locator('.uno-active-color').inner_text()
-                if kind=='go':
-                    geometry=page.locator('.go-stone').evaluate('''s=>{const b=s.parentElement,a=s.getBoundingClientRect(),p=b.getBoundingClientRect(),line=getComputedStyle(b,'::before');return {dx:Math.abs(a.x+a.width/2-p.x-p.width/2),dy:Math.abs(a.y+a.height/2-p.y-p.height/2),line:parseFloat(line.top),half:p.height/2,label:b.getAttribute('aria-label')}}''')
-                    assert geometry['dx']<1 and geometry['dy']<1 and abs(geometry['line']-geometry['half'])<1,geometry
-                    assert geometry['label'].startswith('A9'),geometry
                 if page.evaluate('showcaseSession.world.handoff'):
                     assert page.locator('#selectedGameBoard .selected-reveal').is_visible()
                     page.locator('.selected-reveal').click();page.wait_for_function('!showcaseBusy&&!showcaseSession.world.handoff')
@@ -130,8 +121,7 @@ def main():
                 results.append({'kind':kind,'native_manual_action':True,'fixture_model_action':True,'custom_renderer':True,'seat_handoff':kind == 'uno','page_errors':0})
                 print(kind,'browser PASS',flush=True)
             page.set_viewport_size({'width':390,'height':844})
-            page.locator('#playSearch').fill('xiangqi')
-            page.locator('#gamePicker [data-kind="xiangqi"]').click()
+            page.locator('#playQuickGame').select_option('xiangqi')
             page.wait_for_function('showcaseSession?.world.kind==="xiangqi"&&!showcaseBusy')
             assert page.locator('.xiangqi-piece').count()==32
             geometry=page.locator('.xiangqi-piece').first.evaluate('''n=>{const p=n.getBoundingClientRect(),c=n.parentElement.getBoundingClientRect(),b=n.closest('.xiangqi').getBoundingClientRect();return{width:p.width,cell:c.width,dx:Math.abs(p.x+p.width/2-c.x-c.width/2),dy:Math.abs(p.y+p.height/2-c.y-c.height/2),font:parseFloat(getComputedStyle(n).fontSize),board:b.width,viewport:innerWidth}}''')
@@ -149,12 +139,10 @@ def main():
             # The social renderers use the same logical 900×540 hit positions at
             # every display density. Check readability and real card selection.
             social=[]
-            page.locator('#playFilters [data-filter="all"]').click()
             for viewport in ({'width':1440,'height':1150},{'width':390,'height':844}):
                 page.set_viewport_size(viewport)
                 for kind in ('property_tycoon','texas_holdem','doudizhu'):
-                    page.locator('#playSearch').fill(kind)
-                    page.locator(f'#gamePicker [data-kind="{kind}"]').click()
+                    page.locator('#playQuickGame').select_option(kind)
                     page.wait_for_function('k=>showcaseSession?.world.kind===k&&!showcaseBusy',arg=kind)
                     page.evaluate('document.fonts.ready');page.wait_for_timeout(100)
                     quality=page.locator('#showcaseCanvas').evaluate('''c=>({width:c.width,height:c.height,css:c.getBoundingClientRect().width,dpr:devicePixelRatio,rendering:getComputedStyle(c).imageRendering})''')

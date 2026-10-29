@@ -29,6 +29,10 @@
 
 连接和游戏会话属于创建它们的浏览器会话。编程客户端需要在后续请求中保留服务设置的 Cookie；owner 隔离用于资源归属。默认域名部署不要求网站登录，也可单独启用可选 BasicAuth。榜单默认只读；配置 `JEV_ADMIN_TOKEN` 后，写入使用 `X-Jev-Admin-Token: <admin-token>`，并兼容 `Authorization: Bearer <admin-token>`。启用可选网站 BasicAuth 时使用前者，避免 Authorization 头冲突。管理令牌与模型服务密钥用途不同。每个写入请求体最大 4 MiB。
 
+## 托管模型
+
+`GET /api/v1/models` 同时返回本站 `oneshot-hosted` 与当前浏览器自己的连接。本站连接带 `transport: "server"`、`managed: true`，所有浏览器可调用，浏览器不能删除、轮询或向其伪造结果。请求接口与其他模型相同，`input.model` 必须使用返回的 `served_model`。只有服务进程读取 `DASHSCOPE_API_KEY`，注册接口仍拒绝密钥或服务器端点字段。详见 [HOSTED_MODEL.md](HOSTED_MODEL.md)。
+
 ## curl 客户端与 Cookie
 
 下面用 Cookie jar 保留连接所有权；每次调用都带 `-b` / `-c`，不要为每个请求创建新的 Cookie jar。示例不连接真实付费模型。

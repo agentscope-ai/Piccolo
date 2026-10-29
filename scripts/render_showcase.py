@@ -31,6 +31,7 @@ def render(root=ROOT, game=None):
     output = root/'assets/showcase'
     report_path = output/'render-manifest.json'
     report = {'schema_version':'blink.showcase-render.v2', 'fps':FPS, 'speed':2,
+              'candidate_display':'Original candidate probabilities; highest six and selected action visible, remaining mass labeled.',
               'coverage':'Every archived decision and complete execution interval; no step selection or truncation.', 'items':[]}
     if game and report_path.exists():
         previous = json.loads(report_path.read_text())
@@ -84,6 +85,9 @@ def render(root=ROOT, game=None):
                     '-loop','0',str(target/f'{slug}.gif')],check=True)
                 report['items'].append({'id':slug,'source':str(source.relative_to(root)),
                     'source_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),'steps':len(clip['steps']),
+                    'probability_decisions':clip['coverage']['probability_decisions'],
+                    'probability_receipt':clip['probability_receipt'],
+                    'probability_receipt_sha256':hashlib.sha256((root/'arena/web/showcase'/clip['probability_receipt']).read_bytes()).hexdigest(),
                     'captured_indices':list(range(len(clip['steps']))),'frames':ordinal,'duration_seconds':ordinal/FPS,
                     'segments':coverage,'gif':str((target/f'{slug}.gif').relative_to(root))})
                 report_path.write_text(json.dumps(report,indent=2)+'\n')

@@ -15,7 +15,7 @@ from jev_demo_arena_episodes import REVISION as EPISODE_REVISION
 from jev_demo_arena_direct import DIRECT_KINDS as NATIVE_DIRECT_KINDS, REVISION as DIRECT_REVISION
 from jev_demo_decision_stability import POLICY_REVISION, REALTIME_GAME_KINDS, decision_policy
 
-ARENA_REVISION = 'gamejevarena-v3-realtime-single-time'
+ARENA_REVISION = 'gamejevarena-v4-active22'
 ARENA_KINDS = tuple(KINDS)
 DIRECT_KINDS = frozenset(board.GAMES) | NATIVE_DIRECT_KINDS
 ARENA_SEED = 42
@@ -39,10 +39,17 @@ def _error_fields(error):
                 fields['failed_sample_index'] = detail['sample_index']
     elif isinstance(error, ValueError) and error.args and error.args[0] in (
             'native_direct_nonterminal_budget_exhausted', 'paired_episode_failed',
-            'nonterminal_board', 'native_episode_inference_failed'):
+            'nonterminal_board', 'native_episode_inference_failed', 'native_episode_failed',
+            'native_terminal_state_missing', 'native_model_perspective_mismatch'):
         # Safe internal codes distinguish exhausted game budgets from transport
         # errors without ever exporting arbitrary exception/provider text.
         fields['error_code'] = error.args[0]
+    elif isinstance(error, ValueError) and error.args and isinstance(error.args[0], str):
+        code = error.args[0].split(':', 1)[0]
+        if code in ('realtime_world_action_did_not_replay', 'realtime_world_initial_did_not_replay',
+                    'realtime_world_observation_did_not_replay', 'realtime_world_arrival_check_did_not_replay',
+                    'realtime_world_final_did_not_replay'):
+            fields['error_code'] = code
     return fields
 
 
@@ -579,11 +586,14 @@ class GameArena(EloTournament):
 
     async def _persist_fixture(self, folder, fixture, browser):
         path = folder/'matches'/f"{fixture['ordinal']:05d}.json"
+        started = time.monotonic()
         try:
-            row = await asyncio.wait_for(self._execute(folder, fixture, browser), timeout=1800)
+            row = await asyncio.wait_for(self._execute(folder, fixture, browser),
+                                        timeout=getattr(self, 'match_timeout_seconds', 1800))
         except asyncio.TimeoutError as exc:
             row = {**fixture, 'status': 'error', 'score_a': None, 'error_type': 'MatchTimeout',
-                   'trace': getattr(exc.__cause__, 'match_trace', [])}
+                   'trace': getattr(exc.__cause__, 'match_trace', []),
+                   'seconds': round(time.monotonic()-started, 3), 'finished_at': time.time()}
         if row['status'] == 'error' and not row.get('trace'):
             attempts = sorted((folder/'attempts').glob(f"{fixture['ordinal']:05d}-*.json"))
             if attempts:
