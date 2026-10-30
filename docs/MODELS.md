@@ -1,17 +1,35 @@
-# Piccolo models
+# Published Piccolo models
 
-Piccolo provides structured decision probabilities for automatic tool review and context compaction. All nine repositories below are public on Hugging Face, with Apache-2.0 weights and preserved FlexDM attribution.
+All 12 repositories below are public on Hugging Face and use Apache-2.0. Download links point to the current cards; [the manifest](../models/manifest.json) pins weight-bearing revisions, sizes and LFS SHA-256 checksums.
 
-| Size | Complete checkpoint | Q8_0 GGUF | Q4_K_M GGUF |
-| --- | --- | --- | --- |
-| 4B | [Piccolo-4B](https://huggingface.co/agentscope-ai/Piccolo-4B) | [Piccolo-4B-Q8_0](https://huggingface.co/agentscope-ai/Piccolo-4B-Q8_0) | [Piccolo-4B-Q4_K_M](https://huggingface.co/agentscope-ai/Piccolo-4B-Q4_K_M) |
-| 9B | [Piccolo-9B](https://huggingface.co/agentscope-ai/Piccolo-9B) | [Piccolo-9B-Q8_0](https://huggingface.co/agentscope-ai/Piccolo-9B-Q8_0) | [Piccolo-9B-Q4_K_M](https://huggingface.co/agentscope-ai/Piccolo-9B-Q4_K_M) |
-| 27B | [Piccolo-27B](https://huggingface.co/agentscope-ai/Piccolo-27B) | [Piccolo-27B-Q8_0](https://huggingface.co/agentscope-ai/Piccolo-27B-Q8_0) | [Piccolo-27B-Q4_K_M](https://huggingface.co/agentscope-ai/Piccolo-27B-Q4_K_M) |
+| Size | Complete Safetensors | BF16 GGUF | Q8_0 GGUF | Q4_K_M GGUF |
+| --- | --- | --- | --- | --- |
+| 4B | [Safetensors](https://huggingface.co/agentscope-ai/Piccolo-4B) | [BF16](https://huggingface.co/agentscope-ai/Piccolo-4B-BF16) | [Q8_0](https://huggingface.co/agentscope-ai/Piccolo-4B-Q8_0) | [Q4_K_M](https://huggingface.co/agentscope-ai/Piccolo-4B-Q4_K_M) |
+| 9B | [Safetensors](https://huggingface.co/agentscope-ai/Piccolo-9B) | [BF16](https://huggingface.co/agentscope-ai/Piccolo-9B-BF16) | [Q8_0](https://huggingface.co/agentscope-ai/Piccolo-9B-Q8_0) | [Q4_K_M](https://huggingface.co/agentscope-ai/Piccolo-9B-Q4_K_M) |
+| 27B | [Safetensors](https://huggingface.co/agentscope-ai/Piccolo-27B) | [BF16](https://huggingface.co/agentscope-ai/Piccolo-27B-BF16) | [Q8_0](https://huggingface.co/agentscope-ai/Piccolo-27B-Q8_0) | [Q4_K_M](https://huggingface.co/agentscope-ai/Piccolo-27B-Q4_K_M) |
 
-QwenPaw integration is tracked in [draft PR #8463](https://github.com/agentscope-ai/QwenPaw/pull/8463). Use its [local model guide](https://github.com/Xinji-Mai/QwenPaw/blob/codex/blink-local-decision/docs/local-piccolo.md): install the adapted llama.cpp runtime, download a Piccolo GGUF, click **Start**, and select the default **Decision model**. Automatic review and decision-model compaction have separate opt-in settings. The catalog recommends Q8_0; published Q4_K_M variants are available by their Hugging Face IDs.
+BF16 is converted directly from the original complete Safetensors checkpoint. It retains some normalization and recurrent-state tensors as F32 and does not pass through integer quantization. GGUF is the text decision path; auxiliary vision/MTP tensors remain in the complete checkpoint. Download all numbered GGUF shards into one directory.
 
-Inference uses bidirectional prompt attention in the full-attention layers, the exact `flex_twice` layout, and candidate-token probabilities. Ordinary causal chat inference does not implement this contract. The original checkpoints include `piccolo_inference.py` and `piccolo_layout.py` for reference inference.
+## Local model selection
 
-Q4 model cards disclose synthetic regressions of 265 requests / 556 judgments per size, quantization differences, and limitations. These are not independent task benchmarks or calibrated safety results. Historical Arena trajectories retain their original checkpoint identities and are separate from this model release.
+[QwenPaw Draft PR #8463](https://github.com/agentscope-ai/QwenPaw/pull/8463) provides the integration. Use the [setup guide](QWENPAW.md) and its companion patched llama.cpp runtime. The memory-aware catalog includes BF16 and Q8_0; Q4_K_M is available by repository ID.
 
-Playground: [Decision](https://decisionplayground.agentscope.io/). Source: [agentscope-ai/Piccolo](https://github.com/agentscope-ai/Piccolo).
+| Model | Q8_0 catalog memory threshold | BF16 catalog memory threshold | BF16 download size |
+| --- | ---: | ---: | ---: |
+| 4B | 16 GB | 24 GB | 8.42 GB |
+| 9B | 24 GB | 32 GB | 17.92 GB |
+| 27B | 48 GB | 80 GB | 53.81 GB |
+
+Thresholds are catalog policy, not measured peak-memory guarantees. The managed runtime serves one model at a time. Starting Piccolo selects the decision slot; automatic review and compaction each have their own opt-in switch.
+
+Inference requires bidirectional prompt attention in full-attention layers, unchanged linear attention, the exact `flex_twice` layout and candidate-token probability readout. It generates no answer tokens. Stock causal chat completion is not equivalent. [Reference inference](../inference/README.md).
+
+## Results and limits
+
+[Benchmark results](../evaluation/README.md) correspond to the published full checkpoints. Quantized model cards separately disclose numerical regressions and limitations; quantization can change probabilities and decisions. The 265-request / 556-judgment synthetic regression is not a safety calibration or independent task benchmark.
+
+## Public entry points
+
+- Website: [Decision](https://decisionplayground.agentscope.io/).
+- Source and release notes: [agentscope-ai/Piccolo](https://github.com/agentscope-ai/Piccolo).
+- ModelScope: [planned Piccolo-27B mirror](https://modelscope.cn/models/agentscope-ai/Piccolo-27B), **not published yet**; use Hugging Face now.

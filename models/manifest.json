@@ -1,0 +1,384 @@
+{
+  "release": "v1.0.0",
+  "website": "https://decisionplayground.agentscope.io/",
+  "github": "https://github.com/agentscope-ai/Piccolo",
+  "license": "Apache-2.0",
+  "modelscope": {
+    "url": "https://modelscope.cn/models/agentscope-ai/Piccolo-27B",
+    "status": "not_published"
+  },
+  "revision_scope": "Immutable weight-bearing revisions verified at release preparation; later model-card-only edits can advance repository HEAD without changing these weights.",
+  "models": [
+    {
+      "repo": "agentscope-ai/Piccolo-4B",
+      "revision": "ae30995bef9b0f0fa7d12adf517c63cdbc4d10d2",
+      "public": true,
+      "license": "apache-2.0",
+      "weight_files": [
+        {
+          "path": "model-00001-of-00002.safetensors",
+          "size": 5333016968,
+          "sha256": "d31d202e8c0daa14d2711731618e82ffbf6890f55ffe81d460860793b8247a51"
+        },
+        {
+          "path": "model-00002-of-00002.safetensors",
+          "size": 3078548400,
+          "sha256": "f2d42a8b07e57852575e8bcdd02315e189f9459d5d79e3cd3ed88c398e1db4bc"
+        },
+        {
+          "path": "model-frozen-auxiliary.safetensors",
+          "size": 908262248,
+          "sha256": "28b9ad16bb4e3ad5cef8cda3ae1f9a20968af09ddf0d0baf79b2d0762b0c39e5"
+        }
+      ]
+    },
+    {
+      "repo": "agentscope-ai/Piccolo-4B-BF16",
+      "revision": "9b5402cf9cc67fd5c32f684191179bda7df419bf",
+      "public": true,
+      "license": "apache-2.0",
+      "weight_files": [
+        {
+          "path": "Piccolo-4B-BF16-00001-of-00002.gguf",
+          "size": 4903498656,
+          "sha256": "91b18f53e9c8d018b9b2e984f8809d315e156990f8c627be7bfeaf88ff35aa68"
+        },
+        {
+          "path": "Piccolo-4B-BF16-00002-of-00002.gguf",
+          "size": 3520895840,
+          "sha256": "86d74fd26f847bab53a7cdb1145e04018be9ef1ffa2c9f28fd6ed30bd8637891"
+        }
+      ]
+    },
+    {
+      "repo": "agentscope-ai/Piccolo-4B-Q8_0",
+      "revision": "2e8d453a1efaea55ccfd1fb75e25ae83e0848305",
+      "public": true,
+      "license": "apache-2.0",
+      "weight_files": [
+        {
+          "path": "Piccolo-4B-Q8_0.gguf",
+          "size": 4482403872,
+          "sha256": "1372d7521f1b570a0d9284115f7aca989b0ae15cc6dd62d7d125716fd860b69c"
+        }
+      ]
+    },
+    {
+      "repo": "agentscope-ai/Piccolo-4B-Q4_K_M",
+      "revision": "cc76923d6a128d0094887cbd7f0a65cebf8512bf",
+      "public": true,
+      "license": "apache-2.0",
+      "weight_files": [
+        {
+          "path": "Piccolo-4B-Q4_K_M.gguf",
+          "size": 2708805184,
+          "sha256": "e49d15041cf7d23b4ec269600afca36d92447e62a9c2f4465bed4cecefcaca2a"
+        }
+      ]
+    },
+    {
+      "repo": "agentscope-ai/Piccolo-9B",
+      "revision": "1d79ab5b8b40135c4da8f31be3b303fe4f8a373e",
+      "public": true,
+      "license": "apache-2.0",
+      "weight_files": [
+        {
+          "path": "model-00001-of-00004.safetensors",
+          "size": 5341829744,
+          "sha256": "fe2dec8ac2246426c45d75a420ca8870b960d158c80481904292047712ddf81a"
+        },
+        {
+          "path": "model-00002-of-00004.safetensors",
+          "size": 5339258768,
+          "sha256": "53981f83f4ebea1ed29d6fcb5a2726dcc2d0d2c337b46864ac3021a698287c50"
+        },
+        {
+          "path": "model-00003-of-00004.safetensors",
+          "size": 5192343440,
+          "sha256": "7186fc16b57afdf5f6d77023761f32e672fd9284d8008fd4f11939096ee8e0b6"
+        },
+        {
+          "path": "model-00004-of-00004.safetensors",
+          "size": 2034237568,
+          "sha256": "8f72f8e0c461c3b7e242a4054c377890b8014def225fbb655c8cdcce980c168a"
+        },
+        {
+          "path": "model-frozen-auxiliary.safetensors",
+          "size": 1398640936,
+          "sha256": "19a587b11e7db44127535f7f41bccca550fe3de47b29582df83cadec20c88261"
+        }
+      ]
+    },
+    {
+      "repo": "agentscope-ai/Piccolo-9B-BF16",
+      "revision": "ba643cf48077e3cc329812fd0bf391e938a82c9a",
+      "public": true,
+      "license": "apache-2.0",
+      "weight_files": [
+        {
+          "path": "Piccolo-9B-BF16-00001-of-00004.gguf",
+          "size": 4815709248,
+          "sha256": "52dcdd770afb9adaf6b50bf2095aa3b37837c468d79c2146a06f9d659273998c"
+        },
+        {
+          "path": "Piccolo-9B-BF16-00002-of-00004.gguf",
+          "size": 4885887200,
+          "sha256": "935f09d8b8be8f5c0adee16cff91fea5c2d059610ba0cbda7dc6932048fafb7a"
+        },
+        {
+          "path": "Piccolo-9B-BF16-00003-of-00004.gguf",
+          "size": 4840597984,
+          "sha256": "f9979550cbccd5a0c2ca59d6a18a759c6cb5a1ac057bc46b72a9f50ab61712ee"
+        },
+        {
+          "path": "Piccolo-9B-BF16-00004-of-00004.gguf",
+          "size": 3378503968,
+          "sha256": "9d39c4d1a14d66c5b73bf1a157e720174b01f88a6c6563eb5caddebfe2ec7639"
+        }
+      ]
+    },
+    {
+      "repo": "agentscope-ai/Piccolo-9B-Q8_0",
+      "revision": "0d9dbf6a3aaabc34c76fba4ad8dc2d4858b0c633",
+      "public": true,
+      "license": "apache-2.0",
+      "weight_files": [
+        {
+          "path": "Piccolo-9B-Q8_0-00001-of-00002.gguf",
+          "size": 4984018208,
+          "sha256": "af1adff6bc793cf711685ac391bbc5685b322c0a6a42ce7d4290f7662e3a9768"
+        },
+        {
+          "path": "Piccolo-9B-Q8_0-00002-of-00002.gguf",
+          "size": 4543484448,
+          "sha256": "05f5e0c4e2053485d262ba635a08efce1a58c13fcb01118d0bb357f60d1a0cb9"
+        }
+      ]
+    },
+    {
+      "repo": "agentscope-ai/Piccolo-9B-Q4_K_M",
+      "revision": "1d379fc166bb2e00f53df544c5820e8a4e8a2d4d",
+      "public": true,
+      "license": "apache-2.0",
+      "weight_files": [
+        {
+          "path": "Piccolo-9B-Q4_K_M-00001-of-00002.gguf",
+          "size": 4893080032,
+          "sha256": "0e96f827613d15a2d3bebebe22bd87dcab4b185ca04307ffeb24a9439e59dba7"
+        },
+        {
+          "path": "Piccolo-9B-Q4_K_M-00002-of-00002.gguf",
+          "size": 736030048,
+          "sha256": "5a21c3644fb1dd6223e984d7dc5c2240e4678bfc27874e16ff2b1a3c1e178de3"
+        }
+      ]
+    },
+    {
+      "repo": "agentscope-ai/Piccolo-27B",
+      "revision": "f5c793fe09c32766f70d1274a0ddaa0aad530002",
+      "public": true,
+      "license": "apache-2.0",
+      "weight_files": [
+        {
+          "path": "model-00001-of-00012.safetensors",
+          "size": 2542796968,
+          "sha256": "1ef9aa178f40e7fc50e39516e61bbfc8c340a6b92f0c06ee93e189920e64e7fd"
+        },
+        {
+          "path": "model-00002-of-00012.safetensors",
+          "size": 4842451960,
+          "sha256": "0bf61ccd1ae9954f68da2d85b38f6efd73c7258ad91a16c06a95e553567e2a7e"
+        },
+        {
+          "path": "model-00003-of-00012.safetensors",
+          "size": 4965227984,
+          "sha256": "2bbff20dbe6136876a1b4098b68de35e3ab3a9f1430547d17207e79312685f16"
+        },
+        {
+          "path": "model-00004-of-00012.safetensors",
+          "size": 4912819312,
+          "sha256": "c55032addd3fa75379b24af301ea7f6829d100b50b238577aa71a7b7b034158a"
+        },
+        {
+          "path": "model-00005-of-00012.safetensors",
+          "size": 4986198584,
+          "sha256": "558ab57293a3b9bafadb71be3ac6f1062877101b03f04435f80378928a3305e9"
+        },
+        {
+          "path": "model-00006-of-00012.safetensors",
+          "size": 4912819360,
+          "sha256": "b66e4fc32105e2c18aac2e7b6b9022385e053a822ccc12fbf75ca0dd86a7d7f9"
+        },
+        {
+          "path": "model-00007-of-00012.safetensors",
+          "size": 4932703320,
+          "sha256": "834b60838538772d00d502277075cfbdd2fb1cbfe346f9e7fb3056308e8a227d"
+        },
+        {
+          "path": "model-00008-of-00012.safetensors",
+          "size": 4966314616,
+          "sha256": "c6f921b412a50584f414404c21f6e80693d45e3abbaed36ccf311a19b8247cdc"
+        },
+        {
+          "path": "model-00009-of-00012.safetensors",
+          "size": 4964162296,
+          "sha256": "a4e1a18fb0e8efdd9c663e713f4ea735ce546cdc5af16f0b28f71a845d72f5e1"
+        },
+        {
+          "path": "model-00010-of-00012.safetensors",
+          "size": 4933789864,
+          "sha256": "1722d6a131bb0092bf5b3e7b7f74dd73954ec22a42d4e3992cd827735926568a"
+        },
+        {
+          "path": "model-00011-of-00012.safetensors",
+          "size": 4965228072,
+          "sha256": "cc42c4280da9426d31a508cd5698051f38c202138bf7256761ebfc6c99cea88d"
+        },
+        {
+          "path": "model-00012-of-00012.safetensors",
+          "size": 2789094936,
+          "sha256": "b19b3fabb20eb48ec487679c24b4fe8216d008c59c69db23288ff7dd18ba3ffc"
+        },
+        {
+          "path": "model-frozen-mtp.safetensors",
+          "size": 849400464,
+          "sha256": "2efb6519ba88e540e99db691d836bbe725dee07ac875ed528b573939568925e1"
+        }
+      ]
+    },
+    {
+      "repo": "agentscope-ai/Piccolo-27B-BF16",
+      "revision": "3ad8dd4b49ba781d9e2f16723d8bf6c108530e5e",
+      "public": true,
+      "license": "apache-2.0",
+      "weight_files": [
+        {
+          "path": "Piccolo-27B-BF16-00001-of-00012.gguf",
+          "size": 2553741376,
+          "sha256": "d960484d084be9c2b0b7d2687cf2228d5c52c5d8d1989d33a54b70310ea3fd32"
+        },
+        {
+          "path": "Piccolo-27B-BF16-00002-of-00012.gguf",
+          "size": 4842767584,
+          "sha256": "989dc54eb2db3309d349f97319e48eb0848bf013918e6d5b8a1bf1592836a90f"
+        },
+        {
+          "path": "Piccolo-27B-BF16-00003-of-00012.gguf",
+          "size": 4787500480,
+          "sha256": "344e8243f04ef5d0286da5f872eed065a24cc8b2bc7bb26a08120022321d274f"
+        },
+        {
+          "path": "Piccolo-27B-BF16-00004-of-00012.gguf",
+          "size": 4735091616,
+          "sha256": "2e5ddc825d41d2e8d7a3f95fa4378e97f9207726fb8d23bd0ee0e03248830a5a"
+        },
+        {
+          "path": "Piccolo-27B-BF16-00005-of-00012.gguf",
+          "size": 4754872864,
+          "sha256": "5760a3139be8e6cbcd97f33714a3d7df31b6fa69c39d2ed7a328ab4ea30786fd"
+        },
+        {
+          "path": "Piccolo-27B-BF16-00006-of-00012.gguf",
+          "size": 4839969824,
+          "sha256": "488acac56d30020d99cb52f3a5b8b661ede1e240891a0d584e270a61806ab615"
+        },
+        {
+          "path": "Piccolo-27B-BF16-00007-of-00012.gguf",
+          "size": 4881870752,
+          "sha256": "7eac5ef1e788d3de237038ee7498970d1eb4553ca515ff7c5bea3cb795af0fb9"
+        },
+        {
+          "path": "Piccolo-27B-BF16-00008-of-00012.gguf",
+          "size": 4733923552,
+          "sha256": "f1a091a22510d6e2fa0575098ba93666e879434fcde56549be73b952cbcf1ecc"
+        },
+        {
+          "path": "Piccolo-27B-BF16-00009-of-00012.gguf",
+          "size": 4756082016,
+          "sha256": "b9a982ded6ca07907f1326b23b9770b499da9e5ae3e446912906f5a2d288d264"
+        },
+        {
+          "path": "Piccolo-27B-BF16-00010-of-00012.gguf",
+          "size": 4787500576,
+          "sha256": "22cf57b4bf27a9cc7af17c9e19e0509540cb07dda25decbf6d5a5e469ce6f696"
+        },
+        {
+          "path": "Piccolo-27B-BF16-00011-of-00012.gguf",
+          "size": 4891229344,
+          "sha256": "925f37ea472ff24123c1aee925feb84232127fcd0f37de6575c04b63fd63191f"
+        },
+        {
+          "path": "Piccolo-27B-BF16-00012-of-00012.gguf",
+          "size": 3243734112,
+          "sha256": "6976108ad94ddcc24f15db1f669381b822fcc2135216008c5e94947898621433"
+        }
+      ]
+    },
+    {
+      "repo": "agentscope-ai/Piccolo-27B-Q8_0",
+      "revision": "fc14617a2127ca296d656d5e32b92e436816ee49",
+      "public": true,
+      "license": "apache-2.0",
+      "weight_files": [
+        {
+          "path": "Piccolo-27B-Q8_0-00001-of-00006.gguf",
+          "size": 4921607904,
+          "sha256": "9db64f88b834c4cb4829c45f8a8122c4a895ab7bcbfc764aa7a86c4c4b9d4061"
+        },
+        {
+          "path": "Piccolo-27B-Q8_0-00002-of-00006.gguf",
+          "size": 4947776736,
+          "sha256": "d7906f60769ef5ec337466018637fcca461eaa5ff1fdbc4abc29ea4182171dcd"
+        },
+        {
+          "path": "Piccolo-27B-Q8_0-00003-of-00006.gguf",
+          "size": 4981908064,
+          "sha256": "f80a9e4d855cca548b71706788757b211635e1ff475e198304e9e6ab45a158b4"
+        },
+        {
+          "path": "Piccolo-27B-Q8_0-00004-of-00006.gguf",
+          "size": 4942226816,
+          "sha256": "ab5b5337c1fb9284c493e0e085fb8cd1300bc0a1f36cc1b2c5e9dc74a28bbae2"
+        },
+        {
+          "path": "Piccolo-27B-Q8_0-00005-of-00006.gguf",
+          "size": 4947776768,
+          "sha256": "152f1302ba7b6e8458f547085dac529884cb3e84000de2c5c97334698da98cbf"
+        },
+        {
+          "path": "Piccolo-27B-Q8_0-00006-of-00006.gguf",
+          "size": 3854468704,
+          "sha256": "8a078fbdd5a157e27cf3910dae90944f9705fa0197c6a087ef5482590c3f255a"
+        }
+      ]
+    },
+    {
+      "repo": "agentscope-ai/Piccolo-27B-Q4_K_M",
+      "revision": "f70df589b1453ecbe6d39d508677cebf1fea3d74",
+      "public": true,
+      "license": "apache-2.0",
+      "weight_files": [
+        {
+          "path": "Piccolo-27B-Q4_K_M-00001-of-00004.gguf",
+          "size": 4876895168,
+          "sha256": "d02a40365aa82cb0bba3a8e5af4bb70570c1975cab66d4edc83cf3dda6e4e682"
+        },
+        {
+          "path": "Piccolo-27B-Q4_K_M-00002-of-00004.gguf",
+          "size": 4896850400,
+          "sha256": "4b85ff83eeed8a975eec2040e18deba62ffad444e0ad60b30ed47f4540189a78"
+        },
+        {
+          "path": "Piccolo-27B-Q4_K_M-00003-of-00004.gguf",
+          "size": 4853271360,
+          "sha256": "b43710c61ce3a46aea1681c1430c428494b27d21af18df8023ae4c91a6cab9a4"
+        },
+        {
+          "path": "Piccolo-27B-Q4_K_M-00004-of-00004.gguf",
+          "size": 1920384352,
+          "sha256": "aff6287c3994b4c14a24c14ca08cec19300c45f5dced07753b4cbadaa18d3191"
+        }
+      ]
+    }
+  ]
+}

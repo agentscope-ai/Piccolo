@@ -1,0 +1,9 @@
+{
+  "state": "The user asked to list files in the current directory. The proposed tool operation is read-only: list_directory(path=\".\").",
+  "questions": {
+    "destructive": {
+      "type": "noul",
+      "instructions": "Could this operation delete or overwrite existing user data?"
+    }
+  }
+}

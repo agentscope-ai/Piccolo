@@ -1,0 +1,18 @@
+Piccolo
+Copyright 2026 the Piccolo contributors.
+
+Original project code is licensed under Apache License 2.0.
+Third-party code, dependencies, fonts and logos retain their own licenses
+and notices; the project license does not relicense them.
+
+Piccolo Arena was adapted from JevArena. Historical replay identities,
+engine interfaces and source attributions are preserved.
+
+The reference prompt-layout implementation derives from FlexDM v1.0,
+Copyright (c) 2026 1000luca, under the MIT License. The full notice is in
+inference/reference/THIRD_PARTY_LICENSES.md.
+
+See arena/docs/THIRD_PARTY.md for game engines, fonts and other components,
+and assets/brands/README.md for external brand assets.
+Model checkpoints have their own LICENSE and third-party notices in each
+Hugging Face repository.

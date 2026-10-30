@@ -1,53 +1,99 @@
 <p align="center"><img src="arena/web/playground/logos/blink.svg" width="72" alt="Piccolo"></p>
 
 <h1 align="center">Piccolo</h1>
-<p align="center"><strong>让决策动起来。</strong></p>
-<p align="center"><a href="https://decisionplayground.agentscope.io/">Decision · 官网</a> · <a href="README.md">English</a> / 简体中文 · <a href="docs/piccolo-blog.md">项目 Blog</a> · <a href="arena/README.md">Arena 文档</a></p>
+<p align="center"><strong>面向智能体工作流的快速决策模型</strong></p>
+<p align="center">
+  <a href="https://decisionplayground.agentscope.io/">🌐 Decision</a> ·
+  <a href="https://github.com/agentscope-ai/Piccolo"><img src="assets/brands/github.svg" width="20" height="20" alt=""> GitHub</a> ·
+  <a href="https://huggingface.co/agentscope-ai/Piccolo-27B"><img src="assets/brands/huggingface.svg" width="20" height="20" alt=""> Hugging Face</a> ·
+  <a href="https://modelscope.cn/models/agentscope-ai/Piccolo-27B"><img src="assets/brands/modelscope.png" width="20" height="20" alt=""> ModelScope · 即将发布</a>
+</p>
+<p align="center"><a href="README.md">English</a> / 简体中文 · <a href="docs/piccolo-blog.md">发布 Blog</a> · <a href="docs/MODELS.md">模型说明</a> · <a href="LICENSE">Apache-2.0</a></p>
 
-Piccolo 把**观察、动作与反馈**连接成可以检查的决策过程。Piccolo Arena 汇集交互游戏、共享环境规则、模型评测和轨迹回放。你可以访问 [Decision 官网](https://decisionplayground.agentscope.io/)，也可以在本机运行仓库内的 Arena。
+Piccolo 是一个 **4B、9B、27B 决策模型系列**。给定当前状态、问题与候选项，它返回程序可以直接使用的结构化判断与候选概率，适用于工具审核、上下文筛选、数据工作流和交互环境。**Piccolo-27B 在 JevBench Public 上取得 92.21% 的准确率，在 Decision Index Public 上取得 68.29 分。** 访问 [Decision 官网](https://decisionplayground.agentscope.io/)体验，或通过 QwenPaw 在本地使用。
 
-**发布状态：**Piccolo-4B、Piccolo-9B、Piccolo-27B 的完整 checkpoint、Q8_0 与 Q4_K_M GGUF 均已发布，详见[模型列表与 QwenPaw 接入](docs/MODELS.md)。训练方案和正式任务基准仍待补齐；Arena 历史回放保留原 checkpoint 身份，不代表本次模型发布的成绩。
+## 模型下载
 
-## 看见决策过程
+以下 **12 个 Hugging Face 仓库均已发布**，权重采用 Apache-2.0：
 
-八个完整历史回放集中展示不同环境中的决策过程，右侧呈现真实候选概率。交互播放器支持暂停、进度拖动与逐步查看。
+| 模型 | 完整 Safetensors | BF16 GGUF | Q8_0 GGUF | Q4_K_M GGUF |
+| --- | --- | --- | --- | --- |
+| Piccolo-4B | [HF](https://huggingface.co/agentscope-ai/Piccolo-4B) | [BF16](https://huggingface.co/agentscope-ai/Piccolo-4B-BF16) | [Q8_0](https://huggingface.co/agentscope-ai/Piccolo-4B-Q8_0) | [Q4_K_M](https://huggingface.co/agentscope-ai/Piccolo-4B-Q4_K_M) |
+| Piccolo-9B | [HF](https://huggingface.co/agentscope-ai/Piccolo-9B) | [BF16](https://huggingface.co/agentscope-ai/Piccolo-9B-BF16) | [Q8_0](https://huggingface.co/agentscope-ai/Piccolo-9B-Q8_0) | [Q4_K_M](https://huggingface.co/agentscope-ai/Piccolo-9B-Q4_K_M) |
+| Piccolo-27B | [HF](https://huggingface.co/agentscope-ai/Piccolo-27B) | [BF16](https://huggingface.co/agentscope-ai/Piccolo-27B-BF16) | [Q8_0](https://huggingface.co/agentscope-ai/Piccolo-27B-Q8_0) | [Q4_K_M](https://huggingface.co/agentscope-ai/Piccolo-27B-Q4_K_M) |
+
+`-BF16` GGUF 从完整 Safetensors 直接转换，部分归一化和递归状态张量保留 F32；Q8_0、Q4_K_M 用较小体积换取一定数值精度损失。下载分片模型时，须将**全部 GGUF 分片放在同一目录**。[完整模型说明、固定 revision 与限制](docs/MODELS.md)。
+
+[ModelScope / Piccolo-27B](https://modelscope.cn/models/agentscope-ai/Piccolo-27B) 为预留镜像地址，**尚未发布**，当前请从 Hugging Face 下载。
+
+## 评测表现
+
+| 模型 | HarnessJevBench Hard ↑ | DataJevBench ↑ | JevBench Public ↑ | Decision Index Public ↑ |
+| --- | ---: | ---: | ---: | ---: |
+| **Piccolo-27B** | **82.03%** | **82.40%** | **92.21%** | **68.29** |
+| Piccolo-9B | 69.49% | 68.80% | 89.61% | 60.63 |
+| Piccolo-4B | 65.59% | 69.60% | 87.01% | 57.31 |
+
+以上成绩对应当前发布的完整 Hugging Face 权重。量化版本另有数值回归，表格不代表 Q4/Q8 重新运行同一套 benchmark 的成绩。[评测口径与来源快照](evaluation/README.md) · [在线榜单](https://decisionplayground.agentscope.io/)。
+
+## 方法：让反馈驱动下一轮训练
+
+Piccolo 将模型优化组织为 **诊断 → 数据选择与构造 → 训练评测 → 更新配方** 的循环。多源材料统一为“状态、问题、候选项、目标分布”，结合语义切片与逐题学习信号，定位值得继续学习的数据。Agent 据此调整配比、补充能力缺口并比较实验。训练与推理使用一致的候选接口、双向 prompt attention 和源自 FlexDM 的 `flex_twice` 布局。方法和应用见 [发布 Blog](docs/piccolo-blog.md)。
+
+## 看见连续决策
+
+八段完整归档回放呈现模型的连续动作，右侧展示记录中的候选概率。交互播放器支持暂停、拖动与逐步查看。
 
 <table>
   <tr>
-    <td width="50%" align="center"><a href="arena/web/showcase/traces/mario.json"><img src="assets/showcase/mario.gif" width="100%" alt="马里奥"></a></td>
-    <td width="50%" align="center"><a href="arena/web/showcase/traces/snake.json"><img src="assets/showcase/snake.gif" width="100%" alt="贪吃蛇"></a></td>
+    <td width="50%" align="center"><a href="arena/web/showcase/traces/mario.json"><img src="assets/showcase/mario.gif" width="100%" alt="Mario"></a></td>
+    <td width="50%" align="center"><a href="arena/web/showcase/traces/snake.json"><img src="assets/showcase/snake.gif" width="100%" alt="Snake"></a></td>
   </tr>
   <tr>
-    <td width="50%" align="center"><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/merge-2048.gif" width="100%" alt="2048 · 目标 128"></a></td>
-    <td width="50%" align="center"><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/sokoban.gif" width="100%" alt="推箱子"></a></td>
+    <td width="50%" align="center"><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/merge-2048.gif" width="100%" alt="2048 · target 128"></a></td>
+    <td width="50%" align="center"><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/sokoban.gif" width="100%" alt="Sokoban"></a></td>
   </tr>
   <tr>
-    <td width="50%" align="center"><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/tetris.gif" width="100%" alt="俄罗斯方块"></a></td>
-    <td width="50%" align="center"><a href="arena/web/showcase/traces/jump-jump.json"><img src="assets/showcase/jump-jump.gif" width="100%" alt="跳一跳"></a></td>
+    <td width="50%" align="center"><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/tetris.gif" width="100%" alt="Tetris"></a></td>
+    <td width="50%" align="center"><a href="arena/web/showcase/traces/jump-jump.json"><img src="assets/showcase/jump-jump.gif" width="100%" alt="Jump Jump"></a></td>
   </tr>
   <tr>
-    <td width="50%" align="center"><a href="arena/web/showcase/traces/hex.json"><img src="assets/showcase/hex.gif" width="100%" alt="Hex 六角棋"></a></td>
-    <td width="50%" align="center"><a href="arena/web/showcase/traces/dots-and-boxes.json"><img src="assets/showcase/dots-and-boxes.gif" width="100%" alt="点格棋"></a></td>
+    <td width="50%" align="center"><a href="arena/web/showcase/traces/hex.json"><img src="assets/showcase/hex.gif" width="100%" alt="Hex"></a></td>
+    <td width="50%" align="center"><a href="arena/web/showcase/traces/dots-and-boxes.json"><img src="assets/showcase/dots-and-boxes.gif" width="100%" alt="Dots &amp; Boxes"></a></td>
   </tr>
 </table>
 
-以上为**历史实验样例**，不能据此计算总体成功率或比较模型优劣。展示保留原始归档中的动作、状态与终局。动图按固定节奏采样，播放速度不表示推理延迟。来源、原模型身份与终局见 [Showcase 说明](docs/SHOWCASE.md)；[早期轨迹](arena/web/showcase/manifest.json) 仍包含失败样例。
+回放保留原 checkpoint 身份和终局，与上方发布模型的 benchmark 表分开记录。GIF 播放速度不代表模型推理延迟。[来源与复现说明](docs/SHOWCASE.md)。
 
-## 快速体验
+## QwenPaw：本地部署的决策模型
 
-### 只看 Showcase
+接入位于 **[QwenPaw Draft PR #8463](https://github.com/agentscope-ai/QwenPaw/pull/8463)**，需要该分支与配套的 **Piccolo llama.cpp 运行时**。先按 [安装指南](docs/QWENPAW.md)准备运行环境；并非所有已发布的 QwenPaw 版本都已支持。
 
-只需 Python 3，无需模型、API key 或后端服务：
+1. 打开 **模型 → QwenPaw Local → 决策模型**，下载适合设备的 Piccolo BF16 或 Q8_0 GGUF，点击 **启动**，到 **模型 → 默认模型 → 决策模型** 确认选择。Q4_K_M 也已发布，可按仓库 ID 自定义下载。
+
+   ![本地模型下载](assets/qwenpaw/zh-model-download.jpg)
+
+2. 在会话模型菜单启用 **使用决策模型**，将工具审批模式设为 **决策模型模式**。
+
+   ![自动审核入口](assets/qwenpaw/zh-automatic-review.jpg)
+
+3. 在 **运行配置 → 上下文容量** 中启用上下文压缩，再打开独立的 **决策模型压缩** 开关。
+
+   ![上下文压缩入口](assets/qwenpaw/zh-context-compaction.jpg)
+
+启动模型不会自动开启审核与压缩。内置 llama.cpp 同时运行**一个模型**，对话模型可以使用其他提供商。原生审批阈值和人工确认回退继续生效。[中英文全屏截图](assets/qwenpaw/README.md)。
+
+Piccolo 在全注意力层使用双向 prompt attention，保留线性注意力层计算，直接读取候选 token 的 logits 并归一化，通过原生 `/v1/systemone` 返回结果，不生成回答文本。普通因果聊天接口不实现这一协议。[参考推理与请求示例](inference/README.md)。
+
+## 本地运行 Arena
+
+只读预览仅需 Python 3：
 
 ```bash
 python3 -m http.server 8080 --bind 127.0.0.1 --directory arena/web
 ```
 
-打开 **http://127.0.0.1:8080/completed-showcase.html** 查看四局完整通关回放（支持中英文）；**http://127.0.0.1:8080/showcase.html** 提供其余归档展示。启动完整 Arena 前，先停止这个静态服务器，避免占用同一端口。
-
-### 运行 Piccolo Arena
-
-需要 Python 3.12 和 Node.js 22：
+打开 **http://127.0.0.1:8080/completed-showcase.html** 或 **http://127.0.0.1:8080/showcase.html**。运行完整应用前停止静态服务，使用 Python 3.12 与 Node.js 22：
 
 ```bash
 cd arena
@@ -56,46 +102,21 @@ python3.12 -m venv .venv
 bash scripts/run.sh
 ```
 
-打开 **http://127.0.0.1:8080/**，可手动试玩、浏览已导入成绩和查看回放。有兼容模型服务时，通过页面的模型连接表单接入；接口格式与 CORS 要求见 [API 文档](arena/docs/API.md)。进一步使用见 [Arena 启动说明](arena/README.md)、[共享引擎](arena/docs/ENGINE.md) 和 [Rollout 接口](arena/docs/ROLLOUT.md)。
+打开 **http://127.0.0.1:8080/**。详见 [Arena 文档](arena/README.md)、[API](arena/docs/API.md) 和 [共享引擎](arena/docs/ENGINE.md)。
 
-## 现在有什么，后续补什么
+## 仓库内容
 
-| 组件 | 已包含 | 待补齐 |
-| --- | --- | --- |
-| Arena | 前端、HTTP API、共享游戏引擎、历史成绩和回放 | 已支持范围见 [Arena 文档](arena/README.md) |
-| 模型 | 历史回放保留原模型身份 | [模型卡、权重与条款](models/README.md) |
-| 推理 | Arena 可连接已有兼容服务 | [Piccolo 模型推理与服务方案](inference/README.md) |
-| 训练与数据 | 共享环境、Rollout 接口 | [训练方案](training/README.md)、[数据发布说明](data/README.md) |
-| 评测 | Arena 现有评测代码与历史结果 | [正式发布配置与结果](evaluation/README.md) |
-| 示例 | 手动试玩、回放检查、安全审批接入框架 | [Piccolo 模型端到端示例](examples/README.md) |
+| 目录 | 内容 |
+| --- | --- |
+| [models/](models/README.md) | 已发布模型入口与固定 revision 清单 |
+| [inference/](inference/README.md) | 完整 checkpoint 参考推理与原生协议 |
+| [examples/](examples/README.md) | 最小决策请求与本地调用 |
+| [evaluation/](evaluation/README.md) | 发布权重的成绩及证据范围 |
+| [arena/](arena/README.md) | 交互应用、引擎、榜单和回放 |
+| [docs/piccolo-blog.md](docs/piccolo-blog.md) | 公众号与小红书共用的发布母稿 |
+| [training/](training/README.md)、[data/](data/README.md) | Coming soon：训练配方与数据集 |
 
-上述待补齐模块已建立目录与 Coming soon README；占位文件不代表实现已交付。
-
-## 动作安全审批
-
-[blink-safety-review Skill](skills/blink-safety-review/SKILL.md) 提供发布下载助手、决策客户端和可选的 QwenPaw ToolGuard 适配器，用于对待执行工具动作给出 `allow`、`ask_user`、`deny` 建议。
-
-当前 [模型发布清单](skills/blink-safety-review/assets/release.json) 保持未配置，不会默认下载或启用模型。Skill 不执行被审查动作，不代替用户批准；模型支持的审批能力还需单独验证，游戏 Showcase 不能代替这类评测。模型和服务适配器确定后，按 [QwenPaw 接入说明](skills/blink-safety-review/references/qwenpaw.md) 完成宿主接入。
-
-## 目录
-
-```text
-arena/                      独立 Arena 应用、共享引擎与归档
-assets/showcase/             可重现动图、预览图和逐帧来源
-docs/                       Blog、来源、发布范围与验证记录
-scripts/                    展示渲染与前端验证脚本
-skills/blink-safety-review/  动作安全审批接入框架
-models/                     Coming soon：模型卡、权重与条款
-inference/                  Coming soon：Piccolo 推理与服务
-training/                   Coming soon：训练方案与配置
-data/                       Coming soon：数据说明与发布
-evaluation/                 Coming soon：发布评测与结果
-examples/                   Coming soon：Piccolo 模型接入示例
-```
-
-## 复现与参与
-
-在 Python 3.12 下离线检查完整轨迹，无需连接模型：
+## 复现与贡献
 
 ```bash
 cd arena
@@ -103,10 +124,8 @@ python3.12 scripts/export_home_decision.py --check
 python3.12 -m unittest tests.test_home_decision -v
 ```
 
-安装 Playwright、Chromium 和 `ffmpeg` 后，从仓库根目录运行 `python scripts/render_completed_showcase.py` 重新生成四局完整 Showcase 动图；运行 `python scripts/export_showcase.py` 与 `python scripts/render_showcase.py` 重建其余归档展示。旧版素材的复现方式见 [Showcase 文档](docs/SHOWCASE.md)。
+素材复现见 [Showcase 说明](docs/SHOWCASE.md)。反馈问题时附玩法、种子、步骤及脱敏回放，保留原参与者身份与终局。[验证记录](docs/VERIFICATION.md) · [变更说明](CHANGELOG.md)。
 
-反馈问题时请附上游戏、种子、复现步骤及可分享的脱敏回放；修改展示时保留原参与者 ID 和终局结果。测试范围与已知问题见 [验证记录](docs/VERIFICATION.md)，后续发布材料见 [仓库说明](docs/REPOSITORY.md)。
+## 许可与署名
 
-## 来源与许可
-
-Arena 及完整对局 Showcase 由 JevArena 迁入。历史 `jev.*` 协议、`JEV_*` 环境变量及 checkpoint ID 保持兼容。第三方代码、玩法参考、规则库与字体见 [第三方说明](arena/docs/THIRD_PARTY.md)。项目级代码许可和模型权重条款仍待确定；当前没有新增项目级许可授权。
+仓库自有代码采用 **[Apache-2.0](LICENSE)**，已发布模型权重也采用 Apache-2.0。第三方组件保留各自许可，详见 [NOTICE](NOTICE)、[Arena 第三方说明](arena/docs/THIRD_PARTY.md) 与 [FlexDM MIT 声明](inference/reference/THIRD_PARTY_LICENSES.md)。Arena 改编自 JevArena，历史 `jev.*` 协议、`JEV_*` 环境变量与回放 ID 保留。

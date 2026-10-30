@@ -3,7 +3,7 @@
 - 默认中文回复，项目说明使用 Markdown。
 - 对外项目名为 Piccolo，交互与评测组件名为 Piccolo Arena。
 - `arena/` 是可独立运行的前端、HTTP 服务和共享游戏引擎；Python 包为 `blink_arena`。
-- `models/`、`inference/`、`training/`、`data/`、`evaluation/` 与 `examples/` 暂用 README 说明待发布内容。模型尚未确定，不补造权重、参数、成绩或训练实现。
+- 模型已在 Hugging Face 发布，固定版本见 `models/manifest.json`；发布成绩见 `evaluation/`。训练配方与数据尚待公开，不补造未发布的实现或测量结果。
 - 复用共享引擎及已有轨迹，展示素材从实际归档状态渲染；不得把历史策略轨迹称为待发布模型的成绩。
 - 历史模型 ID、轨迹 ID、`jev.*` 协议与 `JEV_*` 环境变量保留兼容；品牌修改只影响显示名称。
 - 不打印、复制或提交凭据。不纳入运行目录、日志、checkpoint、虚拟环境或内部交接记录。

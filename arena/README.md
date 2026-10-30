@@ -1,6 +1,6 @@
 # Piccolo Arena
 
-Piccolo 的交互与评测组件。访问 [Decision 官网](https://decisionplayground.agentscope.io/)，或按下文在本机运行。模型发布仍在准备中，随附榜单和轨迹属于历史实验。
+Piccolo 的交互与评测组件。访问 [Decision 官网](https://decisionplayground.agentscope.io/)，或按下文在本机运行。[Piccolo 模型已发布](../docs/MODELS.md)，发布成绩见 [评测记录](../evaluation/README.md)；归档轨迹保留各自实验身份。
 
 新版完整对局 Showcase 已接入 Blog 页签，也可打开 `/completed-showcase.html` 独立查看：2048（目标 128）、推箱子、6×6 黑白棋和俄罗斯方块，支持逐步播放、拖动与终局查看。来源与离线验证见 [轨迹说明](../docs/SHOWCASE.md)，项目介绍见 [Blog](../docs/blog.md)。早期回放继续保留在 `/showcase.html`。
 
