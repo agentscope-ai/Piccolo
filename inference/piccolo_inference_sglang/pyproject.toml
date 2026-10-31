@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "piccolo-inference-sglang"
+version = "0.1.0"
+description = "Flex-twice text and Vision endpoints as a native SGLang plugin"
+requires-python = ">=3.12"
+dependencies = [
+    "sglang==0.5.22",
+    "transformers==5.19.0",
+    "fastapi==0.141.1",
+    "Pillow==11.3.0",
+]
+
+[project.entry-points."sglang.srt.plugins"]
+piccolo = "piccolo_inference_sglang.plugin:register"
+
+[tool.setuptools.packages.find]
+include = ["piccolo_inference_sglang*"]
+
+[tool.setuptools.package-data]
+piccolo_inference_sglang = ["licenses/*.txt"]

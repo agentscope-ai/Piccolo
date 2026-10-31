@@ -1,0 +1,11 @@
+.runtime/
+.cache/
+run/
+validation/
+build/
+*.egg-info/
+__pycache__/
+*.pyc
+
+/_archive/
+.venv/
