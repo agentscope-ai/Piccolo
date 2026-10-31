@@ -31,9 +31,10 @@ uv pip install --prerelease=allow .
 Run on a Linux GPU node, passing the checkpoint path, an available GPU index or UUID, and the API port, in that order. Additional native SGLang arguments can be appended:
 
 ```bash
+# for decision-index text
 bash scripts/launch_sglang.sh /models/piccolo-4B-1028 0 18604
-bash scripts/launch_vision.sh /models/piccolo-4B-1028 1 18704 \
-  --dist-init-addr 127.0.0.1:32104
+# for decision-index vision
+bash scripts/launch_vision.sh /models/piccolo-4B-1028 0 18704
 ```
 
 Both scripts use TP1 and bidirectional full attention, while DeltaNet retains the backend’s causal computation. Radix caching and chunked prefill are disabled. The KV cache uses the default precision, and Mamba states use FP32. Query the effective configuration from the evaluation machine:
