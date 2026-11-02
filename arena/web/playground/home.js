@@ -16,7 +16,7 @@
       scope: ['295 Hard tasks · Soft scores separate', '295 个 Hard 任务 · Soft 单独计分'],
       note: ['Scores use the October 28 evaluation of 295 Hard tasks / 303 questions; failures score zero. Soft is separate. Radar dimensions use the same scored predictions.',
         '成绩来自 10 月 28 日评测：295 个 Hard 任务、303 个问题，失败计零分；Soft 单独计分，雷达维度来自同轮预测。']},
-    {id: 'datajevbench', title: 'DataJevBench', unreleased: true, metric: ['Accuracy', '准确率'],
+    {id: 'datajevbench', title: 'DataJevBench', publicVersion: true, url: 'https://github.com/datajuicer/DataJevBench', metric: ['Accuracy', '准确率'],
       scope: ['500 examples · Six data decision subsets', '500 个样本 · 六类数据决策'],
       note: ['October 28 inference, rescored with probability-sum tolerance 1e-3 and no probability normalization. All 500 records remain in the denominator; each contributes 0.2 percentage points.',
         '采用 10 月 28 日推理结果，概率和容差 1e-3，不归一化原始概率。全部 500 条记录保留在分母中，每条对应 0.2 个百分点。']},

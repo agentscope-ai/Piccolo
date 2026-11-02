@@ -1,6 +1,6 @@
 # Piccolo：为智能体工作流提供快速决策
 
-今天，我们发布 **Piccolo**，一个强大、快速、高性价比的决策模型系列，提供 **4B、9B、27B** 三个尺寸。Piccolo-27B 在 JevBench Public 上取得 **92.21%** 的准确率，在 Decision Index Public 上取得 **68.29** 分。
+今天，我们发布 **Piccolo**，一个面向智能体工作流的决策模型系列，提供 **4B、9B、27B** 三个尺寸。Piccolo-27B 在 JevBench Public 上取得 **92.21%** 的准确率，在 Decision Index Public 上取得 **68.29** 分。
 
 从智能体的工具审核与上下文筛选，到数据处理环境中的关键决策，再到游戏场景下的连续判断，Piccolo 理解当前状态、比较候选项，返回程序可以直接使用的结果与概率。我们通过交互展示、评测结果和本地接入，呈现它的能力与实际用法。
 
@@ -8,10 +8,10 @@
   <a href="https://decisionplayground.agentscope.io/">🌐 Decision</a> ·
   <a href="https://github.com/agentscope-ai/Piccolo"><img src="../assets/brands/github.svg" width="20" height="20" alt=""> GitHub</a> ·
   <a href="https://huggingface.co/agentscope-ai/Piccolo-27B"><img src="../assets/brands/huggingface.svg" width="20" height="20" alt=""> Hugging Face</a> ·
-  <a href="https://modelscope.cn/models/agentscope-ai/Piccolo-27B"><img src="../assets/brands/modelscope.png" width="20" height="20" alt=""> ModelScope · 即将发布</a>
+  <a href="https://www.modelscope.cn/models/AgentScope/Piccolo-27B"><img src="../assets/brands/modelscope.png" width="20" height="20" alt=""> ModelScope</a>
 </p>
 
-**完整权重、BF16 GGUF、Q8_0 与 Q4_K_M 均已在 Hugging Face 发布**，采用 Apache-2.0。ModelScope 镜像尚未发布。[选择模型与下载](MODELS.md)。
+**完整权重、BF16 GGUF、Q8_0 与 Q4_K_M 均已在 Hugging Face 与 ModelScope 发布**，采用 Apache-2.0。[选择模型与下载](MODELS.md)。
 
 ## 01 看见连续决策
 
@@ -114,7 +114,7 @@ QwenPaw 在工具执行前通过 `assess_tool_call()` 收集工具名称、操�
 
 ### 下载、启动，沿用 Jev 的启用位置
 
-Piccolo 复用 QwenPaw-Flash 的本地 GGUF 下载与运行管理，以及 Jev 原有的决策模型配置入口，无需额外 Skill 或独立服务地址。当前接入在 **[QwenPaw Draft PR #8463](https://github.com/agentscope-ai/QwenPaw/pull/8463)**，先按 [指南](QWENPAW.md)安装该分支与兼容 Piccolo 的 llama.cpp 运行时。
+Piccolo 复用 QwenPaw-Flash 的本地 GGUF 下载与运行管理，以及 Jev 原有的决策模型配置入口，无需额外 Skill 或独立服务地址。当前接入在 **[QwenPaw PR #8463](https://github.com/agentscope-ai/QwenPaw/pull/8463)**，先按 [指南](QWENPAW.md)安装该分支与兼容 Piccolo 的 llama.cpp 运行时。
 
 1. **下载并启动决策模型。** 在 **模型 → QwenPaw Local → 决策模型** 中选择合适的 BF16 或 Q8_0 版本，下载后点 **启动**，到 **模型 → 默认模型 → 决策模型** 确认。Q4_K_M 可使用对应 Hugging Face 仓库 ID 自定义下载。
 
@@ -128,7 +128,9 @@ Piccolo 复用 QwenPaw-Flash 的本地 GGUF 下载与运行管理，以及 Jev �
 
    ![上下文压缩](../assets/qwenpaw/zh-context-compaction.jpg)
 
-[中英文全屏截图](../assets/qwenpaw/README.md)可用于官网或后续文章。启动模型与启用功能是独立步骤。内置 llama.cpp 只管理一个运行中的模型，对话可以使用其他提供商。本地决策减少额外远端请求，让用于判断的工具元数据与历史片段在本机处理；主对话模型及其他工具的数据流由各自配置决定。
+[观看 QwenPaw 实录](https://decisionplayground.agentscope.io/blog/assets/qwenpaw-tool-review.mp4)。Qwen Plus 请求统计文件行数，本地 Piccolo-4B-Q4_K_M 审核工具调用，随后 QwenPaw 执行命令并返回行数。
+
+[三步配置截图](../assets/qwenpaw/README.md)可用于官网或后续文章。启动模型与启用功能是独立步骤。内置 llama.cpp 只管理一个运行中的模型，对话可以使用其他提供商。本地决策减少额外远端请求，让用于判断的工具元数据与历史片段在本机处理；主对话模型及其他工具的数据流由各自配置决定。
 
 ## 05 面向真实工作流的评测
 

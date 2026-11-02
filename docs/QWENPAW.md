@@ -4,15 +4,15 @@ Piccolo 复用 QwenPaw 的 GGUF 下载器、llama.cpp 管理，以及 Jev 原有
 
 ## 安装支持该模型的版本
 
-接入仍在 **[Draft PR #8463](https://github.com/agentscope-ai/QwenPaw/pull/8463)**，尚未合入所有正式版本。可复现的实现为 fork 分支的提交 [`beea377`](https://github.com/Xinji-Mai/QwenPaw/commit/beea37749185553a6897e546eae6b7954717da5b)。先在独立目录获取该版本，再按其开发安装文档准备 QwenPaw：
+接入位于 **[PR #8463](https://github.com/agentscope-ai/QwenPaw/pull/8463)**，正在等待上游评审。可复现的实现为 fork 分支的提交 [`07d521bd`](https://github.com/Xinji-Mai/QwenPaw/commit/07d521bdb71365a50f32dcb24d09211811f52bad)。先在独立目录获取该版本，再按其开发安装文档准备 QwenPaw：
 
 ```bash
 git clone --branch codex/blink-local-decision https://github.com/Xinji-Mai/QwenPaw.git QwenPaw-Piccolo
 cd QwenPaw-Piccolo
-git checkout beea37749185553a6897e546eae6b7954717da5b
+git checkout 07d521bdb71365a50f32dcb24d09211811f52bad
 ```
 
-随后按同一提交的 **[运行时构建与安装说明](https://github.com/Xinji-Mai/QwenPaw/blob/beea37749185553a6897e546eae6b7954717da5b/docs/local-piccolo.md#compatible-runtime)** 构建配套 llama.cpp。该指南固定上游 commit `f4d8af608a6b39946406f9439edfb6e83ca6a923`，并应用 `docs/patches/piccolo-llama.cpp.patch`。停止本地模型后，备份原运行时，将新 `llama-server` 及匹配共享库安装到指南打印的 QwenPaw 运行时目录。
+随后按同一提交的 **[运行时构建与安装说明](https://github.com/Xinji-Mai/QwenPaw/blob/07d521bdb71365a50f32dcb24d09211811f52bad/docs/local-piccolo.md#compatible-runtime)** 构建配套 llama.cpp。该指南固定上游 commit `f4d8af608a6b39946406f9439edfb6e83ca6a923`，并应用 `docs/patches/piccolo-llama.cpp.patch`。停止本地模型后，备份原运行时，将新 `llama-server` 及匹配共享库安装到指南打印的 QwenPaw 运行时目录。
 
 未适配的上游二进制和普通 Ollama 聊天接口不实现 Piccolo 协议。重新安装未适配运行时会移除支持。无需改变用户已有审批或压缩设置来安装运行时。
 
@@ -21,6 +21,8 @@ git checkout beea37749185553a6897e546eae6b7954717da5b
 1. 打开 **模型 → QwenPaw Local → 决策模型**，下载适合设备的 BF16 或 Q8_0 模型。如果条目未显示，可在自定义下载中选择 Hugging Face，输入如 `agentscope-ai/Piccolo-4B-BF16`、`agentscope-ai/Piccolo-9B-Q8_0` 或 `agentscope-ai/Piccolo-27B-Q4_K_M`。
 2. 下载器获取 GGUF 与推理所需说明，下载所有标准分片；无后缀的 Safetensors 仓库用于完整 checkpoint 参考推理。
 3. 下载完成点击 **启动**，再到 **模型 → 默认模型 → 决策模型** 确认选择。智能体专属设置可以覆盖全局默认。
+
+独立下载可使用 [ModelScope 合集](https://www.modelscope.cn/collections/AgentScope/QwenPaw-Flash)中的 `AgentScope/Piccolo-*` 仓库。上述 PR 当前按 `agentscope-ai/Piccolo-*` 识别本地决策模型，在 QwenPaw 自定义下载中请选择 Hugging Face 和对应的仓库 ID。
 
 目录按设备内存推荐 BF16 与 Q8_0：
 
@@ -37,7 +39,7 @@ git checkout beea37749185553a6897e546eae6b7954717da5b
 - **自动审核：**在会话模型菜单的高级选项中打开 **使用决策模型**，并将工具审批设为 **决策模型模式**。智能体默认模式位于 **运行配置 → 执行方式 → 工具审批模式**。
 - **上下文压缩：**在 **运行配置 → 上下文容量** 中启用上下文压缩，再展开 **决策模型压缩** 并打开独立开关。
 
-模型列表只负责下载、启动、停止和删除。启动 Piccolo 不会自动开启这两项功能。[中英文全屏截图](../assets/qwenpaw/README.md)记录了入口。
+模型列表只负责下载、启动、停止和删除。启动 Piccolo 不会自动开启这两项功能。[三步配置截图](../assets/qwenpaw/README.md)记录了入口。
 
 ## 本地推理协议
 
@@ -52,6 +54,12 @@ Hugging Face GGUF → QwenPaw 管理的 llama.cpp
 每个问题使用完整提示，禁用前缀缓存与上下文滑移，context/batch/microbatch 保持一致；当前 QwenPaw 实现最多 8,192 token（含重复布局），超出预算显式失败并走原有回退，不静默截断。原始 checkpoint 的配置上限与这一运行预算分开理解。
 
 原生审批阈值、人工确认回退与上下文恢复继续生效。候选概率不能视为经过任务校准的安全保证。参考实现与最小请求见 [推理说明](../inference/README.md)，转换与量化证据见各模型卡。
+
+## 本地工具审核延迟
+
+在 24 GB 统一内存的 M4 Pro 上，用已启动的 Piccolo-4B-Q4_K_M 重放同一条四问工具审核请求。完整提示共 2,020 个输入 token，生成 0 个 token。默认配置预热后三次的中位数为 3.25 秒，独立服务显式设置 `--gpu-layers all --flash-attn on` 后为 3.26 秒。计时从发送本地 HTTP 请求到收到决策响应，不包含主模型对话、工具执行或模型加载。
+
+连续使用时保持模型运行，可避免反复加载。延迟主要来自四个问题的提示计算。工具审核只传入当前操作所需的结构化信息。保留风险信号和目标参数，避免把完整对话重复加入每个问题。审核默认等待 7 秒，压缩有独立的时间预算。
 
 ## 检查当前选择
 

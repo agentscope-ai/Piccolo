@@ -34,8 +34,8 @@
 
   const definitions=[['gamejevbench','GameJevArena','Game evaluation'],['jevbench','JevBench Public','General decision making'],['decisionindex','Decision Index Public','Decision benchmarks'],['harnessjevbench','HarnessJevBench','Tools and execution'],['datajevbench','DataJevBench','Data decisions']];
   // Official project destinations; the version displayed below always comes from our registered JSON.
-  const officialBenchmarks={jevbench:'https://github.com/fstandhartinger/jevbench',decisionindex:'https://huggingface.co/spaces/multimodalart/jev-decision-index',harnessjevbench:'https://github.com/agentscope-ai/HarnessJevBench'};
-  const internalBenchmarks=new Set(['datajevbench']);
+  const officialBenchmarks={jevbench:'https://github.com/fstandhartinger/jevbench',decisionindex:'https://huggingface.co/spaces/multimodalart/jev-decision-index',harnessjevbench:'https://github.com/agentscope-ai/HarnessJevBench',datajevbench:'https://github.com/datajuicer/DataJevBench'};
+  const internalBenchmarks=new Set();
   const piccoloIds=['blink-27b-1028','blink-9b-1028','blink-4b-1028'];
   const featuredModel='blink-27b-1028';
   const registeredVersion=benchmark=>benchmark?.version?String(benchmark.version).replace(/^(\d)/,'v$1'):'';

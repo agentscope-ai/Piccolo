@@ -6,7 +6,7 @@
   <a href="https://decisionplayground.agentscope.io/">🌐 Decision</a> ·
   <a href="https://github.com/agentscope-ai/Piccolo"><img src="assets/brands/github.svg" width="20" height="20" alt=""> GitHub</a> ·
   <a href="https://huggingface.co/agentscope-ai/Piccolo-27B"><img src="assets/brands/huggingface.svg" width="20" height="20" alt=""> Hugging Face</a> ·
-  <a href="https://modelscope.cn/models/agentscope-ai/Piccolo-27B"><img src="assets/brands/modelscope.png" width="20" height="20" alt=""> ModelScope · coming soon</a>
+  <a href="https://www.modelscope.cn/models/AgentScope/Piccolo-27B"><img src="assets/brands/modelscope.png" width="20" height="20" alt=""> ModelScope</a>
 </p>
 <p align="center">English / <a href="README_zh.md">简体中文</a> · <a href="docs/piccolo-blog.md">Launch blog 中文</a> · <a href="docs/MODELS.md">Model guide</a> · <a href="LICENSE">Apache-2.0</a></p>
 
@@ -24,7 +24,7 @@ All **12 Hugging Face repositories are published** under Apache-2.0:
 
 The `-BF16` GGUFs are converted directly from the complete checkpoints; some normalization and recurrent-state tensors remain F32. Q8_0 and Q4_K_M trade size for numerical precision. Download **every GGUF shard** into one directory. [Model guide, immutable revisions and limitations](docs/MODELS.md).
 
-[ModelScope / Piccolo-27B](https://modelscope.cn/models/agentscope-ai/Piccolo-27B) is the planned mirror and is **not published yet**. Use Hugging Face for downloads today.
+[ModelScope / Piccolo-27B](https://www.modelscope.cn/models/AgentScope/Piccolo-27B) is available alongside the other Piccolo releases in the [AgentScope collection](https://www.modelscope.cn/collections/AgentScope/QwenPaw-Flash).
 
 ## Evaluation
 
@@ -67,7 +67,7 @@ These archived examples retain their original checkpoint identities and outcomes
 
 ## Local decision models in QwenPaw
 
-The native integration is available in **[Draft PR #8463](https://github.com/agentscope-ai/QwenPaw/pull/8463)** and requires its **Piccolo-compatible llama.cpp runtime**. Follow the [setup guide](docs/QWENPAW.md) before using the download controls; this is not yet a feature of every released QwenPaw build.
+The native integration is available in **[PR #8463](https://github.com/agentscope-ai/QwenPaw/pull/8463)** and requires its **Piccolo-compatible llama.cpp runtime**. Follow the [setup guide](docs/QWENPAW.md) for the PR build. The integration is awaiting upstream review.
 
 1. In **Models → QwenPaw Local → Decision models**, download a Piccolo BF16 or Q8_0 GGUF, then click **Start**. Confirm **Models → Default models → Decision model**. Published Q4_K_M models can also be downloaded by repository ID.
 
@@ -75,13 +75,15 @@ The native integration is available in **[Draft PR #8463](https://github.com/age
 
 2. For automatic review, enable **Use decision model** in the conversation's model menu and select **Decision Model Mode** in tool approval settings.
 
-   ![Native tool approval settings](assets/qwenpaw/en-automatic-review.jpg)
+   ![Native tool approval settings](assets/qwenpaw/zh-automatic-review.jpg)
 
 3. For context compaction, enable **Context Compaction**, then its separate **Decision Model Compaction** switch.
 
-   ![Native decision model compaction settings](assets/qwenpaw/en-context-compaction.jpg)
+   ![Native decision model compaction settings](assets/qwenpaw/zh-context-compaction.jpg)
 
-Starting the model does not enable these features. The managed local runtime serves **one model at a time**; chat can use another provider. Review keeps its native thresholds and human-approval fallback. [English and Chinese full-screen screenshots](assets/qwenpaw/README.md).
+[Watch the QwenPaw recording](https://decisionplayground.agentscope.io/blog/assets/qwenpaw-tool-review.mp4). Qwen Plus requests a shell command to count the lines in a file. The local Piccolo-4B-Q4_K_M reviews the call, and QwenPaw executes it and returns the count.
+
+Starting the model does not enable these features. The managed local runtime serves **one model at a time**; chat can use another provider. Review keeps its native thresholds and human-approval fallback. [Setup screenshots](assets/qwenpaw/README.md).
 
 Piccolo reads candidate-token logits directly with bidirectional prompt attention in full-attention layers and unchanged linear attention. It generates no answer text. The native `/v1/systemone` endpoint returns structured results. Stock causal chat completion does not implement this contract. [Reference inference and request example](inference/README.md).
 

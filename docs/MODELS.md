@@ -1,18 +1,18 @@
 # Published Piccolo models
 
-All 12 repositories below are public on Hugging Face and use Apache-2.0. Download links point to the current cards; [the manifest](../models/manifest.json) pins weight-bearing revisions, sizes and LFS SHA-256 checksums.
+All 12 repositories below are public on Hugging Face and ModelScope and use Apache-2.0. Download links point to the current cards; [the manifest](../models/manifest.json) pins weight-bearing revisions, sizes and LFS SHA-256 checksums.
 
 | Size | Complete Safetensors | BF16 GGUF | Q8_0 GGUF | Q4_K_M GGUF |
 | --- | --- | --- | --- | --- |
-| 4B | [Safetensors](https://huggingface.co/agentscope-ai/Piccolo-4B) | [BF16](https://huggingface.co/agentscope-ai/Piccolo-4B-BF16) | [Q8_0](https://huggingface.co/agentscope-ai/Piccolo-4B-Q8_0) | [Q4_K_M](https://huggingface.co/agentscope-ai/Piccolo-4B-Q4_K_M) |
-| 9B | [Safetensors](https://huggingface.co/agentscope-ai/Piccolo-9B) | [BF16](https://huggingface.co/agentscope-ai/Piccolo-9B-BF16) | [Q8_0](https://huggingface.co/agentscope-ai/Piccolo-9B-Q8_0) | [Q4_K_M](https://huggingface.co/agentscope-ai/Piccolo-9B-Q4_K_M) |
-| 27B | [Safetensors](https://huggingface.co/agentscope-ai/Piccolo-27B) | [BF16](https://huggingface.co/agentscope-ai/Piccolo-27B-BF16) | [Q8_0](https://huggingface.co/agentscope-ai/Piccolo-27B-Q8_0) | [Q4_K_M](https://huggingface.co/agentscope-ai/Piccolo-27B-Q4_K_M) |
+| 4B | [HF](https://huggingface.co/agentscope-ai/Piccolo-4B) · [MS](https://www.modelscope.cn/models/AgentScope/Piccolo-4B) | [HF](https://huggingface.co/agentscope-ai/Piccolo-4B-BF16) · [MS](https://www.modelscope.cn/models/AgentScope/Piccolo-4B-BF16) | [HF](https://huggingface.co/agentscope-ai/Piccolo-4B-Q8_0) · [MS](https://www.modelscope.cn/models/AgentScope/Piccolo-4B-Q8_0) | [HF](https://huggingface.co/agentscope-ai/Piccolo-4B-Q4_K_M) · [MS](https://www.modelscope.cn/models/AgentScope/Piccolo-4B-Q4_K_M) |
+| 9B | [HF](https://huggingface.co/agentscope-ai/Piccolo-9B) · [MS](https://www.modelscope.cn/models/AgentScope/Piccolo-9B) | [HF](https://huggingface.co/agentscope-ai/Piccolo-9B-BF16) · [MS](https://www.modelscope.cn/models/AgentScope/Piccolo-9B-BF16) | [HF](https://huggingface.co/agentscope-ai/Piccolo-9B-Q8_0) · [MS](https://www.modelscope.cn/models/AgentScope/Piccolo-9B-Q8_0) | [HF](https://huggingface.co/agentscope-ai/Piccolo-9B-Q4_K_M) · [MS](https://www.modelscope.cn/models/AgentScope/Piccolo-9B-Q4_K_M) |
+| 27B | [HF](https://huggingface.co/agentscope-ai/Piccolo-27B) · [MS](https://www.modelscope.cn/models/AgentScope/Piccolo-27B) | [HF](https://huggingface.co/agentscope-ai/Piccolo-27B-BF16) · [MS](https://www.modelscope.cn/models/AgentScope/Piccolo-27B-BF16) | [HF](https://huggingface.co/agentscope-ai/Piccolo-27B-Q8_0) · [MS](https://www.modelscope.cn/models/AgentScope/Piccolo-27B-Q8_0) | [HF](https://huggingface.co/agentscope-ai/Piccolo-27B-Q4_K_M) · [MS](https://www.modelscope.cn/models/AgentScope/Piccolo-27B-Q4_K_M) |
 
 BF16 is converted directly from the original complete Safetensors checkpoint. It retains some normalization and recurrent-state tensors as F32 and does not pass through integer quantization. GGUF is the text decision path; auxiliary vision/MTP tensors remain in the complete checkpoint. Download all numbered GGUF shards into one directory.
 
 ## Local model selection
 
-[QwenPaw Draft PR #8463](https://github.com/agentscope-ai/QwenPaw/pull/8463) provides the integration. Use the [setup guide](QWENPAW.md) and its companion patched llama.cpp runtime. The memory-aware catalog includes BF16 and Q8_0; Q4_K_M is available by repository ID.
+[QwenPaw PR #8463](https://github.com/agentscope-ai/QwenPaw/pull/8463) provides the integration. Use the [setup guide](QWENPAW.md) and its companion patched llama.cpp runtime. The memory-aware catalog includes BF16 and Q8_0; Q4_K_M is available by repository ID.
 
 | Model | Q8_0 catalog memory threshold | BF16 catalog memory threshold | BF16 download size |
 | --- | ---: | ---: | ---: |
@@ -32,4 +32,4 @@ Inference requires bidirectional prompt attention in full-attention layers, unch
 
 - Website: [Decision](https://decisionplayground.agentscope.io/).
 - Source and release notes: [agentscope-ai/Piccolo](https://github.com/agentscope-ai/Piccolo).
-- ModelScope: [planned Piccolo-27B mirror](https://modelscope.cn/models/agentscope-ai/Piccolo-27B), **not published yet**; use Hugging Face now.
+- ModelScope: [AgentScope model collection](https://www.modelscope.cn/collections/AgentScope/QwenPaw-Flash).

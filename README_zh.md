@@ -6,7 +6,7 @@
   <a href="https://decisionplayground.agentscope.io/">🌐 Decision</a> ·
   <a href="https://github.com/agentscope-ai/Piccolo"><img src="assets/brands/github.svg" width="20" height="20" alt=""> GitHub</a> ·
   <a href="https://huggingface.co/agentscope-ai/Piccolo-27B"><img src="assets/brands/huggingface.svg" width="20" height="20" alt=""> Hugging Face</a> ·
-  <a href="https://modelscope.cn/models/agentscope-ai/Piccolo-27B"><img src="assets/brands/modelscope.png" width="20" height="20" alt=""> ModelScope · 即将发布</a>
+  <a href="https://www.modelscope.cn/models/AgentScope/Piccolo-27B"><img src="assets/brands/modelscope.png" width="20" height="20" alt=""> ModelScope</a>
 </p>
 <p align="center"><a href="README.md">English</a> / 简体中文 · <a href="docs/piccolo-blog.md">发布 Blog</a> · <a href="docs/MODELS.md">模型说明</a> · <a href="LICENSE">Apache-2.0</a></p>
 
@@ -24,7 +24,7 @@ Piccolo 是一个 **4B、9B、27B 决策模型系列**。给定当前状态、�
 
 `-BF16` GGUF 从完整 Safetensors 直接转换，部分归一化和递归状态张量保留 F32；Q8_0、Q4_K_M 用较小体积换取一定数值精度损失。下载分片模型时，须将**全部 GGUF 分片放在同一目录**。[完整模型说明、固定 revision 与限制](docs/MODELS.md)。
 
-[ModelScope / Piccolo-27B](https://modelscope.cn/models/agentscope-ai/Piccolo-27B) 为预留镜像地址，**尚未发布**，当前请从 Hugging Face 下载。
+[ModelScope / Piccolo-27B](https://www.modelscope.cn/models/AgentScope/Piccolo-27B) 已开放下载，全部 12 个 Piccolo 仓库收录在 [AgentScope 模型合集](https://www.modelscope.cn/collections/AgentScope/QwenPaw-Flash)。
 
 ## 评测表现
 
@@ -67,7 +67,7 @@ Piccolo 将模型优化组织为 **诊断 → 数据选择与构造 → 训练�
 
 ## QwenPaw：本地部署的决策模型
 
-接入位于 **[QwenPaw Draft PR #8463](https://github.com/agentscope-ai/QwenPaw/pull/8463)**，需要该分支与配套的 **Piccolo llama.cpp 运行时**。先按 [安装指南](docs/QWENPAW.md)准备运行环境；并非所有已发布的 QwenPaw 版本都已支持。
+接入位于 **[QwenPaw PR #8463](https://github.com/agentscope-ai/QwenPaw/pull/8463)**，需要该分支与配套的 **Piccolo llama.cpp 运行时**。先按 [安装指南](docs/QWENPAW.md)准备运行环境；该 PR 尚未合入上游。
 
 1. 打开 **模型 → QwenPaw Local → 决策模型**，下载适合设备的 Piccolo BF16 或 Q8_0 GGUF，点击 **启动**，到 **模型 → 默认模型 → 决策模型** 确认选择。Q4_K_M 也已发布，可按仓库 ID 自定义下载。
 
@@ -81,7 +81,9 @@ Piccolo 将模型优化组织为 **诊断 → 数据选择与构造 → 训练�
 
    ![上下文压缩入口](assets/qwenpaw/zh-context-compaction.jpg)
 
-启动模型不会自动开启审核与压缩。内置 llama.cpp 同时运行**一个模型**，对话模型可以使用其他提供商。原生审批阈值和人工确认回退继续生效。[中英文全屏截图](assets/qwenpaw/README.md)。
+[观看 QwenPaw 实录](https://decisionplayground.agentscope.io/blog/assets/qwenpaw-tool-review.mp4)。Qwen Plus 请求统计文件行数，本地 Piccolo-4B-Q4_K_M 审核工具调用，随后 QwenPaw 执行命令并返回行数。
+
+启动模型不会自动开启审核与压缩。内置 llama.cpp 同时运行**一个模型**，对话模型可以使用其他提供商。原生审批阈值和人工确认回退继续生效。[三步配置截图](assets/qwenpaw/README.md)。
 
 Piccolo 在全注意力层使用双向 prompt attention，保留线性注意力层计算，直接读取候选 token 的 logits 并归一化，通过原生 `/v1/systemone` 返回结果，不生成回答文本。普通因果聊天接口不实现这一协议。[参考推理与请求示例](inference/README.md)。
 

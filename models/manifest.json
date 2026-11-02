@@ -4,8 +4,9 @@
   "github": "https://github.com/agentscope-ai/Piccolo",
   "license": "Apache-2.0",
   "modelscope": {
-    "url": "https://modelscope.cn/models/agentscope-ai/Piccolo-27B",
-    "status": "not_published"
+    "url": "https://www.modelscope.cn/models/AgentScope/Piccolo-27B",
+    "collection": "https://www.modelscope.cn/collections/AgentScope/QwenPaw-Flash",
+    "status": "published"
   },
   "revision_scope": "Immutable weight-bearing revisions verified at release preparation; later model-card-only edits can advance repository HEAD without changing these weights.",
   "models": [

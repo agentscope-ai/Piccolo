@@ -125,3 +125,10 @@ html body .home-usecase h3{font-size:clamp(23px,2.4vw,34px);letter-spacing:-.8px
 .home-usecase>.home-inline-link,.home-benchmark-actions{margin-top:auto}
 .home-benchmark-actions{display:flex;gap:19px;flex-wrap:wrap}
 @media(max-width:700px){.home-usecases{grid-template-columns:1fr;gap:26px}.home-usecases .home-usecase{padding:0 0 26px;border-left:0}.home-usecase:not(:last-child){border-bottom:1px solid var(--home-line)}.home-benchmark-meta{flex-direction:row;justify-content:space-between;align-items:center;min-height:0;margin-bottom:18px}.home-usecases .home-usecase p{min-height:0;max-width:none}html body .home-usecase h3{font-size:29px}}
+
+.home-qwenpaw {margin-block:clamp(2rem,6vw,5rem)}
+.home-qwenpaw h2 {margin:.5rem 0;font-size:clamp(1.5rem,3vw,2.4rem)}
+.home-qwenpaw p {max-width:65ch;line-height:1.6}
+.home-qwenpaw video {display:block;width:min(100%,48rem);height:auto;margin:1rem 0;background:white;border:1px solid #ddd;border-radius:8px}
+.home-release-links {display:flex;gap:1rem;flex-wrap:wrap;margin-top:1rem}
+.home-release-links a,.home-qwenpaw a {color:inherit;text-decoration:underline;text-underline-offset:3px}

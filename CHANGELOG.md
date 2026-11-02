@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-02
+
+- Added ModelScope download links for all 12 Piccolo releases.
+- Updated the three-step QwenPaw guide and added a recorded local tool review.
+- Linked the public DataJevBench repository from the Arena.
+
 ## v1.0.0 — 2026-10-30
 
 First formal Piccolo source release.
@@ -17,7 +23,7 @@ First formal Piccolo source release.
 
 - Aligned README files, model documentation and public entry points with the Piccolo release.
 - Documented native candidate-token scoring, bidirectional prompt attention and the single managed local runtime.
-- Marked ModelScope as an upcoming mirror; downloads currently use Hugging Face.
+- At launch, downloads were available on Hugging Face, with ModelScope planned.
 
 ### Removed
 
@@ -25,6 +31,6 @@ First formal Piccolo source release.
 
 ### Availability
 
-- QwenPaw integration remains in Draft PR #8463 and requires its companion llama.cpp adaptation; it is not yet available in every released QwenPaw version.
+- At launch, QwenPaw integration was available in draft PR #8463 with a companion llama.cpp adaptation.
 - Training recipes and dataset publication remain coming soon. Hardware performance measurements remain follow-up work.
 - Archived replay identities and existing commit author/committer metadata are preserved.
