@@ -40,7 +40,7 @@
     <td colspan="2" align="center"><img src="../assets/showcase/completed/othello.gif" width="50%" alt="黑白棋"></td>
   </tr>
   <tr>
-    <td width="50%" align="center"><a href="https://decisionplayground.agentscope.io/piccolo.html#qwenpaw-showcase"><img src="https://decisionplayground.agentscope.io/blog/assets/qwenpaw-audit.gif?v=6e6e5abf6b83" width="100%" alt="QwenPaw 实录，逐步展示 Piccolo 放行两次只读操作、标记覆盖风险，以及操作者拒绝写入"></a></td>
+    <td width="50%" align="center"><a href="https://decisionplayground.agentscope.io/piccolo.html#qwenpaw-showcase"><img src="https://decisionplayground.agentscope.io/blog/assets/qwenpaw-audit-zh.gif?v=19d7942e9cc6" width="100%" alt="QwenPaw 实录，逐步展示 Piccolo 放行两次只读操作、标记覆盖风险，以及操作者拒绝写入"></a></td>
     <td width="50%" align="center"><a href="https://decisionplayground.agentscope.io/piccolo.html#datajev-showcase"><img src="https://decisionplayground.agentscope.io/blog/assets/data-judge.gif" width="100%" alt="DataJevBench 的 24 个问题及 Piccolo 对证据充分性的判断"></a></td>
   </tr>
 </table>
