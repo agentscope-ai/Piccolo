@@ -3,7 +3,7 @@
 ## 2026-11-02
 
 - Added ModelScope download links for all 12 Piccolo releases.
-- Updated the three-step QwenPaw guide and linked the bilingual payout audit in the Piccolo blog.
+- Updated the three-step QwenPaw guide and linked the English QwenPaw screen recording in the Piccolo blog.
 - Linked the public DataJevBench repository from the Arena.
 
 ## v1.0.0 — 2026-10-30

@@ -14,6 +14,4 @@
 
 ## 工具审批实录
 
-[观看中英文结算审计回放](https://decisionplayground.agentscope.io/piccolo.html#qwenpaw-showcase)。9.6 秒加速片段来自真实 QwenPaw 会话。Qwen Plus 调用工具核对流水与银行记录，本地 Piccolo-4B-Q4_K_M 放行表结构查询，对读取逐笔流水和覆盖日报请求人工确认。确认后，QwenPaw 将净额从 ¥276 修正为 ¥188。
-
-[DataJevHarness 样本筛选](https://decisionplayground.agentscope.io/piccolo.html#datajev-showcase) 是独立的 8.4 秒模拟动画。
+[观看英文 QwenPaw 实测录屏](https://decisionplayground.agentscope.io/piccolo.html#qwenpaw-showcase)。这段 9.6 秒动图直接录自运行中的 QwenPaw 页面。Qwen Plus 在结算审计中调用工具 12 次，本地 Piccolo-4B-Q4_K_M 对两次账务查询和一次报告写入请求确认。最终日报记录的净额为 ¥188。
