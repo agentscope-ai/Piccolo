@@ -42,7 +42,7 @@ Piccolo 将模型优化组织为 **诊断 → 数据选择与构造 → 训练�
 
 ## 看见连续决策
 
-八段完整归档回放呈现模型的连续动作，右侧展示记录中的候选概率。交互播放器支持暂停、拖动与逐步查看。
+九段归档游戏回放呈现模型的连续动作，有概率记录的场景在右侧展示候选分布。交互播放器支持暂停、拖动与逐步查看。
 
 <table>
   <tr>
@@ -60,6 +60,9 @@ Piccolo 将模型优化组织为 **诊断 → 数据选择与构造 → 训练�
   <tr>
     <td width="50%" align="center"><a href="arena/web/showcase/traces/hex.json"><img src="assets/showcase/hex.gif" width="100%" alt="Hex"></a></td>
     <td width="50%" align="center"><a href="arena/web/showcase/traces/dots-and-boxes.json"><img src="assets/showcase/dots-and-boxes.gif" width="100%" alt="Dots &amp; Boxes"></a></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/othello.gif" width="50%" alt="黑白棋"></a></td>
   </tr>
 </table>
 
@@ -81,7 +84,7 @@ Piccolo 将模型优化组织为 **诊断 → 数据选择与构造 → 训练�
 
    ![上下文压缩入口](assets/qwenpaw/zh-context-compaction.jpg)
 
-[观看 QwenPaw 结算审计实录](https://decisionplayground.agentscope.io/piccolo.html#qwenpaw-showcase)。QwenPaw 通过 12 次工具调用核对流水与银行记录。Piccolo 在本机审核，操作者确认后，日报净额从 ¥276 修正为 ¥188。
+[观看 QwenPaw 结算审计实录](https://decisionplayground.agentscope.io/piccolo.html#qwenpaw-showcase)。Piccolo 自动放行两次 Bash 读取，识别到覆盖报告的破坏性风险后拒绝自动放行。操作者点选 Deny，核算结果为 ¥188，原报告保留 ¥276。
 
 启动模型不会自动开启审核与压缩。内置 llama.cpp 同时运行**一个模型**，对话模型可以使用其他提供商。原生审批阈值和人工确认回退继续生效。[三步配置截图](assets/qwenpaw/README.md)。
 

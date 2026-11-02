@@ -15,7 +15,7 @@
 
 ## 01 Demo Showcase
 
-移动、跳跃、落子。模型根据当前局面选择动作，环境随之变化，下一次判断由此开始。八段游戏回放展示连续决策，右侧呈现记录中的候选概率与最终选择。另两段英文动图展示 QwenPaw 的实际工具审批，以及 Piccolo 如何判断材料能否回答 DataJevBench 的 12 个真实问题。
+移动、跳跃、落子。模型根据当前局面选择动作，环境随之变化，下一次判断由此开始。九段游戏回放展示连续决策，有概率记录的场景还呈现候选分布与最终选择。另两段英文动图展示 QwenPaw 的实际工具审批，以及 Piccolo 如何判断材料能否回答 DataJevBench 的 24 个真实问题。
 
 <table>
   <tr>
@@ -35,8 +35,11 @@
     <td width="50%" align="center"><img src="../assets/showcase/dots-and-boxes.gif" width="100%" alt="点格棋"></td>
   </tr>
   <tr>
-    <td width="50%" align="center"><a href="https://decisionplayground.agentscope.io/piccolo.html#qwenpaw-showcase"><img src="https://decisionplayground.agentscope.io/blog/assets/qwenpaw-audit.gif" width="100%" alt="QwenPaw 英文实测录屏：核对结算差额，审批查询及报告写入"></a></td>
-    <td width="50%" align="center"><a href="https://decisionplayground.agentscope.io/piccolo.html#datajev-showcase"><img src="https://decisionplayground.agentscope.io/blog/assets/data-judge.gif" width="100%" alt="DataJevBench 的 12 个英文问题及 Piccolo 对证据充分性的判断"></a></td>
+    <td colspan="2" align="center"><img src="../assets/showcase/completed/othello.gif" width="50%" alt="黑白棋"></td>
+  </tr>
+  <tr>
+    <td width="50%" align="center"><a href="https://decisionplayground.agentscope.io/piccolo.html#qwenpaw-showcase"><img src="https://decisionplayground.agentscope.io/blog/assets/qwenpaw-audit.gif" width="100%" alt="QwenPaw 英文实测录屏：自动放行读取并拦下报告覆盖"></a></td>
+    <td width="50%" align="center"><a href="https://decisionplayground.agentscope.io/piccolo.html#datajev-showcase"><img src="https://decisionplayground.agentscope.io/blog/assets/data-judge.gif" width="100%" alt="DataJevBench 的 24 个英文问题及 Piccolo 对证据充分性的判断"></a></td>
   </tr>
 </table>
 
@@ -132,7 +135,7 @@ Piccolo 复用 QwenPaw-Flash 的本地 GGUF 下载与运行管理，以及 Jev �
 
    ![上下文压缩](../assets/qwenpaw/zh-context-compaction.jpg)
 
-[观看 QwenPaw 结算审计实录](https://decisionplayground.agentscope.io/piccolo.html#qwenpaw-showcase)。QwenPaw 通过 12 次工具调用核对流水与银行记录，Piccolo 对两次查询和一次写入请求确认。审批后，日报净额从 ¥276 修正为 ¥188。
+[观看 QwenPaw 结算审计实录](https://decisionplayground.agentscope.io/piccolo.html#qwenpaw-showcase)。Piccolo 自动放行两次 Bash 读取，识别到覆盖报告的破坏性风险后拒绝自动放行。操作者点选 Deny，核算结果为 ¥188，原报告保留 ¥276。
 
 
 [三步配置截图](../assets/qwenpaw/README.md)可用于官网或后续文章。启动模型与启用功能是独立步骤。内置 llama.cpp 只管理一个运行中的模型，对话可以使用其他提供商。本地决策减少额外远端请求，让用于判断的工具元数据与历史片段在本机处理；主对话模型及其他工具的数据流由各自配置决定。
@@ -147,7 +150,7 @@ Piccolo 复用 QwenPaw-Flash 的本地 GGUF 下载与运行管理，以及 Jev �
 
 ### DataJevBench
 
-[查看英文 query 与判断记录](https://decisionplayground.agentscope.io/piccolo.html#datajev-showcase)。Piccolo-4B-Q4_K_M 读取 12 条完整样本，判断给定材料是否足以回答问题。
+[查看英文 query 与判断记录](https://decisionplayground.agentscope.io/piccolo.html#datajev-showcase)。Piccolo-4B-Q4_K_M 读取 24 条完整样本，判断给定材料是否足以回答问题。
 
 
 [DataJevBench](https://github.com/datajuicer/DataJevBench) 面向数据工作流，覆盖数据准入、处理方案选择、产物质量、分析就绪、产物核验与披露、任务执行控制。v0.5 包含 **500 道任务**：480 道选择题与 20 道有序评分题，涵盖中英文。

@@ -42,7 +42,7 @@ Training turns model improvement into a data iteration loop: **diagnose → sele
 
 ## See decisions unfold
 
-Eight archived full replays show successive actions and recorded candidate probabilities. Interactive players support pausing, seeking and inspecting each decision.
+Nine archived game replays show successive actions, with candidate probabilities where available. Interactive players support pausing, seeking and inspecting each decision.
 
 <table>
   <tr>
@@ -60,6 +60,9 @@ Eight archived full replays show successive actions and recorded candidate proba
   <tr>
     <td width="50%" align="center"><a href="arena/web/showcase/traces/hex.json"><img src="assets/showcase/hex.gif" width="100%" alt="Hex"></a></td>
     <td width="50%" align="center"><a href="arena/web/showcase/traces/dots-and-boxes.json"><img src="assets/showcase/dots-and-boxes.gif" width="100%" alt="Dots &amp; Boxes"></a></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/othello.gif" width="50%" alt="Othello"></a></td>
   </tr>
 </table>
 
@@ -81,7 +84,7 @@ The native integration is available in **[PR #8463](https://github.com/agentscop
 
    ![Native decision model compaction settings](assets/qwenpaw/zh-context-compaction.jpg)
 
-[Watch the payout audit in QwenPaw](https://decisionplayground.agentscope.io/piccolo.html#qwenpaw-showcase). Piccolo reviews tool calls as QwenPaw reconciles a duplicate payment and a late posting. The report is updated after operator approval.
+[Watch the payout audit in QwenPaw](https://decisionplayground.agentscope.io/piccolo.html#qwenpaw-showcase). Piccolo automatically approves two Bash reads and flags an attempted overwrite as destructive. The operator denies the write, leaving the original report intact.
 
 Starting the model does not enable these features. The managed local runtime serves **one model at a time**; chat can use another provider. Review keeps its native thresholds and human-approval fallback. [Setup screenshots](assets/qwenpaw/README.md).
 

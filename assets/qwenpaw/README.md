@@ -14,4 +14,4 @@
 
 ## 工具审批实录
 
-[观看英文 QwenPaw 实测录屏](https://decisionplayground.agentscope.io/piccolo.html#qwenpaw-showcase)。这段 9.6 秒动图直接录自运行中的 QwenPaw 页面。Qwen Plus 在结算审计中调用工具 12 次，本地 Piccolo-4B-Q4_K_M 对两次账务查询和一次报告写入请求确认。最终日报记录的净额为 ¥188。
+[观看英文 QwenPaw 实测录屏](https://decisionplayground.agentscope.io/piccolo.html#qwenpaw-showcase)。这段 15 秒动图保留了两次 Bash 读取和一次写入申请。Piccolo-4B-Q4_K_M 自动放行只读检查，在覆盖现有报告时给出 `destructive` 风险判断。操作者通过唯一的审批框点选 Deny。核算净额为 ¥188，报告仍保留原值 ¥276，运行前后文件的 SHA-256 一致。
