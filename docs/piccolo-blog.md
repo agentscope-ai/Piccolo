@@ -15,7 +15,11 @@
 
 ## 01 Demo Showcase
 
-移动、跳跃、落子。模型根据当前局面选择动作，环境随之变化，下一次判断由此开始。九段游戏回放展示连续决策，有概率记录的场景还呈现候选分布与最终选择。另两段英文动图展示 QwenPaw 的实际工具审批，以及 Piccolo 如何判断材料能否回答 DataJevBench 的 24 个真实问题。
+移动、跳跃、落子。模型根据当前局面选择动作，环境随之变化，下一次判断由此开始。九段游戏回放展示连续决策，有概率记录的场景还呈现候选分布与最终选择。
+
+另两段 showcase 来自智能体和数据工作流。在 QwenPaw 的结算审计中，Qwen Plus 先用 wc 统计 CSV 文件的行数，再用 head 读取批次记录。这两次调用都只读文件，Piccolo 判定风险较低，**自动放行**。随后，Qwen Plus 请求用核算结果 ¥188 覆盖报告中原有的 ¥276。Piccolo **识别出覆盖原报告的破坏性风险，要求人工确认**。操作者拒绝写入，报告仍为 ¥276。
+
+在数据工作流中，Piccolo 逐条判断给定材料是否足以回答 [DataJevBench](https://github.com/datajuicer/DataJevBench) 的 24 个问题。
 
 <table>
   <tr>
@@ -38,8 +42,8 @@
     <td colspan="2" align="center"><img src="../assets/showcase/completed/othello.gif" width="50%" alt="黑白棋"></td>
   </tr>
   <tr>
-    <td width="50%" align="center"><a href="https://decisionplayground.agentscope.io/piccolo.html#qwenpaw-showcase"><img src="https://decisionplayground.agentscope.io/blog/assets/qwenpaw-audit.gif?v=a5969f4c9a3d" width="100%" alt="QwenPaw 实测录屏，英文注释标出 Piccolo 的风险判断和操作者的拒绝"></a></td>
-    <td width="50%" align="center"><a href="https://decisionplayground.agentscope.io/piccolo.html#datajev-showcase"><img src="https://decisionplayground.agentscope.io/blog/assets/data-judge.gif" width="100%" alt="DataJevBench 的 24 个英文问题及 Piccolo 对证据充分性的判断"></a></td>
+    <td width="50%" align="center"><a href="https://decisionplayground.agentscope.io/piccolo.html#qwenpaw-showcase"><img src="https://decisionplayground.agentscope.io/blog/assets/qwenpaw-audit.gif?v=a5969f4c9a3d" width="100%" alt="QwenPaw 实测录屏，注释标出 Piccolo 的风险判断和操作者的拒绝"></a></td>
+    <td width="50%" align="center"><a href="https://decisionplayground.agentscope.io/piccolo.html#datajev-showcase"><img src="https://decisionplayground.agentscope.io/blog/assets/data-judge.gif" width="100%" alt="DataJevBench 的 24 个问题及 Piccolo 对证据充分性的判断"></a></td>
   </tr>
 </table>
 
