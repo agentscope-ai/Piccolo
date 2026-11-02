@@ -71,7 +71,7 @@ The native integration is available in **[Draft PR #8463](https://github.com/age
 
 1. In **Models → QwenPaw Local → Decision models**, download a Piccolo BF16 or Q8_0 GGUF, then click **Start**. Confirm **Models → Default models → Decision model**. Published Q4_K_M models can also be downloaded by repository ID.
 
-   ![Download a Piccolo local decision model](assets/qwenpaw/en-model-download.jpg)
+   ![Download a Piccolo local decision model](assets/qwenpaw/zh-model-download.jpg)
 
 2. For automatic review, enable **Use decision model** in the conversation's model menu and select **Decision Model Mode** in tool approval settings.
 
