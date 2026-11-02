@@ -38,7 +38,7 @@
     <td colspan="2" align="center"><img src="../assets/showcase/completed/othello.gif" width="50%" alt="黑白棋"></td>
   </tr>
   <tr>
-    <td width="50%" align="center"><a href="https://decisionplayground.agentscope.io/piccolo.html#qwenpaw-showcase"><img src="https://decisionplayground.agentscope.io/blog/assets/qwenpaw-audit.gif" width="100%" alt="QwenPaw 英文实测录屏：自动放行读取并拦下报告覆盖"></a></td>
+    <td width="50%" align="center"><a href="https://decisionplayground.agentscope.io/piccolo.html#qwenpaw-showcase"><img src="https://decisionplayground.agentscope.io/blog/assets/qwenpaw-audit.gif?v=a5969f4c9a3d" width="100%" alt="QwenPaw 实测录屏，英文注释标出 Piccolo 的风险判断和操作者的拒绝"></a></td>
     <td width="50%" align="center"><a href="https://decisionplayground.agentscope.io/piccolo.html#datajev-showcase"><img src="https://decisionplayground.agentscope.io/blog/assets/data-judge.gif" width="100%" alt="DataJevBench 的 24 个英文问题及 Piccolo 对证据充分性的判断"></a></td>
   </tr>
 </table>
