@@ -81,7 +81,7 @@ Piccolo 将模型优化组织为 **诊断 → 数据选择与构造 → 训练�
 
    ![上下文压缩入口](assets/qwenpaw/zh-context-compaction.jpg)
 
-[观看 QwenPaw 实录](https://decisionplayground.agentscope.io/blog/assets/qwenpaw-tool-review.mp4)。Qwen Plus 请求统计文件行数，本地 Piccolo-4B-Q4_K_M 审核工具调用，随后 QwenPaw 执行命令并返回行数。
+[观看 QwenPaw 结算审计实录](https://decisionplayground.agentscope.io/piccolo.html#qwenpaw-showcase)。QwenPaw 通过八次工具调用核对流水与银行记录。Piccolo 在本机审核，操作者确认后，日报净额从 ¥276 修正为 ¥188。
 
 启动模型不会自动开启审核与压缩。内置 llama.cpp 同时运行**一个模型**，对话模型可以使用其他提供商。原生审批阈值和人工确认回退继续生效。[三步配置截图](assets/qwenpaw/README.md)。
 

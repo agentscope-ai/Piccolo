@@ -81,7 +81,7 @@ The native integration is available in **[PR #8463](https://github.com/agentscop
 
    ![Native decision model compaction settings](assets/qwenpaw/zh-context-compaction.jpg)
 
-[Watch the QwenPaw recording](https://decisionplayground.agentscope.io/blog/assets/qwenpaw-tool-review.mp4). Qwen Plus requests a shell command to count the lines in a file. The local Piccolo-4B-Q4_K_M reviews the call, and QwenPaw executes it and returns the count.
+[Watch the payout audit in QwenPaw](https://decisionplayground.agentscope.io/piccolo.html#qwenpaw-showcase). Piccolo reviews tool calls as QwenPaw reconciles a duplicate payment and a late posting. The report is updated after operator approval.
 
 Starting the model does not enable these features. The managed local runtime serves **one model at a time**; chat can use another provider. Review keeps its native thresholds and human-approval fallback. [Setup screenshots](assets/qwenpaw/README.md).
 

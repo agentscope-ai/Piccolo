@@ -128,7 +128,7 @@ Piccolo 复用 QwenPaw-Flash 的本地 GGUF 下载与运行管理，以及 Jev �
 
    ![上下文压缩](../assets/qwenpaw/zh-context-compaction.jpg)
 
-[观看 QwenPaw 实录](https://decisionplayground.agentscope.io/blog/assets/qwenpaw-tool-review.mp4)。Qwen Plus 请求统计文件行数，本地 Piccolo-4B-Q4_K_M 审核工具调用，随后 QwenPaw 执行命令并返回行数。
+[观看 QwenPaw 结算审计实录](https://decisionplayground.agentscope.io/piccolo.html#qwenpaw-showcase)。QwenPaw 通过八次工具调用核对流水与银行记录。Piccolo 在本机审核，操作者确认后，日报净额从 ¥276 修正为 ¥188。
 
 [三步配置截图](../assets/qwenpaw/README.md)可用于官网或后续文章。启动模型与启用功能是独立步骤。内置 llama.cpp 只管理一个运行中的模型，对话可以使用其他提供商。本地决策减少额外远端请求，让用于判断的工具元数据与历史片段在本机处理；主对话模型及其他工具的数据流由各自配置决定。
 
@@ -141,6 +141,8 @@ Piccolo 复用 QwenPaw-Flash 的本地 GGUF 下载与运行管理，以及 Jev �
 评测同时观察**决策准确率**与**概率分布距离 TV**。Piccolo-27B 在表中 Hard 子集的准确率为 **82.03%**。其改进空间仍包括细粒度规则语义、多重约束组合及上下文证据保留。完整任务集与确定答案子集的分母不同，具体口径见 [评测记录](../evaluation/README.md)。
 
 ### DataJevBench
+
+[观看 DataJevHarness 样本筛选模拟动画](https://decisionplayground.agentscope.io/piccolo.html#datajev-showcase)。Jev 逐条检查五个候选样本，移出重复和缺少来源的两条。
 
 [DataJevBench](https://github.com/datajuicer/DataJevBench) 面向数据工作流，覆盖数据准入、处理方案选择、产物质量、分析就绪、产物核验与披露、任务执行控制。v0.5 包含 **500 道任务**：480 道选择题与 20 道有序评分题，涵盖中英文。
 

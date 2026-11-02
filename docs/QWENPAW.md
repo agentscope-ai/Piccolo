@@ -78,7 +78,7 @@ Q4_K_M 的默认配置为 3.25 秒。显式启用全层 GPU 和 Flash Attention 
 
 两次运行均保留了订单原文、最后的用户请求和最近六条消息。较短的预算减少了单轮停顿，也让更多原文留到下一轮。此设置只影响压缩，工具审核有独立的等待预算。
 
-[观看 QwenPaw 工具审核实录](https://decisionplayground.agentscope.io/blog/assets/qwenpaw-tool-review.mp4)。
+[观看 QwenPaw 工具审核实录](https://decisionplayground.agentscope.io/piccolo.html#qwenpaw-showcase)。
 
 ## 检查当前选择
 
