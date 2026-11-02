@@ -42,7 +42,7 @@ Piccolo 将模型优化组织为 **诊断 → 数据选择与构造 → 训练�
 
 ## 看见连续决策
 
-九段归档游戏回放呈现模型的连续动作，有概率记录的场景在右侧展示候选分布。交互播放器支持暂停、拖动与逐步查看。
+九段归档游戏回放呈现模型的连续动作，有概率记录的场景在右侧展示候选分布。交互播放器支持暂停、拖动与逐步查看。点击《绝区零》预览，可播放完整的 95 秒战斗实录。
 
 <table>
   <tr>
@@ -62,7 +62,8 @@ Piccolo 将模型优化组织为 **诊断 → 数据选择与构造 → 训练�
     <td width="50%" align="center"><a href="arena/web/showcase/traces/dots-and-boxes.json"><img src="assets/showcase/dots-and-boxes.gif" width="100%" alt="Dots &amp; Boxes"></a></td>
   </tr>
   <tr>
-    <td colspan="2" align="center"><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/othello.gif" width="50%" alt="黑白棋"></a></td>
+    <td width="50%" align="center"><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/othello.gif" width="100%" alt="黑白棋"></a></td>
+    <td width="50%" align="center"><a href="https://decisionplayground.agentscope.io/blog/assets/zenless-zone-zero.mp4"><img src="https://decisionplayground.agentscope.io/blog/assets/zenless-zone-zero.gif" width="100%" alt="绝区零战斗实录，点击播放完整视频（1:35）"></a></td>
   </tr>
 </table>
 

@@ -42,7 +42,7 @@ Training turns model improvement into a data iteration loop: **diagnose → sele
 
 ## See decisions unfold
 
-Nine archived game replays show successive actions, with candidate probabilities where available. Interactive players support pausing, seeking and inspecting each decision.
+Nine archived game replays show successive actions, with candidate probabilities where available. Interactive players support pausing, seeking and inspecting each decision. Select the Zenless Zone Zero preview to watch the full 95-second combat recording.
 
 <table>
   <tr>
@@ -62,7 +62,8 @@ Nine archived game replays show successive actions, with candidate probabilities
     <td width="50%" align="center"><a href="arena/web/showcase/traces/dots-and-boxes.json"><img src="assets/showcase/dots-and-boxes.gif" width="100%" alt="Dots &amp; Boxes"></a></td>
   </tr>
   <tr>
-    <td colspan="2" align="center"><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/othello.gif" width="50%" alt="Othello"></a></td>
+    <td width="50%" align="center"><a href="arena/web/playground/data/home-decision.json"><img src="assets/showcase/completed/othello.gif" width="100%" alt="Othello"></a></td>
+    <td width="50%" align="center"><a href="https://decisionplayground.agentscope.io/blog/assets/zenless-zone-zero.mp4"><img src="https://decisionplayground.agentscope.io/blog/assets/zenless-zone-zero.gif" width="100%" alt="Zenless Zone Zero combat recording · play full video (1:35)"></a></td>
   </tr>
 </table>
 

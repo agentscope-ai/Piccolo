@@ -15,7 +15,7 @@
 
 ## 01 Demo Showcase
 
-移动、跳跃、落子。模型根据当前局面选择动作，环境随之变化，下一次判断由此开始。九段游戏回放展示连续决策，有概率记录的场景还呈现候选分布与最终选择。
+移动、跳跃、落子。模型根据当前局面选择动作，环境随之变化，下一次判断由此开始。九段游戏回放展示连续决策，有概率记录的场景还呈现候选分布与最终选择。《绝区零》的 95 秒战斗实录则将按键与角色动作同步呈现。
 
 另两段 showcase 来自智能体和数据工作流。一段是 QwenPaw 工具审批实录，另一段展示 Piccolo 对 [DataJevBench](https://github.com/datajuicer/DataJevBench) 样本的判断。
 
@@ -37,7 +37,8 @@
     <td width="50%" align="center"><img src="../assets/showcase/dots-and-boxes.gif" width="100%" alt="点格棋"></td>
   </tr>
   <tr>
-    <td colspan="2" align="center"><img src="../assets/showcase/completed/othello.gif" width="50%" alt="黑白棋"></td>
+    <td width="50%" align="center"><img src="../assets/showcase/completed/othello.gif" width="100%" alt="黑白棋"></td>
+    <td width="50%" align="center"><a href="https://decisionplayground.agentscope.io/blog/assets/zenless-zone-zero.mp4"><img src="https://decisionplayground.agentscope.io/blog/assets/zenless-zone-zero.gif" width="100%" alt="绝区零战斗实录，点击播放完整视频（1:35）"></a></td>
   </tr>
   <tr>
     <td width="50%" align="center"><a href="https://decisionplayground.agentscope.io/piccolo.html#qwenpaw-showcase"><img src="https://decisionplayground.agentscope.io/blog/assets/qwenpaw-audit-zh.gif?v=19d7942e9cc6" width="100%" alt="QwenPaw 实录，逐步展示 Piccolo 放行两次只读操作、标记覆盖风险，以及操作者拒绝写入"></a></td>
