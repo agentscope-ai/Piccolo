@@ -71,7 +71,7 @@ Piccolo 将模型优化组织为 **诊断 → 数据选择与构造 → 训练�
 
 ## QwenPaw：本地部署的决策模型
 
-接入位于 **[QwenPaw PR #8463](https://github.com/agentscope-ai/QwenPaw/pull/8463)**，需要该分支与配套的 **Piccolo llama.cpp 运行时**。先按 [安装指南](docs/QWENPAW.md)准备运行环境；该 PR 尚未合入上游。
+接入位于 **[QwenPaw PR #8463](https://github.com/agentscope-ai/QwenPaw/pull/8463)**，需要该分支与配套的 **Piccolo llama.cpp 运行时**。先按 [安装指南](docs/QWENPAW.md)准备运行环境；该 PR 正在合入上游。
 
 1. 打开 **模型 → QwenPaw Local → 决策模型**，下载适合设备的 Piccolo BF16 或 Q8_0 GGUF，点击 **启动**，到 **模型 → 默认模型 → 决策模型** 确认选择。Q4_K_M 也已发布，可按仓库 ID 自定义下载。
 
@@ -92,6 +92,8 @@ Piccolo 将模型优化组织为 **诊断 → 数据选择与构造 → 训练�
 Piccolo 在全注意力层使用双向 prompt attention，保留线性注意力层计算，直接读取候选 token 的 logits 并归一化，通过原生 `/v1/systemone` 返回结果，不生成回答文本。普通因果聊天接口不实现这一协议。[参考推理与请求示例](inference/README.md)。
 
 ## 本地运行 Arena
+
+完整 Blog 视频使用 Git LFS；克隆后执行 `git lfs pull`。Actions 源码包已包含全部素材。
 
 只读预览仅需 Python 3：
 
@@ -117,8 +119,10 @@ bash scripts/run.sh
 | [models/](models/README.md) | 已发布模型入口与固定 revision 清单 |
 | [inference/](inference/README.md) | 完整 checkpoint 参考推理与原生协议 |
 | [examples/](examples/README.md) | 最小决策请求与本地调用 |
-| [evaluation/](evaluation/README.md) | 发布权重的成绩及证据范围 |
+| [evaluation/](evaluation/README.md) | 基准成绩与一键复现脚本 |
 | [arena/](arena/README.md) | 交互应用、引擎、榜单和回放 |
+| [arena/docs/WEBSITE.md](arena/docs/WEBSITE.md) | 双语官网源码、Method 图示与本地预览 |
+| [examples/workflows/](examples/workflows/README.md) | 12 个双语 Harness / Data 工作流案例 |
 | [docs/piccolo-blog.md](docs/piccolo-blog.md) | 公众号与小红书共用的发布母稿 |
 
 ## 复现与贡献

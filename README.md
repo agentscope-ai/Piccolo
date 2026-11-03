@@ -71,19 +71,19 @@ These archived examples retain their original checkpoint identities and outcomes
 
 ## Local decision models in QwenPaw
 
-The native integration is available in **[PR #8463](https://github.com/agentscope-ai/QwenPaw/pull/8463)** and requires its **Piccolo-compatible llama.cpp runtime**. Follow the [setup guide](docs/QWENPAW.md) for the PR build. The integration is awaiting upstream review.
+The native integration is available in **[PR #8463](https://github.com/agentscope-ai/QwenPaw/pull/8463)** and requires its **Piccolo-compatible llama.cpp runtime**. Follow the [setup guide](docs/QWENPAW.md) for the PR build. The integration is being merged upstream.
 
 1. In **Models → QwenPaw Local → Decision models**, download a Piccolo BF16 or Q8_0 GGUF, then click **Start**. Confirm **Models → Default models → Decision model**. Published Q4_K_M models can also be downloaded by repository ID.
 
-   ![Download a Piccolo local decision model](assets/qwenpaw/zh-model-download.jpg)
+   ![Download a Piccolo local decision model](assets/qwenpaw/en-model-download.jpg)
 
 2. For automatic review, enable **Use decision model** in the conversation's model menu and select **Decision Model Mode** in tool approval settings.
 
-   ![Native tool approval settings](assets/qwenpaw/zh-automatic-review.jpg)
+   ![Native tool approval settings](assets/qwenpaw/en-automatic-review.jpg)
 
 3. For context compaction, enable **Context Compaction**, then its separate **Decision Model Compaction** switch.
 
-   ![Native decision model compaction settings](assets/qwenpaw/zh-context-compaction.jpg)
+   ![Native decision model compaction settings](assets/qwenpaw/en-context-compaction.jpg)
 
 [Watch the payout audit in QwenPaw](https://decisionplayground.agentscope.io/piccolo.html#qwenpaw-showcase). Piccolo automatically approves two Bash reads and flags an attempted overwrite as destructive. The operator denies the write, leaving the original report intact.
 
@@ -92,6 +92,8 @@ Starting the model does not enable these features. The managed local runtime ser
 Piccolo reads candidate-token logits directly with bidirectional prompt attention in full-attention layers and unchanged linear attention. It generates no answer text. The native `/v1/systemone` endpoint returns structured results. Stock causal chat completion does not implement this contract. [Reference inference and request example](inference/README.md).
 
 ## Run the Arena
+
+The complete blog video uses Git LFS; run `git lfs pull` after cloning. Source archives from Actions include all media.
 
 For a static preview, Python 3 is sufficient:
 
@@ -117,8 +119,10 @@ Open **http://127.0.0.1:8080/**. See [Arena setup](arena/README.md), [API](arena
 | [models/](models/README.md) | Published model links and fixed revision manifest |
 | [inference/](inference/README.md) | Full-checkpoint reference inference and native protocol |
 | [examples/](examples/README.md) | Minimal decision request and local invocation |
-| [evaluation/](evaluation/README.md) | Released-checkpoint scores and evidence scope |
+| [evaluation/](evaluation/README.md) | Benchmark results and one-command reproduction |
 | [arena/](arena/README.md) | Interactive application, shared engines, results and replays |
+| [arena/docs/WEBSITE.md](arena/docs/WEBSITE.md) | Bilingual website source, Method figures and local preview |
+| [examples/workflows/](examples/workflows/README.md) | 12 bilingual Harness and Data workflow examples |
 | [docs/piccolo-blog.md](docs/piccolo-blog.md) | Launch article used for social publishing |
 
 ## Reproduce and contribute

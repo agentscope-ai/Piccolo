@@ -36,25 +36,25 @@ class PublicEvaluationTests(unittest.TestCase):
                       'cohort_mode':'independent','per_model_concurrency':5,'max_games':20}
             arena=module.PublicArena(out,contract,SimpleNamespace(),{'a'})
             arena._validate_plan(plan)
-            self.assertEqual(len(plan['schedule']),176)
+            self.assertEqual(len(plan['schedule']),len(module.KINDS)*8)
             self.assertEqual(set(arena.registered),{'a'})
 
     def test_independent_cohort_is_exactly_one_episode_per_model_game_seed(self):
         players = [module.participant(row(str(i))) for i in range(9)]
         plan = module.schedule(players, list(module.KINDS), 8, 42, 'independent')
-        self.assertEqual(len(plan['schedule']), 1584)
+        self.assertEqual(len(plan['schedule']), 9*len(module.KINDS)*8)
         keys = {(f['kind'], f['seed'], f['a']) for f in plan['schedule']}
-        self.assertEqual(len(keys), 1584)
+        self.assertEqual(len(keys), 9*len(module.KINDS)*8)
         self.assertTrue(all(f['b'] == 'rule-engine-v1' and f['leg'] == 0 for f in plan['schedule']))
         self.assertTrue(all(module.independent.fixture_models(f) == [f['a']] for f in plan['schedule']))
 
     def test_independent_report_keeps_fixed_denominator_and_inherited_latency_separate(self):
         with tempfile.TemporaryDirectory() as d:
             out = Path(d)
-            plan = module.schedule([module.participant(row('a'))], ['blackjack'], 8, 42, 'independent')
+            plan = module.schedule([module.participant(row('a'))], ['guess_the_number'], 8, 42, 'independent')
             receipts = [dict(plan['schedule'][i], status=status, outcome=outcome, seconds=2)
                         for i, (status, outcome) in enumerate([('complete', 'win'), ('complete', 'loss'), ('error', None)])]
-            requests = [dict(game='blackjack', model='a', status='ok', seconds=seconds, runtime_generation=gen)
+            requests = [dict(game='guess_the_number', model='a', status='ok', seconds=seconds, runtime_generation=gen)
                         for seconds, gen in [(10, 'independent-inherited'), (2, module.REVISION)]]
             summary = module.independent.report(out, plan, receipts, requests, module.stats)
             metric = summary['metrics'][0]
@@ -73,7 +73,7 @@ class PublicEvaluationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'perspective_mismatch'):
             _termination('hex_7x7', {'final_state': {'winner': 'X'}, 'model_player': 1, 'outcome': 'win'}, {})
 
-    def test_independent_enrollment_adds_only_176_episodes(self):
+    def test_independent_enrollment_adds_one_active_game_seed_cohort(self):
         with tempfile.TemporaryDirectory() as d:
             root = Path(d)
             players = [module.participant(row(str(i))) for i in range(9)]
@@ -81,10 +81,10 @@ class PublicEvaluationTests(unittest.TestCase):
                         'seeds': 8, 'seed_base': 42, 'roster': {'models': {str(i):row(str(i)) for i in range(9)}}}
             old = module.schedule(players, contract['games'], 8, 42, 'independent')
             module._write(root/'plan.json', old)
-            self.assertEqual(module.append_enrollment(root, contract, row('new-rl')), 176)
+            self.assertEqual(module.append_enrollment(root, contract, row('new-rl')), len(module.KINDS)*8)
             new = module._read(root/'plan.json')
-            self.assertEqual(new['schedule'][:1584], old['schedule'])
-            self.assertEqual(len(new['schedule']), 1760)
+            self.assertEqual(new['schedule'][:len(old['schedule'])], old['schedule'])
+            self.assertEqual(len(new['schedule']), 10*len(module.KINDS)*8)
 
     def test_independent_inheritance_validates_score_and_filters_other_model_requests(self):
         from jev_demo_arena_episodes import comparison_spec, REVISION
@@ -92,26 +92,26 @@ class PublicEvaluationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             source, out = Path(d)/'old', Path(d)/'new'
             players = [module.participant(row(m)) for m in ('a', 'b')]
-            contract = {'games': ['blackjack'], 'seeds': 1, 'seed_base': 42,
+            contract = {'games': ['guess_the_number'], 'seeds': 1, 'seed_base': 42,
                         'prompt': {}, 'scope': {}, 'engine_sources': {}}
-            old = module.schedule(players, ['blackjack'], 1, 42)
-            new = module.schedule(players, ['blackjack'], 1, 42, 'independent')
+            old = module.schedule(players, ['guess_the_number'], 1, 42)
+            new = module.schedule(players, ['guess_the_number'], 1, 42, 'independent')
             module._write(source/'contract.json', contract)
             module._write(source/'plan.json', old)
             module._write(out/'plan.json', new)
             arena = module.PublicArena.__new__(module.PublicArena)
             arena._load = lambda: (out, new)
-            good = {'status': 'complete', 'kind': 'blackjack', 'seed': 42, 'model': 'a',
-                'episode_id': 'blackjack-42-a', 'episode_revision': REVISION,
-                'engine_revision': module.EVALUATION_REVISION, 'decision_policy': decision_policy('blackjack'),
-                'comparison_spec': comparison_spec('blackjack'), 'higher_is_better': True,
+            good = {'status': 'complete', 'kind': 'guess_the_number', 'seed': 42, 'model': 'a',
+                'episode_id': 'guess_the_number-42-a', 'episode_revision': REVISION,
+                'engine_revision': module.EVALUATION_REVISION, 'decision_policy': decision_policy('guess_the_number'),
+                'comparison_spec': comparison_spec('guess_the_number'), 'higher_is_better': True,
                 'comparison_key': [1.], 'score': 1., 'model_player': 0, 'outcome': 'win',
                 'final_state': {'outcome': 'win'}, 'initial_state': {'outcome': None},
                 'terminal_returns': [1., -1.], 'budget_exhausted': False, 'terminal': True,
                 'natural_success': None, 'trace': [], 'model_identity': {k:v for k,v in players[0].items() if k!='name'},
-                'binding': arena._episode_binding('blackjack', 42, 'a'), 'seconds': 2}
-            for model, episode in [('a', good), ('b', dict(kind='blackjack', seed=42, model='b', status='error'))]:
-                name = module.GameArena._episode_name('blackjack', 42, model)
+                'binding': arena._episode_binding('guess_the_number', 42, 'a'), 'seconds': 2}
+            for model, episode in [('a', good), ('b', dict(kind='guess_the_number', seed=42, model='b', status='error'))]:
+                name = module.GameArena._episode_name('guess_the_number', 42, model)
                 module._write(source/'episodes'/name, episode)
                 module._write(source/'episode_summaries'/name, module.GameArena._episode_summary(episode))
             (source/'requests').mkdir()
@@ -120,8 +120,8 @@ class PublicEvaluationTests(unittest.TestCase):
             self.assertEqual((receipt['episodes'], receipt['requests'], receipt['duel_results_imported']), (1,1,0))
             self.assertEqual(len(receipt['requeued_errors']), 1)
             self.assertEqual(json.loads((out/'requests/0.jsonl').read_text())['model'], 'a')
-            good['terminal_returns'] = [-1., 1.]
-            module._write(source/'episodes/blackjack-42-a.json', good)
+            good['comparison_key'] = [0.]
+            module._write(source/'episodes/guess_the_number-42-a.json', good)
             with self.assertRaisesRegex(ValueError, 'native_score_evidence_mismatch'):
                 module.independent.inherit(out, source, contract)
 
@@ -164,8 +164,8 @@ class PublicEvaluationTests(unittest.TestCase):
                     if not progressed.wait(2):
                         raise RuntimeError('report_blocked_live_game')
                 arena._persist_fixture = play
-                plan = {'kinds': ['blackjack'], 'schedule': [
-                    {'ordinal': n, 'kind': 'blackjack', 'a': 'a', 'b': 'b'} for n in (0, 1)]}
+                plan = {'kinds': ['guess_the_number'], 'schedule': [
+                    {'ordinal': n, 'kind': 'guess_the_number', 'a': 'a', 'b': 'b'} for n in (0, 1)]}
                 with patch.object(module, 'report', slow_report):
                     await arena._fixtures(Path(d), plan, None)
                 self.assertTrue(progressed.is_set())
@@ -276,8 +276,8 @@ class PublicEvaluationTests(unittest.TestCase):
                     return {'status': 'complete', 'score': 1, 'trace': []}
                 with patch.object(module.GameArena, '_episode', play):
                     async with arena.games.slot(['a']):
-                        task = asyncio.create_task(arena._episode(Path(d), 'blackjack', 42, 'a', None))
-                        shared = asyncio.create_task(arena._episode(Path(d), 'blackjack', 42, 'a', None))
+                        task = asyncio.create_task(arena._episode(Path(d), 'guess_the_number', 42, 'a', None))
+                        shared = asyncio.create_task(arena._episode(Path(d), 'guess_the_number', 42, 'a', None))
                         await asyncio.sleep(.08)
                         self.assertFalse(task.done())
                     results = await asyncio.gather(task, shared)
@@ -288,7 +288,7 @@ class PublicEvaluationTests(unittest.TestCase):
     def test_inheritance_keeps_valid_turn_based_results_and_reruns_realtime(self):
         with tempfile.TemporaryDirectory() as d:
             source, target = Path(d)/'old', Path(d)/'new'
-            contract = {'games': ['blackjack', 'snake_navigation'], 'seeds': 1, 'seed_base': 42,
+            contract = {'games': ['guess_the_number', 'snake_navigation'], 'seeds': 1, 'seed_base': 42,
                         'prompt': {}, 'scope': {}, 'concurrency': 2, 'engine_sources': {}}
             plan = module.schedule([module.participant(row(m)) for m in ('a', 'b')], contract['games'], 1, 42)
             module._write(source/'contract.json', contract)
@@ -303,7 +303,7 @@ class PublicEvaluationTests(unittest.TestCase):
             receipt = module.inherit_completed(target, source, contract)
             self.assertEqual(receipt['matches'], 1)
             imported = [json.loads(p.read_text()) for p in (target/'matches').glob('*.json')]
-            self.assertEqual([r['kind'] for r in imported], ['blackjack'])
+            self.assertEqual([r['kind'] for r in imported], ['guess_the_number'])
             self.assertEqual(len(list((source/'matches').glob('*.json'))), 2)
 
     def test_native_replicas_route_independently_without_parallel_gpu_calls(self):
@@ -388,7 +388,7 @@ class PublicEvaluationTests(unittest.TestCase):
 
     def test_eight_seeds_and_swapped_seats(self):
         players = [module.participant(row(m)) for m in ('a', 'b', 'c')]
-        plan = module.schedule(players, ['othello_6x6', 'blackjack'], 8, 42)
+        plan = module.schedule(players, ['othello_6x6', 'guess_the_number'], 8, 42)
         self.assertEqual(len(plan['schedule']), 72)
         self.assertEqual({f['seed'] for f in plan['schedule']}, set(range(42, 50)))
         counts = {}
@@ -400,7 +400,7 @@ class PublicEvaluationTests(unittest.TestCase):
     def test_error_receipts_are_not_wins_or_draws(self):
         with tempfile.TemporaryDirectory() as d:
             root = Path(d)
-            plan = module.schedule([module.participant(row(m)) for m in ('a', 'b')], ['blackjack'], 8, 42)
+            plan = module.schedule([module.participant(row(m)) for m in ('a', 'b')], ['guess_the_number'], 8, 42)
             module._write(root/'plan.json', plan)
             module._write(root/'summaries/00000.json', {**plan['schedule'][0], 'status': 'error', 'score_a': None})
             result = module.report(root)
@@ -419,7 +419,7 @@ class PublicEvaluationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             root = Path(d)
             rows = {m: row(m) for m in ('a', 'b')}
-            contract = {'roster': {'models': rows}, 'games': ['blackjack', 'othello_6x6'],
+            contract = {'roster': {'models': rows}, 'games': ['guess_the_number', 'othello_6x6'],
                         'seeds': 8, 'seed_base': 42}
             old = module.schedule([module.participant(v) for v in rows.values()], contract['games'], 8, 42)
             module._write(root/'plan.json', old)
@@ -441,10 +441,10 @@ class PublicEvaluationTests(unittest.TestCase):
     def test_environment_success_excludes_errors_and_keeps_pending_denominator(self):
         with tempfile.TemporaryDirectory() as d:
             root = Path(d)
-            plan = module.schedule([module.participant(row(m)) for m in ('a', 'b')], ['blackjack'], 8, 42)
+            plan = module.schedule([module.participant(row(m)) for m in ('a', 'b')], ['guess_the_number'], 8, 42)
             module._write(root/'plan.json', plan)
             for seed, status, outcome in [(42, 'complete', 'win'), (43, 'complete', 'loss'), (44, 'error', None)]:
-                module._write(root/'episode_summaries'/module.GameArena._episode_name('blackjack', seed, 'a'),
+                module._write(root/'episode_summaries'/module.GameArena._episode_name('guess_the_number', seed, 'a'),
                               {'status': status, 'outcome': outcome})
             result = module.report(root)['metrics'][0]
             self.assertEqual(result['environment_errors'], 1)

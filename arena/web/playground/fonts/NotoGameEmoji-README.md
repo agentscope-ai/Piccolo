@@ -1,7 +1,7 @@
 # Noto Game Emoji
 
-22 个游戏图标使用 Noto Emoji 的子集字体，与站点一起分发，避免额外字体网络请求。通过 Google Fonts text 子集接口生成；许可证见相邻文件。
+This Noto Emoji subset bundles the game's icon glyphs with the website, avoiding an external font request. It was generated using the Google Fonts text-subset endpoint. See the adjacent license file.
 
-来源：<https://github.com/googlefonts/noto-emoji>。
+Source: <https://github.com/googlefonts/noto-emoji>.
 
-子集：🃏🪙🎲🌸🎴🌈🔢💣🐼🐝🔲🐴🔴🐘🧮📦🏡🧩🌳🧱🐍🍄。
+Glyphs: 🃏🪙🎲🌸🎴🌈🔢💣🐼🐝🔲🐴🔴🐘🧮📦🏡🧩🌳🧱🐍🍄.

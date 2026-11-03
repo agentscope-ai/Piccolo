@@ -10,13 +10,13 @@ from jev_engine_registry import get_engine
 import asyncio
 import copy
 from itertools import combinations
-import math
 from pathlib import Path
 import time
 import uuid
 
 from fastapi import HTTPException
 from playwright.async_api import async_playwright
+from blink_arena.elo_ranking import rank_rows as _rank, ENGINE
 
 from jev_demo_dashscope import MODEL_SPECS
 from jev_demo_game_evaluation import (
@@ -25,7 +25,6 @@ from jev_demo_game_evaluation import (
 )
 
 REVISION = 'jev-elo-v1-balanced-seats-paired-terminal'
-ENGINE = 'rule-engine-v1'
 INITIAL = 1500.0
 K = 32.0
 ENGINE_SPEC = {'id': ENGINE, 'name': '规则引擎 · 棋盘算法', 'provider': 'rule_engine',
@@ -146,20 +145,6 @@ def rating_tables(plan, receipts):
                         **{key: sum(r[key] for r in games) for key in ('played', 'wins', 'draws', 'losses', 'errors')},
                         'provisional': not full or any(r['provisional'] for r in games)})
     return _rank(overall), tables
-
-
-def _rank(rows):
-    rows.sort(key=lambda row: (-(row['rating'] if row['rating'] is not None else -math.inf), row['id']))
-    previous = None
-    for index, row in enumerate(rows):
-        # Equal ratings share the same rank; no arbitrary tie-breaking by name.
-        rounded = round(row['rating'], 8) if row['rating'] is not None else None
-        row['rank'] = (previous['rank'] if previous and rounded == previous['_rating'] else index+1) if rounded is not None else None
-        row['_rating'] = rounded
-        previous = row
-    for row in rows:
-        row.pop('_rating')
-    return rows
 
 
 class EloTournament:

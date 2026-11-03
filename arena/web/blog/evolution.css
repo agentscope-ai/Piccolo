@@ -1,0 +1,85 @@
+/* A publication figure, scoped independently of the Game Gallery. */
+.ev27{--ev27-accent:#9b6040;--ev27-soft:#e4d2bf;--ev27-ink:#38332b;min-width:0;margin:26px 0;padding:26px 0 0;border-top:1px solid var(--line,#ded9cf);color:var(--ev27-ink)}
+.ev27-meta{display:flex;justify-content:space-between;gap:15px;font-size:9px;letter-spacing:1.2px;color:#8e765f}
+.ev27-meta>span:first-child{font-weight:650}
+.ev27-current{display:grid;grid-template-columns:170px minmax(0,1fr);align-items:center;gap:28px;padding:27px 0 25px}
+.ev27-current-number{border-right:1px solid #ded4c6;padding-right:22px}
+.ev27-score{display:block;font-size:58px;line-height:1.15;letter-spacing:-2.8px;font-weight:450;color:var(--ev27-accent);font-variant-numeric:tabular-nums}
+.ev27-current-number>span{display:block;font-size:10px;margin-top:10px;color:#8a7b68}
+.ev27-detail{min-height:122px;display:flex;flex-direction:column;justify-content:center}
+.ev27-detail>small{font-size:9px;letter-spacing:.7px;color:#8a765f}
+.ev27-detail h3{font-size:22px;font-weight:500;letter-spacing:-.5px;line-height:1.35;margin:10px 0}
+.article-flow .ev27-detail p{font-size:14px;line-height:1.8;margin:0;color:#6c6255;max-width:57ch}
+.ev27-phase-picker{display:flex;gap:20px;flex-wrap:wrap;border-bottom:1px solid #ddd3c4;margin:0 0 18px}
+.ev27-phase-picker button{background:transparent;border:0;border-bottom:2px solid transparent;border-radius:0!important;padding:9px 0;font-size:11px;color:#877a6a}
+.ev27-phase-picker button[aria-pressed=true]{color:var(--ev27-accent);border-bottom-color:var(--ev27-accent)}
+.ev27-chart-heading{display:flex;justify-content:space-between;gap:14px;margin-bottom:4px;font-size:8px;letter-spacing:.6px;color:#9c8a74}
+.ev27-chart-heading>small{font-size:inherit}
+.ev27-chart-heading>span{color:#8a8175}
+.ev27-chart-scroll{max-width:100%;overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;scrollbar-color:#c9b69e #eee7dc}
+.ev27-chart-scroll svg{display:block;width:100%;min-width:640px;height:auto}
+.ev27-phase-band{fill:#f1ece3}
+.ev27-phase-band.phase-1{fill:#f7f4ee}
+.ev27-phase-band.phase-2{fill:#eee7dc}
+.ev27-proposal-path{fill:none;stroke:#d9cbb8;stroke-width:1.1}
+.ev27-proposal-dot{fill:#f6f2e9;stroke:#cbb89e;stroke-width:1}
+.ev27-proposal-junction{fill:#c2ab8d}
+.ev27-proposals.is-active .ev27-proposal-path{stroke:#b68c63}
+.ev27-proposals.is-active .ev27-proposal-dot{fill:#c99c73;stroke:#9d714b}
+.ev27.is-playing .ev27-proposals.is-active .ev27-proposal-dot{animation:ev27-proposal 1.4s ease-in-out infinite alternate}
+.ev27-lane-label{font-size:12px;letter-spacing:.3px;fill:#92785e}
+.ev27-gridline{stroke:#dcd4c8;stroke-width:.7;stroke-dasharray:2 5}
+.ev27-y-label,.ev27-axis-title{font-size:10px;fill:#9a8974}
+.ev27-axis-title{font-size:8px;letter-spacing:1px}
+.ev27-future-line{fill:none;stroke:#d8cbb9;stroke-width:1.8}
+.ev27-main-line{fill:none;stroke:var(--ev27-accent);stroke-width:2.7;stroke-linejoin:round}
+.ev27-milestone{fill:#f7f3eb;stroke:#c6b397;stroke-width:1.3}
+.ev27-milestone.is-reached{fill:#a87852;stroke:#a87852}
+.ev27-milestone.is-current{fill:#9b6040;stroke:#fffaf0;stroke-width:2.6}
+.ev27-value{font-size:11px;fill:#a0927e;font-variant-numeric:tabular-nums}
+.ev27-value.is-current{fill:#7f4c2c;font-weight:650}
+.ev27-x-label{font-size:9px;fill:#a1927e}
+.ev27-controls{display:flex;align-items:center;gap:7px;margin-top:17px}
+.ev27-controls button{font-size:11px;padding:7px 13px;background:transparent;border-color:#d2bea3;min-height:34px}
+.ev27-controls button:nth-child(2){background:#9b6040;color:#fffaf2;border-color:#9b6040;min-width:125px}
+.ev27-controls button:nth-child(2):hover{background:#835137;color:#fffaf2}
+.ev27-current-label{font-size:10px;color:#8f7d66;margin-left:auto}
+.ev27-milestone-picker{display:flex;gap:5px;overflow-x:auto;max-width:100%;margin:16px 0 0;padding:3px 2px 9px;scrollbar-width:thin;scrollbar-color:#c9b69e transparent}
+.ev27-milestone-picker button{flex:0 0 auto;font-size:10px;font-variant-numeric:tabular-nums;padding:7px 9px;border-color:#ded3c2;background:transparent;color:#8e7d67}
+.ev27-milestone-picker button[aria-pressed=true]{border-color:#a1764f;color:#7d4f2d;background:#eee0ce}
+.ev27-comparisons{display:grid;grid-template-columns:1fr 1fr;gap:34px;margin-top:25px;border-top:1px solid #ddd2c2;padding:23px 0 0}
+.ev27-comparison{min-width:0}
+.ev27-comparison-kind{display:block;font-size:8px;letter-spacing:1px;color:#9d876b}
+.ev27-comparison h4{font-size:14px;font-weight:550;line-height:1.5;margin:8px 0 12px;color:#5d4c38}
+.ev27-comparison-values{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;font-variant-numeric:tabular-nums}
+.ev27-comparison-values>span:first-child{font-size:21px;color:#a28e74;letter-spacing:-.5px}
+.ev27-comparison-values>strong{font-size:25px;color:#895a38;font-weight:500;letter-spacing:-.6px}
+.ev27-comparison-arrow{font-size:15px;color:#b7a185}
+.ev27-delta{font-size:9px;border-left:1px solid #d7c6b0;padding-left:9px;color:#967047;white-space:nowrap}
+.article-flow .ev27-comparison p{font-size:11px;line-height:1.8;color:#8a7964;margin:9px 0 0;max-width:41ch}
+.ev27 :is(button,a,[tabindex]):focus-visible{outline:2px solid var(--ev27-accent);outline-offset:3px}
+@keyframes ev27-proposal{from{opacity:.35}to{opacity:1}}
+@media(max-width:767px){
+ .ev27{padding-top:20px}
+ .ev27-meta{font-size:8px;letter-spacing:.5px;flex-wrap:wrap}
+ .ev27-current{grid-template-columns:1fr;gap:16px;padding:23px 0}
+ .ev27-current-number{border-right:0;display:flex;align-items:baseline;gap:20px;padding:0}
+ .ev27-score{font-size:50px}
+ .ev27-current-number>span{margin-top:0}
+ .ev27-detail{min-height:120px}
+ .ev27-detail h3{font-size:21px;margin:9px 0}
+ .article-flow .ev27-detail p{font-size:13px}
+ .ev27-phase-picker{gap:15px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin}
+ .ev27-phase-picker button{font-size:10px;white-space:nowrap}
+ .ev27-chart-heading{font-size:7px;gap:12px}
+ .ev27-chart-scroll svg{min-width:690px}
+ .ev27-controls{flex-wrap:wrap}
+ .ev27-controls button{font-size:10px}
+ .ev27-current-label{width:100%;margin:8px 0 0}
+ .ev27-comparisons{grid-template-columns:1fr;gap:23px;margin-top:19px}
+ .ev27-comparison+.ev27-comparison{border-top:1px solid #e1d7ca;padding-top:20px}
+ .ev27-comparison-values{gap:12px}
+}
+@media(prefers-reduced-motion:reduce){.ev27 *{animation:none!important;transition:none!important}}
+.ev27-scroll-hint{display:none}
+@media(max-width:900px){.ev27 .ev27-scroll-hint{display:block;font-size:12px;line-height:1.5;color:#81776a;margin:10px 0}}

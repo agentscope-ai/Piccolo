@@ -155,3 +155,11 @@
 - 8 张 GIF 均重新导出，合计 2,805 帧、210 次完整转换、5.47 MB；ffprobe 帧数、时间线及概率来源 SHA-256、连续步骤覆盖全部一致。16 组截图与 GIF 核验记录位于忽略目录 `var/full-showcase-check/`。实际 GIF 中的 Sokoban 候选文本及概率另做抽帧目视核验。
 - 发行包检查通过 289 个文件。`git diff --check` 通过；未重新调用模型或改写历史动作。
 - `docs/piccolo-blog.md` 根据用户新开头和 Jev 官方文章精简标题、导语、Showcase 与榜单；QwenPaw 给定文案逐字核对保留，Auto-research/自研 Benchmark 仍只含粗体 TODO，八个图片引用均有效。当前工作为本地修改，未推送或部署。
+
+## 2026-11-03：官网源码、最新 Arena 与 CI
+
+- Arena 对齐网站 revision `8115d6e8ef29`，试玩范围为 17 个游戏；历史回放保留。全量 Python 341 项通过，16 项在线测试另行运行；在线会话检查 22 项通过，另有 2 项子测试通过。前端 Node 测试 74 项通过。
+- 官网文章、Method 图示、全部录制素材、12 个工作流案例及来源许可已入库。文章生成、图表生成和案例 JSON 检查通过。榜单 16 组中英文桌面／手机检查通过；文章、12 个交互案例、QwenPaw／Data 回放、视频分段请求在两种语言与两种宽度下通过。
+- 英文配置截图来自当前本地 QwenPaw，显示 Piccolo 下载列表、已选中的 Decision Model Mode 和已启用的决策模型压缩；截图未修改模型和功能配置。
+- 一键评测脚本使用固定上游程序。Harness、Data、JevBench 通过本地 HTTP fixture 完成请求、落盘和官方评分；该检查不产生模型成绩。Decision Index 的完整数据重建和模型评测由使用者运行。
+- CI 自动执行 Python、在线游戏会话、前端和浏览器检查，并检查本地链接、生成文件及完整源码打包。源码包保存在 Actions，旧 GitHub Release 已删除。

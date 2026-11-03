@@ -118,6 +118,7 @@ def test_frontend_prefers_published_elo_over_success_view_and_old_runtime(tmp_pa
     (runtime/'evaluations').mkdir(parents=True)
     (runtime/'evaluations/latest.json').write_text(json.dumps({'run_id': 'old-runtime-pointer'}))
     with TestClient(create_app(data=runtime, config=AppConfig(), leaderboard_dir=directory)) as client:
-        assert client.get('/api/elo').json() == published()
+        from blink_arena.game_scope import project_arena
+        assert client.get('/api/elo').json() == project_arena(published())
         arena = next(b for b in client.get('/api/leaderboard').json()['benchmarks'] if b['id'] == 'gamejevbench')
         assert arena['source_file'] == 'arena-elo.json'

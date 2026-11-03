@@ -7,6 +7,7 @@ from fastapi import HTTPException
 from jev_engine_registry import get_engine
 from jev_control_scope import active_games
 from jev_world_episode_clock import install_episode_clock
+from .game_constants import PLAYGROUND_SNAKE_FOOD_TARGET, playground_engine
 
 
 class BrowserDriver:
@@ -43,6 +44,8 @@ class Sessions:
         try: engine=get_engine(kind)
         except (KeyError,ValueError): raise HTTPException(422,'Unknown game') from None
         if engine.internal or not active_games([kind]): raise HTTPException(422,'Game is not enabled')
+        # HTTP Playground sessions have a larger cap than the fixed RL baseline.
+        engine=playground_engine(engine)
         for ident,old in list(self.items.items()):
             if time.monotonic()-old['updated']>3600 and not old['lock'].locked(): await self.remove(ident,old['owner'])
         if len(self.items)>=256: raise HTTPException(429,'Session limit reached')
@@ -72,7 +75,12 @@ class Sessions:
             except BaseException:
                 await page.close();raise
         else:
-            item['world']=engine.reset(seed,{})
+            options=({'max_plies':engine.limit} if kind=='chess' else
+                     {'max_steps':engine.limit} if kind in ('xiangqi','sudoku') else {})
+            if kind=='snake_navigation':
+                import jev_snake_realtime as snake
+                item['world']=snake.fresh(seed,food_target=PLAYGROUND_SNAKE_FOOD_TARGET)
+            else:item['world']=engine.reset(seed,options)
             if engine.runtime: engine.runtime.start(item)
         self.items[ident]=item
         return await self.view(ident,owner)

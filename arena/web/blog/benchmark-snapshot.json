@@ -1,0 +1,357 @@
+{
+  "snapshot_date": "2026-11-02",
+  "inference_date": "2026-11-02",
+  "benchmarks": [
+    {
+      "id": "jevbench",
+      "title": "JevBench Public",
+      "version": "1.2",
+      "scale": 1,
+      "rows": [
+        {
+          "model_key": "blink-27b-1028",
+          "model": "Piccolo-27B",
+          "score": 0.922077922077922,
+          "score_display": "92.21%",
+          "status": "complete"
+        },
+        {
+          "model_key": "access-microsoft--microsoft-decision-1",
+          "model": "Microsoft Decision-1",
+          "score": 0.9004329004329005,
+          "score_display": "90.04%",
+          "status": "complete"
+        },
+        {
+          "model_key": "access-vllm-sr--d3",
+          "model": "vLLM-SR d3 (27B)",
+          "score": 0.8961038961038961,
+          "score_display": "89.61%",
+          "status": "complete"
+        },
+        {
+          "model_key": "blink-9b-1028",
+          "model": "Piccolo-9B",
+          "score": 0.8961038961038961,
+          "score_display": "89.61%",
+          "status": "complete"
+        },
+        {
+          "model_key": "access-inception--mercury-decide",
+          "model": "Mercury Decide (Inception)",
+          "score": 0.8917748917748918,
+          "score_display": "89.18%",
+          "status": "complete"
+        },
+        {
+          "model_key": "access-perplexity-ai--pplx-decider-v1.2",
+          "model": "Perplexity Decider v1.2 (27B)",
+          "score": 0.8917748917748918,
+          "score_display": "89.18%",
+          "status": "complete"
+        },
+        {
+          "model_key": "access-strands-decider-26B-A4B-gemma4-v1-2610",
+          "model": "Strands Decider 26B-A4B (Gemma 4)",
+          "score": 0.8874458874458875,
+          "score_display": "88.74%",
+          "status": "complete"
+        },
+        {
+          "model_key": "access-openai--gpt-6-luna-decisions",
+          "model": "GPT-6 Luna Decisions",
+          "score": 0.8831168831168831,
+          "score_display": "88.31%",
+          "status": "complete"
+        },
+        {
+          "model_key": "access-Clef-27B-original",
+          "model": "Cloudflare Clef (27B)",
+          "score": 0.8744588744588745,
+          "score_display": "87.45%",
+          "status": "complete"
+        },
+        {
+          "model_key": "access-typesafe--jev-1.14",
+          "model": "Jev 1.14",
+          "score": 0.8744588744588745,
+          "score_display": "87.45%",
+          "status": "complete"
+        },
+        {
+          "model_key": "blink-4b-1028",
+          "model": "Piccolo-4B",
+          "score": 0.8701298701298701,
+          "score_display": "87.01%",
+          "status": "complete"
+        }
+      ]
+    },
+    {
+      "id": "decisionindex",
+      "title": "Decision Index",
+      "version": "0.3",
+      "scale": 100,
+      "rows": [
+        {
+          "model_key": "blink-27b-1028",
+          "model": "Piccolo-27B",
+          "score": 68.59,
+          "score_display": "68.59 / 100",
+          "status": "complete",
+          "evaluation_scope": "research-text"
+        },
+        {
+          "model_key": "access-perplexity-ai--pplx-decider-v1.2",
+          "model": "Perplexity Decider v1.2 (27B)",
+          "score": 67.74,
+          "score_display": "67.74 / 100",
+          "status": "complete",
+          "evaluation_scope": "public"
+        },
+        {
+          "model_key": "access-vllm-sr--d3",
+          "model": "vLLM-SR d3 (27B)",
+          "score": 65.45,
+          "score_display": "65.45 / 100",
+          "status": "complete",
+          "evaluation_scope": "public"
+        },
+        {
+          "model_key": "access-Clef-27B-original",
+          "model": "Cloudflare Clef (27B)",
+          "score": 61.71,
+          "score_display": "61.71 / 100",
+          "status": "complete",
+          "evaluation_scope": "public"
+        },
+        {
+          "model_key": "blink-9b-1028",
+          "model": "Piccolo-9B",
+          "score": 60.86,
+          "score_display": "60.86 / 100",
+          "status": "complete",
+          "evaluation_scope": "research-text"
+        },
+        {
+          "model_key": "access-typesafe--jev-1.14",
+          "model": "Jev 1.14",
+          "score": 60.7,
+          "score_display": "60.70 / 100",
+          "status": "complete",
+          "evaluation_scope": "public"
+        },
+        {
+          "model_key": "blink-4b-1028",
+          "model": "Piccolo-4B",
+          "score": 58.0,
+          "score_display": "58.00 / 100",
+          "status": "complete",
+          "evaluation_scope": "research-text"
+        },
+        {
+          "model_key": "access-inception--mercury-decide",
+          "model": "Mercury Decide (Inception)",
+          "score": null,
+          "score_display": "—",
+          "status": "pending",
+          "evaluation_scope": "public"
+        },
+        {
+          "model_key": "access-microsoft--microsoft-decision-1",
+          "model": "Microsoft Decision-1",
+          "score": null,
+          "score_display": "—",
+          "status": "pending",
+          "evaluation_scope": "public"
+        },
+        {
+          "model_key": "access-openai--gpt-6-luna-decisions",
+          "model": "GPT-6 Luna Decisions",
+          "score": null,
+          "score_display": "—",
+          "status": "pending",
+          "evaluation_scope": "public"
+        },
+        {
+          "model_key": "access-strands-decider-26B-A4B-gemma4-v1-2610",
+          "model": "Strands Decider 26B-A4B (Gemma 4)",
+          "score": null,
+          "score_display": "—",
+          "status": "pending",
+          "evaluation_scope": "public"
+        }
+      ]
+    },
+    {
+      "id": "harnessjevbench",
+      "title": "HarnessJevBench",
+      "version": "V0.5",
+      "scale": 1,
+      "rows": [
+        {
+          "model_key": "blink-27b-1028",
+          "model": "Piccolo-27B",
+          "score": 0.8440677966101695,
+          "score_display": "84.41%",
+          "status": "complete"
+        },
+        {
+          "model_key": "access-vllm-sr--d3",
+          "model": "vLLM-SR d3 (27B)",
+          "score": 0.823728813559322,
+          "score_display": "82.37%",
+          "status": "complete"
+        },
+        {
+          "model_key": "access-perplexity-ai--pplx-decider-v1.2",
+          "model": "Perplexity Decider v1.2 (27B)",
+          "score": 0.7864406779661017,
+          "score_display": "78.64%",
+          "status": "complete"
+        },
+        {
+          "model_key": "access-inception--mercury-decide",
+          "model": "Mercury Decide (Inception)",
+          "score": 0.7372881355932204,
+          "score_display": "73.73%",
+          "status": "complete"
+        },
+        {
+          "model_key": "access-microsoft--microsoft-decision-1",
+          "model": "Microsoft Decision-1",
+          "score": 0.6949152542372882,
+          "score_display": "69.49%",
+          "status": "complete"
+        },
+        {
+          "model_key": "blink-9b-1028",
+          "model": "Piccolo-9B",
+          "score": 0.688135593220339,
+          "score_display": "68.81%",
+          "status": "complete"
+        },
+        {
+          "model_key": "access-typesafe--jev-1.14",
+          "model": "Jev 1.14",
+          "score": 0.6338983050847458,
+          "score_display": "63.39%",
+          "status": "complete"
+        },
+        {
+          "model_key": "access-openai--gpt-6-luna-decisions",
+          "model": "GPT-6 Luna Decisions",
+          "score": 0.6237288135593221,
+          "score_display": "62.37%",
+          "status": "complete"
+        },
+        {
+          "model_key": "blink-4b-1028",
+          "model": "Piccolo-4B",
+          "score": 0.6203389830508474,
+          "score_display": "62.03%",
+          "status": "complete"
+        },
+        {
+          "model_key": "access-Clef-27B-original",
+          "model": "Cloudflare Clef (27B)",
+          "score": 0.6050847457627119,
+          "score_display": "60.51%",
+          "status": "complete"
+        },
+        {
+          "model_key": "access-strands-decider-26B-A4B-gemma4-v1-2610",
+          "model": "Strands Decider 26B-A4B (Gemma 4)",
+          "score": 0.5559322033898305,
+          "score_display": "55.59%",
+          "status": "complete"
+        }
+      ]
+    },
+    {
+      "id": "datajevbench",
+      "title": "DataJevBench",
+      "version": "V0.5",
+      "scale": 1,
+      "rows": [
+        {
+          "model_key": "blink-27b-1028",
+          "model": "Piccolo-27B",
+          "score": 0.826,
+          "score_display": "82.60%",
+          "status": "complete"
+        },
+        {
+          "model_key": "access-vllm-sr--d3",
+          "model": "vLLM-SR d3 (27B)",
+          "score": 0.816,
+          "score_display": "81.60%",
+          "status": "complete"
+        },
+        {
+          "model_key": "access-perplexity-ai--pplx-decider-v1.2",
+          "model": "Perplexity Decider v1.2 (27B)",
+          "score": 0.802,
+          "score_display": "80.20%",
+          "status": "complete"
+        },
+        {
+          "model_key": "access-inception--mercury-decide",
+          "model": "Mercury Decide (Inception)",
+          "score": 0.784,
+          "score_display": "78.40%",
+          "status": "complete"
+        },
+        {
+          "model_key": "access-typesafe--jev-1.14",
+          "model": "Jev 1.14",
+          "score": 0.738,
+          "score_display": "73.80%",
+          "status": "complete"
+        },
+        {
+          "model_key": "access-Clef-27B-original",
+          "model": "Cloudflare Clef (27B)",
+          "score": 0.736,
+          "score_display": "73.60%",
+          "status": "complete"
+        },
+        {
+          "model_key": "access-microsoft--microsoft-decision-1",
+          "model": "Microsoft Decision-1",
+          "score": 0.726,
+          "score_display": "72.60%",
+          "status": "complete"
+        },
+        {
+          "model_key": "access-openai--gpt-6-luna-decisions",
+          "model": "GPT-6 Luna Decisions",
+          "score": 0.712,
+          "score_display": "71.20%",
+          "status": "complete"
+        },
+        {
+          "model_key": "blink-4b-1028",
+          "model": "Piccolo-4B",
+          "score": 0.706,
+          "score_display": "70.60%",
+          "status": "complete"
+        },
+        {
+          "model_key": "blink-9b-1028",
+          "model": "Piccolo-9B",
+          "score": 0.694,
+          "score_display": "69.40%",
+          "status": "complete"
+        },
+        {
+          "model_key": "access-strands-decider-26B-A4B-gemma4-v1-2610",
+          "model": "Strands Decider 26B-A4B (Gemma 4)",
+          "score": 0.606,
+          "score_display": "60.60%",
+          "status": "complete"
+        }
+      ]
+    }
+  ]
+}

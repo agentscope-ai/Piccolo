@@ -1,11 +1,11 @@
-# 模型与发布
+# Models
 
-Piccolo-4B、9B、27B 的完整 Safetensors，以及各自的 BF16、Q8_0、Q4_K_M GGUF 共 **12 个仓库均已在 Hugging Face 与 ModelScope 发布**，采用 Apache-2.0。
+Piccolo-4B, Piccolo-9B and Piccolo-27B are available as Safetensors and BF16, Q8_0 and Q4_K_M GGUF weights. All **12 repositories** are published on Hugging Face and ModelScope under Apache-2.0.
 
-- [下载矩阵、内存配置与推理说明](../docs/MODELS.md)
-- [固定 revision、文件大小与权重 SHA-256](manifest.json)
-- [发布权重的评测成绩](../evaluation/README.md)
-- [完整 checkpoint 参考推理](../inference/README.md)
-- [QwenPaw 下载与启用](../docs/QWENPAW.md)
+- [Download matrix and inference requirements](../docs/MODELS.md)
+- [Weight revisions, sizes and SHA-256 hashes](manifest.json)
+- [Benchmark results and reproduction](../evaluation/README.md)
+- [Reference inference](../inference/README.md)
+- [QwenPaw setup](../docs/QWENPAW.md)
 
-[ModelScope 合集](https://www.modelscope.cn/collections/AgentScope/QwenPaw-Flash)提供完整权重与各个 GGUF 版本。
+The [ModelScope collection](https://www.modelscope.cn/collections/AgentScope/QwenPaw-Flash) includes the full checkpoints and every GGUF variant.

@@ -119,7 +119,7 @@ def create_app(*, data=DATA, seed=SEED, web=WEB, config=None, prefix='', fronten
         await providers.close()
         await hosted.close()
 
-    app = FastAPI(title='PiccoloArena API', version='1.0.0', lifespan=lifespan,
+    app = FastAPI(title='Piccolo Arena API', version='1.0.0', lifespan=lifespan,
                   openapi_url=prefix+'/api/openapi.json', docs_url=None, redoc_url=None)
     app.add_middleware(GZipMiddleware, minimum_size=1000)
     app.state.providers, app.state.connections = providers, connections
@@ -233,8 +233,9 @@ def create_app(*, data=DATA, seed=SEED, web=WEB, config=None, prefix='', fronten
 
     @app.get(prefix+'/api/v1/games')
     async def games():
+        from .game_constants import playground_engine
         return {'schema_version': 'jev.engine-registry.v1',
-                'games': [e.descriptor() for e in list_engines(include_internal=False) if active_games([e.kind])]}
+                'games': [playground_engine(e).descriptor() for e in list_engines(include_internal=False) if active_games([e.kind])]}
 
     @app.post(prefix+'/api/v1/sessions', status_code=201)
     async def create_session(body: SessionCreate): return await sessions.create(body.game, body.seed, owner_context.get())

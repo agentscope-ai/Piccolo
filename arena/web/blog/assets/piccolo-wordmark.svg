@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 104" width="352" height="104">
+  <!-- Original geometric lettering. The i carries the piccolo's tube and two key rings. -->
+  <g fill="none" stroke="#25231f" stroke-width="7" stroke-linejoin="round">
+    <path d="M7 96V11H33C50 11 61 19 61 34S50 57 33 57H7"/>
+    <path d="M145 48C139 41 133 38 124 38C109 38 100 50 100 67S109 96 124 96C133 96 139 92 145 85"/>
+    <path d="M199 48C193 41 187 38 178 38C163 38 154 50 154 67S163 96 178 96C187 96 193 92 199 85"/>
+    <ellipse cx="235" cy="67" rx="24" ry="29"/>
+    <path d="M276 11V83C276 92 280 96 288 96"/>
+    <ellipse cx="323" cy="67" rx="24" ry="29"/>
+  </g>
+  <path d="M82 40V96" fill="none" stroke="#25231f" stroke-width="5.6"/>
+  <circle cx="82" cy="18" r="4.7" fill="#a65f3e"/>
+  <path d="M77 60H87M77 77H87" fill="none" stroke="#a65f3e" stroke-width="1.8"/>
+</svg>

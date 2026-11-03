@@ -5,9 +5,10 @@ from fastapi import FastAPI
 from fastapi.testclient import TestClient
 import blink_arena  # Install the packaged legacy engine module paths.
 import jev_demo_showcases as facade
+from jev_control_scope import active_games
 
 
-@pytest.mark.parametrize('kind', ['doudizhu','texas_holdem','zha_jin_hua','property_tycoon','uno','liars_dice'])
+@pytest.mark.parametrize('kind', active_games(['doudizhu','texas_holdem','zha_jin_hua','property_tycoon','uno','liars_dice']))
 def test_completed_decisions_survive_private_handoff_without_input_echo(kind):
     measured=[]
     async def predict(record,qid):

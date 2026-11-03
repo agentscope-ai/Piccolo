@@ -1,4 +1,4 @@
-"""One command prepares, probes and resumes the JevBench Public Piccolo Arena cohort."""
+"""One command prepares, probes and resumes the JevBench Public GameJevArena cohort."""
 import argparse
 import asyncio
 from collections import Counter, deque
@@ -58,6 +58,7 @@ def schedule(players, games, seeds, seed_base, mode='tournament'):
 def engine_sources():
     paths = list((ROOT/'blink_arena/engines').glob('*.py')) + [
         ROOT/'blink_arena/model_inputs.py', ROOT/'blink_arena/public_models.py', Path(__file__),
+        ROOT/'scripts/serve_public_native.py', ROOT/'scripts/start_public_models.py',
         ROOT/'scripts/public_independent.py'] + list((ROOT/'web/playground').glob('*.js')) + [
         ROOT/'web/playground/world-core-worker.cjs']
     return {str(p.relative_to(ROOT)): {'bytes': p.stat().st_size, 'mtime_ns': p.stat().st_mtime_ns}
@@ -590,7 +591,7 @@ def _report(out):
         w.writeheader()
         w.writerows({**r, 'error_counts': json.dumps(r['error_counts'])} for r in rows)
     (out/'game_metrics.csv.tmp').replace(out/'game_metrics.csv')
-    lines = ['# Piccolo Arena · JevBench Public 模型', '',
+    lines = ['# GameJevArena · JevBench Public 模型', '',
              f"状态：{summary['state']}；已结束 {len(receipts)}/{len(plan['schedule'])} 场；错误 {summary['errors']}。",
              f"{len(plan['kinds'])} 款游戏；每款 {plan['seeds']} 个固定种子；每个模型最多 5 个请求、最多 20 局实际游戏。Blink 等 RL checkpoint 就绪后加入。", '',
              '直接对战交换座位；其余游戏复用同种子原生终局。回合制每步三次顺序探测，实时游戏一次且时钟持续。',

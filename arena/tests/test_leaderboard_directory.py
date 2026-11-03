@@ -66,7 +66,7 @@ def test_arena_rating_import_preserves_native_snapshot_and_replay(tmp_path):
         'benchmark_id': 'arena', 'title': 'Arena ratings', 'version': 'fixture-v1',
         'metric': 'elo', 'score_scale': [0, 3000], 'axis_scale': [0, 3000],
         'rows': [{'model_id': 'fixture-model', 'model_name': 'Fixture', 'score': 1500,
-                  'axes': [{'id': 'blackjack', 'label_en': 'Blackjack', 'label_zh': '二十一点', 'score': 1500}]}],
+                  'axes': [{'id': 'hex_7x7', 'label_en': 'Hex', 'label_zh': '六边棋', 'score': 1500}]}],
     })
     store.put(doc)
     assert store.path('arena').name == 'arena-ratings.json'

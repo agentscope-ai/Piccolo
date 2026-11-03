@@ -1,0 +1,29 @@
+{
+  "date": "2026-11-03",
+  "language": "en",
+  "capture": "QwenPaw local browser UI",
+  "configuration_changed": false,
+  "files": [
+    {
+      "file": "en-model-download.jpg",
+      "width": 1290,
+      "height": 747,
+      "sha256": "f1a3b69c5e8c31397be3c7cf473ca062bb8d65483c9db34d4cf6352185aef36c",
+      "bytes": 128986
+    },
+    {
+      "file": "en-automatic-review.jpg",
+      "width": 1290,
+      "height": 747,
+      "sha256": "f62a4d58c37ab177a7af3a536b4d8104826d80d0895252e62b6a9a9d2df030f4",
+      "bytes": 102345
+    },
+    {
+      "file": "en-context-compaction.jpg",
+      "width": 1290,
+      "height": 747,
+      "sha256": "84b6de268263bf0fc6567f2104097dc18aeb823982e7c2e212527ab42f6cc2de",
+      "bytes": 105595
+    }
+  ]
+}

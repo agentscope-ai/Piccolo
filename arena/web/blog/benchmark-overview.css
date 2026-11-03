@@ -1,0 +1,36 @@
+.benchmark-overview{margin:34px 0 30px;color:var(--ink,#302d29)}
+.bo-heading{display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding-bottom:16px;border-bottom:1px solid #d8cfbf}
+.benchmark-overview .bo-heading h3{margin:0;font-size:22px;font-weight:500;letter-spacing:-.4px}
+.bo-heading>span{font-size:11px;color:#807566;font-variant-numeric:tabular-nums;white-space:nowrap}
+.bo-group{margin-top:26px}
+.benchmark-overview .bo-group-title{margin:0 0 14px;font-size:11px;font-weight:500;letter-spacing:.11em;text-transform:uppercase;color:#8a705b}
+.bo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:36px}
+.bo-metric{min-width:0;padding:0 0 22px;border-bottom:1px solid #d8cfbf}
+.benchmark-overview .bo-metric-title{margin:0;font-size:17px;line-height:1.5;font-weight:500;letter-spacing:-.2px}
+.bo-metric-title a{color:inherit;text-decoration:none;text-underline-offset:4px}
+.bo-metric-title a:hover{text-decoration:underline;color:#995f3a}
+.bo-metric-title a:focus-visible{outline:2px solid #a56b43;outline-offset:5px}
+.benchmark-overview .bo-scope{margin:4px 0 14px;font-size:11px;line-height:1.6;color:#807566}
+.bo-result{display:flex;flex-wrap:wrap;gap:4px 16px;align-items:baseline;margin-bottom:18px}
+.bo-value{font-size:34px;line-height:1.25;font-weight:450;letter-spacing:-1px;color:#985e3b;font-variant-numeric:tabular-nums}
+.bo-value small{font-size:14px;letter-spacing:0;font-weight:400;color:#807566}
+.bo-rank{font-size:11px;line-height:1.6;color:#746957}
+.bo-comparisons{display:grid;gap:12px}
+.bo-row-label{display:flex;justify-content:space-between;gap:12px;margin-bottom:5px;font-size:11px;line-height:1.5;color:#6d6558}
+.bo-row-label>span:first-child{min-width:0;overflow-wrap:anywhere}
+.bo-row-value{flex:none;white-space:nowrap;font-variant-numeric:tabular-nums}
+.bo-own-row .bo-row-label{color:#8d5737}
+.bo-track{height:7px;background:#ece6db;overflow:hidden}
+.bo-fill{display:block;height:100%;background:#baae9a}
+.bo-own-row .bo-fill{background:#aa6944}
+.benchmark-overview .bo-gap{margin:12px 0 0;font-size:11px;line-height:1.65;color:#766a5a}
+.benchmark-overview .bo-footnote{margin:16px 0 0;font-size:11px;line-height:1.75;color:#807566;max-width:720px}
+.benchmark-overview .bo-unavailable{font-size:13px;line-height:1.7;color:#807566}
+@media(max-width:600px){
+ .benchmark-overview .bo-heading h3{font-size:20px}
+ .bo-heading{gap:12px}
+ .bo-grid{grid-template-columns:1fr;gap:22px}
+ .bo-value{font-size:32px}
+ .bo-group{margin-top:24px}
+ .bo-rank,.bo-row-label,.benchmark-overview .bo-scope,.benchmark-overview .bo-gap,.benchmark-overview .bo-footnote{font-size:12px}
+}

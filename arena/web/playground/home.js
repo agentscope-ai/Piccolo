@@ -1,4 +1,4 @@
-/* Public comparisons use registered results. */
+/* Public comparisons and clearly marked internal previews use registered results. */
 (() => {
   'use strict';
   const modelId = 'blink-27b-1028';
@@ -89,9 +89,10 @@
       button.setAttribute('aria-controls', 'homeComparison');
       const copy = make('span', 'home-result-copy');
       copy.append(make('span', 'home-result-name', titleText(definition, benchmark)), make('small', '', tr(...definition.metric)));
+      if (definition.unreleased) copy.append(make('span', 'home-result-status', tr('Internal preview · Coming Soon', '内部预览 · Coming Soon')));
       const value = complete(row) ? row.score_display : '—';
       button.append(copy, make('strong', '', value), make('span', 'home-result-arrow', '↗'));
-      button.setAttribute('aria-label', `${titleText(definition, benchmark)} · ${value} · ${tr('Compare results', '对比成绩')}`);
+      button.setAttribute('aria-label', `${titleText(definition, benchmark)} · ${value} · ${definition.unreleased ? tr('Internal preview · Coming Soon', '内部预览 · Coming Soon') : tr('Compare results', '对比成绩')}`);
       button.onclick = () => {
         selected = definition.id;
         render();
@@ -128,6 +129,14 @@
       : tr('Registered evaluation results', '已登记评测成绩')));
     heading.append(titleBlock, make('span', 'home-chart-badge', tr('Piccolo-27B highlighted', '铜橙色标记 Piccolo-27B')));
     chart.append(heading);
+    if (definition.unreleased) {
+      const release = make('div', 'home-internal-preview');
+      release.append(
+        make('span', 'home-release-badge', tr('Unreleased · Coming Soon', '未公开 · Coming Soon')),
+        make('p', '', tr('A benchmark developed by Piccolo. Results shown here are an internal evaluation preview.', 'Piccolo 自建基准；当前成绩为内部评测预览，基准尚未公开发布。'))
+      );
+      chart.append(release);
+    }
     if (!rows.length || failed) {
       const empty = make('div', 'home-chart-empty', tr(
         failed ? 'Results could not be loaded.' : loading ? 'Loading registered results…' : 'No results for this benchmark yet.',
@@ -184,7 +193,9 @@
     revealBars(list, previous);
     const caption = make('p', 'home-chart-note', tr(...definition.note));
     const footer = make('div', 'home-chart-footer');
-    const open = make('button', 'home-inline-link', tr('Explore the full leaderboard ↗', '查看完整榜单 ↗'));
+    const open = make('button', 'home-inline-link', definition.unreleased
+      ? tr('Explore the internal preview ↗', '查看内部评测预览 ↗')
+      : tr('Explore the full leaderboard ↗', '查看完整榜单 ↗'));
     open.type = 'button';
     open.onclick = () => openBenchmark(selected);
     const completed = rows.filter(complete).length;

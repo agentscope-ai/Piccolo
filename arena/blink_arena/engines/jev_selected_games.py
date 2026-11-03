@@ -111,12 +111,20 @@ def _runtime(kind, seed, history):
         return value
 
 
+def _step_limit(state):
+    limit=state.get('max_steps', GAMES[state['kind']][3])
+    maximum={'xiangqi':500, 'sudoku':960}.get(state['kind'],GAMES[state['kind']][3])
+    if type(limit) is not int or not 1 <= limit <= maximum:
+        raise ValueError('Invalid decision budget')
+    return limit
+
+
 def _load(state):
     if state.get('engine_revision') != REVISION or state.get('kind') not in GAMES:
         raise ValueError('Unsupported selected-game state')
     if type(state.get('steps')) is not int or state['steps'] != len(state.get('_history', ())):
         raise ValueError('Invalid action journal')
-    if (not 0 <= state['steps'] <= GAMES[state['kind']][3]
+    if (not 0 <= state['steps'] <= _step_limit(state)
             or type(state.get('_seed')) is not int or not 0 <= state['_seed'] <= 4294967295
             or any(not isinstance(a,str) or len(a)>256 for a in state['_history'])):
         raise ValueError('Invalid seed or journal bounds')
@@ -144,7 +152,7 @@ def outcome(state, side=None):
     if type(side) is not int or not 0 <= side < GAMES[kind][4]:
         raise ValueError('Invalid controlled seat')
     if not _terminal(state):
-        return 'budget_exhausted' if state['steps'] >= GAMES[kind][3] else None
+        return 'budget_exhausted' if state['steps'] >= _step_limit(state) else None
     source = GAMES[kind][1]
     if source == 'openspiel':
         reward = native.returns()[side]
@@ -164,10 +172,13 @@ def fresh(kind, seed, options=None):
     if seed is None or kind not in GAMES:
         raise ValueError('Explicit seed and known selected game required')
     options = dict(options or {})
-    if set(options) - {'opponent'} or options.get('opponent', 'human') not in ('human', 'rule'):
+    if set(options) - {'opponent','max_steps'} or options.get('opponent', 'human') not in ('human', 'rule'):
         raise ValueError('Unsupported reset options')
+    if 'max_steps' in options and kind not in ('xiangqi','sudoku'):
+        raise ValueError('Custom decision budget is supported only for Xiangqi and Sudoku')
     state = {'kind': kind, 'engine_revision': REVISION, '_seed': seed, '_history': [],
              '_opponent': options.get('opponent', 'human'), 'steps': 0, 'handoff': False, 'outcome': None}
+    if 'max_steps' in options:state['max_steps']=options['max_steps']
     _load(state)
     if state['_opponent']=='rule' and GAMES[kind][4]>1 and actor(state)!=0:
         return step(state, rule_action(state))
@@ -270,6 +281,7 @@ def public(state, **kwargs):
     view = {'kind': kind, 'name': GAMES[kind][0], 'steps': state['steps'],
             'player': actor(state), 'seat_count': GAMES[kind][4], 'outcome': outcome(state),
             'handoff': bool(state.get('handoff')), 'rules': RULES[kind]}
+    if 'max_steps' in state:view['max_steps']=_step_limit(state)
     names={'checkers':('白方','黑方'),'go':('黑方','白方'),'xiangqi':('红方','黑方')}.get(kind,('玩家1','玩家2'))
     view['player_name']=names[view['player']]
     if view['outcome']:

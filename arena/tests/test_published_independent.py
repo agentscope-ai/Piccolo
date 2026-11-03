@@ -44,7 +44,9 @@ def test_frontend_prefers_published_cohort_over_stale_runtime_and_legacy_elo(tmp
     with TestClient(app) as client:
         payload = client.get('/api/elo')
         assert payload.status_code==200
-        assert payload.json()==json.loads((results/'arena-independent.json').read_text())
+        from blink_arena.game_scope import project_arena
+        assert payload.json()==project_arena(json.loads((results/'arena-independent.json').read_text()))
+        assert 'blackjack' not in payload.json()['by_game']
         projection=client.get('/api/leaderboard').json()
         arena=next(b for b in projection['benchmarks'] if b['id']=='gamejevbench')
         assert arena['source_file']=='arena-independent.json'

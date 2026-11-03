@@ -51,18 +51,7 @@ def _student_policy(record, action, policy):
         raise ValueError('chess_student_behavior_mapping_mismatch')
 
 
-def _policy(record, action, policy, evaluation, teacher=False):
-    if teacher:
-        prohibited = {'old_probabilities', 'input_token_ids', 'candidate_token_ids',
-                      'selected_index', 'sampling_epsilon', 'sampling_temperature'}
-        if (evaluation or not isinstance(policy, dict) or policy.get('origin') != 'teacher'
-                or policy.get('forced') or policy.get('on_policy', False)
-                or policy.get('student_training_sample', False) or prohibited.intersection(policy)
-                or not isinstance(policy.get('teacher_model'), str) or not policy['teacher_model']
-                or policy.get('served_model') != policy['teacher_model']
-                or action not in record['questions']['decision']['criteria']):
-            raise ValueError('chess_teacher_requires_actual_off_policy_teacher_evidence')
-        return
+def _policy(record, action, policy, evaluation):
     if not evaluation:
         return _student_policy(record, action, policy)
     prohibited = {'old_probabilities', 'input_token_ids', 'candidate_token_ids',
@@ -89,7 +78,7 @@ def _journal(sampler, job, name, value):
         sampler.journal(job, name, value)
 
 
-async def _play(sampler, job, *, evaluation, teacher=False):
+async def _play(sampler, job, *, evaluation):
     engine, side, mode, budget = _settings(job)
     initial = engine.reset(job['seed'], {'opponent': mode, 'max_plies': engine.limit})
     state, trace, events = deepcopy(initial), [], []
@@ -119,7 +108,7 @@ async def _play(sampler, job, *, evaluation, teacher=False):
             action, policy = await sampler.policy_action(captured, job['episode_id'], ordinal)
             if captured != record:
                 raise ValueError('chess_policy_modified_captured_record')
-            _policy(record, action, policy, evaluation, teacher)
+            _policy(record, action, policy, evaluation)
             student_calls += 1
             controller, event_type = 'model', 'policy'
         elif mode == 'qwen3.8-max':
@@ -158,16 +147,14 @@ async def _play(sampler, job, *, evaluation, teacher=False):
     extra = {'chess_rollout_revision': REVISION, 'chess_engine_revision': chess.REVISION,
         'events': events, 'controlled_side': side, 'opponent': mode,
         'decision_limit': budget, 'ply_limit': engine.limit,
-        ('teacher_policy_requests' if teacher else 'student_policy_requests'): student_calls, 'qwen_calls': qwen_calls,
+        'student_policy_requests': student_calls, 'qwen_calls': qwen_calls,
         'rule_opponent_actions': rule_calls, 'deterministic_student_actions': forced_student,
         'deterministic_opponent_actions': forced_opponent, 'rule_takeover_count': 0,
         'verified_outcome': outcome, 'native_outcome': engine.outcome(state, side),
         'budget_exhausted': outcome == 'budget_exhausted', 'credit_revision': CREDIT_REVISION,
-        'evaluation_only': evaluation, 'reward_export_prohibited': evaluation or teacher}
+        'evaluation_only': evaluation, 'reward_export_prohibited': evaluation}
     if evaluation:
         extra.update(on_policy=False, policy_origin='evaluation')
-    if teacher:
-        extra.update(on_policy=False, policy_origin='teacher', teacher_distillation=True)
     return initial, state, _credit(trace, state), outcome, extra
 
 
@@ -180,12 +167,7 @@ async def play_evaluation(sampler, job):
     return await _play(sampler, job, evaluation=True)
 
 
-async def play_teacher(sampler, job):
-    """Full native games for supervised distillation, never policy-gradient data."""
-    return await _play(sampler, job, evaluation=False, teacher=True)
-
-
-def _verify(job, initial, final, extra, trace=None, *, evaluation, teacher=False):
+def _verify(job, initial, final, extra, trace=None, *, evaluation):
     """Replay all seats/forced moves and bind every PG row to its exact action."""
     engine, side, mode, budget = _settings(job)
     state = engine.reset(job['seed'], {'opponent': mode, 'max_plies': engine.limit})
@@ -194,9 +176,7 @@ def _verify(job, initial, final, extra, trace=None, *, evaluation, teacher=False
             or extra.get('chess_engine_revision') != chess.REVISION
             or extra.get('decision_limit') != budget or extra.get('ply_limit') != engine.limit
             or extra.get('evaluation_only') is not evaluation
-            or extra.get('reward_export_prohibited') is not (evaluation or teacher)
-            or extra.get('teacher_distillation', False) is not teacher
-            or teacher and (extra.get('on_policy') is not False or extra.get('policy_origin') != 'teacher')
+            or extra.get('reward_export_prohibited') is not evaluation
             or evaluation and (extra.get('on_policy') is not False or extra.get('policy_origin') != 'evaluation')):
         raise ValueError('chess_replay_identity_changed')
     events = extra.get('events')
@@ -228,7 +208,7 @@ def _verify(job, initial, final, extra, trace=None, *, evaluation, teacher=False
             forced_student += int(controlled)
             forced_opponent += int(not controlled)
         elif controlled:
-            _policy(event['record'], action, event.get('policy'), evaluation, teacher)
+            _policy(event['record'], action, event.get('policy'), evaluation)
             student_calls += 1
         elif mode == 'qwen3.8-max':
             if 'policy' in event:
@@ -250,7 +230,7 @@ def _verify(job, initial, final, extra, trace=None, *, evaluation, teacher=False
     if not native_outcome and len(events) < engine.limit:
         if not (chess.actor(state) == side and len(engine.legal_actions(state)) > 1 and student_calls == budget):
             raise ValueError('chess_replay_ended_before_terminal_or_budget')
-    expected = {('teacher_policy_requests' if teacher else 'student_policy_requests'): student_calls, 'qwen_calls': qwen_calls,
+    expected = {'student_policy_requests': student_calls, 'qwen_calls': qwen_calls,
         'rule_opponent_actions': rule_calls, 'deterministic_student_actions': forced_student,
         'deterministic_opponent_actions': forced_opponent, 'rule_takeover_count': 0,
         'verified_outcome': native_outcome or 'budget_exhausted', 'native_outcome': native_outcome,
@@ -269,7 +249,3 @@ def verify(job, initial, final, extra, trace=None):
 
 def verify_evaluation(job, initial, final, extra, trace=None):
     return _verify(job, initial, final, extra, trace, evaluation=True)
-
-
-def verify_teacher(job, initial, final, extra, trace=None):
-    return _verify(job, initial, final, extra, trace, evaluation=False, teacher=True)

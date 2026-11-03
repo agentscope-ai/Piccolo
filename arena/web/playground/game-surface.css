@@ -1,5 +1,5 @@
 /* Game surfaces inherit the same paper, typography and controls as the site. */
-#gamesView{--game-paper:#fffdf8;--game-line:#ded9cf;--game-ink:#443b30;--game-accent:#a76543}
+#gamesView{--game-paper:#fffdf8;--game-line:#ded9cf;--game-ink:#443b30;--game-accent:#a76543;--game-sage:#315648;--game-muted:#756b5f}
 #gamesView .canvas-shell,#gamesView .board-wrap,#gamesView .selected-game{background:var(--game-paper);border-color:var(--game-line)!important;border-radius:8px!important;box-shadow:none!important}
 #gamesView .scene-header h2{font-family:var(--fs-display-font,Georgia,serif);font-weight:400;letter-spacing:-.5px}
 #gamesView :is(.goal-card,.decision-card){border-color:var(--game-line)!important;background:var(--game-paper);box-shadow:none!important}
@@ -10,6 +10,7 @@
 #gamesView :is(.scene-stats strong,.game-turn){font-variant-numeric:tabular-nums;color:var(--game-ink)}
 #gamesView :is(#showcaseOutcome,#gameOutcome):not(.hidden){padding:16px 18px;border:1px solid var(--game-line);border-radius:8px;background:#f1f3eb;color:#435840;box-shadow:none}
 #gamesView :is(#showcaseOutcome,#gameOutcome).loss{background:#f7eee7;border-color:#e2cbbc;color:#8f5539}
+#gamesView :is(#showcaseOutcome,#gameOutcome).draw{background:#f2eee5;border-color:var(--game-line);color:#665c4b}
 #globalError:not(.hidden){padding:14px 18px;margin:0 0 20px;border:1px solid #dec2af;border-left:3px solid #a76543;border-radius:6px;background:#fbf2e9;color:#804c31;font-size:13px;line-height:1.7;overflow-wrap:anywhere}
 .connection-options small{display:block;font-size:11px;line-height:1.7;color:var(--muted);margin:6px 0 12px}
 @media(max-width:620px){
@@ -18,4 +19,90 @@
  body #showcasesView[data-kind=merge_2048] .control-hint::before{content:none}
  #gamesView .scene-controls button{min-height:44px}
  #gamesView .seed-toolbar :is(input,button){min-height:40px}
+}
+
+/* Shared rhythm and control hierarchy across board, card and world games. */
+body #gamesView .scene-header{margin:8px 0 16px}
+body #gamesView :is(#showcasesView,#boardPlay) .scene-header h2{font-size:28px;line-height:1.3;color:var(--game-ink)}
+body #gamesView .play-aside{gap:10px}
+body #gamesView .play-aside>.goal-card{padding:14px 16px;background:var(--game-paper)!important}
+body #gamesView .play-aside>.goal-card h3{font-size:13px;font-weight:500;line-height:1.75}
+body #gamesView .play-aside .scene-stats{margin-top:12px;padding-top:12px;gap:10px 18px}
+body #gamesView .play-aside .scene-stats strong{font-size:23px;line-height:1.25;letter-spacing:-.4px}
+body #gamesView .play-aside .scene-stats span{font-size:11px;line-height:1.7;color:var(--game-muted)}
+body #gamesView :is(.scene-controls,.model-controller){gap:8px}
+body #gamesView :is(.scene-controls,.model-controller) button{min-height:42px;padding:9px 13px;font-size:13px;font-weight:500;background:var(--game-paper);border:1px solid var(--game-line);color:var(--game-ink);box-shadow:none}
+body #gamesView :is(.scene-controls,.model-controller) button:hover:not(:disabled){background:#f2eee5;border-color:#b9ad9c}
+body #gamesView :is(.scene-controls,.model-controller) .primary{background:#2d3029;border-color:#2d3029;color:#fffdf8}
+body #gamesView :is(.scene-controls,.model-controller) .primary:hover:not(:disabled){background:#41483b;border-color:#41483b;color:#fffdf8}
+body #gamesView :is(.scene-controls,.model-controller) button[aria-pressed=true]{background:#e4eddf;border-color:#93a789;color:var(--game-sage)}
+body #gamesView :is(.scene-controls,.model-controller) button.quiet{background:#f2e9dd;border-color:#decebb;color:#865b3b}
+body #gamesView :is(.scene-controls,.model-controller) button:disabled{opacity:.45;cursor:not-allowed}
+body #gamesView :is(#showcasesView,#boardPlay) .play-aside .model-controller button,
+body #gamesView #showcaseActions button{min-height:42px;padding:9px 13px;font-size:13px}
+body #gamesView :is(button,select,input,summary):focus-visible{outline:2px solid #62836b;outline-offset:3px}
+body #gamesView .scene-controls{padding:12px 0 4px;margin-top:0}
+body #gamesView .dpad{grid-template-columns:repeat(3,minmax(64px,1fr));width:min(100%,300px);gap:8px}
+body #gamesView :is(.workspace-decision,.scene-details details,.workspace-result,#gameInput)>summary{font-size:12px;line-height:1.8;color:var(--game-muted)}
+body #gamesView .play-aside :is(.workspace-decision,.workspace-result,.scene-details details,#gameInput){padding:9px 0}
+body #gamesView .canvas-shell{min-width:0;overflow:hidden}
+body #gamesView .canvas-shell:has(.selected-game:not([hidden])){padding:14px}
+body #gamesView .selected-game{margin:0 auto;width:100%;border:0!important;background:transparent;padding:0}
+body #gamesView .selected-heading{font-size:12px;line-height:1.7;color:var(--game-muted);margin-bottom:14px}
+body #gamesView .selected-game>p{font-size:13px;color:var(--game-muted);line-height:1.8}
+body #gamesView .selected-grid{width:100%}
+body #gamesView .selected-grid .selected-cell:focus-visible{outline-offset:-3px}
+body #gamesView :is(.jev-chess,.selected-game){max-width:690px}
+body #gamesView .social-actions{padding:10px 12px;background:var(--game-paper);border-color:var(--game-line);border-radius:8px}
+body #gamesView .social-actions__buttons{gap:8px}
+body #gamesView .social-actions__picker select{height:42px;font-size:13px;border-color:var(--game-line);color:var(--game-ink)}
+body #gamesView .social-duel-handoff{white-space:normal;width:max-content;max-width:calc(100% - 24px);border-radius:8px;font-size:13px}
+body #gamesView #showcaseActions .bid-controls{flex-wrap:wrap;gap:10px}
+body #gamesView #showcaseActions .bid-controls select{min-height:42px}
+body #gamesView #showcaseActions .uno-action{font-size:12px}
+
+/* Give a small puzzle a clear focal point without stretching its content. */
+body #gamesView .selected-game[data-kind=guess_the_number]{padding:14px;min-height:240px}
+.guess-range{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin:20px 0}
+.guess-range strong{font-size:42px;font-weight:500;line-height:1.2;letter-spacing:-1.5px;color:#315648}
+.guess-range>span{font-size:13px;color:#756b5f}
+.guess-history{list-style:none;padding:0;margin:16px 0 0;display:flex;flex-wrap:wrap;gap:8px}
+.guess-history li{display:flex;align-items:center;gap:10px;border:1px solid #ded9cf;border-radius:6px;padding:8px 12px;background:#f5f3eb}
+.guess-history strong{font-size:19px;font-weight:550;color:#315648}
+.guess-history span{font-size:12px;color:#756b5f}
+body #gamesView #showcasesView[data-kind=guess_the_number] #showcaseActions{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:6px}
+body #gamesView #showcasesView[data-kind=guess_the_number] #showcaseActions button{padding:8px 0;min-width:0}
+
+@media(max-width:800px){
+ body #gamesView .scene-header{margin-top:10px}
+ body #gamesView .play-aside{max-height:none;overflow:visible}
+ body #gamesView .play-aside>.goal-card{padding:14px}
+}
+@media(max-width:620px){
+ body #gamesView :is(#showcasesView,#boardPlay) .scene-header h2{font-size:26px}
+ body #gamesView .scene-header{margin-bottom:14px}
+ body #gamesView :is(.scene-controls,.model-controller) button{min-height:44px;font-size:13px}
+ body #gamesView :is(#showcasesView,#boardPlay) .play-aside .model-controller button,
+ body #gamesView #showcaseActions button{min-height:44px}
+ body #gamesView .scene-controls{padding-top:10px}
+ body #gamesView .social-actions__buttons{display:flex;flex-wrap:wrap}
+ body #gamesView .social-actions__buttons button{flex:1;min-height:44px}
+ body #gamesView .social-actions__picker select{height:44px}
+ body #gamesView .canvas-shell:has(.selected-game:not([hidden])){padding:12px}
+ body #gamesView .selected-heading .participant-seat{white-space:normal}
+ body #gamesView .play-aside .scene-stats strong{font-size:22px}
+ body #gamesView #showcasesView[data-kind=guess_the_number] #showcaseActions{grid-template-columns:repeat(5,minmax(0,1fr))}
+ body #gamesView .tetris-live-controls{grid-template-columns:repeat(4,minmax(0,1fr))}
+ body #gamesView .tetris-live-controls button{min-width:0}
+ body #gamesView .play-workspace-bar :is(select,button,.workspace-environment>summary){min-height:38px}
+ body #gamesView .play-workspace-bar .participant-controls :is(select,button){min-height:38px}
+}
+@media(prefers-reduced-motion:reduce){body #gamesView :is(#showcasesView,#boardPlay){animation:none}body #gamesView button{transition:none}}
+
+/* Keep the entire table/map visible when the available scene is phone sized.
+   The canvas retains its logical drawing and hit-test coordinates. */
+@media(max-width:620px){
+ body #showcasesView:is([data-kind=doudizhu],[data-kind=texas_holdem],[data-kind=zha_jin_hua],[data-kind=property_tycoon],[data-kind=sokoban_puzzle]) #showcaseCanvas{width:100%;max-width:100%;height:auto}
+ body #showcasesView:is([data-kind=doudizhu],[data-kind=texas_holdem],[data-kind=zha_jin_hua],[data-kind=property_tycoon],[data-kind=sokoban_puzzle]) .canvas-shell{min-height:0;overflow:hidden}
+ body #showcasesView:is([data-kind=doudizhu],[data-kind=texas_holdem],[data-kind=property_tycoon],[data-kind=sokoban_puzzle]) .control-hint::before{content:none}
 }

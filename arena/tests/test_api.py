@@ -117,7 +117,7 @@ def test_board_revision_and_single_interactive_decision(server):
     assert c.post('/api/game/move',json={**body,'revision':1}).status_code==404
 
 
-@pytest.mark.parametrize('kind', ['othello_6x6', 'hex_7x7', 'dots_and_boxes_3x3'])
+@pytest.mark.parametrize('kind', ['othello_6x6', 'hex_7x7'])
 def test_board_standard_start_and_explicit_seed_remain_distinct(server, kind):
     import jev_demo_games as board
     _, client, _, _ = server
@@ -185,7 +185,7 @@ def test_explicit_public_origin_behind_https_proxy(tmp_path, monkeypatch):
 def test_complete_evaluation_replay_and_incremental_enrollment(server):
     app,c,calls,data=server
     connect(c,'a');connect(c,'b')
-    result=c.post('/api/v1/evaluations',json={'model_ids':['a','b'],'games':['othello_6x6','blackjack'],'seed_base':42,'concurrency':2})
+    result=c.post('/api/v1/evaluations',json={'model_ids':['a','b'],'games':['othello_6x6','guess_the_number'],'seed_base':42,'concurrency':2})
     assert result.status_code==201,result.text
     ident=result.json()['run_id']
     def wait_finished():

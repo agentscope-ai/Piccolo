@@ -6,8 +6,6 @@ import copy
 import time
 
 from jev_engine_registry import get_engine
-from jev_inference_clock import paused, contract, record_for_clock, verify_clock
-from jev_inference_clock import simulated, frozen_wait, wait_seconds, observation_for_clock, SIMULATED_REVISION
 from jev_world_core import WorldCoreDriver, RUNTIME_REVISION
 from jev_world_realtime_rl import (
     LIMITS, _record, _terminal, _same, rebuild_credit, CLOCK_CONTRACT,
@@ -19,8 +17,7 @@ async def play(sampler, job):
     engine = get_engine(kind)
     options = ({'generator_revision': job['generator_revision']}
                if kind in ('mario_platformer', 'terraria_survival') and 'generator_revision' in job else None)
-    clock_contract = contract(job, CLOCK_CONTRACT)
-    driver = WorldCoreDriver(kind, job['seed'], options=options, inference_world_paused=frozen_wait(job))
+    driver = WorldCoreDriver(kind, job['seed'], options=options)
     trace, events = [], []
     try:
         created = await driver.start()
@@ -33,10 +30,9 @@ async def play(sampler, job):
                 break
             record_started = time.monotonic()
             if hasattr(sampler, 'compute_record'):
-                record, latency = await sampler.compute_record(_record, engine.observe, observation_for_clock(observation, job))
+                record, latency = await sampler.compute_record(_record, engine.observe, observation)
             else:
-                record, latency = _record(engine.observe, observation_for_clock(observation, job)), {}
-            record = record_for_clock(record, job)
+                record, latency = _record(engine.observe, observation), {}
             record_ready = time.monotonic()
             latency['record_preparation_seconds'] = record_ready-record_started
             action, policy = await sampler.policy_action(record, job['episode_id'], ordinal)
@@ -46,9 +42,6 @@ async def play(sampler, job):
             if hasattr(sampler, 'journal'):
                 sampler.journal(job, 'decision', {'ordinal': ordinal, 'record': record,
                                                 'action': action, 'policy': policy})
-            simulated_seconds = wait_seconds(job, ordinal, 0.) if simulated(job) else None
-            if simulated(job):
-                await driver.call('advanceInferenceWait', frames=round(simulated_seconds * 60))
             execution = await driver.call('commit', action=action, observed=observation)
             state = execution['after_state']
             event = {'ordinal': ordinal, 'record': record, 'action': action,
@@ -57,12 +50,10 @@ async def play(sampler, job):
                      'action_applied': execution['reason'] is None,
                      'discard_reason': execution['reason'],
                      'arrival_check': execution['arrival_check'],
-                     'waiting_seconds': simulated_seconds if simulated(job) else 0. if paused(job) else execution['arrival_seconds'] - captured['seconds'],
-                     **({'sampling_clock_source': SIMULATED_REVISION} if simulated(job) else {}),
-                     'wall_waiting_seconds': execution['arrival_seconds'] - captured['seconds'],
+                     'waiting_seconds': execution['arrival_seconds'] - captured['seconds'],
                      'arrival_wall_seconds': execution['arrival_seconds'],
                      'real_time_seconds': execution['real_time_seconds'],
-                     'clock_contract': clock_contract, 'latency_breakdown': latency}
+                     'clock_contract': CLOCK_CONTRACT, 'latency_breakdown': latency}
             events.append(event)
             if event['action_applied']:
                 trace.append(copy.deepcopy(event))
@@ -79,9 +70,8 @@ async def play(sampler, job):
         extra = {**credit,
             **({'environment_generation': {k: generation[k] for k in
                 ('seed', 'generator_revision', 'profile')}} if generation else {}),
-            'opponent': 'environment', 'clock_contract': clock_contract,
-            'engine_runtime': RUNTIME_REVISION, 'inference_world_paused': paused(job),
-            **({'inference_simulated_wait': True, 'sampling_clock_source': SIMULATED_REVISION} if simulated(job) else {}),
+            'opponent': 'environment', 'clock_contract': CLOCK_CONTRACT,
+            'engine_runtime': RUNTIME_REVISION, 'inference_world_paused': False,
             'engine_viewport': {'width': driver.viewport_width, 'height': driver.viewport_height},
             'real_time_seconds': finished['terminalClock']['elapsed_seconds'],
             'terminal_clock': finished['terminalClock'],
@@ -105,7 +95,6 @@ async def verify(job, initial, final, extra):
     """Advance original physics to every recorded event, without wall-clock waits."""
     from jev_world_replay_validation import ReplayValidation
     validation = ReplayValidation()
-    verify_clock(job, extra, CLOCK_CONTRACT)
     kind = job['kind']
     engine = get_engine(kind)
     options = None
@@ -118,7 +107,7 @@ async def verify(job, initial, final, extra):
     viewport = extra.get('engine_viewport', {})
     async with WorldCoreDriver(kind, job['seed'], replay=True, options=options,
                                frame=initial['frame'], viewport_width=viewport.get('width'),
-                               viewport_height=viewport.get('height'), inference_world_paused=frozen_wait(job)) as driver:
+                               viewport_height=viewport.get('height')) as driver:
         current = await driver.call('snapshot')
         if kind in ('mario_platformer', 'terraria_survival') and extra.get('environment_generation') is not None:
             actual = await driver.call('condition')
@@ -135,7 +124,7 @@ async def verify(job, initial, final, extra):
                 from jev_terraria_contract import record_for_revision
                 revision = event['record']['state'].get('prompt_revision')
                 observe = lambda state: record_for_revision(state, revision)
-            if not validation.same(observation, event['before_state'], 'observation') or record_for_clock(_record(observe, observation_for_clock(observation, job)), job) != event['record']:
+            if not validation.same(observation, event['before_state'], 'observation') or _record(observe, observation) != event['record']:
                 raise ValueError('realtime_world_observation_did_not_replay')
             result = await driver.call('replayEvent', event=event)
             if result['verdict'] != event['arrival_check'] or result['verdict']['valid'] != event['action_applied']:

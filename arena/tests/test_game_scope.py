@@ -15,6 +15,7 @@ from jev_demo_game_evaluation import KINDS
 from jev_engine_rollout_backend import RolloutBackend, RolloutError
 
 REMOVED = ('othello_8x8', 'gomoku_19x19', 'racing_sprint', 'goofspiel', 'pig_dice', 'go')
+WITHDRAWN = ('dots_and_boxes_3x3','blackjack','texas_holdem','zha_jin_hua','mario_platformer')
 
 
 @pytest.mark.parametrize('kind', REMOVED)
@@ -35,7 +36,7 @@ def test_retirement_does_not_match_reasoning_text_by_keyword():
     assert record_exclusion({'state': {'text': 'go / 五子棋 / racing_sprint'},
                              'metadata': {'sub_domain': 'reasoning'}}) is None
     assert require_active_game('othello_6x6') == 'othello_6x6'
-    assert len(KINDS) == 22
+    assert len(KINDS) == 17
     assert 'jump_jump' not in KINDS  # Already hidden by the frontend, still an engine.
     assert get_engine('jump_jump')
 
@@ -54,9 +55,9 @@ def test_http_catalog_and_creation_use_active_scope(tmp_path):
             value = payload.json()
             # /api/engines explicitly separates offline archives from live engines.
             live = value.get('engines', value) if isinstance(value, dict) else value
-            for kind in REMOVED:
+            for kind in REMOVED + WITHDRAWN:
                 assert '"' + kind + '"' not in json.dumps(live)
-        for kind in REMOVED:
+        for kind in REMOVED + WITHDRAWN:
             for route, body in (
                 ('/api/game/new', {'kind': kind, 'seed': 42}),
                 ('/api/showcases/new', {'kind': kind, 'seed': 42}),
@@ -66,12 +67,20 @@ def test_http_catalog_and_creation_use_active_scope(tmp_path):
         assert client.post('/api/showcases/racing/tick', json={'session_id':'fixture'}).status_code == 404
 
 
+@pytest.mark.parametrize('kind', WITHDRAWN)
+def test_withdrawn_games_keep_native_history_but_reject_new_active_jobs(kind):
+    assert get_engine(kind).kind==kind
+    assert kind not in KINDS
+    with pytest.raises(ValueError,match='game_removed'):
+        require_active_game(kind)
+
+
 def test_historical_score_projection_has_new_denominator_and_keeps_source():
     source = json.loads((REPO / 'leaderboard/arena.json').read_text())
     before = deepcopy(source)
     result = project_arena(source)
     assert source == before
-    assert not set(REMOVED) & result['by_game'].keys()
+    assert not set(REMOVED + WITHDRAWN) & result['by_game'].keys()
     assert result['game_scope']['historical_subset']
     assert not result['game_scope']['new_evaluation']
     if source.get('snapshot', {}).get('control_audit'):

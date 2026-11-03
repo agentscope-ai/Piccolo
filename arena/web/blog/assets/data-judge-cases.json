@@ -1,0 +1,178 @@
+{
+  "source": "https://github.com/datajuicer/DataJevBench/blob/5010f6aa899dd268aae8b0b9dbc4665e02999443/benchmark/inputs.jsonl",
+  "attribution": "DataJevBench benchmark data © 2026 DataJuicer. Questions are abbreviated for display.",
+  "license": "https://github.com/datajuicer/DataJevBench/blob/5010f6aa899dd268aae8b0b9dbc4665e02999443/LICENSE",
+  "source_notices": "https://github.com/datajuicer/DataJevBench/blob/5010f6aa899dd268aae8b0b9dbc4665e02999443/releases/v0.5/source-notices.md",
+  "model": "agentscope-ai/Piccolo-4B-Q4_K_M",
+  "method": "Each full gold-free state and its original choice question were submitted to the local /v1/systemone endpoint. The displayed percentage is the probability of the selected choice.",
+  "cases": [
+    {
+      "id": "D4-e8a3eac4011c5f53",
+      "query": "How much did unrecognized tax benefits change from 2017 to 2018 (%)?",
+      "judge": "SUFFICIENT",
+      "probability": 0.9567673343157498,
+      "input_sha256": "bb4aab7eb7c0ffd1022ab51a5933b54fcda49bf7b67b4acd79150fcdfe41443a"
+    },
+    {
+      "id": "D4-9411ae26373d8ada",
+      "query": "What annotation agreement did the paper report?",
+      "judge": "INSUFFICIENT",
+      "probability": 0.6933750317864048,
+      "input_sha256": "6d28e25ad2d0cab8b7be6e86cc043ec2b94a18c442db8f32ce50bf81045f084c"
+    },
+    {
+      "id": "D4-302bb977eab556ad",
+      "query": "How much did operating-lease rent change from 2008 to 2009 (%)?",
+      "judge": "SUFFICIENT",
+      "probability": 0.9915681782509032,
+      "input_sha256": "41c2e8832f0bbb5bef1e878825e9787620298033b20599da97dc58b67d379fbb"
+    },
+    {
+      "id": "D4-22128791483132c2",
+      "query": "What share of 2005 adjusted cash flow came from tower cash flow?",
+      "judge": "SUFFICIENT",
+      "probability": 0.8116599851174737,
+      "input_sha256": "d84f103ade08c5cea10ef28dbc218f478c71679a502664b666a87ea33f963fce"
+    },
+    {
+      "id": "D4-e75814fa0ea015e6",
+      "query": "Which annotated corpus did the researchers use?",
+      "judge": "SUFFICIENT",
+      "probability": 0.8655309471888477,
+      "input_sha256": "310d4bc13922be0f98f9dabf8041a440aa52973ab738d8550ef7d702625467b5"
+    },
+    {
+      "id": "D4-92bb7dc0511a0fe2",
+      "query": "What was the lowest segment operating income?",
+      "judge": "SUFFICIENT",
+      "probability": 0.8435674220466539,
+      "input_sha256": "95cf5188233fc08c8ef9c18138b716bfe32bc2af4ef4dbac8237d23c052392b4"
+    },
+    {
+      "id": "D4-d4d3348acad1bd17",
+      "query": "Which typography information does the corpus include?",
+      "judge": "SUFFICIENT",
+      "probability": 0.894381254364242,
+      "input_sha256": "c7079423a0cf018209eec04747c14b7623238c7a4340c2e925f9ba96b2c4d5b1"
+    },
+    {
+      "id": "D4-e6ff23ac8e517cea",
+      "query": "What tax expense came from discontinued operations in 2013?",
+      "judge": "SUFFICIENT",
+      "probability": 0.7750487863558312,
+      "input_sha256": "4c0847ce232bcab693085f1a9384c0a99d40d2027838d581467ad419767d2edb"
+    },
+    {
+      "id": "D4-0c5052c95566ab4d",
+      "query": "How many 2025 direct-sales orders came from the West and North?",
+      "judge": "INSUFFICIENT",
+      "probability": 0.7164116281656784,
+      "input_sha256": "ecf8da9eab174aa8702762dcd33d98b41ea4e85295a62206fcb11dfdad37c149"
+    },
+    {
+      "id": "D4-9de6353246e04962",
+      "query": "What was the net revenue growth rate in 2016?",
+      "judge": "SUFFICIENT",
+      "probability": 0.9445220772925269,
+      "input_sha256": "8201a1ea5516f32ad988ada8b273a89af6d91b99695b17954c9eca29d8b17779"
+    },
+    {
+      "id": "D4-1f785c2b94869395",
+      "query": "What was the price per share in the 2006 Solexa deal?",
+      "judge": "SUFFICIENT",
+      "probability": 0.7822847519552802,
+      "input_sha256": "d87dc7a227d91de0a311898087e1a5a5fcc54cb82a7382d5e19a3ca0b39ea925"
+    },
+    {
+      "id": "D4-22d200ebeac5df37",
+      "query": "2025 net revenue: West direct, East channel, North direct and channel?",
+      "judge": "SUFFICIENT",
+      "probability": 0.5833760499024471,
+      "input_sha256": "bdf9c4c3597f92c40223035478b11f915b696effda23e9a0127fbe1ceb759c50"
+    },
+    {
+      "id": "D4-8f2dc5ae5eead0ba",
+      "query": "What share of 2006 consumer packaging sales came from foodservice?",
+      "judge": "SUFFICIENT",
+      "probability": 0.9773412515983071,
+      "input_sha256": "ea430cc292e49356c542372b46b34ecb5fb6ed8a2abd8b16611a8c77e34d2f30"
+    },
+    {
+      "id": "D4-47a625d21d4d0821",
+      "query": "What share of 2011 other assets was goodwill and identifiable intangibles?",
+      "judge": "SUFFICIENT",
+      "probability": 0.9897576067049102,
+      "input_sha256": "7ba4e2afa99eae2f87d71c0a3a75f0aad7c1f2af8ceebd934dc9c72d2734ea59"
+    },
+    {
+      "id": "D4-607d3928e48698b2",
+      "query": "What share of 2007 industrial packaging sales came from Europe?",
+      "judge": "SUFFICIENT",
+      "probability": 0.9489278481559106,
+      "input_sha256": "6943ed7c3f4c99783d6d7aa1e493e699fdccc8649091a82ef5a676f512a4452e"
+    },
+    {
+      "id": "D4-f733de11fd294fa9",
+      "query": "How did total Tier 1 and Tier 2 capital change from 2007 to 2008?",
+      "judge": "SUFFICIENT",
+      "probability": 0.8185700089978318,
+      "input_sha256": "74caf3da96f22a0e2df88208894bce0b1e56202830e4bdb963315ff976f9bde0"
+    },
+    {
+      "id": "D4-c204cab3cc825978",
+      "query": "Which dataset did the researchers use?",
+      "judge": "SUFFICIENT",
+      "probability": 0.9835271823741066,
+      "input_sha256": "6a994de15ee62631ebbe2541ceaa4dd45b4762736143edac69a017ac23ef49ef"
+    },
+    {
+      "id": "D4-913059ee0422553a",
+      "query": "Which datasets were used for evaluation?",
+      "judge": "SUFFICIENT",
+      "probability": 0.8690960854922731,
+      "input_sha256": "2f946406205857e24cd63c72bb4aae4c8265563dc85769ba5f26d8e51f674e3f"
+    },
+    {
+      "id": "D4-aed89a7884a57535",
+      "query": "2025 net revenue: South channel, West direct and North channel?",
+      "judge": "SUFFICIENT",
+      "probability": 0.7432089625881926,
+      "input_sha256": "04f9bfe25bab641bc35ac9132afa6000b6fc3857f41d4f8b8c751f98df188055"
+    },
+    {
+      "id": "D4-027004f709331ef9",
+      "query": "How many calibrated 2025 sensor records came from the South and East?",
+      "judge": "SUFFICIENT",
+      "probability": 0.6925605633767121,
+      "input_sha256": "d7d79d4737e05f735c1e791cee374b38930bf1573a54d23cff4bccb2854b4db6"
+    },
+    {
+      "id": "D4-97b815e898709b6b",
+      "query": "What was 2025 direct-sales net revenue in the North, South and East?",
+      "judge": "SUFFICIENT",
+      "probability": 0.5227732342892021,
+      "input_sha256": "5928866bae1251dd3a5a0d7801933265bba9dda84d788f41d018c3be374727be"
+    },
+    {
+      "id": "D4-a5dc27091312581d",
+      "query": "How many 2025 orders came through West/East channel and East/North direct?",
+      "judge": "SUFFICIENT",
+      "probability": 0.7172161794835048,
+      "input_sha256": "50d6ffc30c24e591f1f301cfeaf61563be715bb986cbec85a371cb7406607097"
+    },
+    {
+      "id": "D4-0c4226229b8761fb",
+      "query": "2025 calibrated records: South/West automatic and East/North manual?",
+      "judge": "SUFFICIENT",
+      "probability": 0.7370720460148177,
+      "input_sha256": "9619073c67f9411d39d0794a4a01b6be6cf02069b784c313941fb59df00e68dc"
+    },
+    {
+      "id": "D4-848c14fb4d58c362",
+      "query": "2025 calibrated records: West manual and South/East automatic?",
+      "judge": "INSUFFICIENT",
+      "probability": 0.5216643981251473,
+      "input_sha256": "0b200f873a7bfc3e2ef030b2df3788d58cfecb105231d658278576632b449b36"
+    }
+  ]
+}

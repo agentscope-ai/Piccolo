@@ -19,3 +19,7 @@ See arena/docs/THIRD_PARTY.md for game engines, fonts and other components,
 and assets/brands/README.md for external brand assets.
 Model checkpoints have their own LICENSE and third-party notices in each
 Hugging Face repository.
+
+The bilingual website bundles KaTeX under its MIT license in
+arena/web/blog/vendor/katex/LICENSE. The six DataJevBench workflow examples
+retain their source records and MIT license in arena/docs/demo-data-cases/.

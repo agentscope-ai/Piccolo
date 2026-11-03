@@ -55,7 +55,7 @@ window.JevSelectedGames=(()=>{
  function render(g,options,act){if(!kinds.has(g.kind)){hide();return false}
   const signature=JSON.stringify([g,options,window.JevI18n?.lang,window.JevParticipants?.isDuel()?JevParticipants.badges():null]);
   if(root&&rendered===signature){root.hidden=false;return true}
-  rendered=signature;const p=panel();
+  rendered=signature;const p=panel();p.dataset.kind=g.kind;
   if(position!==g.kind+':'+g.steps){sourceCell=null;position=g.kind+':'+g.steps}
   const title=node('div',g.name+' · '+(g.seat_count>1?(g.player_name||'玩家 '+(g.player+1)):'单人挑战'),'selected-heading');if(window.JevParticipants?.isDuel()){const roles=g.kind==='xiangqi'?['红方','黑方']:g.kind==='checkers'?['白方','黑方']:undefined;title.innerHTML=JevParticipants.badges(roles?.map(ui));}p.append(title);
   if(g.handoff&&!g.fixed_view){p.append(node('p','请将界面交给下一位玩家。上一位的私有信息已收起。'));const b=node('button','显示玩家 '+(g.player+1)+' 的局面','selected-reveal');b.onclick=reveal;p.append(b);return true}
@@ -87,8 +87,11 @@ window.JevSelectedGames=(()=>{
    p.append(node('p',window.JevParticipants?.isDuel()?JevParticipants.seatMarker(JevParticipants.actor()):'亮框手牌可出；万能牌在下方选择颜色后出牌。','uno-hint'));return true;
   }
   if(g.kind==='guess_the_number'){
-   p.append(node('p',g.minimum+'–'+g.maximum+' · 剩余 '+g.remaining+' 次'));
-   const list=node('ol');for(const [guess,hint] of g.history)list.append(node('li',guess+' → '+(hint==='higher'?'目标更大':'目标更小')));p.append(list);return true;
+   const range=node('div',undefined,'guess-range');
+   range.append(node('strong',g.minimum+'–'+g.maximum),node('span','剩余 '+g.remaining+' 次'));p.append(range);
+   const list=node('ol',undefined,'guess-history');
+   for(const [guess,hint] of g.history){const item=node('li');item.append(node('strong',String(guess)),node('span',hint==='higher'?'↑ 目标更大':hint==='lower'?'↓ 目标更小':'✓'));list.append(item)}
+   p.append(list);if(!g.history.length)p.append(node('p','选择下方的数字进行猜测。','guess-hint'));return true;
   }
   const rows=boardRows(g),grid=gridKind===g.kind&&gridElement?gridElement:node('div',undefined,'selected-grid '+g.kind);
   gridKind=g.kind;gridElement=grid;grid.replaceChildren();grid.style.setProperty('--columns',rows[0]?.length||9);const moves=mappings(g,options);

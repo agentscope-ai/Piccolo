@@ -1,0 +1,9 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Piccolo · Harness & Data Processing</title><link rel="stylesheet" href="../playground/typography.css"><link id="showcaseStyles" rel="stylesheet" href="./style.css?v=9"><script>const showcaseQuery=new URLSearchParams(location.search);if(showcaseQuery.has('embed'))document.documentElement.classList.add('embedded');if(showcaseQuery.has('v'))document.getElementById('showcaseStyles').href='./style.css?v='+encodeURIComponent(showcaseQuery.get('v'));</script></head><body>
+<header class="standalone-nav"><a href="../piccolo.html#demoharness">← Piccolo Blog</a></header>
+<main><header class="intro"><h3 class="overview-title">Overview Illustration</h3><div class="controls"><button id="play" aria-label="Pause animations">Ⅱ Pause</button><select id="speed" aria-label="Playback speed"><option value="1">1×</option><option value="2">2×</option><option value="3" selected>3×</option><option value="5">5×</option></select></div></header>
+<section class="workflow-gallery" aria-labelledby="harness-heading"><header class="gallery-heading"><h2 id="harness-heading">Harness</h2></header><div class="demo-grid" id="harness"></div></section>
+<section class="workflow-gallery" aria-labelledby="data-heading"><header class="gallery-heading"><h2 id="data-heading">Data Processing</h2></header><div class="demo-grid" id="data"></div></section>
+
+
+</main><script>const showcaseApp=document.createElement('script');showcaseApp.src='./app.js?v='+encodeURIComponent(showcaseQuery.get('v')||'9');document.body.append(showcaseApp);</script></body></html>

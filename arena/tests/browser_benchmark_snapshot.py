@@ -63,7 +63,6 @@ def main():
                             rank = 1 + sum(x['score'] is not None and x['score'] > r['score'] for x in source)
                             assert row.locator('.lb-rank').inner_text() == str(rank)
                     if benchmark == 'harnessjevbench':
-                        assert rows.first.locator('.lb-rank').inner_text() == '2'
                         assert page.locator('.lb-benchmark-link[href="https://github.com/agentscope-ai/HarnessJevBench"]').count() >= 1
                         assert 'Coming Soon' not in page.locator('#leaderboardDetail').inner_text()
                     assert page.evaluate('document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1')
@@ -78,7 +77,7 @@ def main():
                     present = [float(v) for v in scores if v != '']
                     assert present == sorted(present, reverse=True)
                     if benchmark == 'harnessjevbench':
-                        assert rows.first.get_attribute('data-result-model') == 'access-vllm-sr--d3'
+                        assert rows.first.get_attribute('data-result-model') == max((r for r in source if r['score'] is not None), key=lambda r: r['score'])['model_id']
                     own_filter = page.locator('#leaderboardDetail [data-table-own]')
                     own_filter.click()
                     assert table.locator('tbody tr:visible').count() == 3

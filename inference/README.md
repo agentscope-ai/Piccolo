@@ -1,8 +1,10 @@
-# 推理与本地接入
+# Inference and local integration
 
-Piccolo 已发布完整 Safetensors 和三种 GGUF 精度，见 [模型矩阵](../docs/MODELS.md)。日常本地使用复用 [QwenPaw 管理的兼容 llama.cpp](../docs/QWENPAW.md)，完整 checkpoint 则使用本目录 [参考实现](reference/piccolo_inference.py)。
+Piccolo provides full Safetensors checkpoints and three GGUF formats. See the [model matrix](../docs/MODELS.md). For local use, start the compatible llama.cpp runtime managed by [QwenPaw](../docs/QWENPAW.md). For full checkpoints, use the [reference implementation](reference/piccolo_inference.py).
 
-## 参考推理
+## Reference inference
+
+Run from the repository root:
 
 ```bash
 python -m pip install -r inference/reference/requirements.txt huggingface_hub
@@ -11,21 +13,19 @@ python inference/reference/piccolo_inference.py \
   --model Piccolo-4B --request examples/request.json --device cuda:0
 ```
 
-在仓库根目录执行。模型目录必须包含 `decision-inference.json`、tokenizer 与全部权重。CPU 可用 `--device cpu --dtype float32`，但需更多内存。[最小请求与输出解释](../examples/README.md)。参考实现包含直接读取输出层候选行、注意力掩码与提示编译逻辑；FlexDM 布局保留 [MIT 声明](reference/THIRD_PARTY_LICENSES.md)。
+The model directory must contain `decision-inference.json`, the tokenizer and all weight shards. CPU inference uses `--device cpu --dtype float32`. See the [request and output example](../examples/README.md). The implementation includes candidate-row scoring, the attention mask and prompt compilation. The FlexDM layout retains its [MIT notice](reference/THIRD_PARTY_LICENSES.md).
 
-## SGLang 服务
+## SGLang server
 
-需要 HTTP 服务或批量调用时，使用 [SGLang 插件](piccolo_inference_sglang/README.md)。它提供文本 `/v1/systemone` 与视觉 `/v1/decisions` 接口，包含安装、启动和评测命令。
+The [SGLang plugin](piccolo_inference_sglang/README.md) provides `/v1/systemone` for text and `/v1/decisions` for vision, with installation, launch and evaluation commands.
 
-## 推理协议
+## Decision protocol
 
-- **输入：**原生 `state` 与完整 `questions`，使用 `flex_twice` 布局。重复布局在整个请求的一遍 token 预算不超过 3,000 且每行能放入上下文时使用。
-- **注意力：**Qwen3.5 全注意力层对完整 prompt 使用双向注意力；线性注意力层维持原计算。
-- **输出：**在 `Answer: (` 位置读取单 token 候选 logits，以温度 1 softmax，等价于重新归一化候选 logprob。不生成回答文本。
-- **运行：**禁用前缀缓存复用、因果分块预填充与静默截断。QwenPaw 当前每行完整提示预算为 8,192 token。
+- **Input:** native `state` and complete `questions`, using the `flex_twice` layout. Rereading is used when the single-pass request fits within 3,000 tokens and each compiled row fits the context window.
+- **Attention:** Qwen3.5 full-attention layers attend bidirectionally over the complete prompt; linear-attention layers retain their original computation.
+- **Output:** read single-token candidate logits at `Answer: (` and apply a temperature-1 softmax. No answer text is generated.
+- **Runtime:** disable prefix reuse, causal chunked prefill and silent truncation. QwenPaw allows up to 8,192 tokens per compiled prompt row.
 
-普通因果聊天接口或未适配 Ollama 不实现这套协议。GGUF 里的 `blink` 是既有序列化格式标识，不是旧下载／缓存别名。
+Use a runtime that implements this decision protocol. The `blink` identifier in GGUF files is the serialized architecture name.
 
-## 评测
-
-[模型指南](../docs/MODELS.md)列出各尺寸和精度的下载入口；[评测结果](../evaluation/README.md)汇总基准成绩与本地测量。
+[Models](../docs/MODELS.md) · [Benchmark results and reproduction](../evaluation/README.md)

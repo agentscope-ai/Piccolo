@@ -1,0 +1,241 @@
+[
+  {
+    "schema_version": "jev.training.v1",
+    "id": "export-ticket:choice_hard",
+    "group_id": "export-ticket",
+    "state": {
+      "ticket": "PDF export fails; CSV export still works."
+    },
+    "questions": {
+      "judgment": {
+        "type": "choice",
+        "instructions": "Which team should handle this ticket?",
+        "criteria": {
+          "engineering": "Software defects",
+          "billing": "Payments or invoices"
+        },
+        "option_order": [
+          "engineering",
+          "billing"
+        ]
+      }
+    },
+    "labels": {
+      "judgment": {
+        "label_type": "hard",
+        "value": "engineering",
+        "source": {
+          "kind": "reference"
+        }
+      }
+    },
+    "metadata": {
+      "domain": "software",
+      "sub_domain": "debugging",
+      "scenario": "incident_triage"
+    },
+    "provenance": {
+      "data_source": "schema_examples",
+      "source_id": "export-ticket",
+      "source_split": "unassigned"
+    }
+  },
+  {
+    "schema_version": "jev.training.v1",
+    "id": "export-ticket:choice_soft",
+    "group_id": "export-ticket",
+    "state": {
+      "ticket": "PDF export fails; CSV export still works."
+    },
+    "questions": {
+      "judgment": {
+        "type": "choice",
+        "instructions": "Which team should handle this ticket?",
+        "criteria": {
+          "engineering": "Software defects",
+          "billing": "Payments or invoices"
+        },
+        "option_order": [
+          "engineering",
+          "billing"
+        ]
+      }
+    },
+    "labels": {
+      "judgment": {
+        "label_type": "soft",
+        "value": {
+          "engineering": 0.9,
+          "billing": 0.1
+        },
+        "source": {
+          "kind": "reference"
+        }
+      }
+    },
+    "metadata": {
+      "domain": "software",
+      "sub_domain": "debugging",
+      "scenario": "incident_triage"
+    },
+    "provenance": {
+      "data_source": "schema_examples",
+      "source_id": "export-ticket",
+      "source_split": "unassigned"
+    }
+  },
+  {
+    "schema_version": "jev.training.v1",
+    "id": "export-ticket:score_hard",
+    "group_id": "export-ticket",
+    "state": {
+      "ticket": "PDF export fails; CSV export still works."
+    },
+    "questions": {
+      "judgment": {
+        "type": "score",
+        "instructions": "How severe is the failure?",
+        "criteria": [
+          "Cosmetic issue",
+          "Impaired function with a workaround",
+          "Core function unavailable with no workaround"
+        ]
+      }
+    },
+    "labels": {
+      "judgment": {
+        "label_type": "hard",
+        "value": 1,
+        "source": {
+          "kind": "reference"
+        }
+      }
+    },
+    "metadata": {
+      "domain": "software",
+      "sub_domain": "debugging",
+      "scenario": "incident_triage"
+    },
+    "provenance": {
+      "data_source": "schema_examples",
+      "source_id": "export-ticket",
+      "source_split": "unassigned"
+    }
+  },
+  {
+    "schema_version": "jev.training.v1",
+    "id": "export-ticket:score_soft",
+    "group_id": "export-ticket",
+    "state": {
+      "ticket": "PDF export fails; CSV export still works."
+    },
+    "questions": {
+      "judgment": {
+        "type": "score",
+        "instructions": "How severe is the failure?",
+        "criteria": [
+          "Cosmetic issue",
+          "Impaired function with a workaround",
+          "Core function unavailable with no workaround"
+        ]
+      }
+    },
+    "labels": {
+      "judgment": {
+        "label_type": "soft",
+        "value": {
+          "0": 0.1,
+          "1": 0.7,
+          "2": 0.2
+        },
+        "source": {
+          "kind": "reference"
+        }
+      }
+    },
+    "metadata": {
+      "domain": "software",
+      "sub_domain": "debugging",
+      "scenario": "incident_triage"
+    },
+    "provenance": {
+      "data_source": "schema_examples",
+      "source_id": "export-ticket",
+      "source_split": "unassigned"
+    }
+  },
+  {
+    "schema_version": "jev.training.v1",
+    "id": "export-ticket:noul_hard",
+    "group_id": "export-ticket",
+    "state": {
+      "ticket": "PDF export fails; CSV export still works."
+    },
+    "questions": {
+      "judgment": {
+        "type": "noul",
+        "instructions": "Is an alternative export method available?",
+        "criteria": {
+          "true": "At least one export method works",
+          "false": "No export method works"
+        }
+      }
+    },
+    "labels": {
+      "judgment": {
+        "label_type": "hard",
+        "value": true,
+        "source": {
+          "kind": "reference"
+        }
+      }
+    },
+    "metadata": {
+      "domain": "software",
+      "sub_domain": "debugging",
+      "scenario": "incident_triage"
+    },
+    "provenance": {
+      "data_source": "schema_examples",
+      "source_id": "export-ticket",
+      "source_split": "unassigned"
+    }
+  },
+  {
+    "schema_version": "jev.training.v1",
+    "id": "export-ticket:noul_soft",
+    "group_id": "export-ticket",
+    "state": {
+      "ticket": "PDF export fails; CSV export still works."
+    },
+    "questions": {
+      "judgment": {
+        "type": "noul",
+        "instructions": "Is an alternative export method available?",
+        "criteria": {
+          "true": "At least one export method works",
+          "false": "No export method works"
+        }
+      }
+    },
+    "labels": {
+      "judgment": {
+        "label_type": "soft",
+        "value": 0.9,
+        "source": {
+          "kind": "reference"
+        }
+      }
+    },
+    "metadata": {
+      "domain": "software",
+      "sub_domain": "debugging",
+      "scenario": "incident_triage"
+    },
+    "provenance": {
+      "data_source": "schema_examples",
+      "source_id": "export-ticket",
+      "source_split": "unassigned"
+    }
+  }
+]

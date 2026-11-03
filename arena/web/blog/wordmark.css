@@ -1,0 +1,26 @@
+/* A display wordmark, independent of the article's reading typeface. */
+.article-hero .piccolo-wordmark{
+  display:block;
+  position:relative;
+  width:clamp(240px,23vw,292px);
+  max-width:100%;
+  margin-bottom:20px;
+}
+.piccolo-wordmark>img{display:block;width:100%;height:auto}
+.piccolo-wordmark-text{
+  position:absolute;
+  width:1px;
+  height:1px;
+  padding:0;
+  margin:-1px;
+  overflow:hidden;
+  clip-path:inset(50%);
+  white-space:nowrap;
+}
+@media(max-width:760px){
+  .article-hero .piccolo-wordmark{width:clamp(220px,62vw,270px);margin-bottom:22px}
+}
+@media print{
+  .piccolo-wordmark>img{display:none}
+  .piccolo-wordmark-text{position:static;width:auto;height:auto;margin:0;overflow:visible;clip-path:none}
+}

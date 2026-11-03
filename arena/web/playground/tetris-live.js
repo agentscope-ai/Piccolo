@@ -18,7 +18,7 @@ window.JevTetrisUI=(()=>{
  }
  function status(g){
   $('showcaseGoal').textContent=tr('Clear 4 lines within 40 pieces and 240 seconds.','240 秒、40 块内消除 4 行。');
-  $('sceneStats').innerHTML=statMarkup([[g.lines+' / '+(g.line_target||4),tr('Lines','已消行')],[g.steps+' / '+(g.max_pieces||40),tr('Pieces','已落方块')],[g.started?Number(g.elapsed).toFixed(1)+' s':tr('Ready','待开始'),tr('Time','时间')],[!g.started?tr('Ready','待开始'):tr(({falling:'Falling',locking:'Locking',clearing:'Clearing'})[g.phase]||'Finished',({falling:'下落中',locking:'即将锁定',clearing:'消行中'})[g.phase]||'已结束'),tr('Phase','阶段')]]);
+  $('sceneStats').innerHTML=statMarkup([[g.lines+' / '+(g.line_target||4),tr('Lines','已消行')],[g.steps+' / '+(g.max_pieces||40),tr('Pieces','已落方块')],[g.started?Number(g.elapsed).toFixed(1)+' s':tr('Ready','待开始'),tr('Time','时间')],[g.outcome?tr('Finished','已结束'):!g.started?tr('Ready','待开始'):tr(({falling:'Falling',locking:'Locking',clearing:'Clearing'})[g.phase]||'Finished',({falling:'下落中',locking:'即将锁定',clearing:'消行中'})[g.phase]||'已结束'),tr('Phase','阶段')]]);
   $('keyboardHint').textContent=tr('← → / A D move · ↑ / W rotate · Z reverse rotate · ↓ / S soft drop · Space hard drop. The first key starts gravity; pieces keep falling while the model responds.','← → / A D 移动 · ↑ / W 旋转 · Z 反转 · ↓ / S 软降 · 空格直落。首次按键后自动下落，模型思考时继续运行。');
   const outcome=$('showcaseOutcome');outcome.className=g.outcome?(g.outcome==='win'?'win':'loss'):'hidden';
   if(g.outcome){outcome.innerHTML='<strong>'+esc(g.outcome==='win'?tr('Four lines cleared!','四行已消除！'):tr('Game over','本局结束'))+'</strong><button id="sceneAgain">'+esc(tr('Play again ↻','再开一局 ↻'))+'</button>';$('sceneAgain').onclick=()=>newShowcase();}
@@ -26,6 +26,9 @@ window.JevTetrisUI=(()=>{
  }
  function paint(g){
   const old=painted;painted=g;
+  // Resetting the canvas clears it synchronously. Paint the new scene before
+  // controls become available; subsequent received states keep interpolation.
+  if(!old){PlayDraw.draw(g);return;}
   if(old&&g.elapsed>=old.elapsed){
    const frames=(g.execution_trace?.frames||[]).filter(f=>Number(f.elapsed)>Number(old.elapsed)+1e-8).map(f=>({...g,...f}));
    // Receipts contain every physics contact, lock and clear boundary. Never

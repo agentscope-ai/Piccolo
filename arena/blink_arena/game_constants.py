@@ -1,6 +1,18 @@
 """Compatibility views derived from the shared engine registry."""
 from collections.abc import MutableMapping
+from dataclasses import replace
 from jev_engine_registry import get_engine, list_engines
+
+# HTTP Playground budgets are separate from fixed engine/RL reference defaults.
+PLAYGROUND_LIMITS = {'chess':512, 'xiangqi':500, 'sudoku':960, 'terraria_survival':1200}
+PLAYGROUND_SNAKE_FOOD_TARGET = 3
+
+def playground_engine(engine):
+    limit = PLAYGROUND_LIMITS.get(engine.kind)
+    if engine.kind == 'snake_navigation':
+        import jev_snake_realtime as snake
+        return replace(engine, goal=snake.goal({'food_target':PLAYGROUND_SNAKE_FOOD_TARGET}))
+    return replace(engine, limit=limit) if limit is not None else engine
 
 class EngineLimits(MutableMapping):
     def __init__(self):

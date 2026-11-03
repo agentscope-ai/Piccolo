@@ -8,7 +8,6 @@ import asyncio
 import copy
 import math
 import time
-from jev_inference_clock import paused, contract, record_for_clock, verify_clock, policy_timeout
 
 import jev_tetris_realtime as game
 from jev_tetris_runtime import (CLOCK_CONTRACT, MIN_DECISION_SECONDS,
@@ -92,7 +91,6 @@ def append_idle_event(events, event):
 
 
 async def play(sampler, job):
-    clock_contract = contract(job, CLOCK_CONTRACT)
     state = game.fresh(job['seed'])
     initial, trace, events = copy.deepcopy(state), [], []
     clock_at, status, error, ordinal = time.monotonic(), 'complete', None, 0
@@ -115,7 +113,7 @@ async def play(sampler, job):
                 'no_request': True, 'idle_seconds': pre,
                 'no_request_reason': game.decision_reason(previous_state),
                 'policy_request': False, 'strategy_origin': 'A', 'execution_origin': 'B',
-                'after_state': copy.deepcopy(state), 'clock_contract': clock_contract})
+                'after_state': copy.deepcopy(state), 'clock_contract': CLOCK_CONTRACT})
             break
         if not game.needs_decision(state):
             # Completed target / mechanical intent waits are B execution of
@@ -130,7 +128,7 @@ async def play(sampler, job):
                            'no_request': True, 'idle_seconds': wait,
                            **({'no_request_reason':game.decision_reason(before),'policy_request':False,
                                'strategy_origin':'A','execution_origin':'B'} if game.persistent(before) else {}),
-                           'after_state': copy.deepcopy(state), 'clock_contract': clock_contract})
+                           'after_state': copy.deepcopy(state), 'clock_contract': CLOCK_CONTRACT})
             clock_at = captured_at + wait
             continue
         record_started = time.monotonic()
@@ -138,14 +136,13 @@ async def play(sampler, job):
             record, latency = await sampler.compute_record(game.as_record, before)
         else:
             record, latency = game.as_record(before), {}
-        record = record_for_clock(record, job)
         record_ready = time.monotonic()
         latency.update(capture_to_record_ready_seconds=record_ready-captured_at,
                        record_preparation_seconds=record_ready-record_started)
         action, policy, request_error = None, None, None
         try:
             action, policy = await asyncio.wait_for(
-                sampler.policy_action(record, job['episode_id'], ordinal), policy_timeout(job, MODEL_TIMEOUT_SECONDS))
+                sampler.policy_action(record, job['episode_id'], ordinal), MODEL_TIMEOUT_SECONDS)
             if action not in record['questions']['decision']['criteria']:
                 raise ValueError('model_action_not_in_captured_candidates')
         except Exception as exc:
@@ -153,14 +150,13 @@ async def play(sampler, job):
             status = 'timeout' if isinstance(exc, TimeoutError) else 'error'
         response_at = time.monotonic()
         latency['record_ready_to_response_seconds'] = response_at-record_ready
-        wall_waiting = response_at - captured_at
-        waiting = 0. if paused(job) else wall_waiting
+        waiting = response_at - captured_at
         arrived = game.advance_idle(before, waiting)
         reason = discard_reason(before, arrived, action)
         applied = request_error is None and reason is None
         state = game.step(arrived, action) if applied else arrived
         if applied:
-            await asyncio.sleep(max(0., MIN_DECISION_SECONDS - (time.monotonic() - (response_at if paused(job) else captured_at))))
+            await asyncio.sleep(max(0., MIN_DECISION_SECONDS - (time.monotonic() - captured_at)))
         completed_at = time.monotonic()
         post = completed_at - response_at
         state = game.advance_idle(state, post)
@@ -173,10 +169,10 @@ async def play(sampler, job):
             status = 'complete'
         event = {'ordinal': ordinal, 'record': record, 'action': action, 'policy': policy,
                  'pre_decision_seconds': pre, 'before_state': before,
-                 'waiting_seconds': waiting, 'wall_waiting_seconds': wall_waiting, 'arrival_state': arrived,
+                 'waiting_seconds': waiting, 'arrival_state': arrived,
                  'action_applied': applied, 'post_action_seconds': post,
                  'reason': reason, 'after_state': copy.deepcopy(state),
-                 'clock_contract': clock_contract, 'error_type': request_error,
+                 'clock_contract': CLOCK_CONTRACT, 'error_type': request_error,
                  'status': status, 'latency_breakdown': latency}
         events.append(event)
         if applied:
@@ -191,11 +187,11 @@ async def play(sampler, job):
     if trace:
         trace[-1]['after_state'] = copy.deepcopy(state)
         trace[-1]['terminal_wait_after_response'] = not events[-1].get('action_applied', False)
-    extra = {'clock_contract': clock_contract, 'replay_events': events,
-             'real_time_seconds': state['elapsed'], 'inference_world_paused': paused(job),
+    extra = {'clock_contract': CLOCK_CONTRACT, 'replay_events': events,
+             'real_time_seconds': state['elapsed'], 'inference_world_paused': False,
              'rule_takeover_count': 0, 'status': status, 'error_type': error,
              'decision_limit': decision_limit,
-             'inference_waiting_seconds': sum(event.get('wall_waiting_seconds', event.get('waiting_seconds', 0.)) for event in events)}
+             'inference_waiting_seconds': sum(event.get('waiting_seconds', 0.) for event in events)}
     trace, extra = rebuild_credit(initial, trace, state, extra)
     return initial, state, trace, state['outcome'], extra
 
@@ -206,7 +202,8 @@ def verify(job, initial, final, extra):
     # replaying an archived real-time episode instead of silently rewriting it.
     if state != initial:
         raise ValueError('tetris initial state mismatch')
-    verify_clock(job, extra, CLOCK_CONTRACT)
+    if extra.get('clock_contract') != CLOCK_CONTRACT:
+        raise ValueError('tetris clock contract mismatch')
     requests = 0
     for event in extra['replay_events']:
         state = game.advance_idle(state, event.get('pre_decision_seconds', 0.))
@@ -228,7 +225,7 @@ def verify(job, initial, final, extra):
             if state != event['after_state']:
                 raise ValueError('tetris idle phase state mismatch')
             continue
-        if not game.needs_decision(state) or event['ordinal'] != requests or record_for_clock(game.as_record(state), job) != event['record']:
+        if not game.needs_decision(state) or event['ordinal'] != requests or game.as_record(state) != event['record']:
             raise ValueError('tetris captured model input mismatch')
         requests += 1
         before = copy.deepcopy(state)

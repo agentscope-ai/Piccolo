@@ -510,23 +510,9 @@ def expand_record(record):
    match=re.search(r'；期限(\d+)帧$',description)
    if match:criteria[action]=description[:match.start()]+'；动作期限 '+match.group(1)+' 帧，'+_COMMON_END
  instructions=result['questions']['decision']['instructions']
- clock_suffix=''
- if state.get('sampling_clock') is not None:
-  if state['sampling_clock'].get('revision')=='simulated-wait-2-4s-v1':
-   from jev_inference_clock import simulated_marker,SIMULATED_NOTICE
-   expected_clock=simulated_marker();clock_suffix=SIMULATED_NOTICE
-  else:
-   expected_clock={'mode':'inference_paused','revision':'inference-paused-v1',
-    'waiting_advances_world':False,'execution_advances_world':True}
-   clock_suffix=('\n本局时钟约定：构造观察和等待模型回复期间世界暂停；动作执行期间物理正常推进。'
-    '上文及候选中的推理延迟风险仅为实时模式的反事实预测，本局等待延迟取0；'
-    '仍须考虑动作执行中的碰撞、重力、敌人和资源变化。')
-  if state['sampling_clock']!=expected_clock or not instructions.endswith(clock_suffix):
-   raise ValueError('Terra sampling clock marker or instructions mismatch')
-  instructions=instructions[:-len(clock_suffix)]
  if not instructions.endswith(_COMPACT_INSTRUCTIONS):
   raise ValueError('Terra compact instructions suffix is missing or changed')
- result['questions']['decision']['instructions']=instructions[:-len(_COMPACT_INSTRUCTIONS)]+clock_suffix
+ result['questions']['decision']['instructions']=instructions[:-len(_COMPACT_INSTRUCTIONS)]
  state.pop('shared_facts',None);state.pop('record_format')
  state['prompt_revision']=LEGACY_PROMPT_REVISION
  return result

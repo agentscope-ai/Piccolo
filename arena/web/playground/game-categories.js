@@ -3,13 +3,13 @@
   'use strict';
   const groups = [
     {id:'probability',en:'Probability',zh:'概率',color:'#b18a62',games:[
-      'blackjack','texas_holdem','liars_dice','zha_jin_hua','doudizhu','uno','guess_the_number','minesweeper']},
+      'liars_dice','doudizhu','uno','guess_the_number','minesweeper']},
     {id:'strategy',en:'Strategy',zh:'策略',color:'#6d9084',games:[
-      'othello_6x6','hex_7x7','dots_and_boxes_3x3','chess','checkers','xiangqi']},
+      'othello_6x6','hex_7x7','chess','checkers','xiangqi']},
     {id:'long_horizon',en:'Long horizon',zh:'长程',color:'#9381a2',games:[
       'merge_2048','sokoban_puzzle','property_tycoon','sudoku']},
     {id:'realtime',en:'Realtime',zh:'实时',color:'#bb7e74',games:[
-      'terraria_survival','tetris_placement','snake_navigation','mario_platformer']}
+      'terraria_survival','tetris_placement','snake_navigation']}
   ].map(group=>Object.freeze({...group,games:Object.freeze(group.games)}));
   const icons = Object.freeze({
     blackjack:'🃏',texas_holdem:'🪙',liars_dice:'🎲',zha_jin_hua:'🌸',doudizhu:'🎴',uno:'🌈',guess_the_number:'🔢',minesweeper:'💣',

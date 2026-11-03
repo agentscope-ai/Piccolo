@@ -290,7 +290,7 @@
     visibility:()=>document.hidden,translate:tr,onHud:()=>{if(core)hud();},
     onClearKeys:clearHumanKeys,
     onPublish:!replayOnly&&window.parent!==window?(observation)=>window.parent.postMessage(
-      {type:'jev-terraria-state',observation},window.location.origin):undefined});
+      {type:'jev-terraria-state',generation:core.condition().generation,observation},window.location.origin):undefined});
   refresh();
   /* ---------------- input & boot ---------------- */
   var wrap = document.getElementById("tw-wrap"), bMode = document.getElementById("tw-mode"),

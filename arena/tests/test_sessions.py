@@ -45,13 +45,13 @@ def step(client, session, **kwargs):
                                     json={'revision': session['revision'], **kwargs}))
 
 
-def test_current_games_include_eight_selected_games(tmp_path):
+def test_current_games_follow_scope_and_include_selected_games(tmp_path):
     with TestClient(create_app(data=tmp_path, config=AppConfig())) as client:
         result = response_json(client.get('/api/v1/games'))
         assert result['schema_version'] == 'jev.engine-registry.v1'
         from jev_selected_games import GAMES as selected
         assert {game['kind'] for game in result['games']} == set(GAMES) | set(selected) | {'chess'}
-        assert len(result['games']) == 23
+        assert len(result['games']) == len(set(GAMES) | set(selected) | {'chess'})
         for game in result['games']:
             assert game['interface_revision'] == 'jev.engine.environment.v1'
             assert not game['internal']
@@ -134,14 +134,14 @@ def test_realtime_starts_with_input_and_moves_while_waiting(client, game, action
         assert waited['state'][position] != active['state'][position]
         assert waited['action'] is None
         if game == 'snake_navigation':
-            assert waited['state']['food_target'] == 6
+            assert waited['state']['food_target'] == 3
         if game == 'tetris_placement':
             assert waited['state']['simulation_ticks'] > active['state']['simulation_ticks']
     finally:
         response_json(client.delete(f'/api/v1/sessions/{ident}'))
 
 
-@pytest.mark.parametrize('game', ['mario_platformer', 'terraria_survival'])
+@pytest.mark.parametrize('game', active_games(['mario_platformer', 'terraria_survival']))
 def test_worker_world_uses_real_time_bridge(client, game):
     initial = create_session(client, game)
     ident = initial['session_id']
@@ -229,7 +229,7 @@ def register_engines(register):
         unregister_engine(game)
 
 
-@pytest.mark.parametrize('game', ['mario_platformer', 'terraria_survival'])
+@pytest.mark.parametrize('game', active_games(['mario_platformer', 'terraria_survival']))
 def test_local_world_session_uses_shared_worker_without_playwright(tmp_path, monkeypatch, game):
     from blink_arena.sessions import Sessions
     async def forbidden_browser(self):

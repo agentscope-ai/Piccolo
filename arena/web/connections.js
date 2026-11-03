@@ -18,7 +18,8 @@ window.JevModelLabels=(()=>{
  function displayName(id,label){
   const value=text(label);
   const own=ownIds.has(text(id).toLowerCase())||/^(?:OneShot|QwenJev|Blink)(?:$|\s+(?:\(?27B\)?)(?:$|[\s·-]))/i.test(value);
-  return own?value.replace(/^(?:OneShot|QwenJev|Blink)\b/i,'Piccolo'):value;
+  const normalized=own?value.replace(/^(?:OneShot|QwenJev|Blink)\b/i,'Piccolo'):value;
+  return /^Piccolo\s*\(27B\)$/i.test(normalized)?'Piccolo-27B':normalized;
  }
  function model(id,fallback,identity){
   const record=id&&typeof id==='object'?id:null;

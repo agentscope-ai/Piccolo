@@ -1,0 +1,330 @@
+{
+  "revision": "5010f6aa899dd268aae8b0b9dbc4665e02999443",
+  "source_records_sha256": "c70fdb38df9fd5329ddb226942823977cd477241678f6bb58093efe827bf3588",
+  "records": [
+    {
+      "id": "D1-93ec53a23b7e14ff",
+      "family": "policy",
+      "state": "用途：为检索/训练语料导入作保留决定。评测对象是下面给出的完整片段，不能据此推断来源全文；其他合同条件均已满足。\n处理阶段：原始→规范化（HTML实体反解码、Unicode NFKC、删除<…>标签、每行空白折叠为单空格、丢弃空行）→按完全相同的行去重保留首次。两阶段之间以单个换行连接各行。这里只采用明确给出的任务局部处理定义。\n统计由程序对本片段逐阶段计算，供直接使用，无需手工数长文本。chars=Unicode码点数（包含换行），alnum=Unicode字母或数字码点数，words=按空白split的段数，max_line=不含换行的最长行字符数，nonblank_lines=非空行数。\n处理统计（非最终判断）：{\"原始\": {\"chars\": 150, \"alnum\": 103, \"words\": 21, \"lines\": 5, \"max_line\": 57, \"nonblank_lines\": 3}, \"规范化后\": {\"chars\": 101, \"alnum\": 78, \"words\": 16, \"lines\": 2, \"max_line\": 50, \"nonblank_lines\": 2}, \"行去重后\": {\"chars\": 101, \"alnum\": 78, \"words\": 16, \"lines\": 2, \"max_line\": 50, \"nonblank_lines\": 2}}\n准入规则：只在规范化之后、行去重之前过滤：字符数至少100且最长行不超过49字符才保留；之后的去重结果不重新过滤。\n明确合成的导出记录：\n<p>warehouse inventory: record 26, field 1, value 56.</p>\n\n<p>warehouse inventory: record 26, field 2, value 84.</p>\n\n<!-- generated export footer -->\n问题：该片段最终应保留还是丢弃？",
+      "question": {
+        "type": "choice",
+        "instructions": "根据给定数据、规则和要求，选择最合适的一项。",
+        "criteria": {
+          "KEEP": "保留该片段",
+          "DROP": "丢弃该片段"
+        }
+      },
+      "labels": [
+        "KEEP",
+        "DROP"
+      ],
+      "expected": "DROP",
+      "split": "public",
+      "group": "G-8556e73f0b6f7c4d",
+      "provenance": {
+        "subset": "D1",
+        "source": "Workbench authored",
+        "source_url": null,
+        "license": "Workbench-authored fixture; no package-wide public release license assigned",
+        "source_sha256": "ec1bace62a0aecb5cf309c6247718d59059273ec389a13f9015f0f8644dcf166",
+        "operator_document_sha256": null,
+        "reference_type": "rule_or_source_supported",
+        "language": {
+          "task_language": "zh"
+        }
+      }
+    },
+    {
+      "id": "D2-4872f8aa48327928",
+      "family": "routing",
+      "state": "用途：为下游数据使用选择当前应执行的处理节点。\n以下是完整的合成记录或文件元数据，用于模拟生产数据处理。\n输入数据：\n[{\"text\": \"The quarterly revenue report shows steady growth across all departments and regions.\", \"meta\": {\"source\": \"finance_docs\", \"cleaned\": true}}, {\"text\": \"ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR connection timeout\", \"meta\": {\"source\": \"server_logs\", \"cleaned\": true}}]\n数据验收要求与当前状态：\nYou are given a small text corpus already processed by upstream HTML stripping and link removal. The corpus is intended for pretraining, and the downstream acceptance contract requires: (1) no sample may contain excessive character-level n-gram repetition, because such samples indicate stuck loops or repeated error tokens; (2) naturally written financial text must remain usable; (3) the repetition ratio must be computed per document and cached in the stats field for auditing; (4) filtering must be based on character n-grams rather than word n-grams so that partial token repetitions are caught. Inspect the provided data and current processing state. Select exactly one next operator from the catalog that moves the corpus toward satisfying the acceptance contract. Return only the operator ID.\n根据实际输入和未满足的验收要求，从固定算子表选择唯一适合的下一节点。",
+      "question": {
+        "type": "choice",
+        "instructions": "根据给定数据、规则和要求，选择最合适的一项。",
+        "criteria": {
+          "alphanumeric_filter": "用来保留字母/数字比例在特定范围内的样本的过滤器。",
+          "audio_duration_filter": "用来保留音频时长在指定范围内的数据样本的过滤器。",
+          "audio_size_filter": "根据音频文件大小保留数据样本。",
+          "average_line_length_filter": "保留平均行长度在特定范围内的样本。",
+          "character_repetition_filter": "保留字符级n-gram重复率在特定范围内的样本。",
+          "chinese_convert_mapper": "转换中文文本在繁体、简体和日文汉字之间的映射器。",
+          "clean_copyright_mapper": "清理文本样本开头的版权声明。",
+          "clean_html_mapper": "将HTML代码从文本样本中清理，将HTML转换为纯文本。",
+          "clean_links_mapper": "映射器用于清理文本样本中的http/https/ftp等链接。",
+          "document_deduplicator": "使用精确匹配在文档级别去重样本。",
+          "document_line_deduplicator": "在文档间进行行级去重。",
+          "document_minhash_deduplicator": "使用MinHash LSH在文档级别去重样本。",
+          "document_simhash_deduplicator": "使用SimHash在文档级别去重样本。",
+          "expand_macro_mapper": "在LaTeX样本的文档正文中扩展宏定义。",
+          "extract_entity_attribute_mapper": "从文本中提取给定实体的属性，并将其存储在样本的元数据中。",
+          "extract_entity_relation_mapper": "从文本中提取实体和关系以构建知识图谱。",
+          "extract_event_mapper": "从文本中提取事件和相关角色。",
+          "extract_keyword_mapper": "为文本生成关键词。",
+          "extract_tables_from_html_mapper": "从HTML内容中提取表格并存储在指定字段中。",
+          "fix_unicode_mapper": "修复文本样本中的Unicode错误。",
+          "frequency_specified_field_selector": "根据指定字段的频率筛选样本的选择器。",
+          "generate_qa_from_examples_mapper": "使用Hugging Face模型从示例生成问题和答案对。",
+          "generate_qa_from_text_mapper": "使用指定模型从文本生成问题和答案对。",
+          "image_aspect_ratio_filter": "过滤出图像宽高比在特定范围内的样本。",
+          "image_captioning_mapper": "使用 Hugging Face 模型生成图像描述并将其附加到样本中。",
+          "image_deduplicator": "通过精确匹配图像在文档级别去重样本。",
+          "image_shape_filter": "用于保留图像尺寸（宽度、高度）在特定范围内的样本的过滤器。",
+          "image_size_filter": "保留图像大小（以字节/KB/MB等为单位）在特定范围内的数据样本。",
+          "image_watermark_filter": "筛选出高概率没有水印的图片样本。",
+          "language_id_score_filter": "筛选并保留特定语言且置信度分数高于阈值的样本。",
+          "latex_figure_context_extractor_mapper": "从LaTeX源码中提取图片及其引用上下文。",
+          "latex_merge_tex_mapper": "从压缩的 LaTeX 项目归档文件中提取并拼接所有 `.tex` 文件到一个文本字段中。",
+          "llm_difficulty_score_filter": "用于保留由大型语言模型估计出高难度分数的样本的过滤器。",
+          "llm_quality_score_filter": "用于保留由语言模型估计出高质量分数的样本的过滤器。",
+          "llm_task_relevance_filter": "筛选并保留LLM估计的与验证任务高度相关的样本。",
+          "maximum_line_length_filter": "过滤出最大行长度在指定范围内的样本。",
+          "perplexity_filter": "用于保留指定困惑度范围内的样本的过滤器。",
+          "punctuation_normalization_mapper": "将文本样本中的Unicode标点符号标准化为其英文等效符号。",
+          "random_selector": "从数据集中随机选择一部分样本。",
+          "range_specified_field_selector": "根据指定字段的排序值选择一个范围内的样本。",
+          "remove_bibliography_mapper": "移除LaTeX文档末尾的参考文献部分。",
+          "remove_comments_mapper": "从文档中移除注释，目前仅支持'tex'格式。",
+          "remove_header_mapper": "移除LaTeX样本中文档开头的标题。",
+          "remove_long_words_mapper": "映射器，移除特定范围内的长词。",
+          "remove_repeat_sentences_mapper": "映射器，移除文本样本中的重复句子。",
+          "remove_specific_chars_mapper": "移除文本样本中的特定字符。",
+          "remove_words_with_incorrect_substrings_mapper": "用于移除包含指定错误子字符串的单词的映射器。",
+          "sentence_split_mapper": "将文本样本根据指定的语言拆分成单独的句子。",
+          "special_characters_filter": "过滤出特殊字符比率在特定范围内的样本。",
+          "specified_field_filter": "根据指定字段信息过滤样本。",
+          "specified_numeric_field_filter": "根据指定的数值字段值过滤样本。",
+          "stopwords_filter": "用于保留停用词比率在指定范围内的样本的过滤器。",
+          "suffix_filter": "用于保留具有指定后缀的样本的过滤器。",
+          "tags_specified_field_selector": "根据指定字段的标签筛选样本的选择器。",
+          "text_chunk_mapper": "根据指定的标准将输入文本拆分成多个块。",
+          "text_length_filter": "用于保留总文本长度在特定范围内的样本的过滤器。",
+          "topk_specified_field_selector": "根据指定字段的排序值选择顶部样本。",
+          "video_deduplicator": "在文档级别使用视频的精确匹配去重样本。",
+          "video_extract_frames_mapper": "用于根据指定方法从视频文件中提取帧的映射器。",
+          "video_resolution_filter": "保留视频分辨率在指定范围内的数据样本。",
+          "video_split_by_duration_mapper": "根据指定的持续时间将视频分割成片段。",
+          "whitespace_normalization_mapper": "将文本样本中的各种空白字符标准化为空格。",
+          "word_repetition_filter": "筛选单词级 n-gram 重复比率在特定范围内的样本。",
+          "words_num_filter": "根据指定范围内的总词数来筛选样本。"
+        }
+      },
+      "labels": [
+        "alphanumeric_filter",
+        "audio_duration_filter",
+        "audio_size_filter",
+        "average_line_length_filter",
+        "character_repetition_filter",
+        "chinese_convert_mapper",
+        "clean_copyright_mapper",
+        "clean_html_mapper",
+        "clean_links_mapper",
+        "document_deduplicator",
+        "document_line_deduplicator",
+        "document_minhash_deduplicator",
+        "document_simhash_deduplicator",
+        "expand_macro_mapper",
+        "extract_entity_attribute_mapper",
+        "extract_entity_relation_mapper",
+        "extract_event_mapper",
+        "extract_keyword_mapper",
+        "extract_tables_from_html_mapper",
+        "fix_unicode_mapper",
+        "frequency_specified_field_selector",
+        "generate_qa_from_examples_mapper",
+        "generate_qa_from_text_mapper",
+        "image_aspect_ratio_filter",
+        "image_captioning_mapper",
+        "image_deduplicator",
+        "image_shape_filter",
+        "image_size_filter",
+        "image_watermark_filter",
+        "language_id_score_filter",
+        "latex_figure_context_extractor_mapper",
+        "latex_merge_tex_mapper",
+        "llm_difficulty_score_filter",
+        "llm_quality_score_filter",
+        "llm_task_relevance_filter",
+        "maximum_line_length_filter",
+        "perplexity_filter",
+        "punctuation_normalization_mapper",
+        "random_selector",
+        "range_specified_field_selector",
+        "remove_bibliography_mapper",
+        "remove_comments_mapper",
+        "remove_header_mapper",
+        "remove_long_words_mapper",
+        "remove_repeat_sentences_mapper",
+        "remove_specific_chars_mapper",
+        "remove_words_with_incorrect_substrings_mapper",
+        "sentence_split_mapper",
+        "special_characters_filter",
+        "specified_field_filter",
+        "specified_numeric_field_filter",
+        "stopwords_filter",
+        "suffix_filter",
+        "tags_specified_field_selector",
+        "text_chunk_mapper",
+        "text_length_filter",
+        "topk_specified_field_selector",
+        "video_deduplicator",
+        "video_extract_frames_mapper",
+        "video_resolution_filter",
+        "video_split_by_duration_mapper",
+        "whitespace_normalization_mapper",
+        "word_repetition_filter",
+        "words_num_filter"
+      ],
+      "expected": "character_repetition_filter",
+      "split": "public",
+      "group": "G-78b1de302af55d3a",
+      "provenance": {
+        "subset": "D2",
+        "source": "Data-Juicer grounded construction",
+        "source_url": null,
+        "license": "Apache-2.0 documentation; newly authored task data",
+        "source_sha256": "b0a4ce6e86d1579f8f515a43f657fc113d20e6171bd8c96d549df24e905cb4dd",
+        "operator_document_sha256": "b0a4ce6e86d1579f8f515a43f657fc113d20e6171bd8c96d549df24e905cb4dd",
+        "reference_type": "rule_or_source_supported",
+        "language": {
+          "task_language": "zh"
+        }
+      }
+    },
+    {
+      "id": "D3-ab5b79062176e667",
+      "family": "ordinal",
+      "state": "任务：为数据产品选择质量更好的候选描述/摘要。依据下面指定的单一rubric比较A与B；参照为公开数据集的人工评价偏好，存在人类主观性，不要求写解释。\nRubric：语言可用性：作为结构化数据的自然语言说明，表达是否通顺、语法是否正确、措辞是否自然；不将事实覆盖程度混入本维度。\n源数据/原文：\ninform(name='hotel north beach',has_internet='yes',area='chinatown')\n\n候选A：\nhotel north beach is near chinatown has internet.\n\n候选B：\nhotel north beach in the chinatown area has internet.",
+      "question": {
+        "type": "choice",
+        "instructions": "根据给定数据、规则和要求，选择最合适的一项。",
+        "criteria": {
+          "A": "选择候选A",
+          "B": "选择候选B"
+        }
+      },
+      "labels": [
+        "A",
+        "B"
+      ],
+      "expected": "B",
+      "split": "public",
+      "group": "G-071513ca18bcbffd",
+      "provenance": {
+        "subset": "D3",
+        "source": "SFHOT/SFRES",
+        "source_url": "https://github.com/jeknov/EMNLP_17_submission",
+        "license": "MIT repository annotations; source text retains original attribution",
+        "source_sha256": "c8ef38a9f62b9734049af807383428a6fabb5875af952c531ab12712fb2dc81e",
+        "operator_document_sha256": null,
+        "reference_type": "published_human_rating",
+        "language": {
+          "task_language": "zh"
+        }
+      }
+    },
+    {
+      "id": "D4-26bba3bf92dd404d",
+      "family": "adequacy",
+      "state": "任务：将财报中的一个目标指标提取到分析工作表。只依据当前抽取材料判断是否有足够信息给出该问题的确定答案；允许常规算术与明确的单位换算，不允许外部查询或假设未披露数据。选项只判断信息充分性，不要求输出指标值。\n目标问题：what was the difference in percentage return for pmi common stock compared to the s&p 500 index for the five years ended 2018?\n\n当前可见财报抽取材料：\nperformance graph the graph below compares the cumulative total shareholder return on pmi's common stock with the cumulative total return for the same period of pmi's peer group and the s&p 500 index .\nthe graph assumes the investment of $ 100 as of december 31 , 2013 , in pmi common stock ( at prices quoted on the new york stock exchange ) and each of the indices as of the market close and reinvestment of dividends on a quarterly basis .\ndate pmi pmi peer group ( 1 ) s&p 500 index .\n\ndate | pmi | pmi peer group ( 1 ) | s&p 500 index\ndecember 31 2013 | $ 100.00 | $ 100.00 | $ 100.00\ndecember 31 2014 | $ 97.90 | $ 107.80 | $ 113.70\ndecember 31 2015 | $ 111.00 | $ 116.80 | $ 115.30\ndecember 31 2016 | $ 120.50 | $ 118.40 | $ 129.00\ndecember 31 2017 | $ 144.50 | $ 140.50 | $ 157.20\n\n( 1 ) the pmi peer group presented in this graph is the same as that used in the prior year .\nthe pmi peer group was established based on a review of four characteristics : global presence ; a focus on consumer products ; and net revenues and a market capitalization of a similar size to those of pmi .\nthe review also considered the primary international tobacco companies .\nas a result of this review , the following companies constitute the pmi peer group : altria group , inc. , anheuser-busch inbev sa/nv , british american tobacco p.l.c. , the coca-cola company , colgate-palmolive co. , diageo plc , heineken n.v. , imperial brands plc , japan tobacco inc. , johnson & johnson , kimberly-clark corporation , the kraft-heinz company , mcdonald's corp. , mondel z international , inc. , nestl e9 s.a. , pepsico , inc. , the procter & gamble company , roche holding ag , and unilever nv and plc .\nnote : figures are rounded to the nearest $ 0.10. .",
+      "question": {
+        "type": "choice",
+        "instructions": "根据给定数据、规则和要求，选择最合适的一项。",
+        "criteria": {
+          "SUFFICIENT": "信息足够：能从当前材料确定答案。",
+          "INSUFFICIENT": "信息不足：至少一个必要事实无法由当前材料确定。"
+        }
+      },
+      "labels": [
+        "SUFFICIENT",
+        "INSUFFICIENT"
+      ],
+      "expected": "INSUFFICIENT",
+      "split": "public",
+      "group": "G-1614af8b7cdbe551",
+      "provenance": {
+        "subset": "D4",
+        "source": "FinQA",
+        "source_url": "https://github.com/czyssrs/FinQA",
+        "license": "MIT repository; underlying annual reports retain attribution",
+        "source_sha256": "a847fb7e0d61a3125a1e2909852df6b89f1ee64d2c5ff1bf689e332214deee51",
+        "operator_document_sha256": null,
+        "reference_type": "rule_or_source_supported",
+        "language": {
+          "task_language": "zh"
+        }
+      }
+    },
+    {
+      "id": "D5-ca13a134082b4ea8",
+      "family": "policy",
+      "state": "Purpose: Review a data export prepared for public release. All identities and records are synthetic examples and do not correspond to real individuals; please evaluate the current export plan according to the local privacy rules of the task below, rather than judging whether the examples are real people.\nRule: Any published group must contain at least 3 distinct participants; the number of records cannot substitute for the number of people. All counts refer to deduplicated complete groups, and unknowns must be verified.\nFull evaluation scope:\n{\n  \"group\": \"demo-ward-A\",\n  \"records\": 14,\n  \"distinct_participants\": null\n}\nDoes this publication proposal present the specified privacy risks?",
+      "question": {
+        "type": "choice",
+        "instructions": "Select the most appropriate option using the provided data, rules and requirements.",
+        "criteria": {
+          "RISK": "The current proposal has confirmed privacy leakage risks and should not be released as is.",
+          "NO_RISK": "No risks were found within the given privacy rules and the complete scope of the problem.",
+          "REVIEW": "Evidence is insufficient; supplementary verification is required before a judgment can be made."
+        }
+      },
+      "labels": [
+        "RISK",
+        "NO_RISK",
+        "REVIEW"
+      ],
+      "expected": "REVIEW",
+      "split": "public",
+      "group": "G-5b19149d867358af",
+      "provenance": {
+        "subset": "D5",
+        "source": "Workbench authored",
+        "source_url": null,
+        "license": "Workbench-authored fixture; no package-wide public release license assigned",
+        "source_sha256": null,
+        "operator_document_sha256": null,
+        "reference_type": "rule_or_source_supported",
+        "language": {
+          "task_language": "en"
+        }
+      }
+    },
+    {
+      "id": "D6-4944b93014e28a93",
+      "family": "intent",
+      "state": "你负责数据处理工作流，只选当前最应该执行的一步，不写完整计划。动作优先级：目标口径有无法由现有材料消除的冲突→询问需求方；否则缺可从现有文件查到的输入事实→检查；否则有已定位且规则明确的转换/修复工作→执行转换；否则当前输出版本尚未验收→校验；全部完成且授权明确→发布。已成功退出不等于数据验收；旧checksum的收据不能验收新输出。\n当前任务和现场：\n{\n  \"request\": \"公共交通时刻表：按给定时刻表schema导出。目标路径为 /project/output/release-3/，覆盖授权已明确；源数据必须保留。\",\n  \"source\": \"/project/input/batch.csv\",\n  \"existing_metadata\": \"/project/input/schema-and-manifest.json\",\n  \"target_schema\": \"已随任务提供；不需要联网\",\n  \"input_checksum\": \"input-3\",\n  \"output_checksum\": \"sha-out-3-3\",\n  \"validation_receipt\": {\n    \"checked_output_checksum\": null,\n    \"all_required_checks_passed\": false\n  },\n  \"evidence\": \"转换命令已经成功退出，当前输出存在且规则映射已执行；但当前字节版本还没有完成必需的行数、schema和来源ID一致性校验。\"\n}\n下一步选哪个动作？",
+      "question": {
+        "type": "choice",
+        "instructions": "根据给定数据、规则和要求，选择最合适的一项。",
+        "criteria": {
+          "INSPECT": "读取现有文件、元数据或日志，核实执行所需的客观事实。",
+          "TRANSFORM": "按已明确的要求执行数据转换、生成或修复。",
+          "VALIDATE": "对当前输出运行要求的校验，不先发布。",
+          "COMMIT": "将已完成且验收通过的当前输出正式保存/发布到指定位置。",
+          "ASK": "向需求方澄清现有材料无法确定的目标、口径或授权选择。"
+        }
+      },
+      "labels": [
+        "INSPECT",
+        "TRANSFORM",
+        "VALIDATE",
+        "COMMIT",
+        "ASK"
+      ],
+      "expected": "VALIDATE",
+      "split": "public",
+      "group": "G-1a0cdb2b23798c75",
+      "provenance": {
+        "subset": "D6",
+        "source": "Workbench authored",
+        "source_url": null,
+        "license": "Workbench-authored fixture; no package-wide public release license assigned",
+        "source_sha256": null,
+        "operator_document_sha256": null,
+        "reference_type": "rule_or_source_supported",
+        "language": {
+          "task_language": "zh"
+        }
+      }
+    }
+  ]
+}

@@ -1,24 +1,46 @@
-# 发布评测
+# Evaluation
 
-Piccolo 在四项决策评测上的成绩如下。分数、指标与来源文件记录在 [results.json](results.json)。
-
-| 模型 | HarnessJevBench Hard ↑ | DataJevBench ↑ | JevBench Public ↑ | Decision Index Public ↑ |
+| Model | HarnessJevBench Hard ↑ | DataJevBench ↑ | JevBench Public ↑ | Decision Index Public ↑ |
 | --- | ---: | ---: | ---: | ---: |
 | Piccolo-27B | 84.41% | 82.60% | 92.21% | 68.59 |
 | Piccolo-9B | 68.81% | 69.40% | 89.61% | 60.86 |
 | Piccolo-4B | 62.03% | 70.60% | 87.01% | 58.00 |
 
-## 评测与来源
+[Results JSON](results.json) · [Live leaderboard](https://decisionplayground.agentscope.io/)
 
-- [JevBench Public](../arena/leaderboard/jevbench.json)：决策准确率，27B 为 213/231。
-- [Decision Index](../arena/leaderboard/decisionindex.json)：100 分制综合指标。
-- [HarnessJevBench](../arena/leaderboard/harnessjevbench.json)：Hard 决策准确率，并记录 Soft 问题的分布距离 TV。
-- [DataJevBench](../arena/leaderboard/datajevbench.json)：500 道题，27B 答对 413 题，同时记录 Brier 与 ECE。
+## Reproduce in one command
 
-[在线榜单](https://decisionplayground.agentscope.io/) · [HarnessJevBench](https://github.com/agentscope-ai/HarnessJevBench) · [DataJevBench](https://github.com/datajuicer/DataJevBench)
+Start a [Piccolo decision server](../inference/piccolo_inference_sglang/README.md), then run from the repository root with Python 3.12 and Git:
 
-## 复现与本地测量
+```bash
+python evaluation/reproduce.py --base-url http://127.0.0.1:18604 --model Piccolo-4B
+```
 
-评测命令见 [HarnessJevBench 复现说明](https://github.com/agentscope-ai/HarnessJevBench/blob/main/skills/harnessjevbench-eval/references/reproducibility.md) 和 [DataJevBench 复现说明](https://github.com/datajuicer/DataJevBench/blob/main/docs/reproducibility.md)。
+The launcher fetches the pinned official benchmark sources, sends native `state` and `questions` to `/v1/systemone`, and runs each benchmark's official scorer. Results are written to a new directory under `var/evaluation/`; existing results are preserved. Use `--output PATH` to choose the directory.
 
-BF16、Q8_0 与 Q4_K_M 的转换和数值对照记录在各自模型卡。Q4_K_M 的合成回归包含每个尺寸 265 个请求、556 个判断，覆盖工具审核、上下文保留和评分。macOS 延迟与上下文压缩测量见 [QwenPaw 本地测量](../docs/QWENPAW.md#macos-本地延迟)。
+| Benchmark | Source | Scope |
+| --- | --- | --- |
+| HarnessJevBench | [Official evaluator](https://github.com/agentscope-ai/HarnessJevBench) | Hard decisions and Soft probability distributions |
+| DataJevBench | [Official evaluator](https://github.com/datajuicer/DataJevBench) | 500 data-workflow questions |
+| JevBench | [Official evaluator](https://github.com/fstandhartinger/jevbench) | 231 original, easy and hard public tasks |
+| Decision Index | [Official reproduction kit](https://github.com/apolinario/decision-index) | Public text suite |
+
+Decision Index installs its reproduction dependencies and rebuilds the suite on first use. Accept the upstream dataset terms and authenticate with Hugging Face before rebuilding datasets that require access. To reuse a prepared suite, add `--decision-suite /path/to/suite`.
+
+For a short integration check:
+
+```bash
+python evaluation/reproduce.py --base-url http://127.0.0.1:18604 --model Piccolo-4B \
+  --benchmarks harness data jevbench --limit 2
+```
+
+- `--dry-run` writes the command plan without downloads or model calls.
+- `--prepare-only` downloads the evaluators and prepares dependencies without inference.
+- `--key-env PICCOLO_API_KEY` reads authentication from that environment variable when set.
+- `--model-revision`, `--backend-revision` and `--hardware` record the local deployment in the run metadata.
+
+[benchmarks.json](benchmarks.json) pins source revisions. Per-question outputs are generated locally by the evaluator. The repository distributes aggregate results and reproduction code.
+
+## Local inference measurements
+
+BF16, Q8_0 and Q4_K_M conversion checks are documented in their model cards. Each size's Q4_K_M regression covers 265 requests and 556 decisions across tool review, context retention and scoring. See the [QwenPaw measurements](../docs/QWENPAW.md#macos-本地延迟) for local latency and context compaction.

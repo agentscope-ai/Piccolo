@@ -3,11 +3,16 @@
   const socialKinds = new Set(['doudizhu', 'texas_holdem', 'property_tycoon', 'zha_jin_hua', 'pig_dice']);
   const canvas = document.getElementById('showcaseCanvas');
   const ctx = canvas.getContext('2d');
-  // Logical positions stay constant for drawing, animations and card hit tests.
-  // The backing store follows the display density; it must not define geometry.
-  const W = 900, H = 540;
+  // Desktop and compact tables each share drawing and hit-test coordinates.
+  // Reflow small tables instead of shrinking 900px text into a phone screen.
+  let W = 900, H = 540, compactTable = false;
   let lastGame = null;
   function prepareCanvas() {
+    compactTable = canvas.parentElement.getBoundingClientRect().width < 560;
+    W = compactTable ? 400 : 900;
+    const handCount=lastGame.hand_count??lastGame.hand?.length??20;
+    H = compactTable ? ({doudizhu:handCount>10?555:470,texas_holdem:510,zha_jin_hua:430,property_tycoon:560}[lastGame.kind] || 540) : 540;
+    canvas.dataset.layout = compactTable ? 'compact' : 'wide';
     const density = window.devicePixelRatio || 1;
     const scale = Math.max(1, density, canvas.getBoundingClientRect().width / W * density);
     const width = Math.round(W * scale), height = Math.round(H * scale);
@@ -40,7 +45,7 @@
 
   function box(x, y, w, h, radius, fill, stroke, lineWidth = 1) {
     ctx.beginPath();
-    ctx.roundRect(x, y, w, h, 0);
+    ctx.roundRect(x, y, w, h, radius);
     if (fill) { ctx.fillStyle = tint(fill); ctx.fill(); }
     if (stroke) { ctx.strokeStyle = tint(stroke); ctx.lineWidth = lineWidth; ctx.stroke(); }
   }
@@ -51,8 +56,14 @@
     let fontSize=Math.max(12,size);
     ctx.font = weight + ' ' + fontSize + family;
     if(maxWidth && ctx.measureText(String(value)).width>maxWidth){
-      fontSize*=maxWidth/ctx.measureText(String(value)).width;
+      fontSize=Math.max(12,fontSize*maxWidth/ctx.measureText(String(value)).width);
       ctx.font=weight+' '+fontSize+family;
+      // Long user model names must not turn into unreadable one-pixel text.
+      if(ctx.measureText(String(value)).width>maxWidth){
+        const chars=Array.from(String(value));
+        while(chars.length&&ctx.measureText(chars.join('')+'…').width>maxWidth)chars.pop();
+        value=chars.join('')+'…';
+      }
     }
     ctx.textAlign = align;
     ctx.textBaseline = 'middle';
@@ -226,6 +237,9 @@
       return {value:value.rank??value,cardId:value.cardId??null,x:center-(w+(columns-1)*step)/2+column*step,y:top+row*25,w,h};
     });
   }
+  function publicTableDescription(table) {
+    return table.plays.map((cards,player)=>roleName(player)+'：'+(cards?.length?cards.map(value=>(rankNames[value.rank]||value.rank)+(Number.isInteger(value.cardId)&&value.cardId<52?['♠','♥','♣','♦'][value.cardId%4]:'')).join(' '):'No play')+(table.passed[player]?', pass':'')).join('；');
+  }
   function playedCards(table, player, flight) {
     const cards = table.plays[player], center = [450,190,710][player], y = player === 0 ? 275 : 194;
     const active = player === table.leader;
@@ -254,6 +268,107 @@
     });
   }
 
+  function drawCompactDoudizhu(g, extra) {
+    const table = extra.cardTable || publicTable(g);
+    background('#fff6dc', '#e6f1db');
+    [1,2].forEach((seat,index) => {
+      const x = 14 + index * 193;
+      box(x,14,179,76,10,'#fff9e8',seatBorder(seat,'#bdccb0'),seatActive(seat)?2.5:1);
+      label(seatName(seat,roleName(seat)),x+12,37,16,'#315648',650,'left',155);
+      label(g.opponent_counts[index]+' cards',x+12,65,15,'#52675a');
+    });
+    label('PUBLIC CARDS',20,111,13,'#52675a',600);
+    label(table.reset?'Trick over · New lead':table.leader==null?'Select cards below':roleName(table.leader)+' leads',380,111,13,'#52675a',500,'right',242);
+    [1,2,0].forEach((seat,index) => {
+      const y = 138 + index * 58, cards = table.plays[seat] || [];
+      label(roleName(seat),20,y+13,14,'#315648',600,'left',96);
+      if(table.passed[seat]) label('Pass',20,y+32,13,'#7d705a');
+      const step = Math.min(30,218/Math.max(1,cards.length-1));
+      cards.forEach((item,i) => {
+        const flight=extra.cardFlight,progress=flight?.player===seat&&!flight.pass?flight.progress:1,eased=1-Math.pow(1-progress,3);
+        const tx=129+i*step,ty=y-8,sx=seat===0?180:seat===1?70:290,sy=seat===0?455:45;
+        ctx.save();ctx.globalAlpha=.65+.35*progress;
+        card(item.rank,sx+(tx-sx)*eased,sy+(ty-sy)*eased,32,46,{compact:true,selected:seat===table.leader,cardId:item.cardId});ctx.restore();
+      });
+      if(!cards.length) label('—',250,y+13,17,'#7d705a',500,'center');
+    });
+    const hand=g.handoff?Array(g.hand_count).fill(null):g.hand,rows=hand.length>10?2:1;
+    box(14,325,372,rows===2?216:131,12,'#fff9e8',seatBorder(0,'#bdccb0'),seatActive(0)?2.5:1);
+    label(seatName(0,roleName(0)),27,346,16,'#315648',650,'left',272);
+    label((g.hand_count??g.hand.length)+' cards',373,346,14,'#52675a',500,'right');
+    const columns=Math.ceil(hand.length/rows),step=Math.min(35,309/Math.max(1,columns-1));
+    hand.forEach((value,i) => {
+      const col=i%columns,row=Math.floor(i/columns),selected=!extra.cardAnimation&&cardSelection.includes(i);
+      const x=27+col*step,y=370+row*85-(selected?8:0);
+      card(value,x,y,43,74,{selected,compact:true,face:!g.handoff,cardId:g.hand_card_ids?.[i]});
+      cardHits.push({x,y,w:col===columns-1?43:step,h:74,i});
+    });
+    canvas.setAttribute('aria-label',JevPlayText.ui('Dou Dizhu table. Public cards: '+publicTableDescription(table)+'. Select cards from your hand below.'));
+  }
+
+  function compactSeat(g,seat,y) {
+    box(14,y,372,45,10,'#fff9e8',seatBorder(seat,'#bdccb0'),seatActive(seat)?2.5:1);
+    label(seatName(seat,seat?'Opponent':'Your hand'),27,y+22,16,'#315648',650,'left',230);
+    label(g.stacks[seat]+' chips',373,y+22,16,'#315648',600,'right');
+  }
+  function drawCompactPoker(g,extra) {
+    background('#fff6dc','#e6f1db');
+    compactSeat(g,1,14);
+    [0,1].forEach(i=>card(g.opponent_hand?.[i],136+i*70,73,58,80,{face:!!g.showdown,poker:true}));
+    box(14,168,372,49,10,'#fff9e8','#bdccb0');
+    label('Pot',28,192,16,'#52675a'); label(g.pot,373,192,24,'#315648',700,'right');
+    const street=g.board.length===0?'Preflop':g.board.length===3?'Flop':g.board.length===4?'Turn':'River';
+    label(street+' · Community cards',200,237,15,'#315648',600,'center');
+    for(let i=0;i<5;i++) {
+      const x=25+i*71;
+      if(i<g.board.length) card(g.board[i],x,255,66,90,{poker:true});
+      else {box(x,255,66,90,7,'#eff5e8','#bdccb0');label('—',x+33,300,18,'#7d705a',500,'center');}
+    }
+    compactSeat(g,0,360);
+    (g.handoff?[null,null]:g.hand).forEach((value,i)=>card(value,132+i*73,417,63,82,{poker:true,face:!g.handoff}));
+    label('To call',27,435,14,'#52675a');label(g.to_call||'0',27,462,22,'#315648',650);
+    canvas.setAttribute('aria-label',JevPlayText.ui('Texas Holdem table: opponent above, community cards in the center, your hand below.'));
+  }
+  function drawCompactZha(g) {
+    background('#fff6dc','#e6f1db'); compactSeat(g,1,14);
+    for(let i=0;i<3;i++) card(g.opponent_hand?.[i],102+i*68,74,60,80,{face:!!g.showdown,poker:true});
+    box(14,171,372,50,10,'#fff9e8','#bdccb0');
+    label('Pot',28,196,16,'#52675a');label(g.pot,373,196,24,'#315648',700,'right');
+    label('Round '+g.round+' / 5 · Stake '+g.stake+' · '+(g.seen?'Seen':'Blind'),200,243,15,'#315648',600,'center',372);
+    compactSeat(g,0,266);
+    for(let i=0;i<3;i++) card(g.hand?.[i],97+i*72,326,66,90,{face:!!g.hand,poker:true});
+    canvas.setAttribute('aria-label',JevPlayText.ui('Three-card poker. Opponent cards are revealed only at showdown.'));
+  }
+  function drawCompactProperty(g) {
+    background('#fff6dc','#e6f1db');
+    const cells=[];
+    for(let x=0;x<5;x++)cells.push([x,0]);
+    for(let y=1;y<5;y++)cells.push([4,y]);
+    for(let x=3;x>=0;x--)cells.push([x,4]);
+    for(let y=3;y>0;y--)cells.push([0,y]);
+    cells.forEach(([cx,cy],i)=>{
+      const x=15+cx*74,y=16+cy*74,owner=g.owners[String(i)];
+      box(x,y,72,72,5,owner===0?'#e0efdc':owner===1?'#fae6db':'#fff9e8','#cfc3a9');
+      label(g.names[i],x+36,y+23,14,'#315648',600,'center',65);
+      label(g.prices[String(i)]?'$'+g.prices[String(i)]:'',x+36,y+43,13,'#52675a',500,'center');
+      g.positions.forEach((pos,seat)=>{if(pos===i){ellipse(x+23+seat*27,y+60,8,8,seat?'#ce7960':'#34866b');}});
+      const level=g.levels[String(i)]||0;
+      if(level)label('◆'.repeat(level),x+36,y+10,10,'#8f713f',600,'center');
+    });
+    label('Property Tycoon',200,145,21,'#315648',650,'center');
+    label('Round '+g.round+' / 20',200,180,17,'#52675a',500,'center');
+    box(164,207,72,65,10,'#34866b');label(g.dice??'—',200,239,32,'#fff',700,'center');
+    [0,1].forEach(seat=>{
+      const x=14+seat*193,holdings=Object.values(g.owners).filter(o=>o===seat).length;
+      box(x,407,179,136,10,'#fff9e8',seatBorder(seat,'#bdccb0'),seatActive(seat)?2.5:1);
+      label(seatName(seat,seat?'Opponent':'Your assets'),x+12,432,15,'#315648',600,'left',155);
+      label('$'+g.cash[seat],x+12,467,25,'#315648',700);
+      label(holdings+' properties',x+12,499,14,'#52675a');
+      label('At '+g.names[g.positions[seat]],x+12,524,13,'#52675a',500,'left',155);
+    });
+    canvas.setAttribute('aria-label',JevPlayText.ui('Property Tycoon'));
+  }
+
   function drawDoudizhu(g, extra = {}) {
     const table = extra.cardTable || publicTable(g), flight = extra.cardFlight;
     background('#102f31', '#0b2429');
@@ -276,8 +391,7 @@
     const w=54,h=94,step=Math.min(37,(W-144-w)/Math.max(1,hand.length-1)),left=(W-step*(hand.length-1)-w)/2;
     hand.forEach((value,i)=>{const selected=!extra.cardAnimation&&cardSelection.includes(i),x=left+i*step,y=selected?405:420;card(value,x,y,w,h,{selected,face:!g.handoff,cardId:g.hand_card_ids?.[i]});cardHits.push({x,y,w:i===g.hand.length-1?w:step,h,i});});
     flyingPlay(flight);
-    const publicSummary=table.plays.map((cards,player)=>roleName(player)+'：'+(cards?.length?cards.map(value=>(rankNames[value.rank]||value.rank)+(Number.isInteger(value.cardId)&&value.cardId<52?['♠','♥','♣','♦'][value.cardId%4]:'')).join(' '):'No play')+(table.passed[player]?', pass':'')).join('；');
-    canvas.setAttribute('aria-label',JevPlayText.ui('Dou Dizhu table. Public cards: '+publicSummary+'. Select cards from your hand below.'));
+    canvas.setAttribute('aria-label',JevPlayText.ui('Dou Dizhu table. Public cards: '+publicTableDescription(table)+'. Select cards from your hand below.'));
   }
 
   function drawPoker(g, extra = {}) {
@@ -461,7 +575,11 @@
     lastGame = g; prepareCanvas();
     brightTable = ['doudizhu', 'texas_holdem', 'zha_jin_hua'].includes(g.kind);
     cardHits = []; ctx.clearRect(0, 0, W, H);
-    if (g.kind === 'doudizhu') drawDoudizhu(g,extra);
+    if(compactTable && g.kind==='doudizhu') drawCompactDoudizhu(g,extra);
+    else if(compactTable && g.kind==='texas_holdem') drawCompactPoker(g,extra);
+    else if(compactTable && g.kind==='zha_jin_hua') drawCompactZha(g);
+    else if(compactTable && g.kind==='property_tycoon') drawCompactProperty(g);
+    else if (g.kind === 'doudizhu') drawDoudizhu(g,extra);
     else if (g.kind === 'texas_holdem') drawPoker(g,extra);
     else if (g.kind === 'zha_jin_hua') drawZhaJinHua(g);
     else if (g.kind === 'pig_dice') drawPigDice(g);

@@ -27,7 +27,7 @@ def project_arena(saved):
     for section in ('fixed_config', 'options'):
         if section in result and 'games' in result[section]:
             result[section]['games'] = [g for g in result[section]['games'] if g['id'] in kinds]
-    from jev_demo_elo import _rank, ENGINE
+    from .elo_ranking import rank_rows as _rank, ENGINE
     overall = []
     counters = ('played', 'wins', 'draws', 'losses', 'errors')
     if saved.get('source') == 'imported_ratings':

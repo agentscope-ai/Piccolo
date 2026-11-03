@@ -1,3 +1,20 @@
+# GitLab source sync
+
+## 2026-11-03
+
+Arena follows the current website source at revision `8115d6e8ef29`. The import includes the frontend, shared engines, game scope, published leaderboards, bilingual article, Method figures and recorded media.
+
+- The active playground contains 17 games. Dots and Boxes, Blackjack, Texas Hold'em, Zha Jin Hua and Mario have been removed from the current playground; 6×6 Othello remains available.
+- Historical recordings remain in the article and standalone showcase pages.
+- `blink_arena`, `jev.*` and `JEV_*` retain their existing compatibility names.
+- The replay JSON is compacted without changing its contents. Public media hashes are recorded in [website-assets.json](../arena/docs/website-assets.json).
+- Subdirectory READMEs are in English. The root Chinese README and bilingual website content remain available.
+- GitHub-specific additions include the workflow JSON export, benchmark launcher, CI and source packaging.
+
+See [website development](../arena/docs/WEBSITE.md) and [verification](VERIFICATION.md).
+
+## Previous sync
+
 # 网页与榜单同步
 
 2026-11-03，同步官网的 JevBench、Decision Index、HarnessJevBench 与 DataJevBench 数据。来源为 ProjectZ `dev_xinji` 的 `7ae23abc23cb7c47adbc53b47d87ec900277df4c`，详情见 [评测结果](../evaluation/README.md)。

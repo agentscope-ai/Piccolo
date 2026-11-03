@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-11-03 — Website source and reproducible tooling
+
+- Sync Arena with the latest website source and its 17-game playground.
+- Include the bilingual article, Method figures, recorded media and 12 workflow examples.
+- Add one-command evaluation using the official benchmark runners and scorers.
+- Add CI for tests, links, generated assets, browser checks and source packaging.
+- Publish English QwenPaw setup screenshots and English subdirectory READMEs.
+- Remove the old GitHub Release; source packages are available from Actions.
+
 ## 2026-11-03
 
 - Synchronized all four benchmark snapshots, release results and bilingual score tables with the Decision website.

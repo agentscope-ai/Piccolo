@@ -132,7 +132,7 @@ window.JevParticipants = (() => {
     el('showcaseGoal').textContent=g.kind==='doudizhu'&&table.view_seat>0?tr('Cooperate with the other farmer to finish before the landlord.','与另一名农民合作，先于地主出完手牌。'):JevPlayText.ui(JevPlayText.goal(g.kind,showcaseSession.goal));
     const stats = g.kind==='doudizhu'?[[table.hand_count,'Cards left'],[g.steps,'Turns']]:g.kind==='property_tycoon'?[[table.round+'/20','Round'],[table.cash[0],'Your cash']]:[[table.stacks[0],'Your chips'],[table.pot,'Pot']];
     el('sceneStats').innerHTML=JevPlayText.html(statMarkup(stats));
-    el('showcaseOutcome').className=g.outcome?'win':'hidden';
+    el('showcaseOutcome').className=g.outcome?(['draw','budget_exhausted'].includes(g.outcome)?'draw':g.outcome==='win'?'win':'loss'):'hidden';
     if(g.outcome) el('showcaseOutcome').textContent=g.kind==='doudizhu'&&['win','loss'].includes(g.outcome)?(g.outcome==='win'?tr('Landlord wins','地主获胜'):tr('Farmers win','农民获胜')):g.outcome==='draw'?tr('Draw','平局'):g.outcome==='budget_exhausted'?tr('Move limit reached','已达回合上限'):label(player(g.outcome==='win'?0:1))+tr(' wins',' 获胜');
     el('showcaseNew').textContent=JevPlayText.ui(g.outcome?'↻ Play again':'↻ Restart');
     el('showcaseFields').innerHTML=showcaseInputs(showcaseSession.input);

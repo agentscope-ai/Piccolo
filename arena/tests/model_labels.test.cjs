@@ -18,8 +18,8 @@ test('hosted and published labels use Piccolo with historical IDs intact',()=>{
 });
 
 test('legacy release names normalize without renaming third-party or custom labels',()=>{
-  assert.equal(labels.displayName('archived-run','OneShot (27B)'),'Piccolo (27B)');
-  assert.equal(labels.displayName('archived-run','Blink (27B)'),'Piccolo (27B)');
+  assert.equal(labels.displayName('archived-run','OneShot (27B)'),'Piccolo-27B');
+  assert.equal(labels.displayName('archived-run','Blink (27B)'),'Piccolo-27B');
   assert.equal(labels.displayName('archived-run','QwenJev 27B RL'),'Piccolo 27B RL');
   for(const label of ['Qwen3.8 27B','GPT-6 Luna Decisions','OneShot Research Lab','My OneShot experiment']){
     assert.equal(labels.displayName('custom-model',label),label);

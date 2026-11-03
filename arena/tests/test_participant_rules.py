@@ -8,6 +8,7 @@ from blink_arena.app import create_app
 from blink_arena.engine import get_engine
 from blink_arena.schemas import AppConfig
 from blink_arena.social_duels import SocialDuel
+from jev_control_scope import active_games
 
 
 def test_doudizhu_rule_only_uses_current_hand_and_public_cards():
@@ -25,9 +26,9 @@ def test_doudizhu_rule_only_uses_current_hand_and_public_cards():
         assert other.rule_action() == expected
 
 
-@pytest.mark.parametrize('kind', ['doudizhu','texas_holdem','zha_jin_hua','property_tycoon',
+@pytest.mark.parametrize('kind', active_games(['doudizhu','texas_holdem','zha_jin_hua','property_tycoon',
                                  'checkers','xiangqi','uno','liars_dice','chess',
-                                 'othello_6x6','hex_7x7','dots_and_boxes_3x3'])
+                                 'othello_6x6','hex_7x7','dots_and_boxes_3x3']))
 def test_rule_seats_progress_without_any_model_connection(kind, tmp_path):
     app = create_app(data=tmp_path, seed=tmp_path/'missing', config=AppConfig(),
                      leaderboard_dir=tmp_path/'leaderboard')

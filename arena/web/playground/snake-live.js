@@ -1,7 +1,7 @@
 /* Server-owned fixed-clock Snake. UI animates received moves, never advances physics. */
 window.JevSnakeUI=(()=>{
  const tr=(en,zh)=>window.JevI18n?.t(en,zh)??en,kind='snake_navigation';
- const isWorld=g=>g?.kind===kind&&g.engine_revision==='snake-realtime-v1-six-apples';
+ const isWorld=g=>g?.kind===kind&&['snake-realtime-v1-six-apples','snake-realtime-v2-configurable-target'].includes(g.engine_revision);
  const active=()=>playTabVisible&&selectedPlay===kind&&isWorld(showcaseSession?.world);
  const current=id=>active()&&showcaseSession.session_id===id;
  const names={up:['↑ Up','↑ 上'],left:['← Left','← 左'],down:['↓ Down','↓ 下'],right:['Right →','右 →']};
@@ -17,14 +17,16 @@ window.JevSnakeUI=(()=>{
   if(ended){$('showcaseModel').disabled=true;$('showcaseAuto').disabled=!showcaseAuto;}
  }
  function status(g){
-  $('showcaseGoal').textContent=JevPlayText.goal(kind);
+  const target=g.food_target??3;
+  $('showcaseGoal').textContent=tr('Collect '+target+' apples. Keep moving; avoid walls, rocks and your tail.','吃到 '+target+' 颗苹果。自动前进，避开墙、石块和身体。');
   $('sceneStats').innerHTML=statMarkup([[g.score+' / '+g.food_target,tr('Apples','苹果')],[g.started?g.elapsed.toFixed(1)+' s':tr('Ready','待开始'),tr('Time','时间')],[g.steps+' / '+g.max_steps,tr('Moves','移动')],[g.move_interval.toFixed(2)+' s',tr('Per cell','每格')]]);
   $('keyboardHint').textContent=tr('Arrows / WASD or direction buttons. Your first direction starts the clock; Snake keeps moving while the model responds.','方向键 / WASD 或方向按钮。首次输入后自动前进，模型思考时仍继续移动。');
   const outcome=$('showcaseOutcome');outcome.className=g.outcome?(g.outcome==='win'?'win':'loss'):'hidden';
-  if(g.outcome){outcome.innerHTML='<strong>'+esc(g.outcome==='win'?tr('Six apples collected!','六颗苹果已集齐！'):g.event==='collision'?tr('Collision · Game over','发生碰撞 · 本局结束'):tr('Game over','本局结束'))+'</strong><button id="sceneAgain">'+esc(tr('Play again ↻','再开一局 ↻'))+'</button>';$('sceneAgain').onclick=()=>newShowcase();}
+  if(g.outcome){outcome.innerHTML='<strong>'+esc(g.outcome==='win'?tr(target+' apples collected!',target+' 颗苹果已集齐！'):g.event==='collision'?tr('Collision · Game over','发生碰撞 · 本局结束'):tr('Game over','本局结束'))+'</strong><button id="sceneAgain">'+esc(tr('Play again ↻','再开一局 ↻'))+'</button>';$('sceneAgain').onclick=()=>newShowcase();}
   $('showcaseNew').textContent=tr('↻ Restart','↻ 重新开局');controls();
  }
  function paint(g){
+  if(!painted){painted=g;PlayDraw.draw(g);return;}
   if(painted&&g.steps>painted.steps){
    const frames=g.execution_trace?.frames||[];
    const previous=frames.find(f=>f.steps===g.steps-1);

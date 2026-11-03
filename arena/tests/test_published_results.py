@@ -52,7 +52,7 @@ def test_unknown_official_error_counts_are_not_claimed_to_be_zero():
     rows = store.get('decisionindex').rows
     assert sum(r.score is not None for r in rows) == 7
     for row in rows:
-        assert row.errors == (0 if row.model_id in PICCOLO else None)
+        assert row.errors is None
         if row.score is None:
             assert row.status == 'pending'
             assert all(axis.score is None for axis in row.axes)

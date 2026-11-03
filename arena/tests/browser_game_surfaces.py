@@ -13,8 +13,10 @@ PAINTED = """canvas => canvas.width>0 && canvas.height>0 &&
 def settle(page, tab):
     panel={'blog':'blogView','games':'gamesView'}[tab]
     page.locator('#'+panel).wait_for(state='visible')
-    page.wait_for_function("""() => !busy && !showcaseBusy &&
-      !document.querySelector('#sitePageContent').getAnimations().some(a=>a.playState==='running')""")
+    page.wait_for_function("""tab => !busy && !showcaseBusy &&
+      document.querySelector('[data-tab="'+tab+'"]').getAttribute('aria-selected')==='true' &&
+      getComputedStyle(document.querySelector('#sitePageContent')).opacity==='1' &&
+      !document.querySelector('#sitePageContent').getAnimations().some(a=>a.playState==='running')""",arg=tab)
     assert page.locator('#sitePageContent').evaluate('(n)=>getComputedStyle(n).opacity')=='1'
     assert page.locator('#globalError').evaluate('(n)=>n.classList.contains("hidden")')
 
@@ -42,7 +44,9 @@ def main():
             assert page.locator('.lb-heading h2').inner_text()=='Leaderboard'
             page.locator('[data-tab="games"]').click()
             page.wait_for_function('!busy&&!showcaseBusy&&catalog&&showcaseKinds.length>0')
-            for kind,surface in [('snake_navigation','#showcaseCanvas'),('xiangqi','.selected-grid.xiangqi'),('mario_platformer','#marioFrame')]:
+            for kind,surface in [('snake_navigation','#showcaseCanvas'),('xiangqi','.selected-grid.xiangqi'),('terraria_survival','#terrariaFrame')]:
+                category=page.evaluate('kind=>JevGameCategories.category(kind)',kind)
+                page.locator('#playGameCategory').select_option(category)
                 page.locator('#playQuickGame').select_option(kind)
                 page.wait_for_function('k=>selectedPlay===k&&!busy&&!showcaseBusy',arg=kind)
                 page.locator(surface).wait_for(state='visible')
@@ -50,21 +54,24 @@ def main():
                 scene=page.locator(surface).element_handle()
                 world=None
                 bridge=None
-                if kind=='mario_platformer':
+                if kind=='terraria_survival':
                     world=scene.content_frame()
                     assert world is not None
-                    world.wait_for_function('!!window.JevMario?.snapshot')
-                    world.locator('#game').wait_for(state='visible')
-                    assert world.locator('#game').evaluate(PAINTED),(kind,'iframe canvas is blank')
-                    bridge=page.evaluate_handle('worldBridge("mario_platformer")')
-                    before=world.evaluate('window.JevMario.snapshot()')
-                    condition=world.evaluate('window.JevMario.condition()')
+                    world.wait_for_function('!!window.JevTerramai?.snapshot')
+                    world.locator('#tw-canvas').wait_for(state='visible')
+                    assert world.locator('#tw-canvas').evaluate(PAINTED),(kind,'iframe canvas is blank')
+                    bridge=page.evaluate_handle('worldBridge("terraria_survival")')
+                    before=world.evaluate('window.JevTerramai.snapshot()')
+                    condition=world.evaluate('window.JevTerramai.condition()')
                     assert before['player'] and before['map']['tiles'],(kind,'world snapshot missing')
                 else:
                     if kind=='snake_navigation':
                         assert page.locator(surface).evaluate(PAINTED),(kind,'canvas is blank')
                     else:
                         assert page.locator('.xiangqi-piece').count()==32
+                        page.locator('#participantFirst').select_option('human')
+                        page.locator('#participantOpponent').select_option('human')
+                        page.wait_for_function('!busy&&!showcaseBusy')
                         move_xiangqi(page,1)
                     before=page.evaluate('({session:showcaseSession.session_id,world:showcaseSession.world})')
                     assert before['session'],(kind,'manual session missing')
@@ -86,12 +93,12 @@ def main():
                 assert not state['navInside'] and not state['brandInside'],(kind,state)
                 assert state['width']>0 and state['height']>0 and state['pointer']!='none',(kind,state)
                 assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+1')
-                if kind=='mario_platformer':
-                    assert bridge.evaluate('(value)=>value===worldBridge("mario_platformer")'),(kind,'world bridge was replaced')
-                    after=world.evaluate('window.JevMario.snapshot()')
-                    assert world.evaluate('window.JevMario.condition()')==condition,(kind,'world seed changed')
+                if kind=='terraria_survival':
+                    assert bridge.evaluate('(value)=>value===worldBridge("terraria_survival")'),(kind,'world bridge was replaced')
+                    after=world.evaluate('window.JevTerramai.snapshot()')
+                    assert world.evaluate('window.JevTerramai.condition()')==condition,(kind,'world seed changed')
                     assert after['frame']>=before['frame'] and after['decisions']==before['decisions'],(kind,'world was reset')
-                    assert world.locator('#game').evaluate(PAINTED),(kind,'iframe canvas blank after return')
+                    assert world.locator('#tw-canvas').evaluate(PAINTED),(kind,'iframe canvas blank after return')
                     bridge.dispose()
                 else:
                     after=page.evaluate('({session:showcaseSession.session_id,world:showcaseSession.world})')
@@ -112,7 +119,7 @@ def main():
             settle(page,'blog')
             page.locator('[data-tab="games"]').click()
             settle(page,'games')
-            assert page.locator('#marioFrame').is_visible()
+            assert page.locator('#terrariaFrame').is_visible()
             assert page.locator('#sitePageContent').evaluate('(n)=>!n.getAnimations().length')
             page.close()
         browser.close()

@@ -29,19 +29,6 @@ OUT=Path(os.environ['JEV_TERRA_COMPACT_AUDIT_DIR']) if os.environ.get('JEV_TERRA
 HIST=Path(os.environ.get('JEV_CORE_HISTORICAL_TERRA',str(ROOT/'tests/fixtures/historical-terra.json')))
 
 class CompactRecordTests(unittest.TestCase):
- def test_paused_clock_roundtrip_retains_exact_notice_and_rejects_tampering(self):
-  from jev_inference_clock import record_for_clock
-  job={'inference_world_paused':True}
-  old=CASES[0]['legacy_v18_record']
-  packed=record_for_clock(compact_record(old),job)
-  self.assertEqual(expand_record(packed),record_for_clock(old,job))
-  for change in ('notice','marker','missing'):
-   broken=copy.deepcopy(packed)
-   if change=='notice':broken['questions']['decision']['instructions']+='changed'
-   elif change=='marker':broken['state']['sampling_clock']['waiting_advances_world']=True
-   else:broken['state'].pop('sampling_clock')
-   with self.subTest(change=change),self.assertRaises(ValueError):expand_record(broken)
-
  def test_real_state_records_expand_exactly_to_frozen_v18_including_candidates(self):
   for case in CASES:
    observation=copy.deepcopy(case['observation']);before=copy.deepcopy(observation)

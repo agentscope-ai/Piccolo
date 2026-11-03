@@ -10,6 +10,7 @@ from collections import deque
 
 KIND = 'snake_navigation'
 REVISION = 'snake-realtime-v1-six-apples'
+TARGET_REVISION = 'snake-realtime-v2-configurable-target'
 SEED_REVISION = 'snake-realtime-initial-v1'
 GOAL = '实时前进，避开墙、石块和身体，吃到 6 个苹果'
 N = 14
@@ -39,7 +40,11 @@ def interval(g):
 
 
 def is_realtime(g):
-    return g.get('kind') == KIND and g.get('engine_revision') == REVISION
+    return g.get('kind') == KIND and g.get('engine_revision') in (REVISION, TARGET_REVISION)
+
+
+def goal(g):
+    return GOAL.replace('6 个', str(g.get('food_target', FOOD_TARGET))+' 个')
 
 
 def _reachable(start, blocked, n=N):
@@ -55,9 +60,11 @@ def _reachable(start, blocked, n=N):
     return distances
 
 
-def fresh(seed=0):
+def fresh(seed=0, *, food_target=FOOD_TARGET):
     from jev_environment_seeds import validate_seed
     validate_seed(seed)
+    if type(food_target) is not int or not 1 <= food_target <= N*N-INITIAL_LENGTH:
+        raise ValueError('food_target must be a positive integer within the board capacity')
     rng = random.Random(f'{SEED_REVISION}/{seed}')
     cells = [(x, y) for y in range(N) for x in range(N)]
     for _ in range(256):
@@ -78,11 +85,11 @@ def fresh(seed=0):
         food_cells = [p for p, distance in reachable.items() if distance >= 5]
         if not food_cells:
             continue
-        g = {'kind': KIND, 'engine_revision': REVISION, '_seed': seed,
+        g = {'kind': KIND, 'engine_revision': REVISION if food_target == FOOD_TARGET else TARGET_REVISION, '_seed': seed,
              'n': N, 'body': [list(p) for p in body], 'direction': direction,
              'pending_direction': direction, 'food': list(rng.choice(food_cells)),
              'obstacles': [list(p) for p in sorted(obstacles)], 'steps': 0,
-             'decisions': 0, 'max_model_decisions': LIMIT, 'score': 0, 'food_target': FOOD_TARGET, 'target_food': FOOD_TARGET, 'outcome': None,
+             'decisions': 0, 'max_model_decisions': LIMIT, 'score': 0, 'food_target': food_target, 'target_food': food_target, 'outcome': None,
              'started': False, 'elapsed': 0., 'move_clock': 0.,
              'move_interval': 1.2, 'time_limit': TIME_LIMIT, 'max_steps': MOVE_LIMIT,
              'event': 'ready', 'failure_reason': None}
@@ -143,14 +150,14 @@ def _move(g):
         if eating:
             g['score'] += 1
             g['event'] = 'apple'
-            if g['score'] >= FOOD_TARGET:
+            if g['score'] >= g.get('food_target', FOOD_TARGET):
                 g.update(outcome='win', event='complete')
             else:
                 reachable = _reachable(head, set(map(tuple, g['obstacles'] + body[1:])), g['n'])
                 free = sorted(p for p in reachable if list(p) not in body)
                 if not free:
                     # A trapped snake still needs to escape; never award a win
-                    # before six apples merely because its body encloses space.
+                    # before its target merely because its body encloses space.
                     free = [(x, y) for y in range(g['n']) for x in range(g['n'])
                             if [x, y] not in body + g['obstacles']]
                 if free:
@@ -203,16 +210,17 @@ def as_record(g):
     grid[fy][fx] = 'F'
     hx, hy = g['body'][0]
     grid[hy][hx] = 'H'
-    state.update(rules=RULES, grid=[''.join(row) for row in grid], foods_eaten=g['score'])
+    target=g.get('food_target', FOOD_TARGET)
+    state.update(rules=RULES.replace('6颗', str(target)+'颗'), grid=[''.join(row) for row in grid], foods_eaten=g['score'])
     state['candidate_next_cells'] = {
         a: {'head': head, 'collision': collision, 'eats_food': eating}
         for a in choices(g) for head, body, eating, collision in [next_cell(g, a)]}
     state['timing'] = {'mode': 'realtime_wall_clock', 'continues_during_inference': True,
                        'seconds_to_next_move': state['seconds_to_next_move'],
                        'move_interval': interval(g), 'automatic_actions': 0}
-    r = record(KIND, state, PROMPT, choices(g), '', g['decisions'])
+    r = record(KIND, state, PROMPT.replace('6颗', str(target)+'颗'), choices(g), '', g['decisions'])
     r['labels'] = {}
-    r['provenance']['source_revision'] = REVISION
+    r['provenance']['source_revision'] = g['engine_revision']
     r['metadata']['difficulty'] = 'L2'
     from jev_game_prompt_calibration import apply as calibrate_prompt
     return calibrate_prompt(r)

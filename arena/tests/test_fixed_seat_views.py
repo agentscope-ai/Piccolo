@@ -10,6 +10,7 @@ from blink_arena.engine import get_engine
 from blink_arena.private_views import fixed_view
 from blink_arena.social_duels import SocialDuel
 import jev_demo_showcases as facade
+from jev_control_scope import active_games
 
 
 @pytest.mark.parametrize('seat', [0, 1, 2])
@@ -89,7 +90,7 @@ def test_native_private_view_stays_on_requested_seat(kind, seat):
     if seat == 1:assert view[own_key] == original[own_key]
 
 
-@pytest.mark.parametrize('kind', ['doudizhu','texas_holdem','zha_jin_hua','property_tycoon','uno','liars_dice'])
+@pytest.mark.parametrize('kind', active_games(['doudizhu','texas_holdem','zha_jin_hua','property_tycoon','uno','liars_dice']))
 def test_fixed_view_http_persists_and_can_be_changed_without_playing(kind):
     async def unused(*args):raise AssertionError('No model needed')
     app=FastAPI();facade.install(app,'',lambda seq:None,unused,None)

@@ -377,6 +377,11 @@
     finally { loading = false; }
   }
   const home = document.getElementById('blogView');
+  // Long-form articles reuse this replay below the fold. Pause recorded playback
+  // when readers leave the figure, while keeping its current position intact.
+  if ('IntersectionObserver' in window) new IntersectionObserver(entries => {
+    if (entries.every(entry => !entry.isIntersecting)) { stop(); cancelEffects(); }
+  }).observe(host);
   if (home) new MutationObserver(() => { if (!visible()) { stop(); cancelEffects(); } }).observe(home, {attributes: true, attributeFilter: ['class', 'hidden']});
   document.addEventListener('visibilitychange', () => { if (!visible()) { stop(); cancelEffects(); } }); motion.addEventListener('change', () => { stop(); cancelEffects(); });
   window.JevI18n?.onChange(() => { if (data) render(); else if (!loading) unavailable(); });

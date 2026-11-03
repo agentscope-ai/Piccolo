@@ -1,0 +1,14 @@
+/* An article is a document link alongside the three application tabs. */
+.mast-navigation{display:flex;align-items:center;justify-self:center;gap:26px;min-width:0}
+body .mast-navigation .tabs{gap:26px}
+.blog-nav-link{position:relative;display:flex;align-items:center;min-height:38px;font-size:13px;font-weight:500;color:var(--muted)!important;text-decoration:none;white-space:nowrap}
+.blog-nav-link:hover,.blog-nav-link:is([aria-current=page],[aria-current=location]){color:var(--fs-accent)!important}
+.blog-nav-link:is([aria-current=page],[aria-current=location]):after{content:"";position:absolute;bottom:-2px;left:0;right:0;height:2px;background:var(--fs-accent)}
+@media(max-width:1100px){.mast-navigation,body .mast-navigation .tabs{gap:20px}}
+@media(max-width:760px){body .mast .mast-navigation{grid-column:1/-1;grid-row:2;justify-self:stretch;gap:20px;flex-wrap:wrap}body .mast-navigation .tabs{width:auto;gap:20px;justify-self:auto}body .mast-navigation .blog-nav-link{min-height:34px}body .mast{margin-bottom:30px}}
+@media(max-width:360px){body .mast .mast-navigation,body .mast-navigation .tabs{gap:13px}body .mast-navigation .tab,.blog-nav-link{font-size:12px!important}}
+
+/* The release article links back to the publication index. */
+.article-back{display:inline-flex;align-items:center;min-height:44px;margin:20px 0 4px;color:var(--muted,#756b60);font-size:12px;text-decoration:none}
+.article-back:hover{color:var(--fs-accent,#a4603e)}
+.article-back:focus-visible{outline:2px solid var(--fs-accent,#a4603e);outline-offset:4px}

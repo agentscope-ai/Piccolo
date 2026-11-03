@@ -1,0 +1,294 @@
+{
+  "website": "https://decisionplayground.agentscope.io/",
+  "source_revision": "8115d6e8ef299ead8462353a31933ba1e3c6d4b5",
+  "assets": [
+    {
+      "path": "web/blog/assets/2048-poster.png",
+      "bytes": 45124,
+      "sha256": "ac7a329b057c28716e696cdafda087cbd5521ea372f377916003020acf7ba2d2",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/2048-poster.png"
+    },
+    {
+      "path": "web/blog/assets/2048.gif",
+      "bytes": 2260207,
+      "sha256": "60e25784b77f61cb330bc3a025b287b45362e17731a4e481ee61aad72f513dcc",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/2048.gif"
+    },
+    {
+      "path": "web/blog/assets/27b-evolution.svg",
+      "bytes": 5452,
+      "sha256": "81e9120a7289b66a75f8aa800c46e09c3fc11f607029f3c7ea279433f1729f09",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/27b-evolution.svg"
+    },
+    {
+      "path": "web/blog/assets/data-architecture-mobile.svg",
+      "bytes": 5109,
+      "sha256": "4a23ec84eaa4d837001eb89c80f6cbd3fcad8437d964a1942f40ecfa8919d2ed",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/data-architecture-mobile.svg"
+    },
+    {
+      "path": "web/blog/assets/data-architecture.svg",
+      "bytes": 5038,
+      "sha256": "ec02ccac02544b54d2db08b1af7717d8f3e84ebdf9df3fb2487323ca5623def1",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/data-architecture.svg"
+    },
+    {
+      "path": "web/blog/assets/data-governance.png",
+      "bytes": 1697723,
+      "sha256": "ed298cc5863ac0f87eb7de3413620828667175421f51f29b9ae600698a076be8",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/data-governance.png"
+    },
+    {
+      "path": "web/blog/assets/data-judge-cases.json",
+      "bytes": 7607,
+      "sha256": "f6afa4b7b8f03a280c46187434e70da10fb49dd89005b87e35c19c2521d7540a",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/data-judge-cases.json"
+    },
+    {
+      "path": "web/blog/assets/data-judge-poster.png",
+      "bytes": 322246,
+      "sha256": "a01ca9f255aec5e45fa8382eb8b6458affb420e467b04355abc3c74d4388a98c",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/data-judge-poster.png"
+    },
+    {
+      "path": "web/blog/assets/data-judge.gif",
+      "bytes": 2692530,
+      "sha256": "2c8d1b68b0789ea3171023af0475e437253447ee18de2f2a75af18acacb5828d",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/data-judge.gif"
+    },
+    {
+      "path": "web/blog/assets/data-overview.png",
+      "bytes": 521895,
+      "sha256": "7bc9cf01bf66a6a42687e2c14451c8ee92990fe23855ee798cf7604582ddb5f1",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/data-overview.png"
+    },
+    {
+      "path": "web/blog/assets/dots-boxes-poster.png",
+      "bytes": 46564,
+      "sha256": "25a4308b4f984a9217ddc546f295d201de57f0d1532e538c88ef9a6e2fc68b3f",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/dots-boxes-poster.png"
+    },
+    {
+      "path": "web/blog/assets/dots-boxes.gif",
+      "bytes": 235264,
+      "sha256": "315cc8af50e6a5ba9209339ec5a7a76ce5aedc45974abef24a93de0b8e11ae8b",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/dots-boxes.gif"
+    },
+    {
+      "path": "web/blog/assets/feedback-architecture.svg",
+      "bytes": 11216,
+      "sha256": "10c8848ffa0b65fa3e4a6108a3eaf862e12a138e56b81c2e6d4af6e338f4d104",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/feedback-architecture.svg"
+    },
+    {
+      "path": "web/blog/assets/harness-overview.svg",
+      "bytes": 430851,
+      "sha256": "474ce1dbbd410ec5f1c241e371eff29d8306786ba08fbf555cda7e456e83e72f",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/harness-overview.svg"
+    },
+    {
+      "path": "web/blog/assets/harness-radar.png",
+      "bytes": 413618,
+      "sha256": "d80deb693041524f5986b878d0ea424279d9f053abef688baf052eafc9cfdd81",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/harness-radar.png"
+    },
+    {
+      "path": "web/blog/assets/hex-poster.png",
+      "bytes": 66534,
+      "sha256": "6973ad1352da28eab3b2fbc2fdbdc47e2d334d0efacae72124c9a0a46418e205",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/hex-poster.png"
+    },
+    {
+      "path": "web/blog/assets/hex.gif",
+      "bytes": 537787,
+      "sha256": "9edd152831a23fcc55fdcd19e61f79a3abb37447310f4670034e9d9a85006edb",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/hex.gif"
+    },
+    {
+      "path": "web/blog/assets/jump-poster.png",
+      "bytes": 67109,
+      "sha256": "dd9030040ad76e26cab0d745f50819d47be0e1b30df9fe736a9ed887e2e0c0a9",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/jump-poster.png"
+    },
+    {
+      "path": "web/blog/assets/jump.gif",
+      "bytes": 262644,
+      "sha256": "074bd29991dce71bb510d36a51377b524d444c996ae6b34614a9296d4612b045",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/jump.gif"
+    },
+    {
+      "path": "web/blog/assets/leaderboard.png",
+      "bytes": 1403947,
+      "sha256": "4ab73899aca6529f5bc804bbbb936a4ebc4fd713a8ffa4fe96b9ef3926f2dffc",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/leaderboard.png"
+    },
+    {
+      "path": "web/blog/assets/learning-feedback.png",
+      "bytes": 1915730,
+      "sha256": "47dc19c03fba6dbbdfcd7d286e6c8ead8e273000ccf5e933fa8ccfbfb1b55559",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/learning-feedback.png"
+    },
+    {
+      "path": "web/blog/assets/mario-poster.png",
+      "bytes": 61070,
+      "sha256": "73bce8de1c51129c5bba65b3f25e5c0165e4818fa39f1c61aadd99ab881acd2c",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/mario-poster.png"
+    },
+    {
+      "path": "web/blog/assets/mario.gif",
+      "bytes": 540630,
+      "sha256": "1581d2753e518d10868f819b2846cf6433d7d36ee6d7ce1b5d7d2fd6e206d1b1",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/mario.gif"
+    },
+    {
+      "path": "web/blog/assets/method-agentic-data-engineering.png",
+      "bytes": 1779881,
+      "sha256": "1d6c1dba56d3198d5adb2cc4d1be275cab752d249ddb5e17568abdbf7bf0fa78",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/method-agentic-data-engineering.png"
+    },
+    {
+      "path": "web/blog/assets/method-data-curation.png",
+      "bytes": 1765942,
+      "sha256": "81c59a980b6b4984a412b2059dac71546f7eae42847c9f827c8c2f4e36e4461c",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/method-data-curation.png"
+    },
+    {
+      "path": "web/blog/assets/method-model-evolution.png",
+      "bytes": 1536542,
+      "sha256": "09e3b829a0328c2bd943a8c6552c811316b3e0d5a62a290321868e97df7e5f8b",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/method-model-evolution.png"
+    },
+    {
+      "path": "web/blog/assets/method-piccolo-evolution.webm",
+      "bytes": 6144361,
+      "sha256": "7ff6a8c17eea55a293a1093d9673049b19744f0242c8ed0db5a8e73227e128bb",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/method-piccolo-evolution.webm"
+    },
+    {
+      "path": "web/blog/assets/model-evolution.png",
+      "bytes": 1679602,
+      "sha256": "1323b77a17f28c6cd7e78ded9f7d7878e8acc7e208603e4e38da76c177d6d75f",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/model-evolution.png"
+    },
+    {
+      "path": "web/blog/assets/othello-poster.png",
+      "bytes": 58078,
+      "sha256": "cc029f82c4a44d0f7f8f0b7cd4526a0ce99f37eddde2e92f00dde87a10c3a485",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/othello-poster.png"
+    },
+    {
+      "path": "web/blog/assets/othello.gif",
+      "bytes": 233717,
+      "sha256": "34c51e28f0f8ab58cdf6d746f84337fd5ed5f6450e6392e3e19124b722708c3f",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/othello.gif"
+    },
+    {
+      "path": "web/blog/assets/piccolo-evolution-source-poster.png",
+      "bytes": 240645,
+      "sha256": "a0c6d3627be5512820e386eda4cecea511cfd5749f0c82dccfddbf8d78334cce",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/piccolo-evolution-source-poster.png"
+    },
+    {
+      "path": "web/blog/assets/piccolo-evolution-source.mp4",
+      "bytes": 1405696,
+      "sha256": "1f4408d74745155dcf7e0bea032e1e8e9eb26b5572fa094e422cb3d6d2102f26",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/piccolo-evolution-source.mp4"
+    },
+    {
+      "path": "web/blog/assets/piccolo-wordmark.svg",
+      "bytes": 881,
+      "sha256": "9e68cce3bbdae6e49505de6c1982d770963bf01570bc4f29b4a2cc340895648d",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/piccolo-wordmark.svg"
+    },
+    {
+      "path": "web/blog/assets/qwenpaw-audit-poster.png",
+      "bytes": 280504,
+      "sha256": "571b6034503cdbfdb47928f954aa71b2df9fd73cbe2ae5b76fc9c68c9162c7a3",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/qwenpaw-audit-poster.png"
+    },
+    {
+      "path": "web/blog/assets/qwenpaw-audit-zh-poster.png",
+      "bytes": 298457,
+      "sha256": "17ca092885019794cbf2d8fc666287bed063d21b21d0b0a40dc0f3f16ed4385d",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/qwenpaw-audit-zh-poster.png"
+    },
+    {
+      "path": "web/blog/assets/qwenpaw-audit-zh.gif",
+      "bytes": 6918873,
+      "sha256": "19d7942e9cc67f7307c803797cb4c13ab3354ba9c239e795fd86adff72a3cce1",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/qwenpaw-audit-zh.gif"
+    },
+    {
+      "path": "web/blog/assets/qwenpaw-audit.gif",
+      "bytes": 6952565,
+      "sha256": "5e910c310d44dff62cec399bd319135cdd8f2874e5d6345064e2c2597b0ed8b4",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/qwenpaw-audit.gif"
+    },
+    {
+      "path": "web/blog/assets/research-loop-mobile.svg",
+      "bytes": 5916,
+      "sha256": "ef518e3999a56523b57833db0d27dad55f931aa9a5674e9f2514b40890d02316",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/research-loop-mobile.svg"
+    },
+    {
+      "path": "web/blog/assets/research-loop.svg",
+      "bytes": 5231,
+      "sha256": "9db42a62bf98093217b77308d7b740464994ba68778594452b97d1229b74116d",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/research-loop.svg"
+    },
+    {
+      "path": "web/blog/assets/snake-poster.png",
+      "bytes": 54117,
+      "sha256": "dba9d0927c9f24547ecf0fda011b5425260460ccf435adb3d372a0f8c93571c8",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/snake-poster.png"
+    },
+    {
+      "path": "web/blog/assets/snake.gif",
+      "bytes": 825496,
+      "sha256": "c5aeaca110037286dd0d732da066b2ffa1dfc22ee7bb36f8492311da4cfb08bb",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/snake.gif"
+    },
+    {
+      "path": "web/blog/assets/sokoban-poster.png",
+      "bytes": 68376,
+      "sha256": "a8a8f30cc9dc172ad77e62511741cfa3a5b76e76f05268d5faf61bfd9e360011",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/sokoban-poster.png"
+    },
+    {
+      "path": "web/blog/assets/sokoban.gif",
+      "bytes": 132642,
+      "sha256": "0014add43442ec1dd8d3c9b3023916bffb2aa6d18ec1cf28503df3402aa913e8",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/sokoban.gif"
+    },
+    {
+      "path": "web/blog/assets/tetris-poster.png",
+      "bytes": 71324,
+      "sha256": "8ec9009813f0e0dbdc491952d7cacc761126aa3f34e72d588f2f42a3e6fd37c5",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/tetris-poster.png"
+    },
+    {
+      "path": "web/blog/assets/tetris.gif",
+      "bytes": 672395,
+      "sha256": "a9c898942c22ed57f7bfab99100eba2586e8e81dd5e1bd448d405f1b9930748a",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/tetris.gif"
+    },
+    {
+      "path": "web/blog/assets/zenless-zone-zero-poster.png",
+      "bytes": 341163,
+      "sha256": "f4243c385a88b90dbfa2be52f3787cd1f1568ace9613e42c36d834c024aad5a9",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/zenless-zone-zero-poster.png"
+    },
+    {
+      "path": "web/blog/assets/zenless-zone-zero.gif",
+      "bytes": 2016703,
+      "sha256": "4fd7f1ceb6bfbf71a95a22489301c5b680c0fd18970a284285dafaee058314b0",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/zenless-zone-zero.gif"
+    },
+    {
+      "path": "web/blog/assets/zenless-zone-zero.mp4",
+      "bytes": 30362507,
+      "sha256": "0e419f848ffbbd615f765738cef7926e822b2619f943a17c5149e29c0eeb155f",
+      "public_url": "https://decisionplayground.agentscope.io/blog/assets/zenless-zone-zero.mp4"
+    }
+  ]
+}

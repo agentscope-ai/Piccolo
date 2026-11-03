@@ -129,6 +129,7 @@ window.JevChessUI = (() => {
     p.append(node('p',hint,'jev-chess-hint'));
     renderMoves(p,g); renderActions(); controls(showcaseBusy);
     el('showcaseGoal').textContent = showcaseSession.goal;
+    el('sceneStats').innerHTML=statMarkup([[g.steps+' / '+g.max_plies,tr('Moves','行动次数')]]);
     el('keyboardHint').textContent = tr('Legal moves are supplied by the engine. Tab/Enter also selects squares; promotion is always explicit.', '合法着法由引擎提供。可用 Tab / Enter 选择格子，升变时必须明确选择棋子。');
     renderEvidence();
   }

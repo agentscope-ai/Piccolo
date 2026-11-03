@@ -37,6 +37,8 @@ REQUIRED = frozenset(('web/index.html', 'web/playground/leaderboard.js', 'leader
     'tests/rollout_http_smoke.py', 'web/playground/world-arrival.js'))
 
 
+REQUIRED = REQUIRED | frozenset(('web/blog.html', 'web/piccolo.html', 'web/blog-index.css', 'web/blog-index.js', 'web/blog/blog.js', 'web/blog/content.js', 'web/blog/evidence.js', 'web/blog/locale.js', 'web/blog/blog.css', 'web/blog/nav.css', 'web/blog/gallery.js', 'web/blog/gallery.css', 'web/blog/schema-data.js', 'web/blog/workflow-cases.js', 'web/blog/workflow-demos.js', 'web/blog/workflow-demos.css', 'web/blog/workflow-data-license.txt', 'web/showcase/index.html', 'web/showcase/app.js', 'web/showcase/embed.js', 'web/showcase/style.css', 'web/blog/label-examples.json', 'web/blog/math.js', 'web/blog/evolution.js', 'web/blog/evolution.css', 'web/blog/method-figures.js', 'web/blog/method-figures.css', 'web/blog/architecture.js', 'web/blog/assets/data-architecture.svg', 'web/blog/assets/feedback-architecture.svg', 'web/blog/assets/research-loop.svg', 'web/blog/assets/27b-evolution.svg', 'web/blog/assets/data-architecture-mobile.svg', 'web/blog/assets/research-loop-mobile.svg', 'web/blog/benchmark-overview.js', 'web/blog/benchmark-overview.css', 'web/blog/layout.css', 'web/blog/wordmark.css', 'web/blog/assets/piccolo-wordmark.svg', 'web/blog/benchmark-radars.js', 'web/blog/benchmark-radars.css', 'web/blog/benchmark-profiles.js', 'web/blog/vendor/katex/katex.min.js', 'web/blog/vendor/katex/katex.min.css', 'web/blog/site-route.js', 'web/blog/benchmark-snapshot.json', 'web/blog/decision-field.svg'))
+
 def excluded(relative):
     path = Path(relative)
     name = path.name.lower()

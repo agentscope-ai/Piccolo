@@ -1,0 +1,43 @@
+{
+  "harness": {
+    "repository": "https://github.com/agentscope-ai/HarnessJevBench.git",
+    "revision": "50ed12899b4767392a2ad8cb515599f049f7bd9d",
+    "paths": [
+      ".github",
+      "assets",
+      "benchmark",
+      "configs",
+      "evaluation",
+      "examples",
+      "results",
+      "skills",
+      "tests"
+    ]
+  },
+  "data": {
+    "repository": "https://github.com/datajuicer/DataJevBench.git",
+    "revision": "5010f6aa899dd268aae8b0b9dbc4665e02999443",
+    "paths": [
+      "datajevbench",
+      "benchmark",
+      "releases/v0.5"
+    ]
+  },
+  "jevbench": {
+    "repository": "https://github.com/fstandhartinger/jevbench.git",
+    "revision": "609a664e81f46e03731600bd7bd9f1b7a61257c5",
+    "paths": [
+      "jevbench",
+      "datasets/public"
+    ]
+  },
+  "decision-index": {
+    "repository": "https://github.com/apolinario/decision-index.git",
+    "revision": "25c6ec7b6b5f44a216c63c3a700de3a9c6d6699d",
+    "paths": [
+      "decision_index",
+      "hub",
+      "scripts"
+    ]
+  }
+}

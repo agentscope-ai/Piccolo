@@ -4,7 +4,7 @@ Piccolo 复用 QwenPaw 的 GGUF 下载器、llama.cpp 管理，以及 Jev 原有
 
 ## 安装支持该模型的版本
 
-接入位于 **[PR #8463](https://github.com/agentscope-ai/QwenPaw/pull/8463)**，正在等待上游评审。可复现的实现为 fork 分支的提交 [`07d521bd`](https://github.com/Xinji-Mai/QwenPaw/commit/07d521bdb71365a50f32dcb24d09211811f52bad)。先在独立目录获取该版本，再按其开发安装文档准备 QwenPaw：
+接入位于 **[PR #8463](https://github.com/agentscope-ai/QwenPaw/pull/8463)**，正在合入上游。可复现的实现为 fork 分支的提交 [`07d521bd`](https://github.com/Xinji-Mai/QwenPaw/commit/07d521bdb71365a50f32dcb24d09211811f52bad)。先在独立目录获取该版本，再按其开发安装文档准备 QwenPaw：
 
 ```bash
 git clone --branch codex/blink-local-decision https://github.com/Xinji-Mai/QwenPaw.git QwenPaw-Piccolo

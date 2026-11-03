@@ -45,6 +45,8 @@ from typing import Literal, Annotated
 from jev_environment_seeds import condition_info
 from jev_engine_registry import get_engine, get_archived_engine, list_engines
 from blink_arena.model_inputs import project_record
+from blink_arena.game_constants import PLAYGROUND_LIMITS, PLAYGROUND_SNAKE_FOOD_TARGET, playground_engine
+from jev_control_scope import active_games
 
 Seed = Annotated[int, Field(strict=True, ge=0, le=4294967295)]
 WORLD_OBSERVATION_MAX_BYTES = 256 * 1024
@@ -140,16 +142,18 @@ def install(app,prefix,getcase,predict,db):
             if view is not None:world['fixed_view']=view
         return {'session_id':ident,'revision':s['revision'],'world':world,'choices':opts,
             'environment':s.get('environment'),
-            'goal':engine.goal,'input':{'state':r['state'],'prompt':r['questions']['decision']['instructions'],'option':r['questions']['decision']['criteria']} if r else None}
+            'goal':snake.goal(g) if snake.is_realtime(g) else engine.goal,'input':{'state':r['state'],'prompt':r['questions']['decision']['instructions'],'option':r['questions']['decision']['criteria']} if r else None}
 
     @app.get(prefix+'/api/engines')
     async def engine_listing():
         return {'schema_version':'jev.engine-registry.v1',
-                'engines':[engine.descriptor() for engine in list_engines()]}
+                'engines':[playground_engine(engine).descriptor() for engine in list_engines()
+                           if active_games([engine.kind])]}
 
     @app.get(prefix+'/api/engines/{kind}')
     async def engine_descriptor(kind:str):
-        try:return get_engine(kind).descriptor()
+        if not active_games([kind]):raise HTTPException(404,'未知游戏引擎')
+        try:return playground_engine(get_engine(kind)).descriptor()
         except (KeyError,ValueError):raise HTTPException(404,'未知游戏引擎')
 
     @app.post(prefix+'/api/engines/{kind}/observe')
@@ -175,7 +179,7 @@ def install(app,prefix,getcase,predict,db):
         scenes=[]  # Text benchmark examples are not shipped; MBTI has its own API.
         scenes.extend((engine.kind,engine.scene_descriptor(),engine)
                       for engine in list_engines(include_internal=False)
-                      if engine.family!='board')
+                      if engine.family!='board' and active_games([engine.kind]))
         for kind,info,engine in scenes:
             category=mapping.get(kind)
             if category not in cats:
@@ -187,6 +191,11 @@ def install(app,prefix,getcase,predict,db):
                             sft_export_prohibited=engine.sft_export_prohibited)
                 # Archived turn-based data is not a replay of realtime rules.
                 if engine.clock=='realtime':item.update(category_id=None,sample_count=0)
+                if kind=='snake_navigation':
+                    item['note']=snake.goal({'food_target':PLAYGROUND_SNAKE_FOOD_TARGET})
+                    item['engine']['goal']=item['note']
+                if kind in PLAYGROUND_LIMITS:
+                    item['engine']['limit']=PLAYGROUND_LIMITS[kind]
             result.append(item)
         return result
 
@@ -201,6 +210,7 @@ def install(app,prefix,getcase,predict,db):
 
     @app.post(prefix+'/api/showcases/new')
     async def new(body:New):
+        if not active_games([body.kind]):raise HTTPException(422,'未知游戏')
         try:engine=get_engine(body.kind)
         except (KeyError,ValueError):raise HTTPException(422,'未知游戏')
         if (engine.backend!='native' and body.seq is None) or engine.family=='board':raise HTTPException(422,'请使用对应的浏览器或棋盘入口')
@@ -219,6 +229,9 @@ def install(app,prefix,getcase,predict,db):
                 g['_rng']=random.Random(g['_rng_seed'])
             if g['kind']=='property_tycoon' and 'prices' in g:
                 g['prices']={int(k):v for k,v in g['prices'].items()}
+        elif body.kind==snake.KIND:g=snake.fresh(seed,food_target=PLAYGROUND_SNAKE_FOOD_TARGET)
+        elif body.kind in ('xiangqi','sudoku'):
+            g=engine.reset(seed,{'opponent':body.opponent,'max_steps':PLAYGROUND_LIMITS[body.kind]})
         else:g=fresh(body.kind,seed,body.opponent)
         engine=get_engine(body.kind,g)
         for ident in list(sessions):
@@ -234,7 +247,7 @@ def install(app,prefix,getcase,predict,db):
         if body.kind==racing.KIND:racing_runtime.start(sessions[ident])
         if snake.is_realtime(g):
             snake_runtime.start(sessions[ident])
-            sessions[ident]['environment'].update(revision=snake.SEED_REVISION,description=snake.GOAL)
+            sessions[ident]['environment'].update(revision=snake.SEED_REVISION,description=snake.goal(g))
         if tetris.is_realtime(g):
             tetris_runtime.start(sessions[ident])
             sessions[ident]['environment'].update(revision=tetris.SEED_REVISION,description=tetris.GOAL)

@@ -7,8 +7,6 @@ Every interval and executed movement is retained for deterministic verification.
 import asyncio
 import copy
 import time
-from jev_inference_clock import paused, contract, record_for_clock, verify_clock, policy_timeout
-from jev_inference_clock import simulated, wait_seconds, SIMULATED_REVISION
 
 import jev_snake_realtime as game
 from jev_snake_runtime import CLOCK_CONTRACT, MIN_DECISION_SECONDS, MODEL_TIMEOUT_SECONDS
@@ -61,7 +59,6 @@ def _force_failure(state, reason):
 
 
 async def play(sampler, job):
-    clock_contract = contract(job, CLOCK_CONTRACT)
     state = game.fresh(job['seed'])
     initial = copy.deepcopy(state)
     trace, events = [], []
@@ -71,47 +68,44 @@ async def play(sampler, job):
         if state['outcome']:
             break
         captured_at = time.monotonic()
-        pre = 0. if simulated(job) else captured_at - clock_at
+        pre = captured_at - clock_at
         state = game.advance_idle(state, pre)
         if state['outcome']:
             events.append({'ordinal': ordinal, 'pre_decision_seconds': pre,
                            'before_state': copy.deepcopy(state), 'action_applied': False,
                            'no_request': True, 'after_state': copy.deepcopy(state),
-                           'clock_contract': clock_contract})
+                           'clock_contract': CLOCK_CONTRACT})
             break
         before = copy.deepcopy(state)
-        record = record_for_clock(game.as_record(before), job)
+        record = game.as_record(before)
         action, policy = None, None
         try:
             action, policy = await asyncio.wait_for(
-                sampler.policy_action(record, job['episode_id'], ordinal), policy_timeout(job, MODEL_TIMEOUT_SECONDS))
+                sampler.policy_action(record, job['episode_id'], ordinal), MODEL_TIMEOUT_SECONDS)
             if action not in record['questions']['decision']['criteria']:
                 raise ValueError('model_action_not_in_captured_candidates')
         except Exception as exc:
             status = 'timeout' if isinstance(exc, TimeoutError) else 'error'
             error = type(exc).__name__
         response_at = time.monotonic()
-        wall_waiting = response_at - captured_at
-        waiting = wait_seconds(job, ordinal, wall_waiting)
+        waiting = response_at - captured_at
         arrived = game.advance_idle(before, waiting)
         applied = error is None and not arrived['outcome'] and action in game.choices(arrived)
         state = game.step(arrived, action) if applied else arrived
-        if applied and not simulated(job):
-            await asyncio.sleep(max(0., MIN_DECISION_SECONDS - (time.monotonic() - (response_at if paused(job) else captured_at))))
+        if applied:
+            await asyncio.sleep(max(0., MIN_DECISION_SECONDS - (time.monotonic() - captured_at)))
         completed_at = time.monotonic()
-        # The virtual 2–4s already exceeds the realtime minimum decision period.
-        post = 0. if simulated(job) else completed_at - response_at
+        post = completed_at - response_at
         state = game.advance_idle(state, post)
         if error:
             state = _force_failure(state, 'model_timeout' if status == 'timeout' else 'model_error')
         event = {'ordinal': ordinal, 'record': record, 'action': action, 'policy': policy,
                  'pre_decision_seconds': pre, 'before_state': before,
-                 'waiting_seconds': waiting, 'wall_waiting_seconds': wall_waiting, 'arrival_state': arrived,
+                 'waiting_seconds': waiting, 'arrival_state': arrived,
                  'action_applied': applied, 'post_action_seconds': post,
                  'reason': ('game_finished_while_waiting' if arrived['outcome'] else
                             'direction_changed_while_waiting' if error is None and not applied else None),
-                 'after_state': copy.deepcopy(state), 'clock_contract': clock_contract,
-                 **({'sampling_clock_source': SIMULATED_REVISION} if simulated(job) else {}),
+                 'after_state': copy.deepcopy(state), 'clock_contract': CLOCK_CONTRACT,
                  'error_type': error, 'status': status}
         events.append(event)
         if applied:
@@ -127,11 +121,10 @@ async def play(sampler, job):
         trace[-1]['after_state'] = copy.deepcopy(state)
         trace[-1]['terminal_wait_after_response'] = not events[-1].get('action_applied', False)
     extra = {
-        'clock_contract': clock_contract, 'replay_events': events,
-        'real_time_seconds': state['elapsed'], 'inference_world_paused': paused(job),
-        **({'inference_simulated_wait': True, 'sampling_clock_source': SIMULATED_REVISION} if simulated(job) else {}),
+        'clock_contract': CLOCK_CONTRACT, 'replay_events': events,
+        'real_time_seconds': state['elapsed'], 'inference_world_paused': False,
         'rule_takeover_count': 0, 'status': status, 'error_type': error,
-        'inference_waiting_seconds': sum(event.get('wall_waiting_seconds', event.get('waiting_seconds', 0.)) for event in events)}
+        'inference_waiting_seconds': sum(event.get('waiting_seconds', 0.) for event in events)}
     trace, extra = rebuild_credit(initial, trace, state, extra)
     return initial, state, trace, state['outcome'], extra
 
@@ -140,7 +133,8 @@ def verify(job, initial, final, extra):
     state = game.fresh(job['seed'])
     if state != initial:
         raise ValueError('snake initial state mismatch')
-    verify_clock(job, extra, CLOCK_CONTRACT)
+    if extra.get('clock_contract') != CLOCK_CONTRACT:
+        raise ValueError('snake clock contract mismatch')
     for event in extra['replay_events']:
         state = game.advance_idle(state, event.get('pre_decision_seconds', 0.))
         if state != event['before_state']:
@@ -149,7 +143,7 @@ def verify(job, initial, final, extra):
             if state != event['after_state'] or not state['outcome']:
                 raise ValueError('snake terminal pre-decision state mismatch')
             continue
-        if record_for_clock(game.as_record(state), job) != event['record']:
+        if game.as_record(state) != event['record']:
             raise ValueError('snake captured model input mismatch')
         state = game.advance_idle(state, event['waiting_seconds'])
         if state != event['arrival_state']:

@@ -1,0 +1,17 @@
+{
+  "source_component": "JevArena",
+  "source_revision": "8115d6e8ef299ead8462353a31933ba1e3c6d4b5",
+  "active_game_scope": "games-playground17-20261101-v1",
+  "python_package": "blink_arena",
+  "preserved_protocols": [
+    "jev.*",
+    "JEV_*"
+  ],
+  "github_additions": [
+    "standalone recorded showcase pages",
+    "workflow JSON export",
+    "evaluation launcher",
+    "continuous integration"
+  ],
+  "replay_json": "Whitespace compacted; object content preserved."
+}

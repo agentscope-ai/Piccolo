@@ -1,10 +1,10 @@
-# 最小决策示例
+# Decision examples
 
-[request.json](request.json) 提供只读工具操作背景，询问是否可能删除或覆盖数据。它不会执行工具，只读取模型候选概率。
+[request.json](request.json) asks whether a read-only tool operation may delete or overwrite data. The example returns candidate probabilities without executing the tool. The [workflow collection](workflows/README.md) contains 12 bilingual examples from agent and data workflows.
 
-## 完整 checkpoint
+## Full checkpoint
 
-在仓库根目录执行；先准备具备足够内存／显存的 Python 环境。以下命令会下载完整 4B 权重：
+Run from the repository root in a Python environment with sufficient memory for the 4B weights:
 
 ```bash
 python -m pip install -r inference/reference/requirements.txt huggingface_hub
@@ -13,16 +13,16 @@ python inference/reference/piccolo_inference.py \
   --model Piccolo-4B --request examples/request.json --device cuda:0 --output result.json
 ```
 
-CPU 参考路径使用 `--device cpu --dtype float32`，需要更多内存。脚本不依赖文本生成或额外服务，保持完整提示与双向注意力。结果包含 `attention_mode`、`layout` 与 `results`；`results[0].option_keys` 对应 `results[0].bidirectional_prompt.probabilities`。检查 `attention_mode=bidirectional_prompt`、候选概率有限且总和约为 1。具体数值由模型实际推理产生，此处不虚构固定输出。
+For CPU inference, use `--device cpu --dtype float32`. The output includes `attention_mode`, `layout` and `results`. Each `option_keys` list corresponds to `bidirectional_prompt.probabilities`; the probabilities sum to one.
 
 ## QwenPaw
 
-按 [下载与启用指南](../docs/QWENPAW.md)启动模型后，在 QwenPaw Python 环境运行：
+After [starting a local model](../docs/QWENPAW.md), run this check in the QwenPaw Python environment:
 
 ```bash
 python scripts/check_qwenpaw_local.py
 ```
 
-成功时输出 `status=local_decision_interface_ok`、实际 `returned_model` 与合成样本的审批／上下文结果。失败时退出码非零，并提示检查模型选择与运行时，不回显服务错误中的潜在敏感内容。
+A successful check reports `status=local_decision_interface_ok`, the returned model identity and the synthetic review and context-retention results. A failed check exits with a nonzero status.
 
-[推理协议](../inference/README.md) · [评测范围](../evaluation/README.md)。
+[Inference protocol](../inference/README.md) · [Evaluation](../evaluation/README.md)

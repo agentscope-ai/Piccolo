@@ -42,7 +42,7 @@ def assert_selected_view(page, tab, label, *, focused=False):
 
 def assert_mast_layout(page, width, label):
     """Desktop navigation shares the brand row; narrow screens give it a full row."""
-    assert page.locator('.mast > .tabs').count()==1
+    assert page.locator('.mast > .mast-navigation > .tabs').count()==1
     boxes=page.locator('.mast,.mast .brand,.mast .tabs,.mast .mast-controls').evaluate_all("""nodes=>
       Object.fromEntries(nodes.map(n=>{
         const r=n.getBoundingClientRect();

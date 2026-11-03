@@ -44,8 +44,9 @@ async def run(args):
             try:
                 await page.goto(args.url, wait_until='domcontentloaded')
                 await page.wait_for_function('showcaseKinds.length>0&&!busy&&!showcaseBusy')
-                games=await page.locator('#playQuickGame option').evaluate_all('(nodes)=>nodes.map(n=>n.value).filter(Boolean)')
-                assert len(set(games)-{'mbti_text'})==22 and 'racing_sprint' not in games
+                games=await page.evaluate('JevGameCategories.groups.flatMap(group=>group.games)')
+                assert len(set(games)-{'mbti_text'})==17 and 'racing_sprint' not in games
+                assert not set(games)&{'dots_and_boxes_3x3','blackjack','texas_holdem','zha_jin_hua','mario_platformer'}
                 await page.locator('[data-tab=games]').click()
                 await page.evaluate('ConnectUI.open()')
                 for key, value in [('connectionModelId', ident), ('connectionName', 'Realtime fixture'),
@@ -57,6 +58,7 @@ async def run(args):
                 await page.wait_for_function('ConnectUI.configured')
                 await page.locator('#connectCancel').click()
 
+                await page.locator('#playGameCategory').select_option('realtime')
                 await page.locator('#playQuickGame').select_option('tetris_placement')
                 await page.wait_for_function("selectedPlay==='tetris_placement'&&!showcaseBusy")
                 await page.evaluate('''()=>{
@@ -130,74 +132,148 @@ async def run(args):
                     await page.wait_for_function('old=>showcaseSession.session_id!==old&&!showcaseSession.world.outcome&&!showcaseBusy', arg=session)
                     checks.append({'game': native_kind, 'width': width, 'check': 'native_terminal_restart'})
 
-                await page.locator('#playQuickGame').select_option('mario_platformer')
-                await page.wait_for_function("selectedPlay==='mario_platformer'&&!showcaseBusy")
-                state = json.loads((Path(__file__).parent / 'fixtures/mario_large_observation.json').read_text())
-                for route in ('engines/mario_platformer/observe', 'showcases/world'):
-                    reply_delay = .2
-                    result = await page.evaluate('async ([route,state])=>{let r=await api(route,{state,kind:"mario_platformer"});return !!(r.record||r.result)}', [route, state])
-                    assert result
-                checks.append({'game': 'mario_platformer', 'width': width, 'check': 'complete_large_observation',
-                               'bytes': len(json.dumps(state, ensure_ascii=False).encode())})
-
-                # Force a real physics death with a deliberately late model reply.
-                # Capture counts before it to detect terminal postMessage loops.
-                await page.evaluate('''()=>{
-                    window.__terminalMessages=0;
-                    window.addEventListener('message',e=>{
-                        if(e.data?.type==='jev-mario-state'&&e.data.observation.outcome)__terminalMessages++;
-                    });
-                    const b=worldBridge();b.fixture({seed:2,player:{y:520},enemies:[],plants:[]});
-                    // Synchronize the fixture: public HTTP can take longer than
-                    // the one physics frame before death. Resume only once the
-                    // delayed model request has actually reached the browser.
-                    b.activate(false);
-                    worldOutcome=null;
-                }''')
-                reply_delay = 3.5
-                request_started.clear()
-                await page.evaluate('void modelShowcaseStep()')
-                await asyncio.wait_for(request_started.wait(), 10)
-                await page.evaluate('worldBridge().activate(true)')
-                await page.wait_for_function("worldOutcome==='loss'&&!showcaseBusy&&!document.getElementById('showcaseNew').disabled", timeout=2000)
-                await page.wait_for_timeout(150)
-                terminal = await page.evaluate('({messages:__terminalMessages,autoplay:showcaseAuto,busy:showcaseBusy})')
-                assert terminal['messages'] < 20 and not terminal['autoplay'] and not terminal['busy'], terminal
-                await page.screenshot(path=str(out / f'mario-{width}-terminal.png'))
-                await page.locator('#showcaseNew').click()
-                await page.wait_for_function('!showcaseBusy&&worldOutcome===null')
-                generation = await page.evaluate('worldBridge().condition().generation')
-                await page.wait_for_timeout(3700)
-                restarted = await page.evaluate('({generation:worldBridge().condition().generation,outcome:worldOutcome,busy:showcaseBusy,error:!document.getElementById("globalError").classList.contains("hidden")})')
-                assert restarted == {'generation': generation, 'outcome': None, 'busy': False, 'error': False}, restarted
-                checks.append({'game': 'mario_platformer', 'width': width, 'check': 'death_restart_late_reply', **terminal})
-
-                # A manual restart during inference also cancels only its owner;
-                # completion of the old request must not release a newer intent.
-                reply_delay = 3.5
-                request_started.clear()
-                await page.evaluate('void modelShowcaseStep()')
-                await asyncio.wait_for(request_started.wait(), 10)
+                await page.evaluate("JevSelectPlay('terraria_survival')")
+                await page.wait_for_function("selectedPlay==='terraria_survival'&&!showcaseBusy")
                 await page.evaluate('newShowcase()')
                 await page.wait_for_function('!showcaseBusy')
-                generation = await page.evaluate('worldBridge().condition().generation')
+                reply_delay=3.5
                 request_started.clear()
                 await page.evaluate('void modelShowcaseStep()')
-                await asyncio.wait_for(request_started.wait(), 10)
-                await page.wait_for_timeout(300)
-                assert await page.evaluate('!!worldOperation&&showcaseBusy')
-                await page.locator('#marioFrame').element_handle()
-                await page.evaluate('''()=>{
-                    const frame=document.getElementById('marioFrame').contentWindow,b=frame.JevMario;
-                    frame.parent.postMessage({type:'jev-mario-state',generation:b.condition().generation-1,
-                        observation:{...b.snapshot(false),outcome:'loss'}},location.origin);
+                await asyncio.wait_for(request_started.wait(),10)
+                before_frame=await page.evaluate('worldBridge().snapshot(false).frame')
+                await page.wait_for_timeout(600)
+                assert await page.evaluate('worldBridge().snapshot(false).frame')>before_frame
+                await page.evaluate('newShowcase()')
+                await page.wait_for_function('!showcaseBusy')
+                reply_delay=5
+                request_started.clear()
+                await page.evaluate('void modelShowcaseStep()')
+                await asyncio.wait_for(request_started.wait(),10)
+                generation=await page.evaluate('''()=>{
+                    window.__newTerraOperation=worldOperation;
+                    return worldBridge().condition().generation;
                 }''')
-                await page.wait_for_timeout(100)
-                assert await page.evaluate('worldOutcome===null&&!!worldOperation&&showcaseBusy')
+                await page.wait_for_timeout(3300)
+                assert await page.evaluate('''generation=>worldOperation===__newTerraOperation&&showcaseBusy&&
+                    !worldOperation.cancelled&&worldBridge().condition().generation===generation''',generation)
                 await page.evaluate('stopAuto()')
-                await page.wait_for_timeout(3700)
-                assert await page.evaluate('g=>worldBridge().condition().generation===g&&!showcaseBusy&&!worldOperation', generation)
-                checks.append({'game': 'mario_platformer', 'width': width, 'check': 'restart_request_ownership'})
+                await page.wait_for_function('!showcaseBusy')
+                checks.append({'game':'terraria_survival','width':width,'check':'world_runs_during_inference_and_restart_owns_request'})
+                # Delayed messages from the previous episode cannot finish a fresh world.
+                await page.evaluate('''()=>{
+                    const b=worldBridge(),observation={...b.snapshot(false),wins:1,episode_terminal:true};
+                    for(const generation of [undefined,b.condition().generation-1])
+                        dispatchEvent(new MessageEvent('message',{origin:location.origin,source:worldFrame().contentWindow,
+                            data:{type:'jev-terraria-state',generation,observation}}));
+                }''')
+                assert await page.evaluate('worldOutcome===null&&!worldBridge().snapshot(false).episode_terminal')
+                checks.append({'game':'terraria_survival','width':width,'check':'old_episode_messages_ignored'})
+                last_action=await page.evaluate('''async()=>{
+                    const b=worldBridge(),limit=showcaseKind.engine.limit;
+                    renderWorld(b.reset(101));showcaseKind.engine.limit=1;
+                    const before=b.snapshot(false),applied=await showcaseStep('move_right',false),after=b.snapshot(false);
+                    showcaseKind.engine.limit=limit;
+                    return {applied,frames:after.frame-before.frame,decisions:after.decisions,
+                        status:after.control.status,native_terminal:after.episode_terminal};
+                }''')
+                assert last_action['applied'] and last_action['frames']>=36 and last_action['decisions']==1,last_action
+                assert last_action['status']=='completed' and not last_action['native_terminal'],last_action
+                checks.append({'game':'terraria_survival','width':width,'check':'last_budget_action_completes',**last_action})
+                await page.evaluate('newShowcase()')
+                await page.wait_for_function('!showcaseBusy')
+                # The front-end budget disables decisions without changing native terminal state.
+                budget_requests=[]
+                async def reject_budget_request(route):
+                    budget_requests.append(route.request.url)
+                    await route.abort()
+                await page.route('**/api/showcases/world',reject_budget_request)
+                boundary=await page.evaluate('''async()=>{
+                    const b=worldBridge(),snapshot=b.snapshot;
+                    b.activate(false);
+                    b.snapshot=(...args)=>({...snapshot(...args),decisions:showcaseKind.engine.limit});
+                    renderWorld(b.snapshot(false));
+                    await showcaseStep(null,true);
+                    return {outcome:worldOutcome,native_terminal:snapshot(false).episode_terminal,
+                        model_disabled:document.getElementById('showcaseModel').disabled,
+                        auto_disabled:document.getElementById('showcaseAuto').disabled,
+                        color:document.getElementById('showcaseOutcome').className};
+                }''')
+                assert not budget_requests,budget_requests
+                assert boundary=={'outcome':'budget_exhausted','native_terminal':False,
+                    'model_disabled':True,'auto_disabled':True,'color':'draw'},boundary
+                checks.append({'game':'terraria_survival','width':width,'check':'executed_decision_budget',**boundary})
+                await page.unroute('**/api/showcases/world',reject_budget_request)
+
+                # Historical Mario recovery checks remain available for archive builds.
+                if 'mario_platformer' in games:
+                    await page.locator('#playQuickGame').select_option('mario_platformer')
+                    await page.wait_for_function("selectedPlay==='mario_platformer'&&!showcaseBusy")
+                    state = json.loads((Path(__file__).parent / 'fixtures/mario_large_observation.json').read_text())
+                    for route in ('engines/mario_platformer/observe', 'showcases/world'):
+                        reply_delay = .2
+                        result = await page.evaluate('async ([route,state])=>{let r=await api(route,{state,kind:"mario_platformer"});return !!(r.record||r.result)}', [route, state])
+                        assert result
+                    checks.append({'game': 'mario_platformer', 'width': width, 'check': 'complete_large_observation',
+                                   'bytes': len(json.dumps(state, ensure_ascii=False).encode())})
+
+                    # Force a real physics death with a deliberately late model reply.
+                    # Capture counts before it to detect terminal postMessage loops.
+                    await page.evaluate('''()=>{
+                        window.__terminalMessages=0;
+                        window.addEventListener('message',e=>{
+                            if(e.data?.type==='jev-mario-state'&&e.data.observation.outcome)__terminalMessages++;
+                        });
+                        const b=worldBridge();b.fixture({seed:2,player:{y:520},enemies:[],plants:[]});
+                        // Synchronize the fixture: public HTTP can take longer than
+                        // the one physics frame before death. Resume only once the
+                        // delayed model request has actually reached the browser.
+                        b.activate(false);
+                        worldOutcome=null;
+                    }''')
+                    reply_delay = 3.5
+                    request_started.clear()
+                    await page.evaluate('void modelShowcaseStep()')
+                    await asyncio.wait_for(request_started.wait(), 10)
+                    await page.evaluate('worldBridge().activate(true)')
+                    await page.wait_for_function("worldOutcome==='loss'&&!showcaseBusy&&!document.getElementById('showcaseNew').disabled", timeout=2000)
+                    await page.wait_for_timeout(150)
+                    terminal = await page.evaluate('({messages:__terminalMessages,autoplay:showcaseAuto,busy:showcaseBusy})')
+                    assert terminal['messages'] < 20 and not terminal['autoplay'] and not terminal['busy'], terminal
+                    await page.screenshot(path=str(out / f'mario-{width}-terminal.png'))
+                    await page.locator('#showcaseNew').click()
+                    await page.wait_for_function('!showcaseBusy&&worldOutcome===null')
+                    generation = await page.evaluate('worldBridge().condition().generation')
+                    await page.wait_for_timeout(3700)
+                    restarted = await page.evaluate('({generation:worldBridge().condition().generation,outcome:worldOutcome,busy:showcaseBusy,error:!document.getElementById("globalError").classList.contains("hidden")})')
+                    assert restarted == {'generation': generation, 'outcome': None, 'busy': False, 'error': False}, restarted
+                    checks.append({'game': 'mario_platformer', 'width': width, 'check': 'death_restart_late_reply', **terminal})
+
+                    # A manual restart during inference also cancels only its owner;
+                    # completion of the old request must not release a newer intent.
+                    reply_delay = 3.5
+                    request_started.clear()
+                    await page.evaluate('void modelShowcaseStep()')
+                    await asyncio.wait_for(request_started.wait(), 10)
+                    await page.evaluate('newShowcase()')
+                    await page.wait_for_function('!showcaseBusy')
+                    generation = await page.evaluate('worldBridge().condition().generation')
+                    request_started.clear()
+                    await page.evaluate('void modelShowcaseStep()')
+                    await asyncio.wait_for(request_started.wait(), 10)
+                    await page.wait_for_timeout(300)
+                    assert await page.evaluate('!!worldOperation&&showcaseBusy')
+                    await page.locator('#marioFrame').element_handle()
+                    await page.evaluate('''()=>{
+                        const frame=document.getElementById('marioFrame').contentWindow,b=frame.JevMario;
+                        frame.parent.postMessage({type:'jev-mario-state',generation:b.condition().generation-1,
+                            observation:{...b.snapshot(false),outcome:'loss'}},location.origin);
+                    }''')
+                    await page.wait_for_timeout(100)
+                    assert await page.evaluate('worldOutcome===null&&!!worldOperation&&showcaseBusy')
+                    await page.evaluate('stopAuto()')
+                    await page.wait_for_timeout(3700)
+                    assert await page.evaluate('g=>worldBridge().condition().generation===g&&!showcaseBusy&&!worldOperation', generation)
+                    checks.append({'game': 'mario_platformer', 'width': width, 'check': 'restart_request_ownership'})
             finally:
                 await page.request.delete(args.url.rstrip('/') + '/api/v1/connections/' + ident)
                 await page.close()

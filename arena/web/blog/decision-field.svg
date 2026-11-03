@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">Piccolo decision field</title>
+  <desc id="desc">Several candidate paths enter a structured decision field. One selected copper path continues to an action.</desc>
+  <defs>
+    <linearGradient id="field" x1="364" y1="174" x2="662" y2="444" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#a65f3e" stop-opacity=".075"/>
+      <stop offset="1" stop-color="#a65f3e" stop-opacity=".015"/>
+    </linearGradient>
+    <linearGradient id="fan" x1="158" y1="310" x2="460" y2="310" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#a65f3e" stop-opacity="0"/>
+      <stop offset="1" stop-color="#a65f3e" stop-opacity=".09"/>
+    </linearGradient>
+    <linearGradient id="out" x1="640" y1="310" x2="886" y2="310" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#a65f3e" stop-opacity=".1"/>
+      <stop offset="1" stop-color="#a65f3e" stop-opacity="0"/>
+    </linearGradient>
+    <pattern id="grid" x="365" y="174" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M24 0H0V24" stroke="#25231f" stroke-opacity=".055" stroke-width=".7"/>
+    </pattern>
+  </defs>
+
+  <rect width="1000" height="620" fill="#f7f5ef"/>
+
+  <g font-family="Arial, Helvetica, sans-serif" fill="#25231f">
+    <g font-size="11" letter-spacing="2" opacity=".44">
+      <text x="64" y="80">01</text>
+      <text x="400" y="80">02</text>
+      <text x="810" y="80">03</text>
+    </g>
+    <g font-size="17" letter-spacing=".2">
+      <text x="64" y="111">Context</text>
+      <text x="400" y="111">Piccolo</text>
+      <text x="810" y="111">Action</text>
+    </g>
+  </g>
+  <g stroke="#25231f" stroke-opacity=".15">
+    <path d="M64 132H310M400 132H646M810 132H936"/>
+    <path d="M64 128V136M310 128V136M400 128V136M646 128V136M810 128V136M936 128V136"/>
+  </g>
+
+  <!-- The field is a bounded decision apparatus, rather than a neural-network graph. -->
+  <rect x="364" y="172" width="298" height="298" rx="3" fill="url(#field)"/>
+  <rect x="364" y="172" width="298" height="298" rx="3" fill="url(#grid)"/>
+  <rect x="364.5" y="172.5" width="297" height="297" rx="2.5" stroke="#25231f" stroke-opacity=".14"/>
+  <path d="M352 194V160H386M640 160H674V194M352 448V482H386M640 482H674V448" stroke="#25231f" stroke-opacity=".33"/>
+
+  <!-- Candidate envelopes remain deliberately quiet around the selected trajectory. -->
+  <path d="M126 310C236 310 278 204 450 204V438C278 438 236 310 126 310Z" fill="url(#fan)"/>
+  <path d="M576 280C692 280 730 310 886 310C730 310 692 342 576 342Z" fill="url(#out)"/>
+
+  <g stroke="#25231f" stroke-opacity=".22" stroke-width="1.25" stroke-linecap="round">
+    <path d="M84 214H134C205 214 214 218 282 218H394C421 218 429 232 452 232H484"/>
+    <path d="M84 258H126C198 258 222 264 282 264H394C422 264 435 279 452 279H530"/>
+    <path d="M84 354H126C200 354 222 358 282 358H394C425 358 429 347 452 347H530"/>
+    <path d="M84 398H134C205 398 214 404 282 404H394C421 404 429 390 452 390H484"/>
+  </g>
+
+  <g fill="#f7f5ef" stroke="#25231f" stroke-opacity=".29" stroke-width="1.25">
+    <circle cx="84" cy="214" r="3.5"/>
+    <circle cx="84" cy="258" r="3.5"/>
+    <circle cx="84" cy="354" r="3.5"/>
+    <circle cx="84" cy="398" r="3.5"/>
+    <rect x="270" y="206" width="24" height="24" rx="2"/>
+    <rect x="270" y="252" width="24" height="24" rx="2"/>
+    <rect x="270" y="346" width="24" height="24" rx="2"/>
+    <rect x="270" y="392" width="24" height="24" rx="2"/>
+  </g>
+  <g fill="#25231f" fill-opacity=".33">
+    <circle cx="282" cy="218" r="2"/>
+    <circle cx="282" cy="264" r="2"/>
+    <circle cx="282" cy="358" r="2"/>
+    <circle cx="282" cy="404" r="2"/>
+    <circle cx="484" cy="232" r="2.5"/>
+    <circle cx="530" cy="279" r="2.5"/>
+    <circle cx="530" cy="347" r="2.5"/>
+    <circle cx="484" cy="390" r="2.5"/>
+  </g>
+
+  <!-- A single uninterrupted line is the selected action. -->
+  <path d="M84 310H466C505 310 521 298 554 298H587C619 298 634 310 668 310H858" stroke="#f7f5ef" stroke-width="13"/>
+  <path d="M84 310H466C505 310 521 298 554 298H587C619 298 634 310 668 310H858" stroke="#a65f3e" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="84" cy="310" r="4.5" fill="#a65f3e"/>
+  <rect x="267" y="295" width="30" height="30" rx="3" fill="#a65f3e"/>
+  <path d="m276 310 4 4 8-9" stroke="#f7f5ef" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <g stroke="#a65f3e">
+    <path d="M572 200V274M572 322V442" stroke-opacity=".28" stroke-width="1.25" stroke-dasharray="3 5"/>
+    <rect x="559" y="285" width="26" height="26" rx="3" fill="#f7f5ef" stroke-width="1.25"/>
+    <circle cx="572" cy="298" r="4.5" fill="#a65f3e" stroke="none"/>
+  </g>
+
+  <rect x="810" y="274" width="106" height="72" rx="4" fill="#f7f5ef" stroke="#a65f3e" stroke-opacity=".55" stroke-width="1.25"/>
+  <path d="M840 310H882M872 300l10 10-10 10" stroke="#a65f3e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <g stroke="#25231f" stroke-opacity=".14" stroke-width="1">
+    <path d="M84 448V464H282V448M430 495V511H596V495"/>
+    <path d="M84 524H916"/>
+    <path d="M84 520V528M188 521V527M292 521V527M396 521V527M500 520V528M604 521V527M708 521V527M812 521V527M916 520V528"/>
+  </g>
+  <g font-family="Arial, Helvetica, sans-serif" font-size="11" letter-spacing="1.5" fill="#25231f" fill-opacity=".48">
+    <text x="144" y="488">CANDIDATES</text>
+  </g>
+</svg>

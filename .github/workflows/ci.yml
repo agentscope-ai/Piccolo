@@ -1,0 +1,89 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: arena/requirements.txt
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Arena and browser dependencies
+        run: |
+          python -m pip install -e './arena[test]'
+          python -m playwright install --with-deps chromium
+      - name: Python tests
+        working-directory: arena
+        run: python -m pytest -q
+      - name: Live game session tests
+        working-directory: arena
+        run: |
+          python -m blink_arena --host 127.0.0.1 --port 18088 > /tmp/piccolo-arena.log 2>&1 &
+          arena_pid=$!
+          trap 'kill "$arena_pid"' EXIT
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:18088/api/health > /dev/null; then break; fi
+            sleep 1
+          done
+          JEV_TEST_URL=http://127.0.0.1:18088 python -m pytest tests/test_sessions.py -q
+      - name: Evaluation launcher tests
+        run: python -m unittest discover -s evaluation/tests -v
+      - name: Frontend tests
+        run: node --test arena/tests/*.test.cjs arena/tests/test_connections_transport.cjs
+      - name: Generated website and workflow examples
+        run: |
+          node arena/scripts/render_blog.mjs --check
+          node arena/scripts/build_blog_profiles.mjs --check
+          node arena/scripts/export_workflow_cases.mjs --check
+      - name: Local links and package checks
+        run: |
+          python scripts/check_links.py
+          python arena/scripts/build_release.py --check-only
+          python scripts/package_source.py
+      - name: Browser smoke checks
+        run: |
+          python arena/scripts/preview_leaderboard.py --port 18086 > /tmp/piccolo-preview.log 2>&1 &
+          preview_pid=$!
+          trap 'kill "$preview_pid"' EXIT
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:18086/api/health > /dev/null; then break; fi
+            sleep 1
+          done
+          python arena/tests/browser_benchmark_snapshot.py --url http://127.0.0.1:18086/ --output var/ci/leaderboards
+          python scripts/check_website.py --url http://127.0.0.1:18086/ --output var/ci/website
+      - name: Upload source package
+        uses: actions/upload-artifact@v4
+        with:
+          name: Piccolo-source
+          path: dist/Piccolo-source.*
+          if-no-files-found: error
+          retention-days: 14
+      - name: Upload browser screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-checks
+          path: var/ci/
+          if-no-files-found: ignore
+          retention-days: 7

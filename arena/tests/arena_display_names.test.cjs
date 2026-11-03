@@ -14,7 +14,7 @@ test('archived and identity-resolved names use the same release display mapping'
   assert.equal(model('archived-run','Piccolo 27B RL'),'Piccolo 27B RL');
   assert.equal(model('archived-run','OneShot 27B SFT-1015 · 本地'),'Piccolo 27B SFT');
   assert.equal(model('archived-run','OneShot 27B RL-1019-iter17'),'Piccolo 27B RL');
-  assert.equal(model('archived-run','OneShot (27B)'),'Piccolo (27B)');
+  assert.equal(model('archived-run','OneShot (27B)'),'Piccolo-27B');
   assert.equal(model('archived-run','Blink 27B RL-1019-iter17'),'Piccolo 27B RL');
   assert.equal(model('oneshot-hosted','OneShot'),'Piccolo');
   assert.equal(model('custom-model','OneShot Research Lab'),'OneShot Research Lab');

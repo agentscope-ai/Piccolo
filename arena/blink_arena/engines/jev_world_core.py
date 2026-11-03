@@ -20,15 +20,14 @@ def asset_directory():
         return packaged
     # The retained source-tools adapter can consume the sibling standalone
     # package; installed standalone releases resolve the first path above.
-    return location.parents[3] / 'PiccoloArena' / 'web' / 'playground'
+    return location.parents[3] / 'JevArena' / 'web' / 'playground'
 
 
 class WorldCoreDriver:
     def __init__(self, kind, seed, *, replay=False, options=None, frame=None,
                  startup_timeout=90., operation_timeout=120., assets=None,
-                 viewport_width=None, viewport_height=None, inference_world_paused=False):
+                 viewport_width=None, viewport_height=None):
         self.kind, self.seed, self.replay = kind, seed, replay
-        self.inference_world_paused = inference_world_paused
         self.options, self.frame = options, frame
         self.startup_timeout, self.operation_timeout = startup_timeout, operation_timeout
         self.assets = Path(assets) if assets else asset_directory()
@@ -58,7 +57,7 @@ class WorldCoreDriver:
             self.initial = await self.call('init', timeout=self.startup_timeout,
                 kind=self.kind, seed=self.seed, replay=self.replay, options=self.options,
                 frame=self.frame, width=self.viewport_width, height=self.viewport_height,
-                core_module=self.core_module, inference_world_paused=self.inference_world_paused)
+                core_module=self.core_module)
             return self.initial
         except BaseException:
             await self.close()

@@ -1,6 +1,6 @@
 {
   "schema": "cues.control.active-scope.v1",
-  "revision": "games-retired6-20261021-v1",
+  "revision": "games-playground17-20261101-v1",
   "excluded_games": [
     "tic_tac_toe",
     "connect_four",
@@ -9,7 +9,12 @@
     "racing_sprint",
     "goofspiel",
     "pig_dice",
-    "go"
+    "go",
+    "dots_and_boxes_3x3",
+    "blackjack",
+    "texas_holdem",
+    "zha_jin_hua",
+    "mario_platformer"
   ],
   "excluded_body_tasks": [
     [

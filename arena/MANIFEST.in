@@ -1,14 +1,14 @@
 include requirements.txt Dockerfile compose.yaml
 include .dockerignore .gitignore
-recursive-include web *.html *.css *.js *.cjs *.ttf *.woff2 *.svg *.ico *.txt *.json
+recursive-include web *.html *.css *.js *.cjs *.ttf *.woff *.woff2 *.svg *.ico *.txt *.json *.png *.jpg *.jpeg *.gif *.mp4 *.webm LICENSE
 recursive-include config *.json
 recursive-include data/seed *.json *.jsonl *.gz
 recursive-include leaderboard *.json
 prune leaderboard/history
-recursive-include docs *.md *.json
+recursive-include docs *.md *.json *.txt
 exclude docs/ENGINE_INTEGRATION_HANDOFF.md
 recursive-include deploy *
-recursive-include scripts *.sh *.py
+recursive-include scripts *.sh *.py *.mjs
 recursive-include tests *.py *.cjs
 prune var
 prune .venv

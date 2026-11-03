@@ -1,0 +1,306 @@
+{
+  "imported_at": "2026-10-30",
+  "assets": [
+    {
+      "name": "mario",
+      "url": "https://decisionplayground.agentscope.io/blog/assets/mario.gif",
+      "path": "web/blog/assets/mario.gif",
+      "sources": [
+        "yuque",
+        "local-markdown"
+      ],
+      "sha256": "1581d2753e518d10868f819b2846cf6433d7d36ee6d7ce1b5d7d2fd6e206d1b1",
+      "bytes": 540630,
+      "width": 892,
+      "height": 515,
+      "frames": 252
+    },
+    {
+      "name": "jump",
+      "url": "https://decisionplayground.agentscope.io/blog/assets/jump.gif",
+      "path": "web/blog/assets/jump.gif",
+      "sources": [
+        "yuque",
+        "local-markdown"
+      ],
+      "sha256": "074bd29991dce71bb510d36a51377b524d444c996ae6b34614a9296d4612b045",
+      "bytes": 262644,
+      "width": 892,
+      "height": 515,
+      "frames": 110
+    },
+    {
+      "name": "hex",
+      "url": "https://decisionplayground.agentscope.io/blog/assets/hex.gif",
+      "path": "web/blog/assets/hex.gif",
+      "sources": [
+        "yuque",
+        "local-markdown"
+      ],
+      "sha256": "9edd152831a23fcc55fdcd19e61f79a3abb37447310f4670034e9d9a85006edb",
+      "bytes": 537787,
+      "width": 892,
+      "height": 515,
+      "frames": 340
+    },
+    {
+      "name": "dots-boxes",
+      "url": "https://decisionplayground.agentscope.io/blog/assets/dots-boxes.gif",
+      "path": "web/blog/assets/dots-boxes.gif",
+      "sources": [
+        "yuque",
+        "local-markdown"
+      ],
+      "sha256": "315cc8af50e6a5ba9209339ec5a7a76ce5aedc45974abef24a93de0b8e11ae8b",
+      "bytes": 235264,
+      "width": 892,
+      "height": 515,
+      "frames": 170
+    },
+    {
+      "name": "snake",
+      "url": "https://decisionplayground.agentscope.io/blog/assets/snake.gif",
+      "path": "web/blog/assets/snake.gif",
+      "sources": [
+        "yuque",
+        "local-markdown"
+      ],
+      "sha256": "c5aeaca110037286dd0d732da066b2ffa1dfc22ee7bb36f8492311da4cfb08bb",
+      "bytes": 825496,
+      "width": 892,
+      "height": 515,
+      "frames": 486
+    },
+    {
+      "name": "2048",
+      "url": "https://decisionplayground.agentscope.io/blog/assets/2048.gif",
+      "path": "web/blog/assets/2048.gif",
+      "sources": [
+        "yuque",
+        "local-markdown"
+      ],
+      "sha256": "60e25784b77f61cb330bc3a025b287b45362e17731a4e481ee61aad72f513dcc",
+      "bytes": 2260207,
+      "width": 892,
+      "height": 515,
+      "frames": 680
+    },
+    {
+      "name": "othello",
+      "url": "https://decisionplayground.agentscope.io/blog/assets/othello.gif",
+      "path": "web/blog/assets/othello.gif",
+      "sources": [
+        "yuque",
+        "local-markdown"
+      ],
+      "sha256": "34c51e28f0f8ab58cdf6d746f84337fd5ed5f6450e6392e3e19124b722708c3f",
+      "bytes": 233717,
+      "width": 944,
+      "height": 595,
+      "frames": 26
+    },
+    {
+      "name": "sokoban",
+      "url": "https://decisionplayground.agentscope.io/blog/assets/sokoban.gif",
+      "path": "web/blog/assets/sokoban.gif",
+      "sources": [
+        "yuque",
+        "local-markdown"
+      ],
+      "sha256": "0014add43442ec1dd8d3c9b3023916bffb2aa6d18ec1cf28503df3402aa913e8",
+      "bytes": 132642,
+      "width": 892,
+      "height": 515,
+      "frames": 89
+    },
+    {
+      "name": "tetris",
+      "url": "https://decisionplayground.agentscope.io/blog/assets/tetris.gif",
+      "path": "web/blog/assets/tetris.gif",
+      "sources": [
+        "yuque",
+        "local-markdown"
+      ],
+      "sha256": "a9c898942c22ed57f7bfab99100eba2586e8e81dd5e1bd448d405f1b9930748a",
+      "bytes": 672395,
+      "width": 892,
+      "height": 515,
+      "frames": 678
+    },
+    {
+      "name": "leaderboard",
+      "url": "https://decisionplayground.agentscope.io/blog/assets/leaderboard.png",
+      "path": "web/blog/assets/leaderboard.png",
+      "sources": [
+        "yuque",
+        "local-markdown"
+      ],
+      "sha256": "4ab73899aca6529f5bc804bbbb936a4ebc4fd713a8ffa4fe96b9ef3926f2dffc",
+      "bytes": 1403947,
+      "width": 8400,
+      "height": 5800,
+      "frames": 1
+    },
+    {
+      "name": "data-governance",
+      "url": "https://decisionplayground.agentscope.io/blog/assets/data-governance.png",
+      "path": "web/blog/assets/data-governance.png",
+      "sources": [
+        "yuque",
+        "local-markdown"
+      ],
+      "sha256": "ed298cc5863ac0f87eb7de3413620828667175421f51f29b9ae600698a076be8",
+      "bytes": 1697723,
+      "width": 1672,
+      "height": 941,
+      "frames": 1
+    },
+    {
+      "name": "learning-feedback",
+      "url": "https://decisionplayground.agentscope.io/blog/assets/learning-feedback.png",
+      "path": "web/blog/assets/learning-feedback.png",
+      "sources": [
+        "yuque",
+        "local-markdown"
+      ],
+      "sha256": "47dc19c03fba6dbbdfcd7d286e6c8ead8e273000ccf5e933fa8ccfbfb1b55559",
+      "bytes": 1915730,
+      "width": 1774,
+      "height": 887,
+      "frames": 1
+    },
+    {
+      "name": "model-evolution",
+      "url": "https://decisionplayground.agentscope.io/blog/assets/model-evolution.png",
+      "path": "web/blog/assets/model-evolution.png",
+      "sources": [
+        "yuque",
+        "local-markdown"
+      ],
+      "sha256": "1323b77a17f28c6cd7e78ded9f7d7878e8acc7e208603e4e38da76c177d6d75f",
+      "bytes": 1679602,
+      "width": 1933,
+      "height": 814,
+      "frames": 1
+    },
+    {
+      "name": "harness-overview",
+      "url": "https://decisionplayground.agentscope.io/blog/assets/harness-overview.svg",
+      "path": "web/blog/assets/harness-overview.svg",
+      "sources": [
+        "yuque",
+        "local-markdown"
+      ],
+      "sha256": "474ce1dbbd410ec5f1c241e371eff29d8306786ba08fbf555cda7e456e83e72f",
+      "bytes": 430851
+    },
+    {
+      "name": "harness-radar",
+      "url": "https://decisionplayground.agentscope.io/blog/assets/harness-radar.png",
+      "path": "web/blog/assets/harness-radar.png",
+      "sources": [
+        "yuque",
+        "local-markdown"
+      ],
+      "sha256": "d80deb693041524f5986b878d0ea424279d9f053abef688baf052eafc9cfdd81",
+      "bytes": 413618,
+      "width": 2400,
+      "height": 2140,
+      "frames": 1
+    },
+    {
+      "name": "data-overview",
+      "url": "https://decisionplayground.agentscope.io/blog/assets/data-overview.png",
+      "path": "web/blog/assets/data-overview.png",
+      "sources": [
+        "yuque",
+        "local-markdown"
+      ],
+      "sha256": "7bc9cf01bf66a6a42687e2c14451c8ee92990fe23855ee798cf7604582ddb5f1",
+      "bytes": 521895,
+      "width": 3200,
+      "height": 2240,
+      "frames": 1
+    }
+  ],
+  "additional_media": [
+    {
+      "path": "web/blog/assets/piccolo-evolution-source.mp4",
+      "sha256": "1f4408d74745155dcf7e0bea032e1e8e9eb26b5572fa094e422cb3d6d2102f26",
+      "bytes": 1405696,
+      "description": "20-second original team animation, browser playback rendition, 1280x720, H.264.",
+      "source_locator": "video://inputs/prod/lark/2026/180956582/webm/1793326767386-ea842d65-c6b6-409d-9976-7e2fa68c669e.webm"
+    },
+    {
+      "path": "web/blog/assets/piccolo-evolution-source-poster.png",
+      "sha256": "a0c6d3627be5512820e386eda4cecea511cfd5749f0c82dccfddbf8d78334cce",
+      "bytes": 240645,
+      "description": "Poster extracted from the local playback rendition."
+    }
+  ],
+  "generated_figures": [
+    {
+      "path": "web/blog/assets/data-architecture.svg",
+      "source": "web/blog/assets/data-governance.png",
+      "generator": "web/blog/architecture.js",
+      "description": "English vector diagram: source records, task validity, shared schema and semantic slices. Simplified to show the decisions made during preparation."
+    },
+    {
+      "path": "web/blog/assets/feedback-architecture.svg",
+      "source": "web/blog/assets/learning-feedback.png",
+      "generator": "web/blog/architecture.js",
+      "description": "English vector redraw. Human/agent/audit roles, KL endpoints, experimental branches, Sandbox execution and Panel assets."
+    },
+    {
+      "path": "web/blog/assets/research-loop.svg",
+      "source": "web/blog/assets/learning-feedback.png",
+      "generator": "web/blog/architecture.js",
+      "description": "English procedural diagram of diagnosis, proposal, experiment and reuse. No interpolated learning curves or unverified branch results."
+    },
+    {
+      "path": "web/blog/assets/27b-evolution.svg",
+      "source": "web/blog/evolution.js",
+      "generator": "web/blog/architecture.js",
+      "description": "Accessible no-JavaScript chart of the eleven original 27B checkpoint values, using linear numerical coordinates. Separate experiments are not inserted into the trajectory."
+    },
+    {
+      "path": "web/blog/assets/data-architecture-mobile.svg",
+      "source": "web/blog/assets/data-architecture.svg",
+      "generator": "web/blog/architecture.js",
+      "description": "Vertical English layout of the same procedure for small screens; generated from the same architecture module."
+    },
+    {
+      "path": "web/blog/assets/research-loop-mobile.svg",
+      "source": "web/blog/assets/research-loop.svg",
+      "generator": "web/blog/architecture.js",
+      "description": "Vertical English layout of the same procedure for small screens; generated from the same architecture module."
+    }
+  ],
+  "method_assets": [
+    {
+      "path": "web/blog/assets/method-data-curation.png",
+      "source": "material/Fig-1.png",
+      "bytes": 1765942,
+      "sha256": "81c59a980b6b4984a412b2059dac71546f7eae42847c9f827c8c2f4e36e4461c",
+      "edit": "Built-in imagegen: correct top-left 665M to 6.65M, then Synthesized Candidates 26M to 260K; preserve the remaining infographic. Original material file retained."
+    },
+    {
+      "path": "web/blog/assets/method-agentic-data-engineering.png",
+      "source": "material/Fig-2.png",
+      "bytes": 1779881,
+      "sha256": "1d6c1dba56d3198d5adb2cc4d1be275cab752d249ddb5e17568abdbf7bf0fa78"
+    },
+    {
+      "path": "web/blog/assets/method-model-evolution.png",
+      "source": "material/Fig-3.png",
+      "bytes": 1536542,
+      "sha256": "09e3b829a0328c2bd943a8c6552c811316b3e0d5a62a290321868e97df7e5f8b"
+    },
+    {
+      "path": "web/blog/assets/method-piccolo-evolution.webm",
+      "source": "material/Piccolo-Evolution.webm",
+      "bytes": 6144361,
+      "sha256": "7ff6a8c17eea55a293a1093d9673049b19744f0242c8ed0db5a8e73227e128bb"
+    }
+  ]
+}

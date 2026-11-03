@@ -92,6 +92,11 @@ def transform(record,override):
                     else:
                         parts.append(title+': '+json.dumps(value,ensure_ascii=False,separators=(',',':')))
                 question['criteria'][action]=label.split(' | NOW:')[0]+' | '+' | '.join(parts)
+    if '{food_target}' in question['instructions']:
+        target=result['state'].get('food_target',6)
+        if type(target) is not int or target<=0:
+            raise ValueError('Invalid Snake food target in prompt')
+        question['instructions']=question['instructions'].replace('{food_target}',str(target))
     return result
 
 

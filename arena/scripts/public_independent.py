@@ -199,7 +199,7 @@ def report(out, plan, receipts, requests, stats):
         for row in metrics:
             writer.writerow({k: json.dumps(v, ensure_ascii=False) if isinstance(v, dict) else v for k,v in row.items()})
     (out/'game_metrics.csv.tmp').replace(out/'game_metrics.csv')
-    lines = ['# Piccolo Arena · 独立游戏评测', '',
+    lines = ['# GameJevArena · 独立游戏评测', '',
         f"状态：{summary['state']}；已结束 {summary['finished']}/{summary['planned']} 局；有效 {summary['valid']}；错误 {summary['errors']}。", '',
         '每个模型 × 每款游戏 × 8 个种子，每种子一局；多人游戏使用原生固定规则对手，座位随种子分配。',
         '单模型请求最多 5，全局实际游戏最多 20；回合制三次顺序探测，实时游戏一次且世界时钟持续。',
