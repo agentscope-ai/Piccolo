@@ -71,7 +71,7 @@ These archived examples retain their original checkpoint identities and outcomes
 
 ## Local decision models in QwenPaw
 
-The native integration is available in **[PR #8463](https://github.com/agentscope-ai/QwenPaw/pull/8463)** and requires its **Piccolo-compatible llama.cpp runtime**. Follow the [setup guide](docs/QWENPAW.md) for the PR build. The integration is being merged upstream.
+Piccolo is integrated into **[QwenPaw main](https://github.com/agentscope-ai/QwenPaw/blob/main/docs/local-piccolo.md)**. Follow the [setup guide](docs/QWENPAW.md) to install QwenPaw from source and its **Piccolo-compatible llama.cpp runtime**.
 
 1. In **Models → QwenPaw Local → Decision models**, download a Piccolo BF16 or Q8_0 GGUF, then click **Start**. Confirm **Models → Default models → Decision model**. Published Q4_K_M models can also be downloaded by repository ID.
 

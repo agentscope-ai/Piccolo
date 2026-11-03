@@ -2,17 +2,16 @@
 
 Piccolo 复用 QwenPaw 的 GGUF 下载器、llama.cpp 管理，以及 Jev 原有的决策模型选择、自动审核与上下文压缩入口。完整权重、BF16、Q8_0、Q4_K_M 均已发布在 [Hugging Face](MODELS.md)，不需要额外 Skill、云端密钥或独立 Jev 服务地址。
 
-## 安装支持该模型的版本
+## 安装 QwenPaw 与运行时
 
-接入位于 **[PR #8463](https://github.com/agentscope-ai/QwenPaw/pull/8463)**，正在合入上游。可复现的实现为 fork 分支的提交 [`07d521bd`](https://github.com/Xinji-Mai/QwenPaw/commit/07d521bdb71365a50f32dcb24d09211811f52bad)。先在独立目录获取该版本，再按其开发安装文档准备 QwenPaw：
+Piccolo 本地决策接入已通过 **[PR #8463](https://github.com/agentscope-ai/QwenPaw/pull/8463)** 合入 QwenPaw 主分支。获取官方源码，按仓库的开发安装说明准备 QwenPaw：
 
 ```bash
-git clone --branch codex/blink-local-decision https://github.com/Xinji-Mai/QwenPaw.git QwenPaw-Piccolo
+git clone --branch main https://github.com/agentscope-ai/QwenPaw.git QwenPaw-Piccolo
 cd QwenPaw-Piccolo
-git checkout 07d521bdb71365a50f32dcb24d09211811f52bad
 ```
 
-随后按同一提交的 **[运行时构建与安装说明](https://github.com/Xinji-Mai/QwenPaw/blob/07d521bdb71365a50f32dcb24d09211811f52bad/docs/local-piccolo.md#compatible-runtime)** 构建配套 llama.cpp。该指南固定上游 commit `f4d8af608a6b39946406f9439edfb6e83ca6a923`，并应用 `docs/patches/piccolo-llama.cpp.patch`。停止本地模型后，备份原运行时，将新 `llama-server` 及匹配共享库安装到指南打印的 QwenPaw 运行时目录。
+随后按官方 **[运行时构建与安装说明](https://github.com/agentscope-ai/QwenPaw/blob/main/docs/local-piccolo.md#compatible-runtime)** 构建配套 llama.cpp。该指南固定上游 commit `f4d8af608a6b39946406f9439edfb6e83ca6a923`，并应用仓库自带的 `docs/patches/piccolo-llama.cpp.patch`。停止本地模型后，备份原运行时，将新 `llama-server` 及匹配共享库安装到指南打印的 QwenPaw 运行时目录。
 
 未适配的上游二进制和普通 Ollama 聊天接口不实现 Piccolo 协议。重新安装未适配运行时会移除支持。无需改变用户已有审批或压缩设置来安装运行时。
 
@@ -22,7 +21,7 @@ git checkout 07d521bdb71365a50f32dcb24d09211811f52bad
 2. 下载器获取 GGUF 与推理所需说明，下载所有标准分片；无后缀的 Safetensors 仓库用于完整 checkpoint 参考推理。
 3. 下载完成点击 **启动**，再到 **模型 → 默认模型 → 决策模型** 确认选择。智能体专属设置可以覆盖全局默认。
 
-独立下载可使用 [ModelScope 合集](https://www.modelscope.cn/collections/AgentScope/QwenPaw-Flash)中的 `AgentScope/Piccolo-*` 仓库。上述 PR 当前按 `agentscope-ai/Piccolo-*` 识别本地决策模型，在 QwenPaw 自定义下载中请选择 Hugging Face 和对应的仓库 ID。
+独立下载可使用 [ModelScope 合集](https://www.modelscope.cn/collections/AgentScope/QwenPaw-Flash)中的 `AgentScope/Piccolo-*` 仓库。QwenPaw 当前按 `agentscope-ai/Piccolo-*` 识别本地决策模型，在自定义下载中请选择 Hugging Face 和对应的仓库 ID。
 
 目录按设备内存推荐 BF16 与 Q8_0：
 

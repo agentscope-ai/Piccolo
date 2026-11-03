@@ -10,7 +10,7 @@
 - [inference/](../inference/README.md) 与 [examples/](../examples/README.md) 提供候选概率参考推理与最小请求。
 - [evaluation/](../evaluation/README.md) 提供基准成绩和一键复现脚本；精选历史回放仍保留自身 checkpoint 身份。
 
-旧 Skill、下载助手、自定义审核客户端与 Guardian 已移除，原生下载、决策选择、审批和 ReMe 压缩由 [QwenPaw PR #8463](https://github.com/agentscope-ai/QwenPaw/pull/8463) 承接，使用双向 prompt attention 和候选 token 评分。该 PR 正在合入；配套运行时安装见 [QwenPaw 指南](QWENPAW.md)。
+原生下载、决策选择、审批和 ReMe 压缩已集成到 [QwenPaw 主分支](https://github.com/agentscope-ai/QwenPaw/blob/main/docs/local-piccolo.md)，使用双向 prompt attention 和候选 token 评分。源码安装与配套运行时配置见 [QwenPaw 指南](QWENPAW.md)。
 
 自有代码采用 [Apache-2.0](../LICENSE)，第三方许可与署名见 [NOTICE](../NOTICE) 和 [组件来源](../arena/docs/THIRD_PARTY.md)。历史协议、Python 包 `blink_arena`、轨迹身份和提交作者元数据保留；没有为本次发布重写历史。
 

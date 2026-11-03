@@ -124,7 +124,7 @@ QwenPaw 在工具执行前通过 `assess_tool_call()` 收集工具名称、操�
 
 ### 下载、启动，沿用 Jev 的启用位置
 
-Piccolo 复用 QwenPaw-Flash 的本地 GGUF 下载与运行管理，以及 Jev 原有的决策模型配置入口，无需额外 Skill 或独立服务地址。当前接入在 **[QwenPaw PR #8463](https://github.com/agentscope-ai/QwenPaw/pull/8463)**，先按 [指南](QWENPAW.md)安装该分支与兼容 Piccolo 的 llama.cpp 运行时。
+Piccolo 复用 QwenPaw-Flash 的本地 GGUF 下载与运行管理，以及 Jev 原有的决策模型配置入口，无需额外 Skill 或独立服务地址。本地决策接入已合入 **[QwenPaw 主分支](https://github.com/agentscope-ai/QwenPaw/blob/main/docs/local-piccolo.md)**，按 [指南](QWENPAW.md)从官方源码安装 QwenPaw，并配置兼容 Piccolo 的 llama.cpp 运行时。
 
 1. **下载并启动决策模型。** 在 **模型 → QwenPaw Local → 决策模型** 中选择合适的 BF16 或 Q8_0 版本，下载后点 **启动**，到 **模型 → 默认模型 → 决策模型** 确认。Q4_K_M 可使用对应 Hugging Face 仓库 ID 自定义下载。
 

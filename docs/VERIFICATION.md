@@ -2,6 +2,12 @@
 
 本文按日期保留验证历史，旧记录不代表当前版本的完整验收。真实权重转换与数值检查见已发布模型卡；发布成绩见 [evaluation/](../evaluation/README.md)。本地文档／协议检查与官网部署分开验证。
 
+## 2026-11-03：QwenPaw 主分支集成
+
+- [PR #8463](https://github.com/agentscope-ai/QwenPaw/pull/8463) 于 15:39（UTC+8）合入官方主分支，提交为 `da6ce8502e71a3e7b8b92104a54d0e3f2cc52bfb`。
+- 中英文 README、模型说明、仓库说明、博客与安装指南改用官方源码和主分支文档。
+- 主分支包含本地决策接入与 llama.cpp 补丁；运行时构建步骤见 [官方说明](https://github.com/agentscope-ai/QwenPaw/blob/main/docs/local-piccolo.md#compatible-runtime)。
+
 ## 2026-11-03：发布检查
 
 - Arena 测试：339 项通过、22 项需要外部运行服务的检查跳过，另有 2 项子测试通过。

@@ -71,7 +71,7 @@ Piccolo 将模型优化组织为 **诊断 → 数据选择与构造 → 训练�
 
 ## QwenPaw：本地部署的决策模型
 
-接入位于 **[QwenPaw PR #8463](https://github.com/agentscope-ai/QwenPaw/pull/8463)**，需要该分支与配套的 **Piccolo llama.cpp 运行时**。先按 [安装指南](docs/QWENPAW.md)准备运行环境；该 PR 正在合入上游。
+Piccolo 已集成到 **[QwenPaw 主分支](https://github.com/agentscope-ai/QwenPaw/blob/main/docs/local-piccolo.md)**。按 [安装指南](docs/QWENPAW.md)从官方源码安装 QwenPaw，并配置 **兼容 Piccolo 的 llama.cpp 运行时**。
 
 1. 打开 **模型 → QwenPaw Local → 决策模型**，下载适合设备的 Piccolo BF16 或 Q8_0 GGUF，点击 **启动**，到 **模型 → 默认模型 → 决策模型** 确认选择。Q4_K_M 也已发布，可按仓库 ID 自定义下载。
 

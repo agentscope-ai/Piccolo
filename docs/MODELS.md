@@ -12,7 +12,7 @@ BF16 is converted directly from the original complete Safetensors checkpoint. It
 
 ## Local model selection
 
-[QwenPaw PR #8463](https://github.com/agentscope-ai/QwenPaw/pull/8463) provides the integration. Use the [setup guide](QWENPAW.md) and its companion patched llama.cpp runtime. The memory-aware catalog includes BF16 and Q8_0; Q4_K_M is available by repository ID.
+Piccolo is integrated into [QwenPaw main](https://github.com/agentscope-ai/QwenPaw/blob/main/docs/local-piccolo.md). Use the [setup guide](QWENPAW.md) to install QwenPaw from source and its compatible llama.cpp runtime. The memory-aware catalog includes BF16 and Q8_0; Q4_K_M is available by repository ID.
 
 | Model | Q8_0 catalog memory threshold | BF16 catalog memory threshold | BF16 download size |
 | --- | ---: | ---: | ---: |
