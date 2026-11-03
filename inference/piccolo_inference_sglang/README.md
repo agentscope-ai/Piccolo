@@ -9,6 +9,12 @@ A native SGLang plugin providing `/v1/systemone` for text and `/v1/decisions` fo
 
 ## Installation
 
+Run from the repository root:
+
+```bash
+cd inference/piccolo_inference_sglang
+```
+
 Using pip:
 
 ```bash
@@ -28,13 +34,15 @@ uv pip install --prerelease=allow .
 
 ## Start the API server
 
+Download the checkpoint with `hf download agentscope-ai/Piccolo-4B --local-dir /models/Piccolo-4B`.
+
 Run on a Linux GPU node, passing the checkpoint path, an available GPU index or UUID, and the API port, in that order. Additional native SGLang arguments can be appended:
 
 ```bash
 # for decision-index text
-bash scripts/launch_sglang.sh /models/piccolo-4B-1028 0 18604
+bash scripts/launch_sglang.sh /models/Piccolo-4B 0 18604
 # for decision-index vision
-bash scripts/launch_vision.sh /models/piccolo-4B-1028 0 18704
+bash scripts/launch_vision.sh /models/Piccolo-4B 0 18704
 ```
 
 Both scripts use TP1 and bidirectional full attention, while DeltaNet retains the backend’s causal computation. Radix caching and chunked prefill are disabled. The KV cache uses the default precision, and Mamba states use FP32. Query the effective configuration from the evaluation machine:
@@ -93,3 +101,7 @@ nohup python -u -m decision_index pipeline \
   --out "$RESULT_DIR" \
   > "$LOG_DIR/piccolo-4B-1028.log" 2>&1 < /dev/null &
 ```
+
+## Third-party notices
+
+FlexDM prompt layout and Decision Index image resizing retain their MIT notices in [the bundled licenses](piccolo_inference_sglang/licenses/).

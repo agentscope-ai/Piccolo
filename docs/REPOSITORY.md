@@ -8,7 +8,6 @@
 - [models/](../models/README.md) 固定 12 个模型仓库的权重版本；完整 Safetensors、BF16、Q8_0、Q4_K_M 均已发布。
 - [inference/](../inference/README.md) 与 [examples/](../examples/README.md) 提供候选概率参考推理与最小请求。
 - [evaluation/](../evaluation/README.md) 记录发布权重成绩与来源口径；精选历史回放仍保留自身 checkpoint 身份。
-- [training/](../training/README.md) 与 [data/](../data/README.md) 仍为 Coming soon，未公开实现不计入本次交付。
 
 旧 Skill、下载助手、自定义审核客户端与 Guardian 已移除，原生下载、决策选择、审批和 ReMe 压缩由 [QwenPaw PR #8463](https://github.com/agentscope-ai/QwenPaw/pull/8463) 承接，使用双向 prompt attention 和候选 token 评分。配套 llama.cpp 尚需补丁；并非所有上游正式版本已支持。
 

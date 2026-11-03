@@ -35,7 +35,6 @@
   const definitions=[['gamejevbench','GameJevArena','Game evaluation'],['jevbench','JevBench Public','General decision making'],['decisionindex','Decision Index Public','Decision benchmarks'],['harnessjevbench','HarnessJevBench','Tools and execution'],['datajevbench','DataJevBench','Data decisions']];
   // Official project destinations; the version displayed below always comes from our registered JSON.
   const officialBenchmarks={jevbench:'https://github.com/fstandhartinger/jevbench',decisionindex:'https://huggingface.co/spaces/multimodalart/jev-decision-index',harnessjevbench:'https://github.com/agentscope-ai/HarnessJevBench',datajevbench:'https://github.com/datajuicer/DataJevBench'};
-  const internalBenchmarks=new Set();
   const piccoloIds=['blink-27b-1028','blink-9b-1028','blink-4b-1028'];
   const featuredModel='blink-27b-1028';
   const registeredVersion=benchmark=>benchmark?.version?String(benchmark.version).replace(/^(\d)/,'v$1'):'';
@@ -159,13 +158,12 @@
     const text=pair=>html(metricText(...pair));
     const title=definitions.find(row=>row[0]===benchmark.id)?.[1]||benchmark.title;
     const label=metricText('About this benchmark','关于此榜单');
-    const preview=internalBenchmarks.has(benchmark.id)?'<span class="lb-benchmark-status">'+html(metricText('Self-developed · Unreleased','自建 · 未公开'))+'</span><span class="lb-benchmark-preview">'+html(metricText('Internal preview · Coming Soon','内部评测预览 · Coming Soon'))+'</span>':'';
-    const version=officialBenchmarks[benchmark.id]||internalBenchmarks.has(benchmark.id)?registeredVersion(benchmark):'';
+    const version=officialBenchmarks[benchmark.id]?registeredVersion(benchmark):'';
     const official=officialBenchmarks[benchmark.id];
     const titleMarkup=official?'<a class="lb-benchmark-link" href="'+html(official)+'" target="_blank" rel="noopener noreferrer" title="'+html(metricText('Official benchmark website','基准官方网站'))+'">'+html(title)+'<span class="lb-benchmark-external" aria-hidden="true">↗</span></a>':html(title);
     const versionMarkup=version?'<small class="lb-benchmark-version" data-i18n-raw>'+html(version)+'</small>':'';
-    const about='<details class="lb-benchmark-about" data-i18n-raw><summary aria-label="'+html(label+' · '+title+(version?' '+version:''))+'" title="'+html(label)+'"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 10.5v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="12" cy="7.5" r="1" fill="currentColor"/></svg></summary><div class="lb-benchmark-about-body"><strong>'+titleMarkup+versionMarkup+'</strong>'+(preview?'<div class="lb-benchmark-release">'+preview+'</div>':'')+'<dl><div><dt>'+html(metricText('What it measures','评测内容'))+'</dt><dd>'+text(info.scope)+'</dd></div><div><dt>'+html(metricText('How to read scores','如何读分'))+'</dt><dd>'+text(info.scoring)+'</dd></div></dl><p>'+text(info.note)+'</p></div></details>';
-    return {title:titleMarkup+versionMarkup,about,description:'<p class="lb-benchmark-description" data-i18n-raw>'+preview+'<span class="lb-benchmark-summary">'+text(info.summary)+'</span></p>'};
+    const about='<details class="lb-benchmark-about" data-i18n-raw><summary aria-label="'+html(label+' · '+title+(version?' '+version:''))+'" title="'+html(label)+'"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 10.5v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="12" cy="7.5" r="1" fill="currentColor"/></svg></summary><div class="lb-benchmark-about-body"><strong>'+titleMarkup+versionMarkup+'</strong>'+'<dl><div><dt>'+html(metricText('What it measures','评测内容'))+'</dt><dd>'+text(info.scope)+'</dd></div><div><dt>'+html(metricText('How to read scores','如何读分'))+'</dt><dd>'+text(info.scoring)+'</dd></div></dl><p>'+text(info.note)+'</p></div></details>';
+    return {title:titleMarkup+versionMarkup,about,description:'<p class="lb-benchmark-description" data-i18n-raw>'+'<span class="lb-benchmark-summary">'+text(info.summary)+'</span></p>'};
   }
   function installBenchmarkHelp() {
     document.addEventListener('click',event=>{

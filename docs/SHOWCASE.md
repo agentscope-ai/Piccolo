@@ -100,7 +100,7 @@ python arena/tests/browser_home_replays.py --url http://127.0.0.1:8080 --out var
 | Hex 7×7 | `replays["00006"].streams[0]` | 31 | X 胜 |
 | 点格棋 3×3 | `replays["00008"].streams[0]` | 14 | O 胜 |
 
-所有示例 seed 为 42，合计 193 条记录步骤。历史 ID 保留用于精确追溯；它们不是待发布 Piccolo 模型的 ID。这七条轨迹是展示样本，不能用于计算模型总体成功率。
+所有示例 seed 为 42，合计 193 条记录步骤。历史 ID 保留用于精确追溯；它们不是已发布 Piccolo 模型的 ID。这七条轨迹是展示样本，不能用于计算模型总体成功率。
 
 ## 马里奥完整回放（2026-10-27 新增）
 

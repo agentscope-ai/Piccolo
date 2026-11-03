@@ -12,7 +12,7 @@
 
 参考：[Mammoth-1 and Elephant-1: frontier decision models](https://labs.baseten.co/articles/mammoth-1-and-elephant-1-frontier-decision-models)
 
-今天，我们发布 **Piccolo**，为高频判断而设计的决策模型。Piccolo 27B 在 JevBench 上取得 **92.21%** 的准确率，在 Decision Index 上取得 **68.29** 分。
+今天，我们发布 **Piccolo**，为高频判断而设计的决策模型。Piccolo 27B 在 JevBench 上取得 **92.21%** 的准确率，在 Decision Index 上取得 **68.59** 分。
 
 工具能否执行、下一步如何行动、哪些上下文值得保留——这类任务需要理解复杂背景，最终输出却往往只是一个选择。Piccolo 直接计算候选项的概率，返回结构化决策，供程序依据规则与阈值组织后续执行。
 

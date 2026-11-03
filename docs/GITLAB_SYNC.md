@@ -1,5 +1,9 @@
 # 网页与榜单同步
 
+2026-11-03，同步官网的 JevBench、Decision Index、HarnessJevBench 与 DataJevBench 数据。来源为 ProjectZ `dev_xinji` 的 `7ae23abc23cb7c47adbc53b47d87ec900277df4c`，详情见 [评测结果](../evaluation/README.md)。
+
+## 2026-10-29：网页同步记录
+
 2026-10-29，从 ProjectZ 的 JevArena 同步当前网页、服务接口、游戏控制和公开榜单。榜单来源提交为 `8b1d245a6086d137f56efb6c3392cc99519a2c53`；Piccolo 显示名称更新提交为 `8c008dfa9aa603b967ddb2b70a46f8d69f8434d2`。
 
 ## 本次更新

@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-11-03
+
+- Synchronized all four benchmark snapshots, release results and bilingual score tables with the Decision website.
+- Documented the SGLang service entry point and bundled its FlexDM and Decision Index notices.
+
+- Removed empty training and dataset placeholders and their publication promises.
+- Removed obsolete unreleased-benchmark UI branches and updated stale release wording.
+- Linked published benchmark reproduction guides and the existing local latency measurements.
+
 ## 2026-11-02
 
 - Added ModelScope download links for all 12 Piccolo releases.
@@ -32,5 +41,5 @@ First formal Piccolo source release.
 ### Availability
 
 - At launch, QwenPaw integration was available in draft PR #8463 with a companion llama.cpp adaptation.
-- Training recipes and dataset publication remain coming soon. Hardware performance measurements remain follow-up work.
+- Training recipes and datasets were outside the source release. Hardware measurements were limited to the recorded validation runs.
 - Archived replay identities and existing commit author/committer metadata are preserved.

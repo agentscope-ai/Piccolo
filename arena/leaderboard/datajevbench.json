@@ -18,19 +18,19 @@
       "model_id": "blink-27b-1028",
       "model_name": "Piccolo-27B",
       "logo": "./playground/logos/agentscope.svg",
-      "score": 0.824,
+      "score": 0.826,
       "status": "complete",
       "metrics": {
-        "accuracy": 0.824,
-        "accuracy_n": 500.0,
-        "correct": 412.0,
-        "brier": 0.24454665961020478,
-        "ece": 0.04504362565877299,
-        "brier_n": 500.0,
-        "ece_n": 500.0,
-        "valid": 500.0,
-        "missing": 0.0,
-        "invalid_rate": 0.0,
+        "accuracy": 0.826,
+        "accuracy_n": 500,
+        "correct": 413,
+        "brier": 0.26811554919763675,
+        "ece": 0.074583785538226,
+        "brier_n": 500,
+        "ece_n": 500,
+        "valid": 500,
+        "missing": 0,
+        "invalid_rate": 0,
         "probability_sum_tolerance": 0.001
       },
       "axes": [
@@ -38,7 +38,7 @@
           "id": "D1",
           "label_en": "Data Filtering",
           "label_zh": "数据准入与过滤",
-          "score": 0.8222222222222222,
+          "score": 0.8111111111111111,
           "metric": "accuracy",
           "samples": 90
         },
@@ -54,7 +54,7 @@
           "id": "D3",
           "label_en": "Quality Assessment",
           "label_zh": "数据产物质量评估",
-          "score": 0.9125,
+          "score": 0.925,
           "metric": "accuracy",
           "samples": 80
         },
@@ -62,7 +62,7 @@
           "id": "D4",
           "label_en": "Information Sufficiency",
           "label_zh": "所需信息充分性",
-          "score": 0.81,
+          "score": 0.82,
           "metric": "accuracy",
           "samples": 100
         },
@@ -85,13 +85,10 @@
       ],
       "samples": 500,
       "errors": 0,
-      "evaluated_at": "2026-10-28",
-      "protocol": "DataJevBench-V0.5/historical-native/probability-sum-tol-1e-3",
+      "evaluated_at": "2026-11-02",
+      "protocol": "DataJevBench-V0.5/probability-sum-tol-1e-3",
       "notes": [
-        "Evaluated checkpoint: Blink-27B-1028; display name: Piccolo-27B.",
-        "Fresh inference on 2026-10-28 using the historical native driver. All 500 planned records remain in the accuracy denominator.",
-        "Saved raw probabilities rescored at sum tolerance 1e-3, without normalization or additional inference. Calibration is withheld unless all planned distributions are valid.",
-        "Valid records: 500/500; invalid records: 0/500."
+        "Piccolo series results; selected variants are reported per benchmark."
       ]
     },
     {
@@ -648,19 +645,19 @@
       "model_id": "blink-4b-1028",
       "model_name": "Piccolo-4B",
       "logo": "./playground/logos/agentscope.svg",
-      "score": 0.696,
+      "score": 0.706,
       "status": "complete",
       "metrics": {
-        "accuracy": 0.696,
-        "accuracy_n": 500.0,
-        "correct": 348.0,
-        "brier": 0.43262433115548954,
-        "ece": 0.09469280782681229,
-        "brier_n": 500.0,
-        "ece_n": 500.0,
-        "valid": 500.0,
-        "missing": 0.0,
-        "invalid_rate": 0.0,
+        "accuracy": 0.706,
+        "accuracy_n": 500,
+        "correct": 353,
+        "brier": 0.40912387813347173,
+        "ece": 0.07753168053717335,
+        "brier_n": 500,
+        "ece_n": 500,
+        "valid": 500,
+        "missing": 0,
+        "invalid_rate": 0,
         "probability_sum_tolerance": 0.001
       },
       "axes": [
@@ -676,87 +673,7 @@
           "id": "D2",
           "label_en": "Operator Selection",
           "label_zh": "算子与处理方案选择",
-          "score": 0.45555555555555555,
-          "metric": "accuracy",
-          "samples": 90
-        },
-        {
-          "id": "D3",
-          "label_en": "Quality Assessment",
-          "label_zh": "数据产物质量评估",
-          "score": 0.7625,
-          "metric": "accuracy",
-          "samples": 80
-        },
-        {
-          "id": "D4",
-          "label_en": "Information Sufficiency",
-          "label_zh": "所需信息充分性",
-          "score": 0.75,
-          "metric": "accuracy",
-          "samples": 100
-        },
-        {
-          "id": "D5",
-          "label_en": "Evidence & Privacy",
-          "label_zh": "结论核验与隐私审查",
-          "score": 0.825,
-          "metric": "accuracy",
-          "samples": 80
-        },
-        {
-          "id": "D6",
-          "label_en": "Data-workflow Control",
-          "label_zh": "数据任务决策",
-          "score": 0.5833333333333334,
-          "metric": "accuracy",
-          "samples": 60
-        }
-      ],
-      "samples": 500,
-      "errors": 0,
-      "evaluated_at": "2026-10-28",
-      "protocol": "DataJevBench-V0.5/historical-native/probability-sum-tol-1e-3",
-      "notes": [
-        "Evaluated checkpoint: Blink-4B-1028; display name: Piccolo-4B.",
-        "Fresh inference on 2026-10-28 using the historical native driver. All 500 planned records remain in the accuracy denominator.",
-        "Saved raw probabilities rescored at sum tolerance 1e-3, without normalization or additional inference. Calibration is withheld unless all planned distributions are valid.",
-        "Valid records: 500/500; invalid records: 0/500."
-      ]
-    },
-    {
-      "model_id": "blink-9b-1028",
-      "model_name": "Piccolo-9B",
-      "logo": "./playground/logos/agentscope.svg",
-      "score": 0.688,
-      "status": "complete",
-      "metrics": {
-        "accuracy": 0.688,
-        "accuracy_n": 500.0,
-        "correct": 344.0,
-        "brier": 0.4121200643047704,
-        "ece": 0.06746757990386194,
-        "brier_n": 500.0,
-        "ece_n": 500.0,
-        "valid": 500.0,
-        "missing": 0.0,
-        "invalid_rate": 0.0,
-        "probability_sum_tolerance": 0.001
-      },
-      "axes": [
-        {
-          "id": "D1",
-          "label_en": "Data Filtering",
-          "label_zh": "数据准入与过滤",
-          "score": 0.8222222222222222,
-          "metric": "accuracy",
-          "samples": 90
-        },
-        {
-          "id": "D2",
-          "label_en": "Operator Selection",
-          "label_zh": "算子与处理方案选择",
-          "score": 0.4111111111111111,
+          "score": 0.4666666666666667,
           "metric": "accuracy",
           "samples": 90
         },
@@ -772,7 +689,7 @@
           "id": "D4",
           "label_en": "Information Sufficiency",
           "label_zh": "所需信息充分性",
-          "score": 0.73,
+          "score": 0.77,
           "metric": "accuracy",
           "samples": 100
         },
@@ -780,7 +697,7 @@
           "id": "D5",
           "label_en": "Evidence & Privacy",
           "label_zh": "结论核验与隐私审查",
-          "score": 0.7375,
+          "score": 0.825,
           "metric": "accuracy",
           "samples": 80
         },
@@ -788,20 +705,94 @@
           "id": "D6",
           "label_en": "Data-workflow Control",
           "label_zh": "数据任务决策",
-          "score": 0.65,
+          "score": 0.6,
           "metric": "accuracy",
           "samples": 60
         }
       ],
       "samples": 500,
       "errors": 0,
-      "evaluated_at": "2026-10-28",
-      "protocol": "DataJevBench-V0.5/historical-native/probability-sum-tol-1e-3",
+      "evaluated_at": "2026-11-02",
+      "protocol": "DataJevBench-V0.5/probability-sum-tol-1e-3",
       "notes": [
-        "Evaluated checkpoint: Blink-9B-1028; display name: Piccolo-9B.",
-        "Fresh inference on 2026-10-28 using the historical native driver. All 500 planned records remain in the accuracy denominator.",
-        "Saved raw probabilities rescored at sum tolerance 1e-3, without normalization or additional inference. Calibration is withheld unless all planned distributions are valid.",
-        "Valid records: 500/500; invalid records: 0/500."
+        "Piccolo series results; selected variants are reported per benchmark."
+      ]
+    },
+    {
+      "model_id": "blink-9b-1028",
+      "model_name": "Piccolo-9B",
+      "logo": "./playground/logos/agentscope.svg",
+      "score": 0.694,
+      "status": "complete",
+      "metrics": {
+        "accuracy": 0.694,
+        "accuracy_n": 500,
+        "correct": 347,
+        "brier": 0.39605140620261536,
+        "ece": 0.06568921648949087,
+        "brier_n": 500,
+        "ece_n": 500,
+        "valid": 500,
+        "missing": 0,
+        "invalid_rate": 0,
+        "probability_sum_tolerance": 0.001
+      },
+      "axes": [
+        {
+          "id": "D1",
+          "label_en": "Data Filtering",
+          "label_zh": "数据准入与过滤",
+          "score": 0.8111111111111111,
+          "metric": "accuracy",
+          "samples": 90
+        },
+        {
+          "id": "D2",
+          "label_en": "Operator Selection",
+          "label_zh": "算子与处理方案选择",
+          "score": 0.4111111111111111,
+          "metric": "accuracy",
+          "samples": 90
+        },
+        {
+          "id": "D3",
+          "label_en": "Quality Assessment",
+          "label_zh": "数据产物质量评估",
+          "score": 0.75,
+          "metric": "accuracy",
+          "samples": 80
+        },
+        {
+          "id": "D4",
+          "label_en": "Information Sufficiency",
+          "label_zh": "所需信息充分性",
+          "score": 0.76,
+          "metric": "accuracy",
+          "samples": 100
+        },
+        {
+          "id": "D5",
+          "label_en": "Evidence & Privacy",
+          "label_zh": "结论核验与隐私审查",
+          "score": 0.725,
+          "metric": "accuracy",
+          "samples": 80
+        },
+        {
+          "id": "D6",
+          "label_en": "Data-workflow Control",
+          "label_zh": "数据任务决策",
+          "score": 0.7166666666666667,
+          "metric": "accuracy",
+          "samples": 60
+        }
+      ],
+      "samples": 500,
+      "errors": 0,
+      "evaluated_at": "2026-11-02",
+      "protocol": "DataJevBench-V0.5/probability-sum-tol-1e-3",
+      "notes": [
+        "Piccolo series results; selected variants are reported per benchmark."
       ]
     },
     {

@@ -22,16 +22,16 @@
       "status": "complete",
       "metrics": {
         "accuracy": 0.922077922077922,
-        "accuracy_n": 231.0,
-        "correct": 213.0,
-        "brier": 0.12468634088231671,
-        "ece": 0.027878899129963844,
-        "brier_n": 231.0,
-        "ece_n": 231.0,
-        "valid": 231.0,
-        "strict_valid": 231.0,
-        "renormalized": 0.0,
-        "invalid_rate": 0.0
+        "accuracy_n": 231,
+        "correct": 213,
+        "brier": 0.12980133278786476,
+        "ece": 0.04118509725637497,
+        "brier_n": 231,
+        "ece_n": 231,
+        "valid": 231,
+        "strict_valid": 231,
+        "renormalized": 0,
+        "invalid_rate": 0
       },
       "axes": [
         {
@@ -94,7 +94,7 @@
           "id": "long_policy",
           "label_en": "Long policy",
           "label_zh": "长规则理解",
-          "score": 0.7368421052631579,
+          "score": 0.8421052631578947,
           "metric": "accuracy",
           "samples": 19
         },
@@ -150,7 +150,7 @@
           "id": "temporal_numeric",
           "label_en": "Time and numbers",
           "label_zh": "时间与数值",
-          "score": 0.5333333333333333,
+          "score": 0.4,
           "metric": "accuracy",
           "samples": 15
         },
@@ -181,12 +181,10 @@
       ],
       "samples": 231,
       "errors": 0,
-      "evaluated_at": "2026-10-28",
-      "protocol": "JevBench-Public231/historical-native-20261028",
+      "evaluated_at": "2026-11-02",
+      "protocol": "JevBench-Public231",
       "notes": [
-        "Evaluated checkpoint: Blink-27B-1028; display name: Piccolo-27B.",
-        "Fresh local inference on 2026-10-28 using the frozen historical Public231 driver and scorer; original/easy/hard combined.",
-        "Valid outputs: 231/231. Correct answers: 213/231. Missing or invalid outputs remain in the denominator."
+        "Piccolo series results; selected variants are reported per benchmark."
       ]
     },
     {
@@ -544,16 +542,16 @@
       "status": "complete",
       "metrics": {
         "accuracy": 0.8961038961038961,
-        "accuracy_n": 231.0,
-        "correct": 207.0,
-        "brier": 0.15892080238191825,
-        "ece": 0.052145239472816726,
-        "brier_n": 231.0,
-        "ece_n": 231.0,
-        "valid": 231.0,
-        "strict_valid": 231.0,
-        "renormalized": 0.0,
-        "invalid_rate": 0.0
+        "accuracy_n": 231,
+        "correct": 207,
+        "brier": 0.1515660833408679,
+        "ece": 0.026770179646768817,
+        "brier_n": 231,
+        "ece_n": 231,
+        "valid": 231,
+        "strict_valid": 231,
+        "renormalized": 0,
+        "invalid_rate": 0
       },
       "axes": [
         {
@@ -608,7 +606,7 @@
           "id": "judge_hard",
           "label_en": "Hard judgment",
           "label_zh": "复杂评判",
-          "score": 0.7647058823529411,
+          "score": 0.7058823529411765,
           "metric": "accuracy",
           "samples": 17
         },
@@ -616,7 +614,7 @@
           "id": "long_policy",
           "label_en": "Long policy",
           "label_zh": "长规则理解",
-          "score": 0.631578947368421,
+          "score": 0.6842105263157895,
           "metric": "accuracy",
           "samples": 19
         },
@@ -703,12 +701,10 @@
       ],
       "samples": 231,
       "errors": 0,
-      "evaluated_at": "2026-10-28",
-      "protocol": "JevBench-Public231/historical-native-20261028",
+      "evaluated_at": "2026-11-02",
+      "protocol": "JevBench-Public231",
       "notes": [
-        "Evaluated checkpoint: Blink-9B-1028; display name: Piccolo-9B.",
-        "Fresh local inference on 2026-10-28 using the frozen historical Public231 driver and scorer; original/easy/hard combined.",
-        "Valid outputs: 231/231. Correct answers: 207/231. Missing or invalid outputs remain in the denominator."
+        "Piccolo series results; selected variants are reported per benchmark."
       ]
     },
     {
@@ -1760,16 +1756,16 @@
       "status": "complete",
       "metrics": {
         "accuracy": 0.8701298701298701,
-        "accuracy_n": 231.0,
-        "correct": 201.0,
-        "brier": 0.2008679437685674,
-        "ece": 0.06962973472536653,
-        "brier_n": 231.0,
-        "ece_n": 231.0,
-        "valid": 231.0,
-        "strict_valid": 231.0,
-        "renormalized": 0.0,
-        "invalid_rate": 0.0
+        "accuracy_n": 231,
+        "correct": 201,
+        "brier": 0.1873034932477632,
+        "ece": 0.04674257918657658,
+        "brier_n": 231,
+        "ece_n": 231,
+        "valid": 231,
+        "strict_valid": 231,
+        "renormalized": 0,
+        "invalid_rate": 0
       },
       "axes": [
         {
@@ -1919,12 +1915,10 @@
       ],
       "samples": 231,
       "errors": 0,
-      "evaluated_at": "2026-10-28",
-      "protocol": "JevBench-Public231/historical-native-20261028",
+      "evaluated_at": "2026-11-02",
+      "protocol": "JevBench-Public231",
       "notes": [
-        "Evaluated checkpoint: Blink-4B-1028; display name: Piccolo-4B.",
-        "Fresh local inference on 2026-10-28 using the frozen historical Public231 driver and scorer; original/easy/hard combined.",
-        "Valid outputs: 231/231. Correct answers: 201/231. Missing or invalid outputs remain in the denominator."
+        "Piccolo series results; selected variants are reported per benchmark."
       ]
     }
   ]

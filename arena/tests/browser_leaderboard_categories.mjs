@@ -44,7 +44,10 @@ for(const [device,width] of [['desktop',1440],['mobile',390]]){
     const status=await evaluate(`({tab:document.querySelector('[data-benchmark="${bench}"]').textContent,description:document.querySelector('.lb-benchmark-description')?.textContent})`);
     const expected=bench==='harnessjevbench'?'HarnessJevBench':'DataJevBench';
     if(status.tab!==expected)throw Error('Benchmark tab should contain only its name: '+bench);
-    if(!status.description.includes(lang==='zh'?'自建 · 未公开':'Self-developed · Unreleased')||!status.description.includes(lang==='zh'?'内部评测预览':'Internal preview'))throw Error('Unreleased benchmark lacks an internal preview label: '+bench);
+    if(/Coming Soon|Unreleased|Internal preview|未公开|内部评测预览/i.test(status.description))throw Error('Published benchmark has an obsolete preview label: '+bench);
+    const project=await evaluate(`document.querySelector('.lb-radar-heading h3 .lb-benchmark-link')?.href`);
+    const expectedProject=bench==='harnessjevbench'?'https://github.com/agentscope-ai/HarnessJevBench':'https://github.com/datajuicer/DataJevBench';
+    if(project!==expectedProject)throw Error('Published benchmark project link is missing: '+bench);
    }
    if(bench==='decisionindex'){
     const introduction=await evaluate(`document.querySelector('.lb-benchmark-about-body').textContent`);

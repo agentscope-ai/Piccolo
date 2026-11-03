@@ -1,7 +1,7 @@
 {
   "release": "v1.0.0",
-  "checkpoint_correspondence": "Maintainers confirmed these benchmark scores correspond to the published full Hugging Face checkpoints. This documentation update did not rerun benchmark inference.",
-  "quantization_scope": "These are full-checkpoint scores, not independently remeasured quantized benchmark scores.",
+  "checkpoint_correspondence": "Benchmark results for the published Piccolo models.",
+  "quantization_scope": "Conversion and quantization measurements are recorded in each GGUF model card.",
   "results": [
     {
       "benchmark": "jevbench",
@@ -17,21 +17,21 @@
       ],
       "metrics": {
         "accuracy": 0.922077922077922,
-        "accuracy_n": 231.0,
-        "correct": 213.0,
-        "brier": 0.12468634088231671,
-        "ece": 0.027878899129963844,
-        "brier_n": 231.0,
-        "ece_n": 231.0,
-        "valid": 231.0,
-        "strict_valid": 231.0,
-        "renormalized": 0.0,
-        "invalid_rate": 0.0
+        "accuracy_n": 231,
+        "correct": 213,
+        "brier": 0.12980133278786476,
+        "ece": 0.04118509725637497,
+        "brier_n": 231,
+        "ece_n": 231,
+        "valid": 231,
+        "strict_valid": 231,
+        "renormalized": 0,
+        "invalid_rate": 0
       },
       "source": "arena/leaderboard/jevbench.json",
-      "source_sha256": "ef38cefd4ca47d94003a09cf28c6e253d84f89712ced9bae0d11757781fdf2b2",
-      "protocol": "JevBench-Public231/historical-native-20261028",
-      "evaluated_at": "2026-10-28"
+      "source_sha256": "44e78da908b09446a5b1f6839b047fe3316f5830aecc1ffe4d98967c07f85142",
+      "protocol": "JevBench-Public231",
+      "evaluated_at": "2026-11-02"
     },
     {
       "benchmark": "jevbench",
@@ -47,21 +47,21 @@
       ],
       "metrics": {
         "accuracy": 0.8961038961038961,
-        "accuracy_n": 231.0,
-        "correct": 207.0,
-        "brier": 0.15892080238191825,
-        "ece": 0.052145239472816726,
-        "brier_n": 231.0,
-        "ece_n": 231.0,
-        "valid": 231.0,
-        "strict_valid": 231.0,
-        "renormalized": 0.0,
-        "invalid_rate": 0.0
+        "accuracy_n": 231,
+        "correct": 207,
+        "brier": 0.1515660833408679,
+        "ece": 0.026770179646768817,
+        "brier_n": 231,
+        "ece_n": 231,
+        "valid": 231,
+        "strict_valid": 231,
+        "renormalized": 0,
+        "invalid_rate": 0
       },
       "source": "arena/leaderboard/jevbench.json",
-      "source_sha256": "ef38cefd4ca47d94003a09cf28c6e253d84f89712ced9bae0d11757781fdf2b2",
-      "protocol": "JevBench-Public231/historical-native-20261028",
-      "evaluated_at": "2026-10-28"
+      "source_sha256": "44e78da908b09446a5b1f6839b047fe3316f5830aecc1ffe4d98967c07f85142",
+      "protocol": "JevBench-Public231",
+      "evaluated_at": "2026-11-02"
     },
     {
       "benchmark": "jevbench",
@@ -77,21 +77,21 @@
       ],
       "metrics": {
         "accuracy": 0.8701298701298701,
-        "accuracy_n": 231.0,
-        "correct": 201.0,
-        "brier": 0.2008679437685674,
-        "ece": 0.06962973472536653,
-        "brier_n": 231.0,
-        "ece_n": 231.0,
-        "valid": 231.0,
-        "strict_valid": 231.0,
-        "renormalized": 0.0,
-        "invalid_rate": 0.0
+        "accuracy_n": 231,
+        "correct": 201,
+        "brier": 0.1873034932477632,
+        "ece": 0.04674257918657658,
+        "brier_n": 231,
+        "ece_n": 231,
+        "valid": 231,
+        "strict_valid": 231,
+        "renormalized": 0,
+        "invalid_rate": 0
       },
       "source": "arena/leaderboard/jevbench.json",
-      "source_sha256": "ef38cefd4ca47d94003a09cf28c6e253d84f89712ced9bae0d11757781fdf2b2",
-      "protocol": "JevBench-Public231/historical-native-20261028",
-      "evaluated_at": "2026-10-28"
+      "source_sha256": "44e78da908b09446a5b1f6839b047fe3316f5830aecc1ffe4d98967c07f85142",
+      "protocol": "JevBench-Public231",
+      "evaluated_at": "2026-11-02"
     },
     {
       "benchmark": "decisionindex",
@@ -100,20 +100,16 @@
       "model_id": "blink-27b-1028",
       "checkpoint_repo": "agentscope-ai/Piccolo-27B",
       "checkpoint_revision": "f5c793fe09c32766f70d1274a0ddaa0aad530002",
-      "score": 68.29,
+      "score": 68.59,
       "score_scale": [
         0.0,
         100.0
       ],
-      "metrics": {
-        "raw_index": 75.65,
-        "valid": 140178.0,
-        "invalid_rate": 0.0
-      },
+      "metrics": {},
       "source": "arena/leaderboard/decisionindex.json",
-      "source_sha256": "286e1416929a648328606690083f0c56d945fae53bd46fc682b396a785d9ece4",
-      "protocol": "Decision-Index-text-Public-0.3/source-lookup-20261028",
-      "evaluated_at": "2026-10-27T15:23:35+00:00"
+      "source_sha256": "cb9ce320bc67819e739bbb6219430499fe6f92bf3e7aa0e585e985c44a48d4cd",
+      "protocol": "Decision-Index-text",
+      "evaluated_at": null
     },
     {
       "benchmark": "decisionindex",
@@ -122,20 +118,16 @@
       "model_id": "blink-9b-1028",
       "checkpoint_repo": "agentscope-ai/Piccolo-9B",
       "checkpoint_revision": "1d79ab5b8b40135c4da8f31be3b303fe4f8a373e",
-      "score": 60.63,
+      "score": 60.86,
       "score_scale": [
         0.0,
         100.0
       ],
-      "metrics": {
-        "raw_index": 69.97,
-        "valid": 140178.0,
-        "invalid_rate": 0.0
-      },
+      "metrics": {},
       "source": "arena/leaderboard/decisionindex.json",
-      "source_sha256": "286e1416929a648328606690083f0c56d945fae53bd46fc682b396a785d9ece4",
-      "protocol": "Decision-Index-text-Public-0.3/source-lookup-20261028",
-      "evaluated_at": "2026-10-28T03:43:27+00:00"
+      "source_sha256": "cb9ce320bc67819e739bbb6219430499fe6f92bf3e7aa0e585e985c44a48d4cd",
+      "protocol": "Decision-Index-text",
+      "evaluated_at": null
     },
     {
       "benchmark": "decisionindex",
@@ -144,20 +136,16 @@
       "model_id": "blink-4b-1028",
       "checkpoint_repo": "agentscope-ai/Piccolo-4B",
       "checkpoint_revision": "ae30995bef9b0f0fa7d12adf517c63cdbc4d10d2",
-      "score": 57.31,
+      "score": 58.0,
       "score_scale": [
         0.0,
         100.0
       ],
-      "metrics": {
-        "raw_index": 67.61,
-        "valid": 140178.0,
-        "invalid_rate": 0.0
-      },
+      "metrics": {},
       "source": "arena/leaderboard/decisionindex.json",
-      "source_sha256": "286e1416929a648328606690083f0c56d945fae53bd46fc682b396a785d9ece4",
-      "protocol": "Decision-Index-text-Public-0.3/source-lookup-20261028",
-      "evaluated_at": "2026-10-27T22:05:47+00:00"
+      "source_sha256": "cb9ce320bc67819e739bbb6219430499fe6f92bf3e7aa0e585e985c44a48d4cd",
+      "protocol": "Decision-Index-text",
+      "evaluated_at": null
     },
     {
       "benchmark": "harnessjevbench",
@@ -166,27 +154,27 @@
       "model_id": "blink-27b-1028",
       "checkpoint_repo": "agentscope-ai/Piccolo-27B",
       "checkpoint_revision": "f5c793fe09c32766f70d1274a0ddaa0aad530002",
-      "score": 0.8203389830508474,
+      "score": 0.8440677966101695,
       "score_scale": [
         0.0,
         1.0
       ],
       "metrics": {
-        "accuracy": 0.8203389830508474,
-        "accuracy_n": 295.0,
-        "hard_questions": 303.0,
-        "hard_valid": 303.0,
-        "hard_invalid": 0.0,
-        "hard_invalid_rate": 0.0,
-        "soft_tv": 0.1825428702095809,
-        "soft_valid": 60.0,
-        "soft_total": 60.0,
+        "accuracy": 0.8440677966101695,
+        "accuracy_n": 295,
+        "hard_questions": 303,
+        "hard_valid": 303,
+        "hard_invalid": 0,
+        "hard_invalid_rate": 0,
+        "soft_tv": 0.21753564689590596,
+        "soft_valid": 60,
+        "soft_total": 60,
         "soft_tv_valid_only_diagnostic": null
       },
       "source": "arena/leaderboard/harnessjevbench.json",
-      "source_sha256": "654913bc708b12efb0bf329cf34e0e1edfd311bdd0f362925382bcbcc8b06c3a",
-      "protocol": "HarnessJevBench-V0.5/frozen-20261028",
-      "evaluated_at": "2026-10-28"
+      "source_sha256": "e002890a5b09bfe4c886969702e18fd1f3efc6a910e8b51463746401d42b848f",
+      "protocol": "HarnessJevBench-V0.5/hard-task-macro+soft-two-view",
+      "evaluated_at": "2026-11-02"
     },
     {
       "benchmark": "harnessjevbench",
@@ -195,27 +183,27 @@
       "model_id": "blink-9b-1028",
       "checkpoint_repo": "agentscope-ai/Piccolo-9B",
       "checkpoint_revision": "1d79ab5b8b40135c4da8f31be3b303fe4f8a373e",
-      "score": 0.6949152542372882,
+      "score": 0.688135593220339,
       "score_scale": [
         0.0,
         1.0
       ],
       "metrics": {
-        "accuracy": 0.6949152542372882,
-        "accuracy_n": 295.0,
-        "hard_questions": 303.0,
-        "hard_valid": 303.0,
-        "hard_invalid": 0.0,
-        "hard_invalid_rate": 0.0,
-        "soft_tv": 0.3095987102871813,
-        "soft_valid": 60.0,
-        "soft_total": 60.0,
+        "accuracy": 0.688135593220339,
+        "accuracy_n": 295,
+        "hard_questions": 303,
+        "hard_valid": 303,
+        "hard_invalid": 0,
+        "hard_invalid_rate": 0,
+        "soft_tv": 0.2930187445634669,
+        "soft_valid": 60,
+        "soft_total": 60,
         "soft_tv_valid_only_diagnostic": null
       },
       "source": "arena/leaderboard/harnessjevbench.json",
-      "source_sha256": "654913bc708b12efb0bf329cf34e0e1edfd311bdd0f362925382bcbcc8b06c3a",
-      "protocol": "HarnessJevBench-V0.5/frozen-20261028",
-      "evaluated_at": "2026-10-28"
+      "source_sha256": "e002890a5b09bfe4c886969702e18fd1f3efc6a910e8b51463746401d42b848f",
+      "protocol": "HarnessJevBench-V0.5/hard-task-macro+soft-two-view",
+      "evaluated_at": "2026-11-02"
     },
     {
       "benchmark": "harnessjevbench",
@@ -224,27 +212,27 @@
       "model_id": "blink-4b-1028",
       "checkpoint_repo": "agentscope-ai/Piccolo-4B",
       "checkpoint_revision": "ae30995bef9b0f0fa7d12adf517c63cdbc4d10d2",
-      "score": 0.6559322033898305,
+      "score": 0.6203389830508474,
       "score_scale": [
         0.0,
         1.0
       ],
       "metrics": {
-        "accuracy": 0.6559322033898305,
-        "accuracy_n": 295.0,
-        "hard_questions": 303.0,
-        "hard_valid": 303.0,
-        "hard_invalid": 0.0,
-        "hard_invalid_rate": 0.0,
-        "soft_tv": 0.287271554093312,
-        "soft_valid": 60.0,
-        "soft_total": 60.0,
+        "accuracy": 0.6203389830508474,
+        "accuracy_n": 295,
+        "hard_questions": 303,
+        "hard_valid": 303,
+        "hard_invalid": 0,
+        "hard_invalid_rate": 0,
+        "soft_tv": 0.27652691482072517,
+        "soft_valid": 60,
+        "soft_total": 60,
         "soft_tv_valid_only_diagnostic": null
       },
       "source": "arena/leaderboard/harnessjevbench.json",
-      "source_sha256": "654913bc708b12efb0bf329cf34e0e1edfd311bdd0f362925382bcbcc8b06c3a",
-      "protocol": "HarnessJevBench-V0.5/frozen-20261028",
-      "evaluated_at": "2026-10-28"
+      "source_sha256": "e002890a5b09bfe4c886969702e18fd1f3efc6a910e8b51463746401d42b848f",
+      "protocol": "HarnessJevBench-V0.5/hard-task-macro+soft-two-view",
+      "evaluated_at": "2026-11-02"
     },
     {
       "benchmark": "datajevbench",
@@ -253,28 +241,28 @@
       "model_id": "blink-27b-1028",
       "checkpoint_repo": "agentscope-ai/Piccolo-27B",
       "checkpoint_revision": "f5c793fe09c32766f70d1274a0ddaa0aad530002",
-      "score": 0.824,
+      "score": 0.826,
       "score_scale": [
         0.0,
         1.0
       ],
       "metrics": {
-        "accuracy": 0.824,
-        "accuracy_n": 500.0,
-        "correct": 412.0,
-        "brier": 0.24454665961020478,
-        "ece": 0.04504362565877299,
-        "brier_n": 500.0,
-        "ece_n": 500.0,
-        "valid": 500.0,
-        "missing": 0.0,
-        "invalid_rate": 0.0,
+        "accuracy": 0.826,
+        "accuracy_n": 500,
+        "correct": 413,
+        "brier": 0.26811554919763675,
+        "ece": 0.074583785538226,
+        "brier_n": 500,
+        "ece_n": 500,
+        "valid": 500,
+        "missing": 0,
+        "invalid_rate": 0,
         "probability_sum_tolerance": 0.001
       },
       "source": "arena/leaderboard/datajevbench.json",
-      "source_sha256": "7b76f3623f087744a14fa9f86005e01a10fde4b41850625a481f0e9896f4fce4",
-      "protocol": "DataJevBench-V0.5/historical-native/probability-sum-tol-1e-3",
-      "evaluated_at": "2026-10-28"
+      "source_sha256": "479b7dcc55ec59494e3340f5295bbce268e861516810cb1fa685bbc9022bf47c",
+      "protocol": "DataJevBench-V0.5/probability-sum-tol-1e-3",
+      "evaluated_at": "2026-11-02"
     },
     {
       "benchmark": "datajevbench",
@@ -283,28 +271,28 @@
       "model_id": "blink-4b-1028",
       "checkpoint_repo": "agentscope-ai/Piccolo-4B",
       "checkpoint_revision": "ae30995bef9b0f0fa7d12adf517c63cdbc4d10d2",
-      "score": 0.696,
+      "score": 0.706,
       "score_scale": [
         0.0,
         1.0
       ],
       "metrics": {
-        "accuracy": 0.696,
-        "accuracy_n": 500.0,
-        "correct": 348.0,
-        "brier": 0.43262433115548954,
-        "ece": 0.09469280782681229,
-        "brier_n": 500.0,
-        "ece_n": 500.0,
-        "valid": 500.0,
-        "missing": 0.0,
-        "invalid_rate": 0.0,
+        "accuracy": 0.706,
+        "accuracy_n": 500,
+        "correct": 353,
+        "brier": 0.40912387813347173,
+        "ece": 0.07753168053717335,
+        "brier_n": 500,
+        "ece_n": 500,
+        "valid": 500,
+        "missing": 0,
+        "invalid_rate": 0,
         "probability_sum_tolerance": 0.001
       },
       "source": "arena/leaderboard/datajevbench.json",
-      "source_sha256": "7b76f3623f087744a14fa9f86005e01a10fde4b41850625a481f0e9896f4fce4",
-      "protocol": "DataJevBench-V0.5/historical-native/probability-sum-tol-1e-3",
-      "evaluated_at": "2026-10-28"
+      "source_sha256": "479b7dcc55ec59494e3340f5295bbce268e861516810cb1fa685bbc9022bf47c",
+      "protocol": "DataJevBench-V0.5/probability-sum-tol-1e-3",
+      "evaluated_at": "2026-11-02"
     },
     {
       "benchmark": "datajevbench",
@@ -313,28 +301,28 @@
       "model_id": "blink-9b-1028",
       "checkpoint_repo": "agentscope-ai/Piccolo-9B",
       "checkpoint_revision": "1d79ab5b8b40135c4da8f31be3b303fe4f8a373e",
-      "score": 0.688,
+      "score": 0.694,
       "score_scale": [
         0.0,
         1.0
       ],
       "metrics": {
-        "accuracy": 0.688,
-        "accuracy_n": 500.0,
-        "correct": 344.0,
-        "brier": 0.4121200643047704,
-        "ece": 0.06746757990386194,
-        "brier_n": 500.0,
-        "ece_n": 500.0,
-        "valid": 500.0,
-        "missing": 0.0,
-        "invalid_rate": 0.0,
+        "accuracy": 0.694,
+        "accuracy_n": 500,
+        "correct": 347,
+        "brier": 0.39605140620261536,
+        "ece": 0.06568921648949087,
+        "brier_n": 500,
+        "ece_n": 500,
+        "valid": 500,
+        "missing": 0,
+        "invalid_rate": 0,
         "probability_sum_tolerance": 0.001
       },
       "source": "arena/leaderboard/datajevbench.json",
-      "source_sha256": "7b76f3623f087744a14fa9f86005e01a10fde4b41850625a481f0e9896f4fce4",
-      "protocol": "DataJevBench-V0.5/historical-native/probability-sum-tol-1e-3",
-      "evaluated_at": "2026-10-28"
+      "source_sha256": "479b7dcc55ec59494e3340f5295bbce268e861516810cb1fa685bbc9022bf47c",
+      "protocol": "DataJevBench-V0.5/probability-sum-tol-1e-3",
+      "evaluated_at": "2026-11-02"
     }
   ]
 }

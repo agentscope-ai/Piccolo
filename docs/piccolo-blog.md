@@ -1,6 +1,6 @@
 # Piccolo：为智能体工作流提供快速决策
 
-今天，我们发布 **Piccolo**，一个面向智能体工作流的决策模型系列，提供 **4B、9B、27B** 三个尺寸。Piccolo-27B 在 JevBench Public 上取得 **92.21%** 的准确率，在 Decision Index Public 上取得 **68.29** 分。
+今天，我们发布 **Piccolo**，一个面向智能体工作流的决策模型系列，提供 **4B、9B、27B** 三个尺寸。Piccolo-27B 在 JevBench Public 上取得 **92.21%** 的准确率，在 Decision Index Public 上取得 **68.59** 分。
 
 从智能体的工具审核与上下文筛选，到数据处理环境中的关键决策，再到游戏场景下的连续判断，Piccolo 理解当前状态、比较候选项，返回程序可以直接使用的结果与概率。我们通过交互展示、评测结果和本地接入，呈现它的能力与实际用法。
 
@@ -56,9 +56,9 @@
 
 | 模型 | HarnessJevBench Hard ↑ | DataJevBench ↑ | JevBench Public ↑ | Decision Index Public ↑ |
 | --- | ---: | ---: | ---: | ---: |
-| **Piccolo-27B** | **82.03%** | **82.40%** | **92.21%** | **68.29** |
-| Piccolo-9B | 69.49% | 68.80% | 89.61% | 60.63 |
-| Piccolo-4B | 65.59% | 69.60% | 87.01% | 57.31 |
+| **Piccolo-27B** | **84.41%** | **82.60%** | **92.21%** | **68.59** |
+| Piccolo-9B | 68.81% | 69.40% | 89.61% | 60.86 |
+| Piccolo-4B | 62.03% | 70.60% | 87.01% | 58.00 |
 
 这些成绩对应当前已发布的完整 Hugging Face 权重。Piccolo-27B 在四项评测中均取得三个尺寸中的最高分；9B 与 4B 在 JevBench Public 上分别达到 **89.61%** 与 **87.01%**，为资源有限的部署提供更多选择。量化后的候选概率存在变化，Q4/Q8 的数值回归与完整权重的 benchmark 成绩分开记录。[评测说明与来源](../evaluation/README.md) · [完整在线榜单](https://decisionplayground.agentscope.io/)。
 
@@ -149,7 +149,7 @@ Piccolo 复用 QwenPaw-Flash 的本地 GGUF 下载与运行管理，以及 Jev �
 
 [HarnessJevBench](https://github.com/agentscope-ai/HarnessJevBench) 面向工具执行、资源调度、上下文管理、权限边界、完成验收与异常恢复等 Harness 控制职责。任务提供明确状态、证据与执行规则，检验模型能否完整核对约束。
 
-评测同时观察**决策准确率**与**概率分布距离 TV**。Piccolo-27B 在表中 Hard 子集的准确率为 **82.03%**。其改进空间仍包括细粒度规则语义、多重约束组合及上下文证据保留。完整任务集与确定答案子集的分母不同，具体口径见 [评测记录](../evaluation/README.md)。
+评测同时观察**决策准确率**与**概率分布距离 TV**。Piccolo-27B 在表中 Hard 子集的准确率为 **84.41%**。完整结果见 [评测记录](../evaluation/README.md)。
 
 ### DataJevBench
 
@@ -158,12 +158,10 @@ Piccolo 复用 QwenPaw-Flash 的本地 GGUF 下载与运行管理，以及 Jev �
 
 [DataJevBench](https://github.com/datajuicer/DataJevBench) 面向数据工作流，覆盖数据准入、处理方案选择、产物质量、分析就绪、产物核验与披露、任务执行控制。v0.5 包含 **500 道任务**：480 道选择题与 20 道有序评分题，涵盖中英文。
 
-Piccolo-27B 总体准确率为 **82.40%（412/500）**，数据产物质量评价与信息充分性判断分别达到 **91.25%** 和 **81.00%**。该基准结合准确率、ECE 与 Brier 分数，帮助分析模型在不同任务上的正确性与概率质量。
+Piccolo-27B 总体准确率为 **82.60%（413/500）**，数据产物质量评价与信息充分性判断分别达到 **92.50%** 和 **82.00%**。该基准结合准确率、ECE 与 Brier 分数，帮助分析模型在不同任务上的正确性与概率质量。
 
 ## 06 下一步
 
-我们希望让决策模型成为连接模型、执行与反馈的共同基础。接下来将继续拓展任务覆盖，完善审核与压缩的实际工作流评测，并补充训练配方与数据材料。
-
-**TODO：补充标明硬件、上下文长度与批量设置的延迟、吞吐及内存实测；公开训练配方和数据说明。**
+我们希望让决策模型成为连接模型、执行与反馈的共同基础。接下来将继续拓展任务覆盖，完善审核与压缩的实际工作流评测。
 
 欢迎从 [Decision 官网](https://decisionplayground.agentscope.io/)开始体验，在 [GitHub](https://github.com/agentscope-ai/Piccolo) 查看实现，在 [Hugging Face](https://huggingface.co/agentscope-ai/Piccolo-27B) 下载模型。

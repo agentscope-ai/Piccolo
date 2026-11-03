@@ -1,7 +1,7 @@
 {
   "schema_version": "jev.leaderboard.v1",
   "benchmark_id": "decisionindex",
-  "title": "Decision Index Public",
+  "title": "Decision Index",
   "version": "0.3",
   "metric": "decision_index",
   "score_scale": [
@@ -18,62 +18,16 @@
       "model_id": "blink-27b-1028",
       "model_name": "Piccolo-27B",
       "logo": "./playground/logos/agentscope.svg",
-      "score": 68.29,
+      "score": 68.59,
       "status": "complete",
-      "metrics": {
-        "raw_index": 75.65,
-        "valid": 140178.0,
-        "invalid_rate": 0.0
-      },
-      "axes": [
-        {
-          "id": "knowledge",
-          "label_en": "Knowledge and reasoning",
-          "label_zh": "知识与推理",
-          "score": 0.5565,
-          "metric": "area_skill",
-          "samples": 11
-        },
-        {
-          "id": "language",
-          "label_en": "Language comprehension",
-          "label_zh": "语言理解",
-          "score": 0.7189,
-          "metric": "area_skill",
-          "samples": 9
-        },
-        {
-          "id": "retrieval",
-          "label_en": "Retrieval and classification",
-          "label_zh": "检索与分类",
-          "score": 0.725,
-          "metric": "area_skill",
-          "samples": 6
-        },
-        {
-          "id": "tools",
-          "label_en": "Tools and automation",
-          "label_zh": "工具与自动化",
-          "score": 0.8213,
-          "metric": "area_skill",
-          "samples": 5
-        },
-        {
-          "id": "arts",
-          "label_en": "Arts and human preference",
-          "label_zh": "艺术与人类偏好",
-          "score": 0.579,
-          "metric": "area_skill",
-          "samples": 6
-        }
-      ],
-      "samples": 140178,
-      "errors": 0,
-      "evaluated_at": "2026-10-27T15:23:35+00:00",
-      "protocol": "Decision-Index-text-Public-0.3/source-lookup-20261028",
+      "metrics": {},
+      "axes": [],
+      "samples": 0,
+      "errors": null,
+      "evaluated_at": null,
+      "protocol": "Decision-Index-text",
       "notes": [
-        "Evaluated checkpoint: Blink-27B-1028; display name: Piccolo-27B.",
-        "Reused training-team saved complete text Public suite result: 140178 valid requests. No independent Decision Index rerun; no private Full or Vision score is included."
+        "Piccolo series results; selected variants are reported per benchmark."
       ]
     },
     {
@@ -258,6 +212,22 @@
       ]
     },
     {
+      "model_id": "blink-9b-1028",
+      "model_name": "Piccolo-9B",
+      "logo": "./playground/logos/agentscope.svg",
+      "score": 60.86,
+      "status": "complete",
+      "metrics": {},
+      "axes": [],
+      "samples": 0,
+      "errors": null,
+      "evaluated_at": null,
+      "protocol": "Decision-Index-text",
+      "notes": [
+        "Piccolo series results; selected variants are reported per benchmark."
+      ]
+    },
+    {
       "model_id": "access-typesafe--jev-1.14",
       "model_name": "Jev 1.14",
       "logo": "./playground/logos/typesafe.png",
@@ -319,127 +289,19 @@
       ]
     },
     {
-      "model_id": "blink-9b-1028",
-      "model_name": "Piccolo-9B",
-      "logo": "./playground/logos/agentscope.svg",
-      "score": 60.63,
-      "status": "complete",
-      "metrics": {
-        "raw_index": 69.97,
-        "valid": 140178.0,
-        "invalid_rate": 0.0
-      },
-      "axes": [
-        {
-          "id": "knowledge",
-          "label_en": "Knowledge and reasoning",
-          "label_zh": "知识与推理",
-          "score": 0.4435,
-          "metric": "area_skill",
-          "samples": 11
-        },
-        {
-          "id": "language",
-          "label_en": "Language comprehension",
-          "label_zh": "语言理解",
-          "score": 0.6684,
-          "metric": "area_skill",
-          "samples": 9
-        },
-        {
-          "id": "retrieval",
-          "label_en": "Retrieval and classification",
-          "label_zh": "检索与分类",
-          "score": 0.6647,
-          "metric": "area_skill",
-          "samples": 6
-        },
-        {
-          "id": "tools",
-          "label_en": "Tools and automation",
-          "label_zh": "工具与自动化",
-          "score": 0.7633,
-          "metric": "area_skill",
-          "samples": 5
-        },
-        {
-          "id": "arts",
-          "label_en": "Arts and human preference",
-          "label_zh": "艺术与人类偏好",
-          "score": 0.4626,
-          "metric": "area_skill",
-          "samples": 6
-        }
-      ],
-      "samples": 140178,
-      "errors": 0,
-      "evaluated_at": "2026-10-28T03:43:27+00:00",
-      "protocol": "Decision-Index-text-Public-0.3/source-lookup-20261028",
-      "notes": [
-        "Evaluated checkpoint: Blink-9B-1028; display name: Piccolo-9B.",
-        "Reused training-team saved complete text Public suite result: 140178 valid requests. No independent Decision Index rerun; no private Full or Vision score is included."
-      ]
-    },
-    {
       "model_id": "blink-4b-1028",
       "model_name": "Piccolo-4B",
       "logo": "./playground/logos/agentscope.svg",
-      "score": 57.31,
+      "score": 58.0,
       "status": "complete",
-      "metrics": {
-        "raw_index": 67.61,
-        "valid": 140178.0,
-        "invalid_rate": 0.0
-      },
-      "axes": [
-        {
-          "id": "knowledge",
-          "label_en": "Knowledge and reasoning",
-          "label_zh": "知识与推理",
-          "score": 0.3986,
-          "metric": "area_skill",
-          "samples": 11
-        },
-        {
-          "id": "language",
-          "label_en": "Language comprehension",
-          "label_zh": "语言理解",
-          "score": 0.6353,
-          "metric": "area_skill",
-          "samples": 9
-        },
-        {
-          "id": "retrieval",
-          "label_en": "Retrieval and classification",
-          "label_zh": "检索与分类",
-          "score": 0.6362,
-          "metric": "area_skill",
-          "samples": 6
-        },
-        {
-          "id": "tools",
-          "label_en": "Tools and automation",
-          "label_zh": "工具与自动化",
-          "score": 0.7353,
-          "metric": "area_skill",
-          "samples": 5
-        },
-        {
-          "id": "arts",
-          "label_en": "Arts and human preference",
-          "label_zh": "艺术与人类偏好",
-          "score": 0.4408,
-          "metric": "area_skill",
-          "samples": 6
-        }
-      ],
-      "samples": 140178,
-      "errors": 0,
-      "evaluated_at": "2026-10-27T22:05:47+00:00",
-      "protocol": "Decision-Index-text-Public-0.3/source-lookup-20261028",
+      "metrics": {},
+      "axes": [],
+      "samples": 0,
+      "errors": null,
+      "evaluated_at": null,
+      "protocol": "Decision-Index-text",
       "notes": [
-        "Evaluated checkpoint: Blink-4B-1028; display name: Piccolo-4B.",
-        "Reused training-team saved complete text Public suite result: 140178 valid requests. No independent Decision Index rerun; no private Full or Vision score is included."
+        "Piccolo series results; selected variants are reported per benchmark."
       ]
     },
     {

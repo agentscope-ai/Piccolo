@@ -1,6 +1,6 @@
 # 在 Piccolo Arena 连接 System One 服务
 
-Piccolo 的模型版本尚未确定。本页仅说明现有前端的外部服务兼容入口。
+本页说明 Piccolo Arena 的外部决策服务配置。已发布模型的下载入口与固定版本见 [模型目录](../../models/README.md)。
 
 页面的结构化接口使用 `jev.decision.v1`，已有 System One 服务使用 `state/questions`。随包桥接器转换请求及响应，保留选项 ID、顺序、模型身份和实际概率；不加载模型，也不提供推理或训练实现。
 

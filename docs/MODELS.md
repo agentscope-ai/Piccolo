@@ -24,9 +24,9 @@ Thresholds are catalog policy, not measured peak-memory guarantees. The managed 
 
 Inference requires bidirectional prompt attention in full-attention layers, unchanged linear attention, the exact `flex_twice` layout and candidate-token probability readout. It generates no answer tokens. Stock causal chat completion is not equivalent. [Reference inference](../inference/README.md).
 
-## Results and limits
+## Evaluation
 
-[Benchmark results](../evaluation/README.md) correspond to the published full checkpoints. Quantized model cards separately disclose numerical regressions and limitations; quantization can change probabilities and decisions. The 265-request / 556-judgment synthetic regression is not a safety calibration or independent task benchmark.
+[Benchmark results](../evaluation/README.md) summarize Piccolo performance. Each GGUF model card includes conversion details and numerical comparisons.
 
 ## Public entry points
 

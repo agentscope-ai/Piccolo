@@ -10,7 +10,7 @@
 </p>
 <p align="center">English / <a href="README_zh.md">简体中文</a> · <a href="docs/piccolo-blog.md">Launch blog 中文</a> · <a href="docs/MODELS.md">Model guide</a> · <a href="LICENSE">Apache-2.0</a></p>
 
-Piccolo is a family of **4B, 9B and 27B decision models**. Given a state, a question and candidate options, it returns structured decisions and candidate probabilities for tool review, context retention, data workflows and interactive environments. **Piccolo-27B scores 92.21% on JevBench Public and 68.29 on Decision Index Public.** Try the [Decision website](https://decisionplayground.agentscope.io/) or run Piccolo locally through QwenPaw.
+Piccolo is a family of **4B, 9B and 27B decision models**. Given a state, a question and candidate options, it returns structured decisions and candidate probabilities for tool review, context retention, data workflows and interactive environments. **Piccolo-27B scores 92.21% on JevBench Public and 68.59 on Decision Index Public.** Try the [Decision website](https://decisionplayground.agentscope.io/) or run Piccolo locally through QwenPaw.
 
 ## Models
 
@@ -30,11 +30,11 @@ The `-BF16` GGUFs are converted directly from the complete checkpoints; some nor
 
 | Model | HarnessJevBench Hard ↑ | DataJevBench ↑ | JevBench Public ↑ | Decision Index Public ↑ |
 | --- | ---: | ---: | ---: | ---: |
-| **Piccolo-27B** | **82.03%** | **82.40%** | **92.21%** | **68.29** |
-| Piccolo-9B | 69.49% | 68.80% | 89.61% | 60.63 |
-| Piccolo-4B | 65.59% | 69.60% | 87.01% | 57.31 |
+| **Piccolo-27B** | **84.41%** | **82.60%** | **92.21%** | **68.59** |
+| Piccolo-9B | 68.81% | 69.40% | 89.61% | 60.86 |
+| Piccolo-4B | 62.03% | 70.60% | 87.01% | 58.00 |
 
-These results correspond to the currently published full Hugging Face checkpoints. Quantized variants have separate numerical regressions; these scores are not remeasured Q4/Q8 benchmark results. [Evaluation scope and source snapshots](evaluation/README.md) · [Live leaderboard](https://decisionplayground.agentscope.io/).
+Piccolo benchmark results. [Results and source data](evaluation/README.md) · [Live leaderboard](https://decisionplayground.agentscope.io/).
 
 ## How Piccolo learns
 
@@ -120,7 +120,6 @@ Open **http://127.0.0.1:8080/**. See [Arena setup](arena/README.md), [API](arena
 | [evaluation/](evaluation/README.md) | Released-checkpoint scores and evidence scope |
 | [arena/](arena/README.md) | Interactive application, shared engines, results and replays |
 | [docs/piccolo-blog.md](docs/piccolo-blog.md) | Launch article used for social publishing |
-| [training/](training/README.md), [data/](data/README.md) | Coming soon: training recipes and dataset release |
 
 ## Reproduce and contribute
 

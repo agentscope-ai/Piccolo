@@ -13,9 +13,9 @@ Piccolo 是三个 Blink-1028 checkpoint 的新显示名。公开模型 ID 继续
 - JevBench Public 使用历史原生链路的 231 题；维度、校准与总分来自同轮评分文件。JEV 1.14 的三条归一化沿用原 Public 规则，与 Data 的概率校验规则分开。
 - Decision Index 仅使用文本 Public。三个 Piccolo 复用训练侧已存的 140,178 请求结果；另外四个有效模型使用官方 Public 快照。其余四个模型没有找到公开成绩，分数与维度保留为空。官方逐请求错误数未知时，`errors` 允许为 `null`，不伪装成零错误。
 - 表格默认将 Piccolo-27B 放在首行，并明确说明是置顶展示。名次仍按真实主分计算，并列采用竞赛排名；Harness 中 Piccolo-27B 为第 2、d3 为第 1。点击表头进入正常数值排序，缺失值始终排在末尾。柱图继续按实际数值排序。
-- HarnessJevBench 首页卡片、比较面板与榜单介绍移除未发布提示，不额外添加发布徽标；项目地址为 `https://github.com/agentscope-ai/HarnessJevBench`。DataJevBench 的发布状态单独保留。
+- HarnessJevBench 首页卡片、比较面板与榜单介绍移除未发布提示，不额外添加发布徽标；项目地址为 `https://github.com/agentscope-ai/HarnessJevBench`。DataJevBench 的公开项目地址为 `https://github.com/datajuicer/DataJevBench`。
 
-此修改仅在本地准备和验证，尚未提交或部署。可运行 `python scripts/preview_leaderboard.py --port 18086` 预览静态页面和真实 Benchmark API；该轻量预览不启动模型服务或游戏引擎。
+随本仓库提供的数据与页面可在本地预览。可运行 `python scripts/preview_leaderboard.py --port 18086` 预览静态页面和真实 Benchmark API；该轻量预览不启动模型服务或游戏引擎。
 
 ```text
 leaderboard/

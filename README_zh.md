@@ -10,7 +10,7 @@
 </p>
 <p align="center"><a href="README.md">English</a> / 简体中文 · <a href="docs/piccolo-blog.md">发布 Blog</a> · <a href="docs/MODELS.md">模型说明</a> · <a href="LICENSE">Apache-2.0</a></p>
 
-Piccolo 是一个 **4B、9B、27B 决策模型系列**。给定当前状态、问题与候选项，它返回程序可以直接使用的结构化判断与候选概率，适用于工具审核、上下文筛选、数据工作流和交互环境。**Piccolo-27B 在 JevBench Public 上取得 92.21% 的准确率，在 Decision Index Public 上取得 68.29 分。** 访问 [Decision 官网](https://decisionplayground.agentscope.io/)体验，或通过 QwenPaw 在本地使用。
+Piccolo 是一个 **4B、9B、27B 决策模型系列**。给定当前状态、问题与候选项，它返回程序可以直接使用的结构化判断与候选概率，适用于工具审核、上下文筛选、数据工作流和交互环境。**Piccolo-27B 在 JevBench Public 上取得 92.21% 的准确率，在 Decision Index Public 上取得 68.59 分。** 访问 [Decision 官网](https://decisionplayground.agentscope.io/)体验，或通过 QwenPaw 在本地使用。
 
 ## 模型下载
 
@@ -30,11 +30,11 @@ Piccolo 是一个 **4B、9B、27B 决策模型系列**。给定当前状态、�
 
 | 模型 | HarnessJevBench Hard ↑ | DataJevBench ↑ | JevBench Public ↑ | Decision Index Public ↑ |
 | --- | ---: | ---: | ---: | ---: |
-| **Piccolo-27B** | **82.03%** | **82.40%** | **92.21%** | **68.29** |
-| Piccolo-9B | 69.49% | 68.80% | 89.61% | 60.63 |
-| Piccolo-4B | 65.59% | 69.60% | 87.01% | 57.31 |
+| **Piccolo-27B** | **84.41%** | **82.60%** | **92.21%** | **68.59** |
+| Piccolo-9B | 68.81% | 69.40% | 89.61% | 60.86 |
+| Piccolo-4B | 62.03% | 70.60% | 87.01% | 58.00 |
 
-以上成绩对应当前发布的完整 Hugging Face 权重。量化版本另有数值回归，表格不代表 Q4/Q8 重新运行同一套 benchmark 的成绩。[评测口径与来源快照](evaluation/README.md) · [在线榜单](https://decisionplayground.agentscope.io/)。
+Piccolo 的评测成绩与 [结果数据](evaluation/README.md)同步，完整排名见 [在线榜单](https://decisionplayground.agentscope.io/)。
 
 ## 方法：让反馈驱动下一轮训练
 
@@ -120,7 +120,6 @@ bash scripts/run.sh
 | [evaluation/](evaluation/README.md) | 发布权重的成绩及证据范围 |
 | [arena/](arena/README.md) | 交互应用、引擎、榜单和回放 |
 | [docs/piccolo-blog.md](docs/piccolo-blog.md) | 公众号与小红书共用的发布母稿 |
-| [training/](training/README.md)、[data/](data/README.md) | Coming soon：训练配方与数据集 |
 
 ## 复现与贡献
 
