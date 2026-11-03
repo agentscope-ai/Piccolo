@@ -60,7 +60,7 @@
 | Piccolo-9B | 68.81% | 69.40% | 89.61% | 60.86 |
 | Piccolo-4B | 62.03% | 70.60% | 87.01% | 58.00 |
 
-这些成绩对应当前已发布的完整 Hugging Face 权重。Piccolo-27B 在四项评测中均取得三个尺寸中的最高分；9B 与 4B 在 JevBench Public 上分别达到 **89.61%** 与 **87.01%**，为资源有限的部署提供更多选择。量化后的候选概率存在变化，Q4/Q8 的数值回归与完整权重的 benchmark 成绩分开记录。[评测说明与来源](../evaluation/README.md) · [完整在线榜单](https://decisionplayground.agentscope.io/)。
+Piccolo-27B 在四项评测中均取得三个尺寸中的最高分；9B 与 4B 在 JevBench Public 上分别达到 **89.61%** 与 **87.01%**，为资源有限的部署提供更多选择。[评测结果](../evaluation/README.md) · [完整在线榜单](https://decisionplayground.agentscope.io/)。
 
 ## 03 训练方法：让反馈驱动下一轮数据
 
