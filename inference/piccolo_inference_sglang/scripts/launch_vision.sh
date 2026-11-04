@@ -13,6 +13,13 @@ PYTHON=${PYTHON:-python3}
 export PYTHONDONTWRITEBYTECODE=1
 export SGLANG_PLUGINS=piccolo
 export CUDA_VISIBLE_DEVICES="$GPU"
+export PICCOLO_OCR_ENABLED="${PICCOLO_OCR_ENABLED:-0}"
+export PICCOLO_OCR_PYTHON="${PICCOLO_OCR_PYTHON:-$PYTHON}"
+export PICCOLO_OCR_DEVICE="${PICCOLO_OCR_DEVICE:-gpu:0}"
+if [[ "$PICCOLO_OCR_ENABLED" == 1 ]]; then
+  : "${PICCOLO_OCR_MODEL_DIR:?Set PICCOLO_OCR_MODEL_DIR to the verified OCR model directory}"
+  export PICCOLO_OCR_MODEL_DIR
+fi
 export HF_HUB_OFFLINE=1
 export TOKENIZERS_PARALLELISM=false
 export OMP_NUM_THREADS=8
@@ -21,7 +28,7 @@ export TRITON_CACHE_DIR="$XDG_CACHE_HOME/vision/triton"
 export TORCH_EXTENSIONS_DIR="$XDG_CACHE_HOME/vision/torch_extensions"
 exec "$PYTHON" -m sglang.launch_server \
   --model-path "$MODEL_PATH" --tokenizer-path "$MODEL_PATH" \
-  --served-model-name "$(basename -- "$MODEL_PATH")" \
+  --served-model-name "${SERVED_MODEL_NAME:-Piccolo}" \
   --host 0.0.0.0 --port "$PORT" --api-key EMPTY \
   --tp-size 1 --dtype bfloat16 --context-length 32768 --max-total-tokens 32768 \
   --mem-fraction-static "${MEM_FRACTION_STATIC:-0.80}" \

@@ -32,6 +32,25 @@ source .venv/bin/activate
 uv pip install --prerelease=allow .
 ```
 
+The default installation includes only the main inference dependencies. OCR is optional and disabled by default; it requires the `ocr` extra and `PICCOLO_OCR_ENABLED=1`.
+
+### Optional OCR setup
+
+Install the `ocr` extra into the same `.venv` created above:
+
+```bash
+uv pip install --python .venv/bin/python --prerelease=allow '.[ocr]' \
+  --extra-index-url https://www.paddlepaddle.org.cn/packages/stable/cu126/ \
+  --index-strategy unsafe-best-match
+```
+
+Prepare the OCR weights:
+
+```bash
+uv run --no-sync python -m piccolo_inference_sglang.prepare_ocr_models \
+  --out "$PWD/ocr_models"
+```
+
 ## Start the API server
 
 Download the checkpoint with `hf download agentscope-ai/Piccolo-4B --local-dir /models/Piccolo-4B`.
@@ -45,12 +64,34 @@ bash scripts/launch_sglang.sh /models/Piccolo-4B 0 18604
 bash scripts/launch_vision.sh /models/Piccolo-4B 0 18704
 ```
 
-Both scripts use TP1 and bidirectional full attention, while DeltaNet retains the backend’s causal computation. Radix caching and chunked prefill are disabled. The KV cache uses the default precision, and Mamba states use FP32. Query the effective configuration from the evaluation machine:
+The served model name defaults to `Piccolo`, independently of the checkpoint directory name; set `SERVED_MODEL_NAME` to override it.
+
+Query the effective configuration from the evaluation machine:
 
 ```bash
 curl -fsS http://model-host:18704/health -H 'Authorization: Bearer EMPTY'
 curl -fsS http://model-host:18704/server_info -H 'Authorization: Bearer EMPTY'
 ```
+
+### Enable OCR for vision (Optional)
+
+The vision command above runs without OCR. To enable it, restart the vision service with:
+
+```bash
+PICCOLO_OCR_ENABLED=1 \
+PICCOLO_OCR_PYTHON="$PWD/.venv/bin/python" \
+PICCOLO_OCR_MODEL_DIR="$PWD/ocr_models" \
+PYTHON="$PWD/.venv/bin/python" \
+  bash scripts/launch_vision.sh /models/piccolo-4B-1028 0 18704
+```
+
+Check that ocr.enabled and ocr.ready are both true:
+
+```bash
+curl -fsS http://model-host:18704/v1/decisions/runtime -H 'Authorization: Bearer EMPTY'
+```
+
+OCR runs in a single worker, sharing the main model's GPU by default. It uses PP-OCRv5_mobile_det and en_PP-OCRv5_mobile_rec, with a detection side limit of 960 and recognition batch size 8.
 
 ## Official vision evaluation
 
@@ -70,12 +111,14 @@ cd "$DI_CODE"
 nohup python -u -m decision_index vision pipeline \
   --dir "$DI_SUITE" \
   --engine piccolo_inference_sglang.decision_index_engine:VisionEngine \
-  --model piccolo-4B-1028 \
+  --model Piccolo \
   --option base_url=http://model-host:18704 \
   --workers 1 --chunk 1 \
   --out "$RESULT_DIR" \
   > "$LOG_DIR/piccolo-4B-1028.log" 2>&1 < /dev/null &
 ```
+
+> The engine accepts services with OCR disabled by default. For an OCR evaluation, enable OCR on the server and add `--option require_ocr=true` to the command above.
 
 ## Official text evaluation
 
@@ -97,7 +140,7 @@ nohup python -u -m decision_index pipeline \
   --edition 0.3 --suite-dir "$DI_SUITE" \
   --engine http \
   --option base_url=http://model-host:18604 \
-  --option model=piccolo-4B-1028 \
+  --option model=Piccolo \
   --out "$RESULT_DIR" \
   > "$LOG_DIR/piccolo-4B-1028.log" 2>&1 < /dev/null &
 ```
