@@ -36,5 +36,5 @@ def install_endpoint(server_args, *args, **kwargs):
     ]
     app.add_api_route("/v1/decisions", vision.handle, methods=["POST"], name="piccolo_decisions")
     app.add_api_route("/v1/decisions/runtime", vision.runtime_handle, methods=["GET"], name="piccolo_vision_runtime")
-    app.add_event_handler("shutdown", vision.close)
+    app.router.add_event_handler("shutdown", vision.close)
     app.openapi_schema = None
