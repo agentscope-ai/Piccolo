@@ -19,7 +19,7 @@ export TRITON_CACHE_DIR="$XDG_CACHE_HOME/triton"
 export TORCH_EXTENSIONS_DIR="$XDG_CACHE_HOME/torch_extensions"
 exec "$PYTHON" -m sglang.launch_server \
   --model-path "$MODEL_PATH" --tokenizer-path "$MODEL_PATH" \
-  --served-model-name "$(basename -- "$MODEL_PATH")" \
+  --served-model-name "${SERVED_MODEL_NAME:-Piccolo}" \
   --host 0.0.0.0 --port "$PORT" --api-key EMPTY \
   --tp-size 1 --random-seed 42 --trust-remote-code --context-length 65536 \
   --quantization fp8 --mem-fraction-static "${MEM_FRACTION_STATIC:-0.85}" \
