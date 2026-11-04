@@ -27,17 +27,7 @@ def test_one_directory_serves_benchmarks_arena_and_replays(tmp_path):
             response = client.get(f'/api/v1/leaderboards/{benchmark}')
             assert response.status_code == 200
             assert response.json() == expected
-        original = json.loads((directory / 'arena.json').read_text())
-        arena = client.get('/api/elo').json()
-        assert arena['run_id'] == original['run_id']
-        from blink_arena.game_scope import project_arena
-        expected = project_arena(original)
-        assert arena['overall'] == expected['overall']
-        assert arena['by_game'] == expected['by_game']
-        replay = client.get('/playground/visible-control.js')
-        assert replay.status_code == 200
-        archive = json.loads(replay.text.removeprefix('window.JevArenaReplayArchive=').removesuffix(';'))
-        assert archive == json.loads((directory / 'arena-replays.json').read_text())
+        assert client.get('/api/elo').status_code == 404
 
 
 def test_directory_environment_and_external_updates(tmp_path, monkeypatch):
@@ -54,31 +44,9 @@ def test_directory_environment_and_external_updates(tmp_path, monkeypatch):
     app = create_app(data=tmp_path / 'runtime', config=AppConfig())
     with TestClient(app) as client:
         assert client.get('/api/v1/leaderboards/jevbench').json()['version'] == 'external-update-fixture'
-        assert client.get('/api/elo').json()['run_id'] == json.loads((directory / 'arena.json').read_text())['run_id']
+        assert client.get('/api/elo').status_code == 404
 
 
-def test_arena_rating_import_preserves_native_snapshot_and_replay(tmp_path):
-    directory = copied_results(tmp_path)
-    originals = {name: (directory / name).read_bytes() for name in ('arena.json', 'arena-replays.json')}
-    store = Leaderboards(directory=directory)
-    assert store.get('arena') is None
-    doc = LeaderboardDocument.model_validate({
-        'benchmark_id': 'arena', 'title': 'Arena ratings', 'version': 'fixture-v1',
-        'metric': 'elo', 'score_scale': [0, 3000], 'axis_scale': [0, 3000],
-        'rows': [{'model_id': 'fixture-model', 'model_name': 'Fixture', 'score': 1500,
-                  'axes': [{'id': 'hex_7x7', 'label_en': 'Hex', 'label_zh': '六边棋', 'score': 1500}]}],
-    })
-    store.put(doc)
-    assert store.path('arena').name == 'arena-ratings.json'
-    assert store.get('arena') == doc
-    for name, value in originals.items():
-        assert (directory / name).read_bytes() == value
-    app = create_app(data=tmp_path / 'runtime', config=AppConfig(), leaderboard_dir=directory)
-    with TestClient(app) as client:
-        response = client.get('/api/elo')
-        assert response.status_code == 200
-        assert response.json()['source'] == 'imported_ratings'
-        assert response.json()['overall'][0]['rating'] == 1500
 
 
 def test_no_hidden_fallback_to_old_runtime_or_seed_paths(tmp_path):
@@ -91,7 +59,7 @@ def test_no_hidden_fallback_to_old_runtime_or_seed_paths(tmp_path):
     app = create_app(data=tmp_path / 'runtime', config=AppConfig(), leaderboard_dir=directory)
     with TestClient(app) as client:
         assert client.get('/api/v1/leaderboards/jevbench').status_code == 404
-        assert client.get('/api/elo').json()['state'] == 'idle'
+        assert client.get('/api/elo').status_code == 404
 
 
 def test_projection_timestamps_follow_each_source_file(tmp_path):
@@ -100,7 +68,7 @@ def test_projection_timestamps_follow_each_source_file(tmp_path):
     directory = copied_results(tmp_path)
     expected = {}
     for index, (ident, filename) in enumerate((('jevbench', 'jevbench.json'), ('decisionindex', 'decisionindex.json'),
-                                              ('harnessjevbench', 'harnessjevbench.json'), ('datajevbench', 'datajevbench.json'), ('gamejevbench', 'arena.json'))):
+                                              ('harnessjevbench', 'harnessjevbench.json'), ('datajevbench', 'datajevbench.json'))):
         stamp = 1_700_000_000 + index * 3600
         os.utime(directory / filename, (stamp, stamp))
         expected[ident] = datetime.fromtimestamp(stamp, timezone.utc).isoformat()
@@ -112,7 +80,7 @@ def test_projection_timestamps_follow_each_source_file(tmp_path):
     os.utime(directory / 'decisionindex.json', (stamp, stamp))
     next_rows = {row['id']: row for row in store.projection()['benchmarks']}
     assert next_rows['decisionindex']['updated_at'] == datetime.fromtimestamp(stamp, timezone.utc).isoformat()
-    for ident in ('jevbench', 'harnessjevbench', 'datajevbench', 'gamejevbench'):
+    for ident in ('jevbench', 'harnessjevbench', 'datajevbench'):
         assert next_rows[ident]['updated_at'] == expected[ident]
 
 

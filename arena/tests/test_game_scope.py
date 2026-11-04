@@ -76,7 +76,7 @@ def test_withdrawn_games_keep_native_history_but_reject_new_active_jobs(kind):
 
 
 def test_historical_score_projection_has_new_denominator_and_keeps_source():
-    source = json.loads((REPO / 'leaderboard/arena.json').read_text())
+    source = {'overall': [], 'by_game': {'othello_6x6': [], 'othello_8x8': []}, 'fixed_config': {'games': [{'id': 'othello_6x6'}, {'id': 'othello_8x8'}]}}
     before = deepcopy(source)
     result = project_arena(source)
     assert source == before

@@ -11,7 +11,7 @@ from browser_five_seed_playthrough import STATE, write
 async def run(a):
     out=Path(a.output);out.mkdir(parents=True,exist_ok=True);rows=[];errors=[]
     async with async_playwright() as p:
-        b=await p.chromium.launch(headless=True,args=['--no-sandbox'])
+        b=await p.chromium.launch(headless=True,args=['--no-sandbox'], **({'executable_path': a.browser_executable} if a.browser_executable else {}))
         page=await b.new_page();page.on('pageerror',lambda e:errors.append(str(e)))
         await page.goto(a.url,wait_until='domcontentloaded')
         await page.wait_for_function('catalog&&showcaseKinds.length&&!busy&&!showcaseBusy')
@@ -47,4 +47,5 @@ if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--url',default='http://127.0.0.1:8768/');p.add_argument('--output',required=True)
     p.add_argument('--widths',type=int,nargs='+',default=[1440,1024,768,390,320])
     p.add_argument('--lang',choices=['en','zh'],default='zh')
+    p.add_argument('--browser-executable')
     asyncio.run(run(p.parse_args()))

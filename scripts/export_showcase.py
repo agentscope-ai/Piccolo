@@ -18,8 +18,7 @@ SELECTION = (
 )
 
 
-def export(root: Path) -> dict:
-    archive_path = root / 'arena/leaderboard/arena-replays.json'
+def export(root: Path, archive_path: Path) -> dict:
     archive = json.loads(archive_path.read_text())
     target = root / 'arena/web/showcase'
     (target / 'traces').mkdir(parents=True, exist_ok=True)
@@ -49,7 +48,7 @@ def export(root: Path) -> dict:
         })
     manifest = {
         'schema_version': 'blink.showcase.v1',
-        'source': 'arena/leaderboard/arena-replays.json',
+        'source': 'external archived game streams',
         'source_run_id': archive['run_id'], 'source_revision': archive['revision'],
         'source_updated_at': archive['updated_at'],
         'scope': 'Historical experiments, not results of the upcoming Piccolo model.',
@@ -90,4 +89,6 @@ def export(root: Path) -> dict:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--root', type=Path, default=ROOT)
-    print(json.dumps(export(parser.parse_args().root)))
+    parser.add_argument('--archive', type=Path, required=True, help='Explicit archive outside the public source tree')
+    args = parser.parse_args()
+    print(json.dumps(export(args.root, args.archive)))

@@ -59,30 +59,6 @@
         <circle class="benchmark-scene-signal" cx="194" cy="46" r="3"/>
       `,
     },
-    {
-      kind: 'game',
-      labels: {observe: ['Observe', '观察'], choose: ['Choose', '选择'], move: ['Move', '行动']},
-      caption: ['Action planning · illustrative scenario', '行动规划 · 场景示意'],
-      art: `
-        <rect class="benchmark-scene-node" x="77" y="12" width="164" height="126" rx="8"/>
-        <path class="benchmark-scene-board-grid" d="M89 22h140v104H89zM124 22v104M159 22v104M194 22v104M89 48h140M89 74h140M89 100h140"/>
-        <rect class="benchmark-scene-board-wall" x="126" y="50" width="31" height="22" rx="3"/>
-        <rect class="benchmark-scene-board-wall" x="196" y="76" width="31" height="22" rx="3"/>
-        <rect class="benchmark-scene-board-wall" x="91" y="102" width="31" height="22" rx="3"/>
-        <path class="benchmark-scene-route benchmark-scene-route-option" d="M106 87V61M106 87V113M106 87h35"/>
-        <path class="benchmark-scene-route benchmark-scene-route-active benchmark-scene-draw" pathLength="1" d="M106 87h70V35h35"/>
-        <path class="benchmark-scene-icon benchmark-scene-icon-copper" d="m205 30 6 5-6 5"/>
-        <circle class="benchmark-scene-token" cx="106" cy="87" r="7"/>
-        <circle class="benchmark-scene-goal" cx="211" cy="35" r="7"/>
-        <circle class="benchmark-scene-goal-center" cx="211" cy="35" r="2"/>
-        <path class="benchmark-scene-callout" d="M34 51h30l13 10M241 90h20l13 14"/>
-        <circle class="benchmark-scene-dot" cx="34" cy="51" r="2"/>
-        <circle class="benchmark-scene-dot" cx="274" cy="104" r="2"/>
-        ${label('observe', 30, 39)}
-        ${label('choose', 266, 123)}
-        ${label('move', 159, 151, 'benchmark-scene-centered')}
-      `,
-    },
   ];
   const cards = document.querySelectorAll('#homeBenchmarks .home-usecase');
   scenes.forEach((scene, index) => {

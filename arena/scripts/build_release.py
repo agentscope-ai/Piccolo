@@ -11,6 +11,9 @@ from pathlib import Path
 import re
 import tarfile
 import uuid
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 
 ROOT_FILES = frozenset(('README.md', 'pyproject.toml', 'requirements.txt', 'MANIFEST.in',
@@ -29,8 +32,7 @@ PRIVATE_TEXT = (
     ('private_key', re.compile(r'-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----')),
     ('provider_credential', re.compile(r'\bsk-[A-Za-z0-9]{24,}\b')),
 )
-REQUIRED = frozenset(('web/index.html', 'web/playground/leaderboard.js', 'leaderboard/arena.json',
-    'leaderboard/arena-replays.json', 'leaderboard/jevbench.json', 'leaderboard/decisionindex.json',
+REQUIRED = frozenset(('web/index.html', 'web/playground/leaderboard.js', 'web/playground/data/home-decision.json', 'web/playground/home-demo.js', 'leaderboard/jevbench.json', 'leaderboard/decisionindex.json',
     'leaderboard/harnessjevbench.json', 'leaderboard/datajevbench.json', 'web/playground/logos/blink.svg', 'blink_arena/rollouts.py',
     'blink_arena/engines/jev_engine_rollout_backend.py', 'blink_arena/engines/jev_engine_rollout_store.py',
     'blink_arena/engines/jev_engine_episode_runner.py', 'docs/ROLLOUT.md',
@@ -38,9 +40,14 @@ REQUIRED = frozenset(('web/index.html', 'web/playground/leaderboard.js', 'leader
 
 
 REQUIRED = REQUIRED | frozenset(('web/blog.html', 'web/piccolo.html', 'web/blog-index.css', 'web/blog-index.js', 'web/blog/blog.js', 'web/blog/content.js', 'web/blog/evidence.js', 'web/blog/locale.js', 'web/blog/blog.css', 'web/blog/nav.css', 'web/blog/gallery.js', 'web/blog/gallery.css', 'web/blog/schema-data.js', 'web/blog/workflow-cases.js', 'web/blog/workflow-demos.js', 'web/blog/workflow-demos.css', 'web/blog/workflow-data-license.txt', 'web/showcase/index.html', 'web/showcase/app.js', 'web/showcase/embed.js', 'web/showcase/style.css', 'web/blog/label-examples.json', 'web/blog/math.js', 'web/blog/evolution.js', 'web/blog/evolution.css', 'web/blog/method-figures.js', 'web/blog/method-figures.css', 'web/blog/architecture.js', 'web/blog/assets/data-architecture.svg', 'web/blog/assets/feedback-architecture.svg', 'web/blog/assets/research-loop.svg', 'web/blog/assets/27b-evolution.svg', 'web/blog/assets/data-architecture-mobile.svg', 'web/blog/assets/research-loop-mobile.svg', 'web/blog/benchmark-overview.js', 'web/blog/benchmark-overview.css', 'web/blog/layout.css', 'web/blog/wordmark.css', 'web/blog/assets/piccolo-wordmark.svg', 'web/blog/benchmark-radars.js', 'web/blog/benchmark-radars.css', 'web/blog/benchmark-profiles.js', 'web/blog/vendor/katex/katex.min.js', 'web/blog/vendor/katex/katex.min.css', 'web/blog/site-route.js', 'web/blog/benchmark-snapshot.json', 'web/blog/decision-field.svg'))
+REQUIRED = REQUIRED | frozenset(('web/playground/model-display.js', 'web/playground/presentation-i18n.js',
+    'web/playground/renderers.js', 'web/playground/home-demo.css', 'blink_arena/public_surface.py'))
 
 def excluded(relative):
     path = Path(relative)
+    from blink_arena.public_surface import REMOVED_FILES
+    if path.name in REMOVED_FILES:
+        return True
     name = path.name.lower()
     return (any(part in BLOCKED_PARTS or part.endswith('.egg-info') for part in path.parts)
             or relative in ('docs/ENGINE_INTEGRATION_HANDOFF.md', 'docs/HANDOFF_ACK.md')

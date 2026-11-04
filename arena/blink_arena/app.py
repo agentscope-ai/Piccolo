@@ -14,13 +14,13 @@ from urllib.parse import urlsplit
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse, Response, RedirectResponse
-from fastapi.staticfiles import StaticFiles
+from .public_surface import PublicStaticFiles
 from starlette.middleware.gzip import GZipMiddleware
 from pydantic import ValidationError
 
 from .paths import CONFIG, DATA, SEED, WEB
 from .schemas import (AppConfig, ConnectionCreate, RelayResult, DecisionCall,
-                      EvaluationCreate, SessionCreate, SessionStep, LeaderboardDocument)
+                      SessionCreate, SessionStep, LeaderboardDocument)
 from .providers import Providers
 from .connections import Connections
 from .sessions import Sessions
@@ -30,14 +30,12 @@ import jev_demo_games as board
 import jev_demo_showcases as showcases
 import jev_demo_mbti as mbti
 from jev_demo_decision_stability import repeated_predict
-from jev_demo_game_evaluation import KINDS
 from jev_environment_seeds import condition_info
 from jev_engine_registry import get_engine, list_engines
 from jev_control_scope import active_games
 
 owner_context = contextvars.ContextVar('jev_owner', default='')
 model_context = contextvars.ContextVar('jev_model', default='')
-SAFE_ID = re.compile(r'^[a-zA-Z0-9][a-zA-Z0-9_.-]{0,100}$')
 
 
 def _http_origin(value):
@@ -137,6 +135,9 @@ def create_app(*, data=DATA, seed=SEED, web=WEB, config=None, prefix='', fronten
 
     @app.middleware('http')
     async def context(request, call_next):
+        from .public_surface import unavailable_path
+        if unavailable_path(request.url.path.removeprefix(prefix)):
+            return Response(status_code=404)
         owner = request.cookies.get('jev_session', '')
         fresh = not re.fullmatch(r'[a-f0-9]{64}', owner)
         if fresh: owner = secrets.token_hex(32)
@@ -188,24 +189,6 @@ def create_app(*, data=DATA, seed=SEED, web=WEB, config=None, prefix='', fronten
         if not hmac.compare_digest(presented.encode('utf-8'), expected.encode('utf-8')):
             raise HTTPException(403, 'Administrator token required')
 
-    def checked_id(ident):
-        if not SAFE_ID.fullmatch(ident) or '..' in ident: raise HTTPException(404, 'Not found')
-        return ident
-
-    def own_runner(ident):
-        runner = evaluations.load(checked_id(ident))
-        for model in runner.registered: connections.require(model, owner_context.get())
-        return runner
-
-    def public_evaluation(value):
-        # Exact serving identities remain in private resumable receipts. Public
-        # standings need participant IDs/display names, not service paths.
-        private = {'served_model','model_path','tokenizer_path','endpoint','url','api_key','credential',
-                   'runner_pid','run_root','frontend','weight_receipt'}
-        if isinstance(value,dict):return {k:public_evaluation(v) for k,v in value.items() if k not in private}
-        if isinstance(value,list):return [public_evaluation(v) for v in value]
-        return value
-
     @app.get(prefix+'/api/v1/models')
     @app.get(prefix+'/api/v1/connections')
     async def models(): return {'models': connections.visible(owner_context.get())}
@@ -256,47 +239,16 @@ def create_app(*, data=DATA, seed=SEED, web=WEB, config=None, prefix='', fronten
     async def delete_session(ident: str):
         await sessions.remove(ident, owner_context.get()); return {'deleted': True}
 
-    @app.get(prefix+'/api/v1/evaluations')
-    async def evaluation_list():
-        return {'evaluations': [public_evaluation(evaluations.load(p.parent.name).status()) for p in sorted(evaluations.root.glob('*/request.json'))]}
-
-    @app.post(prefix+'/api/v1/evaluations', status_code=201)
-    async def create_evaluation(body: EvaluationCreate):
-        for ident in body.model_ids: connections.require(ident, owner_context.get())
-        return public_evaluation(await evaluations.create(body))
-
-    @app.get(prefix+'/api/v1/evaluations/{ident}')
-    async def evaluation_status(ident: str): return public_evaluation(evaluations.load(checked_id(ident)).status())
-
-    @app.post(prefix+'/api/v1/evaluations/{ident}/pause')
-    async def pause_evaluation(ident: str): return public_evaluation(await own_runner(ident).pause())
-
-    @app.post(prefix+'/api/v1/evaluations/{ident}/resume')
-    async def resume_evaluation(ident: str): return public_evaluation(await own_runner(ident).resume())
-
-    @app.post(prefix+'/api/v1/evaluations/{ident}/models/{model}')
-    async def join_evaluation(ident: str, model: str):
-        connections.require(model, owner_context.get())
-        runner = own_runner(ident)
-        return public_evaluation(await evaluations.join(runner, model))
-
-    @app.get(prefix+'/api/v1/evaluations/{ident}/export')
-    async def export_evaluation(ident: str):
-        runner = evaluations.load(checked_id(ident))
-        from jev_demo_arena_replay import Exporter
-        exporter = Exporter(evaluations.root, Path(data)/'replay.js')
-        archive = await asyncio.to_thread(exporter.export, run_id=ident, data_only=True)
-        return {'schema_version': 'jev.evaluation-export.v1', 'evaluation': public_evaluation(runner.status()), 'replays': archive}
-
     @app.get(prefix+'/api/v1/leaderboards/{ident}')
     async def get_leaderboard(ident: str):
-        if ident not in ('jevbench','decisionindex','harnessjevbench','datajevbench','arena'): raise HTTPException(404, 'Unknown benchmark')
+        if ident not in ('jevbench','decisionindex','harnessjevbench','datajevbench'): raise HTTPException(404, 'Unknown benchmark')
         doc = leaderboards.get(ident)
         if not doc: raise HTTPException(404, 'No imported results')
         return doc
 
     @app.put(prefix+'/api/v1/leaderboards/{ident}')
     async def put_leaderboard(ident: str, body: LeaderboardDocument, request: Request):
+        if ident not in ('jevbench','decisionindex','harnessjevbench','datajevbench'): raise HTTPException(404, 'Unknown benchmark')
         check_admin(request)
         if body.benchmark_id != ident: raise HTTPException(422, 'Benchmark ID differs from URL')
         leaderboards.put(body)
@@ -329,42 +281,6 @@ def create_app(*, data=DATA, seed=SEED, web=WEB, config=None, prefix='', fronten
                     for row in doc.rows:
                         if row.model_id == ident[len(benchmark)+1:]: return {'benchmark':benchmark,'version':doc.version,'result':row}
         raise HTTPException(404, 'Result not found')
-
-    @app.get(prefix+'/api/elo')
-    async def elo(): return public_evaluation(evaluations.status())
-
-    @app.post(prefix+'/api/elo/join')
-    async def elo_join():
-        ident = selected_model()
-        connections.require(ident, owner_context.get())
-        runner = evaluations.latest()
-        if runner:
-            own_runner(runner.folder.name)
-            return public_evaluation(await evaluations.join(runner, ident))
-        ids = [m['id'] for m in connections.visible(owner_context.get()) if m['ready']]
-        if len(ids)<2: raise HTTPException(409, 'Connect at least two models before starting Arena')
-        return public_evaluation(await evaluations.create(EvaluationCreate(model_ids=ids, concurrency=config.concurrency)))
-
-    @app.post(prefix+'/api/elo/pause')
-    async def elo_pause():
-        runner = evaluations.latest()
-        if not runner: raise HTTPException(409, 'No active evaluation')
-        return public_evaluation(await own_runner(runner.folder.name).pause())
-
-    @app.post(prefix+'/api/elo/resume')
-    async def elo_resume():
-        runner = evaluations.latest()
-        if not runner: raise HTTPException(409, 'No resumable evaluation')
-        return public_evaluation(await own_runner(runner.folder.name).resume())
-
-    @app.get(prefix+'/playground/visible-control.js')
-    async def replay_archive():
-        from jev_demo_arena_replay import Exporter
-        archive = None
-        if (evaluations.root/'latest.json').is_file():
-            archive = await asyncio.to_thread(Exporter(evaluations.root, Path(data)/'replay.js').export, data_only=True)
-        if not archive and (evaluations.leaderboard_dir/'arena-replays.json').exists(): archive = json.loads((evaluations.leaderboard_dir/'arena-replays.json').read_text())
-        return Response('window.JevArenaReplayArchive='+json.dumps(archive or {},ensure_ascii=False)+';', media_type='application/javascript')
 
     def board_payload(ident):
         item = board_sessions.get(ident)
@@ -423,5 +339,5 @@ def create_app(*, data=DATA, seed=SEED, web=WEB, config=None, prefix='', fronten
     if prefix:
         @app.get('/')
         async def root_redirect(): return RedirectResponse(prefix+'/')
-    app.mount(prefix or '/', StaticFiles(directory=web, html=True), name='frontend')
+    app.mount(prefix or '/', PublicStaticFiles(directory=web, html=True), name='frontend')
     return app

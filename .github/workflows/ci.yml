@@ -60,6 +60,7 @@ jobs:
         run: |
           python scripts/check_links.py
           python arena/scripts/build_release.py --check-only
+          python arena/scripts/export_home_decision.py --check
           python scripts/package_source.py
       - name: Browser smoke checks
         run: |
@@ -71,6 +72,8 @@ jobs:
             sleep 1
           done
           python arena/tests/browser_benchmark_snapshot.py --url http://127.0.0.1:18086/ --output var/ci/leaderboards
+          python arena/tests/browser_leaderboards.py --url http://127.0.0.1:18086/ --output var/ci/radars
+          python arena/tests/browser_home_replays.py --url http://127.0.0.1:18086/ --out var/ci/home-replays
           python scripts/check_website.py --url http://127.0.0.1:18086/ --output var/ci/website
       - name: Upload source package
         uses: actions/upload-artifact@v4

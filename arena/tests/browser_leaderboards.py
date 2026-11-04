@@ -12,12 +12,13 @@ from urllib.parse import urljoin
 
 from playwright.sync_api import sync_playwright
 
-BENCHMARKS = {'gamejevbench': 21, 'jevbench': 18, 'decisionindex': 5, 'harnessjevbench': 31, 'datajevbench': 6}
+BENCHMARKS = {'jevbench': 18, 'decisionindex': 5, 'harnessjevbench': 31, 'datajevbench': 6}
 HAN = re.compile(r'[\u3400-\u9fff]')
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--browser-executable')
     parser.add_argument('--url', default='http://127.0.0.1:8092/')
     parser.add_argument('--output', type=Path, default=Path(__file__).resolve().parents[1] / 'var' / 'browser')
     args = parser.parse_args()
@@ -25,7 +26,7 @@ def main():
     report = []
     failures = []
     with sync_playwright() as playwright:
-        browser = playwright.chromium.launch(headless=True, args=['--no-sandbox'])
+        browser = playwright.chromium.launch(headless=True, args=['--no-sandbox'], **({'executable_path': args.browser_executable} if args.browser_executable else {}))
         for size, width, height in [('desktop', 1440, 1000), ('mobile', 390, 844)]:
             page = browser.new_page(viewport={'width': width, 'height': height}, device_scale_factor=1)
             errors = []
@@ -40,7 +41,6 @@ def main():
             timestamps = {row['id']:row.get('updated_at', '') for row in projection['benchmarks']}
             expected_rows = {}
             for benchmark in BENCHMARKS:
-                if benchmark == 'gamejevbench': continue
                 response = page.request.get(urljoin(args.url.rstrip('/')+'/', 'api/v1/leaderboards/'+benchmark))
                 assert response.ok, benchmark
                 expected_rows[benchmark] = {row['model_id']: row for row in response.json()['rows']}
@@ -51,8 +51,7 @@ def main():
             for language in ['en', 'zh']:
                 page.locator(f'[data-language="{language}"]').click()
                 for benchmark, dimension_count in BENCHMARKS.items():
-                    if benchmark != 'gamejevbench':
-                        dimension_count = len({axis['id'] for row in expected_rows[benchmark].values() for axis in row.get('axes', [])})
+                    dimension_count = len({axis['id'] for row in expected_rows[benchmark].values() for axis in row.get('axes', [])})
                     if benchmark == 'harnessjevbench': dimension_count = 6
                     page.locator(f'#leaderboardTabs [data-benchmark="{benchmark}"]').click()
                     page.wait_for_function('expected => document.querySelectorAll(".lb-radar-axis").length === expected', arg=dimension_count if dimension_count >= 3 else 0)
@@ -79,31 +78,30 @@ def main():
                     headers=page.locator('#leaderboardView .lb-table:visible thead th').all_text_contents()
                     assert not any(h.strip() in {'Errors','Record','Failures','错误','记录','失败数','失败'} for h in headers),headers
                     assert 'QwenJev' not in page.locator('#leaderboardView').inner_text()
-                    if benchmark != 'gamejevbench':
-                        rows = page.locator('.lb-metrics-table tbody tr[data-result-model]')
-                        expected = expected_rows[benchmark]
-                        rendered_ids = rows.evaluate_all('(nodes) => nodes.map(n => n.dataset.resultModel)')
-                        if len(rendered_ids) != len(expected) or set(rendered_ids) != set(expected):
-                            failures.append(f'{size}/{language}/{benchmark}: imported model rows differ from the current data')
-                        for index, ident in enumerate(rendered_ids):
-                            if ident not in expected: continue
-                            metrics = expected[ident]['metrics']
-                            columns = ['accuracy', 'soft_tv'] if benchmark == 'harnessjevbench' else ['native'] if benchmark == 'decisionindex' else ['accuracy', 'brier', 'ece']
-                            for metric in columns:
-                                value = metrics.get(metric, metrics.get('acc') if metric == 'accuracy' else None)
-                                if metric == 'native' or (benchmark == 'harnessjevbench' and metric == 'accuracy'): value = expected[ident]['score']
-                                cell = rows.nth(index).locator(f'[data-metric="{metric}"]')
-                                if cell.count() != 1 or (cell.text_content().strip() == '—') != (value is None):
-                                    failures.append(f'{size}/{language}/{benchmark}: {ident} {metric} missing-value display differs from data')
-                                elif value is not None:
-                                    expected_text=f'{100*value:.2f}%' if metric=='accuracy' else f'{value:.2f}' if metric=='native' else f'{value:.4f}'
-                                    if cell.text_content().strip()!=expected_text:
-                                        failures.append(f'{size}/{language}/{benchmark}: {ident} {metric} value differs from data')
-                        if size == 'mobile':
-                            scroll = page.locator('.lb-table-scroll').last
-                            reachable = scroll.evaluate('node => { node.scrollLeft = node.scrollWidth; const max=node.scrollWidth-node.clientWidth; const ok=Math.abs(node.scrollLeft-max)<2; node.scrollLeft=0; return ok; }')
-                            if not reachable:
-                                failures.append(f'{size}/{language}/{benchmark}: metric columns cannot be scrolled into view')
+                    rows = page.locator('.lb-metrics-table tbody tr[data-result-model]')
+                    expected = expected_rows[benchmark]
+                    rendered_ids = rows.evaluate_all('(nodes) => nodes.map(n => n.dataset.resultModel)')
+                    if len(rendered_ids) != len(expected) or set(rendered_ids) != set(expected):
+                        failures.append(f'{size}/{language}/{benchmark}: imported model rows differ from the current data')
+                    for index, ident in enumerate(rendered_ids):
+                        if ident not in expected: continue
+                        metrics = expected[ident]['metrics']
+                        columns = ['accuracy', 'soft_tv'] if benchmark == 'harnessjevbench' else ['native'] if benchmark == 'decisionindex' else ['accuracy', 'brier', 'ece']
+                        for metric in columns:
+                            value = metrics.get(metric, metrics.get('acc') if metric == 'accuracy' else None)
+                            if metric == 'native' or (benchmark == 'harnessjevbench' and metric == 'accuracy'): value = expected[ident]['score']
+                            cell = rows.nth(index).locator(f'[data-metric="{metric}"]')
+                            if cell.count() != 1 or (cell.text_content().strip() == '—') != (value is None):
+                                failures.append(f'{size}/{language}/{benchmark}: {ident} {metric} missing-value display differs from data')
+                            elif value is not None:
+                                expected_text=f'{100*value:.2f}%' if metric=='accuracy' else f'{value:.2f}' if metric=='native' else f'{value:.4f}'
+                                if cell.text_content().strip()!=expected_text:
+                                    failures.append(f'{size}/{language}/{benchmark}: {ident} {metric} value differs from data')
+                    if size == 'mobile':
+                        scroll = page.locator('.lb-table-scroll').last
+                        reachable = scroll.evaluate('node => { node.scrollLeft = node.scrollWidth; const max=node.scrollWidth-node.clientWidth; const ok=Math.abs(node.scrollLeft-max)<2; node.scrollLeft=0; return ok; }')
+                        if not reachable:
+                            failures.append(f'{size}/{language}/{benchmark}: metric columns cannot be scrolled into view')
                     chart = page.locator('.lb-radar-svg')
                     if dimension_count >= 3:
                         if chart.count() != 1 or chart.get_attribute('viewBox') != '0 0 820 780':
@@ -120,7 +118,7 @@ def main():
                         initial_ids = page.locator('[data-radar-model]:checked').evaluate_all('(nodes)=>nodes.map(n=>n.dataset.radarModel)')
                         all_ids = page.locator('[data-radar-model]:not(:disabled)').evaluate_all('(nodes)=>nodes.map(n=>n.dataset.radarModel)')
                         assert set(initial_ids) == set(all_ids), 'Every model is selected by default'
-                        if benchmark != 'gamejevbench': assert set(initial_ids) == set(expected_rows[benchmark])
+                        assert set(initial_ids) == set(expected_rows[benchmark])
                         assert page.locator('.lb-radar-count').count() == 0
                         geometry = page.locator('.lb-radar-chart,#lbBarChart').evaluate_all('(nodes)=>nodes.map(n=>({width:n.getBoundingClientRect().width,height:n.getBoundingClientRect().height}))')
                         if not chart_sizes: chart_sizes = geometry
@@ -158,25 +156,23 @@ def main():
                         assert set(page.locator('[data-radar-model]:checked').evaluate_all('(nodes)=>nodes.map(n=>n.dataset.radarModel)')) == set(initial_ids)
                         page.locator('#lbRadarDimension').select_option('-1')
                         assert page.locator('.lb-bar-row').count() == len(initial_ids)
-                        if benchmark != 'gamejevbench':
-                            for row in page.locator('.lb-bar-row').all():
-                                expected_score = expected_rows[benchmark][row.get_attribute('data-bar-model')]['score']
-                                actual = row.get_attribute('data-bar-score')
-                                if expected_score is None:
-                                    assert actual == '' and row.locator('.lb-bar-track > span').count() == 0
-                                else:
-                                    assert abs(float(actual) - expected_score * (1 if benchmark == 'decisionindex' else 100)) < 1e-8
+                        for row in page.locator('.lb-bar-row').all():
+                            expected_score = expected_rows[benchmark][row.get_attribute('data-bar-model')]['score']
+                            actual = row.get_attribute('data-bar-score')
+                            if expected_score is None:
+                                assert actual == '' and row.locator('.lb-bar-track > span').count() == 0
+                            else:
+                                assert abs(float(actual) - expected_score * (1 if benchmark == 'decisionindex' else 100)) < 1e-8
                         assert page.locator('.lb-bar-rank').count() == 0
                         assert page.locator('.lb-bar-track').first.evaluate('(node)=>node.offsetHeight') <= 30
                         assert page.locator('.lb-selected-models').count() == 0, 'Bars replace the duplicate legend'
-                        if benchmark != 'gamejevbench':
-                            for bar in page.locator('.lb-bar-row').all():
-                                source = expected_rows[benchmark][bar.get_attribute('data-bar-model')]
-                                if source.get('logo') and source['score'] and source['score'] > 0:
-                                    icon = bar.locator('.lb-bar-fill .lb-model-logo')
-                                    assert icon.count() == 1
-                                    assert icon.evaluate('(node)=>node.complete && node.naturalWidth > 0'), 'Configured logo must actually load inside the bar'
-                                    assert bar.locator('.lb-bar-fill .lb-bar-name').inner_text().strip()
+                        for bar in page.locator('.lb-bar-row').all():
+                            source = expected_rows[benchmark][bar.get_attribute('data-bar-model')]
+                            if source.get('logo') and source['score'] and source['score'] > 0:
+                                icon = bar.locator('.lb-bar-fill .lb-model-logo')
+                                assert icon.count() == 1
+                                assert icon.evaluate('(node)=>node.complete && node.naturalWidth > 0'), 'Configured logo must actually load inside the bar'
+                                assert bar.locator('.lb-bar-fill .lb-bar-name').inner_text().strip()
                         page.keyboard.press('Escape')
                         assert not page.locator('.lb-model-picker').evaluate('(node)=>node.open')
                         if page.locator('.lb-radar-series').count():
@@ -197,20 +193,19 @@ def main():
                             page.locator('#lbRadarDimension').select_option('-1')
                             assert not page.locator('#leaderboardRadar').evaluate('(node)=>node.classList.contains("has-highlight")')
                         page.locator('.lb-model-picker').evaluate('(node)=>node.open=false')
-                    if benchmark != 'gamejevbench':
-                        tools = page.locator('#leaderboardDetail .lb-table-tools')
-                        tools.locator('input').fill('__not_a_model__')
-                        assert page.locator('.lb-metrics-table tbody tr:visible').count() == 0
-                        tools.locator('input').fill('')
-                        tools.locator('[data-table-own]').click()
-                        assert page.locator('.lb-metrics-table tbody tr:visible').count() == len([key for key in expected if key in {'oneshot27b-control-reviewed-sft-iter310', 'oneshot27b-gameplay-terminal-rl4', 'oneshot27b-game-rl-native-iter17', 'blink-27b-1028', 'blink-9b-1028', 'blink-4b-1028'}])
-                        tools.locator('[data-table-own]').click()
-                        page.locator('.lb-metrics-table thead th[data-metric-help]').first.hover()
-                        assert page.locator('#lbMetricTooltip').is_visible()
-                        assert page.locator('#lbMetricTooltip').inner_text().strip()
-                        page.keyboard.press('Escape')
-                        assert not page.locator('#lbMetricTooltip').is_visible()
-                    if benchmark != 'gamejevbench': assert page.locator('.lb-metrics-table .lb-rank:visible').count() == len(expected_rows[benchmark])
+                    tools = page.locator('#leaderboardDetail .lb-table-tools')
+                    tools.locator('input').fill('__not_a_model__')
+                    assert page.locator('.lb-metrics-table tbody tr:visible').count() == 0
+                    tools.locator('input').fill('')
+                    tools.locator('[data-table-own]').click()
+                    assert page.locator('.lb-metrics-table tbody tr:visible').count() == len([key for key in expected if key in {'oneshot27b-control-reviewed-sft-iter310', 'oneshot27b-gameplay-terminal-rl4', 'oneshot27b-game-rl-native-iter17', 'blink-27b-1028', 'blink-9b-1028', 'blink-4b-1028'}])
+                    tools.locator('[data-table-own]').click()
+                    page.locator('.lb-metrics-table thead th[data-metric-help]').first.hover()
+                    assert page.locator('#lbMetricTooltip').is_visible()
+                    assert page.locator('#lbMetricTooltip').inner_text().strip()
+                    page.keyboard.press('Escape')
+                    assert not page.locator('#lbMetricTooltip').is_visible()
+                    assert page.locator('.lb-metrics-table .lb-rank:visible').count() == len(expected_rows[benchmark])
                     if benchmark == 'jevbench':
                         model = page.locator('[data-result-model="access-openai--gpt-6-luna-decisions"] .lb-model-name')
                         if model.count(): assert model.inner_text().strip() == expected_rows[benchmark]['access-openai--gpt-6-luna-decisions']['model_name']
@@ -219,7 +214,8 @@ def main():
                                    'axes': len(labels), 'labels': labels, 'page_width': dimensions})
             failures.extend(f'{size}: {error}' for error in errors)
             page.emulate_media(reduced_motion='reduce')
-            assert page.locator('#lbPixelAtmosphere i').first.evaluate('(node)=>getComputedStyle(node).animationName') == 'none'
+            assert page.evaluate('matchMedia("(prefers-reduced-motion: reduce)").matches')
+            assert page.locator('.lb-radar-svg').evaluate('(node)=>getComputedStyle(node).animationName') == 'none'
             page.locator('[data-tab="blog"]').click()
             assert page.locator('#blogView').is_visible()
             assert not page.locator('#leaderboardView').is_visible()
@@ -233,7 +229,7 @@ def main():
         print(failure)
     if failures:
         raise SystemExit(1)
-    print(f'{len(report)} leaderboard views passed: 5 benchmark panels, radar dimensions/empty states, 4 result tables, EN/ZH, desktop/mobile; no console errors or page overflow.')
+    print(f'{len(report)} leaderboard views passed: 4 benchmark panels, radar dimensions/empty states, 4 result tables, EN/ZH, desktop/mobile; no console errors or page overflow.')
 
 
 if __name__ == '__main__':

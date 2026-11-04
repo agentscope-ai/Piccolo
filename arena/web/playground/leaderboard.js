@@ -28,11 +28,11 @@
   'use strict';
   if(typeof document==='undefined')return;
   const byId=id=>document.getElementById(id);
-  const localize=window.JevArenaI18n.createPresentationTranslator({...window.JevArenaI18n.entries,...{"General decision making":"通用决策","Data decisions":"数据决策","Decision benchmarks":"决策基准","Tools and execution":"工具与执行","Game evaluation":"游戏评测","Accuracy":"准确率","Quick subset index":"快速子集指数","Decision Index":"Decision Index","Game-weighted win rate":"游戏等权胜率","Mean Hard task score":"Hard 任务平均分","Native author-labelled scoring over the full public set. Failures stay in the planned denominator.":"按作者原生标注对完整公开集计分，失败保留在计划分母中。","Decision Index 0.3 full public suite, with official chance correction and domain weighting. Private tests are not included.":"Decision Index 0.3 公开评测集，含随机基线校正和领域加权；不包含私有测试。","Two views. Hard scores average axes within calls, calls within tasks, then tasks equally. Soft distribution metrics remain separate; failures stay in the denominator.":"采用两个视图。Hard 分数先在调用内平均各维度，再在任务内平均调用，最后按任务等权。Soft 分布指标单列，失败保留在分母中。","Evaluation protocol":"评测协议","Dataset and scoring":"数据集与计分","Version and scoring record":"版本与计分记录","See the registered evaluation protocol.":"详见已登记的评测协议。","See source":"详见来源","Dataset":"数据集","Version":"版本","unregistered":"未登记","Metric":"指标","Identity":"身份","Source":"来源","Run":"运行","Coverage":"覆盖","Protocol":"协议","Archived protocol":"归档协议","Strict scoring record":"严格计分记录","Before repair":"修复前","Details":"详情","Results":"成绩","Score":"得分","Samples":"样本","Errors":"错误","No results for the current version.":"当前版本暂无成绩。","Win rate":"胜率","95% CI":"95% 置信区间","Timeouts":"超时","Per-game results":"分游戏成绩","Archived failed attempts stay in the denominator. Incomplete games have no final win rate.":"归档失败尝试保留在分母中，未完成游戏不显示最终胜率。","Evaluation progress":"评测进度","Top-k probability estimate":"Top-k 概率估计","Full observed distributions":"完整观测分布","Estimated distributions":"估计分布","Missing candidate probabilities are estimated as zero before normalization, not observed zeros. Soft and calibration scores depend on this estimate. Strict score":"缺失候选概率在归一化前估为零，并非实际观测为零。Soft 与校准分数依赖这一估计。严格得分","DashScope top-k estimates":"DashScope top-k 估计","DashScope top-k probabilities":"DashScope top-k 概率","Local complete candidate probabilities":"本地完整候选概率","Accuracy by capability":"各能力准确率","Chance-corrected domain skill":"随机基线校正领域能力","Hard task score by scenario":"各场景 Hard 任务得分","Native per-family accuracy with full planned denominators. Sample counts differ across axes.":"使用完整计划分母的原生能力分类准确率，各维度样本数不同。","Native public-suite area skill × 100, with official chance correction. Separate from raw accuracy; private tests are not included.":"原生公开评测集领域能力分 × 100，含随机基线校正；与原始准确率分开，不包含私有测试。","Native Hard task scores, two views, tasks weighted equally. Soft-only scenarios have no Hard score and remain unavailable.":"原生 Hard 任务得分，两个视图，任务等权。仅有 Soft 指标的场景没有 Hard 得分，保留为缺失。","Soft-only; no Hard score":"仅 Soft；无 Hard 得分","Rule engine · board games only":"规则引擎 · 仅棋盘游戏","Current Arena · settled matches":"当前天梯 · 已结算对局","No settled valid matches":"暂无已结算有效对局","Match points by game":"各游戏对局得分率","Win = 1, draw = 0.5, loss = 0, divided by settled valid matches. Single-player outcomes compare final scores using the same game and seed. This 0–100% rate is separate from Elo. Failed or unsettled matches do not produce invented outcomes.":"胜记 1 分，平记 0.5 分，负记 0 分，再除以已结算有效对局数。单人游戏按同游戏、同种子的最终成绩比较。这一 0–100% 得分率与 Elo 分开计算。失败或未结算对局不填补结果。","Refresh failed; showing last settled records":"刷新失败；显示上次已结算记录","Arena records unavailable":"天梯记录暂不可用","Live Arena results":"当前天梯成绩","Loading Arena results":"读取天梯成绩中","No capability or scenario scores for the current registered results.":"当前登记成绩暂无能力或场景分数。","Awaiting dimension scores":"等待维度成绩","DashScope · includes top-k estimates":"DashScope · 含 top-k 估计","DashScope · top-k probabilities":"DashScope · top-k 概率","Local · full candidate probabilities":"本地 · 完整候选概率","Registered result snapshot":"已登记成绩快照","Native evaluation scores":"原生评测成绩","Local full candidate probabilities and DashScope top-k protocols are shown together. Hover over a model for its protocol; scoring details are preserved in the result records.":"同时展示本地完整候选概率与 DashScope top-k 协议的结果。悬停模型可查看协议，成绩记录中保留详细计分口径。","Each axis spans 0 to 100; outward is higher. Missing dimensions remain disconnected, never zero-filled. Full values are available in dimension details.":"各轴范围为 0–100，向外数值越高。缺失维度保留断线，不填零。完整数值见维度详情。","Chart view":"图表视图","Fit":"总览","Expand":"放大","CAPABILITY RADAR":"能力雷达图","Capability radar":"能力雷达图","Capabilities":"能力","Games":"游戏","No dimension scores yet":"暂无维度得分","Inspect dimension":"查看维度","Dimension / scenario":"能力 / 场景","Missing values are shown as gaps and —.":"缺失值以断线和 — 表示。","No score for this dimension":"该维度暂无得分","Select a model to view its scores":"选择模型查看得分","Loading results…":"读取成绩中…","No registered results yet.":"暂无已登记成绩。","Could not load results":"成绩加载失败","unavailable":"暂无数据","requests":"请求","valid questions":"有效题目","questions":"题目","tasks":"任务","views":"视图","episodes":"局","records":"记录","sources":"来源","scenarios":"场景","completed":"已完成","remaining":"剩余","sub-benchmarks":"子基准","pts":"分","results":"成绩"}},'.lb-radar-axis,#lbRadarDimension option,.lb-radar-inspect>strong,.lb-radar-values tbody th');
+  const localize=window.JevArenaI18n.createPresentationTranslator({...window.JevArenaI18n.entries,...{"General decision making":"通用决策","Data decisions":"数据决策","Decision benchmarks":"决策基准","Tools and execution":"工具与执行","Game evaluation":"游戏评测","Accuracy":"准确率","Quick subset index":"快速子集指数","Decision Index":"Decision Index","Mean Hard task score":"Hard 任务平均分","Native author-labelled scoring over the full public set. Failures stay in the planned denominator.":"按作者原生标注对完整公开集计分，失败保留在计划分母中。","Decision Index 0.3 full public suite, with official chance correction and domain weighting. Private tests are not included.":"Decision Index 0.3 公开评测集，含随机基线校正和领域加权；不包含私有测试。","Two views. Hard scores average axes within calls, calls within tasks, then tasks equally. Soft distribution metrics remain separate; failures stay in the denominator.":"采用两个视图。Hard 分数先在调用内平均各维度，再在任务内平均调用，最后按任务等权。Soft 分布指标单列，失败保留在分母中。","Evaluation protocol":"评测协议","Dataset and scoring":"数据集与计分","Version and scoring record":"版本与计分记录","See the registered evaluation protocol.":"详见已登记的评测协议。","See source":"详见来源","Dataset":"数据集","Version":"版本","unregistered":"未登记","Metric":"指标","Identity":"身份","Source":"来源","Run":"运行","Coverage":"覆盖","Protocol":"协议","Archived protocol":"归档协议","Strict scoring record":"严格计分记录","Before repair":"修复前","Details":"详情","Results":"成绩","Score":"得分","Samples":"样本","Errors":"错误","No results for the current version.":"当前版本暂无成绩。","Win rate":"胜率","95% CI":"95% 置信区间","Timeouts":"超时","Archived failed attempts stay in the denominator. Incomplete games have no final win rate.":"归档失败尝试保留在分母中，未完成游戏不显示最终胜率。","Evaluation progress":"评测进度","Top-k probability estimate":"Top-k 概率估计","Full observed distributions":"完整观测分布","Estimated distributions":"估计分布","Missing candidate probabilities are estimated as zero before normalization, not observed zeros. Soft and calibration scores depend on this estimate. Strict score":"缺失候选概率在归一化前估为零，并非实际观测为零。Soft 与校准分数依赖这一估计。严格得分","DashScope top-k estimates":"DashScope top-k 估计","DashScope top-k probabilities":"DashScope top-k 概率","Local complete candidate probabilities":"本地完整候选概率","Accuracy by capability":"各能力准确率","Chance-corrected domain skill":"随机基线校正领域能力","Hard task score by scenario":"各场景 Hard 任务得分","Native per-family accuracy with full planned denominators. Sample counts differ across axes.":"使用完整计划分母的原生能力分类准确率，各维度样本数不同。","Native public-suite area skill × 100, with official chance correction. Separate from raw accuracy; private tests are not included.":"原生公开评测集领域能力分 × 100，含随机基线校正；与原始准确率分开，不包含私有测试。","Native Hard task scores, two views, tasks weighted equally. Soft-only scenarios have no Hard score and remain unavailable.":"原生 Hard 任务得分，两个视图，任务等权。仅有 Soft 指标的场景没有 Hard 得分，保留为缺失。","Soft-only; no Hard score":"仅 Soft；无 Hard 得分","Rule engine · board games only":"规则引擎 · 仅棋盘游戏","No settled valid matches":"暂无已结算有效对局","Match points by game":"各游戏对局得分率","Refresh failed; showing last settled records":"刷新失败；显示上次已结算记录","No capability or scenario scores for the current registered results.":"当前登记成绩暂无能力或场景分数。","Awaiting dimension scores":"等待维度成绩","DashScope · includes top-k estimates":"DashScope · 含 top-k 估计","DashScope · top-k probabilities":"DashScope · top-k 概率","Local · full candidate probabilities":"本地 · 完整候选概率","Registered result snapshot":"已登记成绩快照","Native evaluation scores":"原生评测成绩","Local full candidate probabilities and DashScope top-k protocols are shown together. Hover over a model for its protocol; scoring details are preserved in the result records.":"同时展示本地完整候选概率与 DashScope top-k 协议的结果。悬停模型可查看协议，成绩记录中保留详细计分口径。","Each axis spans 0 to 100; outward is higher. Missing dimensions remain disconnected, never zero-filled. Full values are available in dimension details.":"各轴范围为 0–100，向外数值越高。缺失维度保留断线，不填零。完整数值见维度详情。","Chart view":"图表视图","Fit":"总览","Expand":"放大","CAPABILITY RADAR":"能力雷达图","Capability radar":"能力雷达图","Capabilities":"能力","Games":"游戏","No dimension scores yet":"暂无维度得分","Inspect dimension":"查看维度","Dimension / scenario":"能力 / 场景","Missing values are shown as gaps and —.":"缺失值以断线和 — 表示。","No score for this dimension":"该维度暂无得分","Select a model to view its scores":"选择模型查看得分","Loading results…":"读取成绩中…","No registered results yet.":"暂无已登记成绩。","Could not load results":"成绩加载失败","unavailable":"暂无数据","requests":"请求","valid questions":"有效题目","questions":"题目","tasks":"任务","views":"视图","episodes":"局","records":"记录","sources":"来源","scenarios":"场景","completed":"已完成","remaining":"剩余","sub-benchmarks":"子基准","pts":"分","results":"成绩"}},'.lb-radar-axis,#lbRadarDimension option,.lb-radar-inspect>strong,.lb-radar-values tbody th');
   const localizeLeaderboard=()=>['leaderboardTabs','leaderboardDetail','leaderboardStatus','leaderboardRefresh'].forEach(id=>localize(byId(id)));
   let loadError='';
 
-  const definitions=[['gamejevbench','GameJevArena','Game evaluation'],['jevbench','JevBench Public','General decision making'],['decisionindex','Decision Index Public','Decision benchmarks'],['harnessjevbench','HarnessJevBench','Tools and execution'],['datajevbench','DataJevBench','Data decisions']];
+  const definitions=[['jevbench','JevBench Public','General decision making'],['decisionindex','Decision Index Public','Decision benchmarks'],['harnessjevbench','HarnessJevBench','Tools and execution'],['datajevbench','DataJevBench','Data decisions']];
   // Official project destinations; the version displayed below always comes from our registered JSON.
   const officialBenchmarks={jevbench:'https://github.com/fstandhartinger/jevbench',decisionindex:'https://huggingface.co/spaces/multimodalart/jev-decision-index',harnessjevbench:'https://github.com/agentscope-ai/HarnessJevBench',datajevbench:'https://github.com/datajuicer/DataJevBench'};
   const internalBenchmarks=new Set();
@@ -45,7 +45,7 @@
   const percent=value=>Number.isFinite(value)?(100*value).toFixed(1)+'%':'—';
   const number=value=>Number.isFinite(value)?value.toLocaleString('en-US'):'—';
   const modelLabel=row=>{
-    const label=window.JevModelLabels?.model(row.model_key||row.id,row.model||row.name,row.model_identity)||window.JevArenaLabels?.model(row.model_key||row.id,row.model||row.name)||row.model_key||row.id||'Model';
+    const label=window.JevModelLabels?.model(row.model_key||row.id,row.model||row.name,row.model_identity)||window.JevArenaDisplay?.model(row.model_key||row.id,row.model||row.name)||row.model_key||row.id||'Model';
     const estimated=row.approximation||/candidate-topk-estimate/.test(row.runtime_protocol||'')||row.display_metrics?.calibration_estimated>0;
     return estimated&&!/top[- ]?k/i.test(label)?label+' · '+(window.JevI18n?.t('Top-k estimate','Top-k 估计')||'Top-k estimate'):label;
   };
@@ -55,7 +55,6 @@
   const ownModelIds=['oneshot-hosted','oneshot-rl-r6-iter0000019','oneshot-w22m05r02-v5best-avg50','ours-w22m05r02-v5best-avg50','oneshot27b-control-reviewed-sft-iter310','oneshot27b-gameplay-terminal-rl4','oneshot27b-game-rl-native-iter17'];
   const isOwnModel=id=>ownModelIds.includes(id)||piccoloIds.includes(id);
   const tableFilters=new Map(), tableSorts=new Map(), radarSearch=new Map();
-  const gameLabel=id=>window.JevArenaLabels?.game(id)||id;
   const metricLabels={accuracy:'Accuracy',quick_subset_public_index_estimate:'Quick subset index',decision_index:'Decision Index',game_macro_win_rate:'Game-weighted win rate',mean_task_score:'Mean Hard task score'};
   const datasetNotes={jevbench:'Native author-labelled scoring over the full public set. Failures stay in the planned denominator.',decisionindex:'Decision Index 0.3 full public suite, with official chance correction and domain weighting. Private tests are not included.',harnessjevbench:'Two views. Hard scores average axes within calls, calls within tasks, then tasks equally. Soft distribution metrics remain separate; failures stay in the denominator.'};
   function sourceLink(url,label) {
@@ -65,7 +64,7 @@
   function tabs() {
     const host=byId('leaderboardTabs');
     if(!host.querySelector('[data-benchmark]'))host.innerHTML=definitions.map(([id,title,description])=>{
-      const titleMarkup=({harnessjevbench:'Harness<wbr>JevBench',gamejevbench:'Game<wbr>JevArena',datajevbench:'Data<wbr>JevBench',decisionindex:'Decision Index <wbr>Public'})[id]||html(title);
+      const titleMarkup=({harnessjevbench:'Harness<wbr>JevBench',datajevbench:'Data<wbr>JevBench',decisionindex:'Decision Index <wbr>Public'})[id]||html(title);
       return '<button type="button" class="lb-tab'+(selected===id?' active':'')+'" role="tab" id="lb-tab-'+id+'" aria-controls="leaderboardDetail" aria-selected="'+(selected===id)+'" data-benchmark="'+id+'"><strong data-i18n-raw>'+titleMarkup+'</strong></button>';
     }).join('');
     host.querySelectorAll('button').forEach(button=>{
@@ -93,11 +92,6 @@
     if(Number.isFinite(dataset.scenarios))scope.push(number(dataset.scenarios)+' scenarios');
     const paths=Array.isArray(dataset.source_files)&&dataset.source_files.length?dataset.source_files:[dataset.source_root].filter(Boolean);
     return '<section class="lb-dataset" aria-label="Dataset"><div class="lb-dataset-heading"><strong>Version '+html(dataset.version||benchmark.version||'unregistered')+'</strong><span class="lb-dataset-scope">'+html(scope.join(' · '))+'</span></div><details class="lb-dataset-sources"><summary>Dataset and scoring</summary><p><b>Metric: </b>'+html(metricLabels[dataset.primary_metric]||dataset.primary_metric||'See source')+'</p><p>'+html(benchmark.id==='decisionindex'?metricText('Native scoring with chance correction and domain weighting. Scope follows the registered dataset version; missing results remain unavailable.','采用随机基线校正和领域加权的原生计分；范围以登记的数据集版本为准，缺失成绩保留为空。'):datasetNotes[benchmark.id]||'See the registered evaluation protocol.')+'</p><ul>'+paths.map(path=>'<li><code>'+html(path)+'</code></li>').join('')+'</ul><p>'+sourceLink(dataset.source_url,'Version and scoring record')+'</p></details></section>';
-  }
-  function gameBreakdown(row) {
-    if(!Array.isArray(row.by_game)||!row.by_game.length)return '';
-    const cards=row.by_game.map(game=>{const complete=game.completed===game.planned&&!game.invalid;return '<li><strong>'+html(gameLabel(game.kind))+'</strong><span>'+number(game.completed)+' / '+number(game.planned)+' completed · '+number(game.wins)+' / '+number(game.attempts)+' wins</span><span>Win rate '+(complete?percent(game.score):'Incomplete')+' · 95% CI '+(complete&&Array.isArray(game.interval95)?game.interval95.map(percent).join('–'):'—')+'</span><span>Errors '+number(game.errors)+' · Timeouts '+number(game.timeouts)+' · Budget exhausted '+number(game.budget_exhausted)+'</span></li>';}).join('');
-    return '<tr class="lb-game-details"><td colspan="7"><details><summary>Per-game results · '+row.by_game.length+' games</summary><ul class="lb-game-cards">'+cards+'</ul><p class="muted">Archived failed attempts stay in the denominator. Incomplete games have no final win rate.</p></details></td></tr>';
   }
   function progressMarkup(progress) {
     if(!progress||!Number.isFinite(progress.total)||progress.total<=0||progress.remaining===0)return '';
@@ -145,12 +139,6 @@
       scope:['Six subsets cover filtering, operator selection, quality assessment, information sufficiency, evidence and privacy, and workflow control.','六个子集覆盖数据准入与过滤、处理方案选择、产物质量、信息充分性、证据与隐私、数据任务控制。'],
       scoring:['The main score is accuracy; the radar shows accuracy for each subset. Brier and ECE report probability quality and calibration when available.','主分为准确率，雷达图展示各子集准确率；有可用概率时同时展示 Brier 与 ECE。'],
       note:['Missing probability metrics remain unavailable. Answer labels alone are not treated as confidence probabilities.','缺失的概率指标保留为空，不把答案标签直接当作置信概率。']
-    },
-    gamejevbench:{
-      summary:['Compares models through settled outcomes in board, card, and interactive games.','通过棋盘、卡牌与交互游戏的真实结算结果，比较模型的行动决策表现。'],
-      scope:['Models play head-to-head or complete paired runs using the same game and seed. Match records retain the actual outcomes.','模型进行直接对战，或在相同游戏与种子下分别完成挑战；对局记录保留真实结算结果。'],
-      scoring:['Overall Elo weights games equally. Radar axes show match points: win = 1, draw = 0.5, loss = 0, divided by settled valid matches.','总榜 Elo 按游戏等权汇总。雷达图展示对局得分率：胜 1、平 0.5、负 0，再除以已结算有效场次。'],
-      note:['Elo and match-point rates use different scales. Read results with their registered opponents, seeds, and coverage; unsettled matches have no invented outcomes.','Elo 与对局得分率采用不同尺度，需结合登记对手、种子与覆盖范围解读；未结算对局不补造结果。']
     }
   };
   function benchmarkIntroduction(benchmark) {
@@ -281,35 +269,6 @@
       ...resultColumns(benchmark).map((column,index)=>({...column,index:index+2}))
     ],resultColumns(benchmark)[0].key);
   }
-  function decorateArenaMetrics() {
-    const table=byId('eloRows')?.closest('table');if(!table)return;
-    table.querySelectorAll('tbody>tr').forEach(row=>{const name=row.cells[1]?.textContent||'';const own=/Piccolo|Qwen.*(?:SFT-1015|RL-1012|RL-1019)/.test(name);row.classList.toggle('lb-own-row',own);row.dataset.ownModel=String(own);row.dataset.modelSearch=name.toLowerCase();});
-    let toolbar=byId('gameEloPanel').querySelector('.lb-table-tools');if(!toolbar){table.closest('.lb-table-scroll').insertAdjacentHTML('beforebegin',tableFilterMarkup('gamejevbench'));toolbar=byId('gameEloPanel').querySelector('.lb-table-tools');}
-    toolbar.querySelector('.lb-table-search>span').textContent=metricText('Find a model','查找模型');toolbar.querySelector('input').placeholder=metricText('Search model names…','搜索模型名称…');toolbar.querySelector('[data-table-own]').textContent=metricText('Piccolo only','只看 Piccolo');
-    bindTableFilter('gamejevbench',table,toolbar);
-    const definitions={
-      2:metricText('Elo · Higher is better. Relative rating from settled matches; it is not a win percentage. Overall rankings require full game coverage. The rule engine participates only in supported board games.','Elo · 越高越好。根据已结算对局计算的相对评级，不是胜率。综合排名要求完整游戏覆盖；规则引擎只参与支持的棋盘游戏。'),
-      3:metricText('Coverage: evaluated games / applicable games (or settled matches for a selected game). W / D / L counts valid wins, draws and losses. Failures remain in the underlying result records.','覆盖：已评测游戏数 / 适用游戏数；选择单个游戏时显示有效对局数。胜 / 平 / 负统计有效结算结果，失败保留在原始成绩记录中。'),
-      4:metricText('Agreement · Higher is more consistent. Each decision is repeated three times with shuffled choices. Take the most frequent action’s vote share (1/3, 2/3 or 3/3), then average across decisions. This is not accuracy.','三次一致率 · 越高越一致。每次决策打乱选项后重复三次，取最高票动作的票数占比（1/3、2/3 或 3/3），再对决策平均。它不表示答案正确率。'),
-      5:metricText('Probability stability · Higher is more stable. 1 − mean pairwise Jensen–Shannon distance across three repeated distributions. Only decisions with complete probabilities for all three repeats are included; 100% means identical distributions.','概率稳定度 · 越高越稳定。1 − 三次概率分布的两两 JS 距离均值。仅纳入三次都有完整概率的决策；100% 表示三次分布相同。'),
-      6:metricText('Probability variance · Lower is more stable. Align actions across three repeats, calculate each action’s sample variance (ddof=1), then average. Zero means unchanged probabilities. Only complete distributions are included.','概率方差 · 越低越稳定。对齐三次重复的动作，计算各动作概率的样本方差（ddof=1）再平均。0 表示概率未变化；仅纳入完整概率分布。'),
-      7:metricText('Failures · Matches with execution errors or missing valid outcomes. They stay in the schedule and coverage accounting, but no win, loss or Elo outcome is invented.','失败 · 执行出错或缺少有效结果的对局。保留在赛程和覆盖统计中，不人为补成胜负或 Elo 结果。')
-    };
-    table.querySelectorAll('tr').forEach(tr=>Object.entries(definitions).forEach(([index,text])=>{
-      const cell=tr.cells[index];if(!cell)return;
-      // Preserve the row-specific coverage supplied by the Arena renderer.
-      if(cell.hasAttribute('title'))cell.dataset.metricOriginalHelp=cell.getAttribute('title');
-      helpTarget(cell,text+(cell.tagName==='TD'&&cell.dataset.metricOriginalHelp?'\n\n'+cell.dataset.metricOriginalHelp:''));
-    }));
-    bindTableSorting('gamejevbench-'+(byId('eloScope')?.value||'overall'),table,[
-      {key:'model',label:metricText('Participant','参赛者'),type:'text',index:1},
-      {key:'elo',label:'Elo',better:'higher',index:2},
-      {key:'coverage',label:metricText('Coverage / W–D–L','覆盖 / 胜–平–负'),index:3},
-      {key:'agreement',label:metricText('Agreement','三次一致率'),better:'higher',index:4},
-      {key:'stability',label:metricText('Probability stability','概率稳定度'),better:'higher',index:5},
-      {key:'variance',label:metricText('Variance','方差'),better:'lower',index:6}
-    ],'elo');
-  }
   function installMetricHelp() {
     const tip=document.createElement('div');tip.id='lbMetricTooltip';tip.className='lb-metric-tooltip';tip.role='tooltip';tip.hidden=true;tip.setAttribute('data-i18n-raw','');document.body.appendChild(tip);
     let anchor=null,closeTimer;
@@ -326,8 +285,7 @@
     document.addEventListener('scroll',event=>{if(anchor&&event.target!==tip)position();},true);
     tip.addEventListener('pointerenter',()=>clearTimeout(closeTimer));tip.addEventListener('pointerleave',hide);
     window.addEventListener('resize',hide);
-    window.JevMetricHelp={arena:decorateArenaMetrics,hide};
-    decorateArenaMetrics();
+    window.JevMetricHelp={hide};
   }
   function resultColumns(benchmark) {
     if(benchmark.id==='harnessjevbench')return [{key:'accuracy',label:harnessMetricCopy('accuracy','name'),better:'higher'},{key:'soft_tv',label:harnessMetricCopy('soft_tv','name'),better:'lower'}];
@@ -395,7 +353,7 @@
   }
   function tableFilterMarkup(key) {
     const state=tableFilters.get(key)||{query:'',own:false};
-    const ownLabel=key==='gamejevbench'?metricText('Piccolo only','只看 Piccolo'):metricText('Piccolo only','只看 Piccolo');
+    const ownLabel=metricText('Piccolo only','只看 Piccolo');
     return '<div class="lb-table-tools" data-table-filter="'+html(key)+'"><label class="lb-table-search"><span data-i18n-raw>'+html(metricText('Find a model','查找模型'))+'</span><input type="search" value="'+html(state.query)+'" placeholder="'+html(metricText('Search model names…','搜索模型名称…'))+'"></label><button type="button" data-table-own aria-pressed="'+state.own+'" data-i18n-raw>'+html(ownLabel)+'</button><span class="lb-table-count" role="status" data-i18n-raw></span></div>';
   }
   function bindTableFilter(key,table,toolbar) {
@@ -421,7 +379,6 @@
   const axisChinese={adequacy:'充分性判断',adversarial:'对抗判断',ambiguous:'歧义判断',extraction:'信息提取',fact:'事实判断',intent:'意图识别',judge_hard:'复杂评判',long_policy:'长规则理解',multi_hop:'多步推理',ordinal:'有序评分',policy:'规则判断',probability:'概率判断',routing:'路由选择',routing_hard:'复杂路由',temporal_numeric:'时间与数值',tool_selection:'工具选择',tradeoff:'权衡决策',trap:'陷阱识别',knowledge:'知识与推理',language:'语言理解',retrieval:'检索与分类',tools:'工具与自动化',arts:'艺术与审美'};
   const displayAxis=axis=>({...axis,label:metricText((axis.label_en&&axis.label_en!==axis.id?axis.label_en:null)||axisLabels[axis.id]||axisLabel(axis.id),axisChinese[axis.id]||axis.label_zh||axis.label||axisLabel(axis.id))+(axis.metric==='soft_distribution_overlap'?' · Soft':''),unit:axis.unit==='题'?'questions':axis.unit==='项子基准'?'sub-benchmarks':axis.unit==='局'?'matches':axis.unit||'samples',missing_reason:axis.missing_reason_code==='incomplete_soft_distribution'?metricText('Incomplete or invalid Soft probability results','Soft 概率结果不完整或无效'):axis.missing_reason?metricText('Soft-only; no Hard score','仅 Soft；无 Hard 得分'):null});
   const radarHidden = new Map(), radarAxisSelection = new Map();
-  let arenaRadar = null, arenaRadarLoading = false, arenaRadarAt = 0, arenaRadarError = false;
   function radarColor(id) {
     // Keep a model's accent consistent when its rank or benchmark changes.
     if(['oneshot-rl-r6-iter0000019','oneshot-w22m05r02-v5best-avg50','ours-w22m05r02-v5best-avg50'].includes(id))id=featuredModel;
@@ -464,17 +421,6 @@
   const harnessGroups=[{"id": "tools", "en": "Tools & Execution", "zh": "工具执行与调用审核", "axes": ["tool_selection", "argument_validation", "tool_call_review", "browser_action", "concurrency_transaction"]}, {"id": "models", "en": "Models & Coordination", "zh": "模型资源与协作调度", "axes": ["model_routing", "budget_allocation", "reasoning_budget", "subagent_dispatch", "delegation"]}, {"id": "context", "en": "Context & Memory", "zh": "上下文与记忆管理", "axes": ["context_retention", "context_compression", "memory_write", "cache_validity", "cache_reuse"]}, {"id": "safety", "en": "Safety & Trust", "zh": "权限安全与信任边界", "axes": ["tool_permission", "browser_confirmation", "safety_gate", "privacy_release", "secret_egress", "injection_boundary"]}, {"id": "evidence", "en": "Progress & Evidence", "zh": "进展验收与证据一致性", "axes": ["trajectory_progress", "plan_progress", "completion_verification", "termination_evidence", "version_conflict", "retrieval_evidence"]}, {"id": "recovery", "en": "Uncertainty & Recovery", "zh": "不确定性与异常恢复", "axes": ["uncertainty_abstention", "clarification_abstention", "retry_or_escalate", "retry_recovery"]}];
   let harnessGroup="all", harnessLevel="primary";
   function radarData(benchmark) {
-    if (benchmark.id === 'gamejevbench') {
-      const games=arenaRadar?.fixed_config?.games||[], rows=arenaRadar?.overall||[];
-      const grouped=window.JevGameCategories?.layout(games);
-      const axes=(grouped?.axes||games.map(game=>({game}))).map(({game,angle,group})=>{const en=gameLabel(game.id),zh=game.id==='goofspiel'?'竞价夺牌':window.JevArenaI18n.entries[en]||en;return {id:game.id,label:metricText(en,zh),angle,group};});
-      const series=rows.map(row=>({id:row.id,label:window.JevArenaLabels.model(row.id,row.model||row.name,row.model_identity),logo:row.logo,protocol:row.id==='rule-engine-v1'?'Rule engine · board games only':'Current Arena · settled matches',axes:axes.map(axis=>{
-        const game=(arenaRadar?.by_game?.[axis.id]||[]).find(item=>item.id===row.id);
-        const valid=game && Number.isFinite(game.played) && game.played>0 && [game.wins,game.draws,game.losses].every(Number.isFinite) && game.wins+game.draws+game.losses===game.played;
-        return {...axis,score:valid?(game.wins+.5*game.draws)/game.played:null,samples:valid?game.played:null,unit:'matches',missing_reason:'No settled valid matches'};
-      })})).map(row=>({...row,unavailable:!row.axes.some(axis=>Number.isFinite(axis.score))}));
-      return {axes,series,sectors:grouped?.sectors,metric:'Match points by game',unit:'%',note:'Win = 1, draw = 0.5, loss = 0, divided by settled valid matches. Single-player outcomes compare final scores using the same game and seed. This 0–100% rate is separate from Elo. Failed or unsettled matches do not produce invented outcomes.',stamp:arenaRadar?.updated_at,status:arenaRadarError?(arenaRadar?'Refresh failed; showing last settled records':'Arena records unavailable'):arenaRadar?'Live Arena results':'Loading Arena results',unfinished:true};
-    }
     const rows=benchmark.display_rows||[],valid=rows.map(row=>({row,radar:radarForRow(benchmark,row)}));
     const first=valid.find(item=>item.radar)?.radar?.data;
     if (!first) {
@@ -601,20 +547,20 @@
     return '<svg class="lb-radar-svg'+(grouped?' lb-radar-grouped':'')+(visible.length>6?' lb-radar-many':'')+'" viewBox="0 0 820 780" role="img" aria-label="'+html(data.metric)+'">'+content+'</svg>';
   }
   function comparisonBars(benchmark,data,visible,axis) {
-    const arena=benchmark.id==='gamejevbench',overall=!axis;
-    const metric=axis?axis.label:arena?'Elo':benchmark.id==='decisionindex'?metricText('Index','指数'):benchmark.id==='harnessjevbench'?harnessMetricCopy('accuracy','name'):'ACC';
+    const overall=!axis;
+    const metric=axis?axis.label:benchmark.id==='decisionindex'?metricText('Index','指数'):benchmark.id==='harnessjevbench'?harnessMetricCopy('accuracy','name'):'ACC';
     const rows=visible.map(series=>{
-      const source=arena?(arenaRadar?.overall||[]).find(row=>row.id===series.id):(benchmark.display_rows||[]).find(row=>(row.model_key||row.source_id)===series.id);
-      let score=axis?series.axes.find(item=>item.id===axis.id)?.score:arena?(source?.overall_eligible===true?source.rating:null):source?.score;
+      const source=(benchmark.display_rows||[]).find(row=>(row.model_key||row.source_id)===series.id);
+      let score=axis?series.axes.find(item=>item.id===axis.id)?.score:source?.score;
       const scale=source?.score_scale||benchmark.score_scale;
-      if(Number.isFinite(score)&&!(overall&&arena))score*=overall&&scale?.[1]===100?1:100;
+      if(Number.isFinite(score))score*=overall&&scale?.[1]===100?1:100;
       return {...series,score:Number.isFinite(score)?score:null};
     }).sort((a,b)=>(b.score??-Infinity)-(a.score??-Infinity));
-    const maximum=overall&&arena?Math.max(1600,Math.ceil(Math.max(0,...rows.map(row=>row.score||0))/200)*200):100;
-    const unit=overall&&arena?'':overall&&benchmark.id==='decisionindex'?'':axis&&data.unit===' pts'?'':'%';
-    const help=axis?.metric==='soft_distribution_overlap'?softAxisHelp({metric:axis.metric},visible[0]||{}):overall&&arena?metricText('Registered game-weighted Elo. Incomplete coverage has no overall rating.','登记的游戏等权 Elo；覆盖不完整时不显示总分。'):overall?metricText('The same registered score as the table below.','与下方排行榜使用同一登记得分。'):data.note;
+    const maximum=100;
+    const unit=overall&&benchmark.id==='decisionindex'?'':axis&&data.unit===' pts'?'':'%';
+    const help=axis?.metric==='soft_distribution_overlap'?softAxisHelp({metric:axis.metric},visible[0]||{}):overall?metricText('The same registered score as the table below.','与下方排行榜使用同一登记得分。'):data.note;
     const bars=rows.map((row,index)=>{
-      const score=row.score===null?'—':row.score.toFixed(overall&&arena?0:1)+unit;
+      const score=row.score===null?'—':row.score.toFixed(1)+unit;
       const identity=logoMarkup(row)+'<span class="lb-bar-name">'+html(chartLabel(row))+'</span>';
       const width=row.score===null?0:Math.max(0,Math.min(100,100*row.score/maximum));
       const fill=row.score===null?'':'<span class="lb-bar-fill" style="width:'+width+'%;--bar-color:'+row.color+'"><span class="lb-bar-identity">'+identity+'</span></span>';
@@ -684,28 +630,14 @@
     const about=host.querySelector('.lb-benchmark-about');if(about)about.open=aboutOpen;
     inspect(data.axes.findIndex(axis=>axis.id===radarAxisSelection.get(benchmark.id)));localizeLeaderboard();
   }
-  async function refreshArenaRadar() {
-    if(arenaRadarLoading||Date.now()-arenaRadarAt<10000)return;
-    arenaRadarLoading=true;
-    try {arenaRadar=await api('elo');arenaRadarAt=Date.now();arenaRadarError=false;}
-    catch(error) {arenaRadarError=true;}
-    finally {arenaRadarLoading=false;}
-    if(selected==='gamejevbench'){const benchmark=payload?.benchmarks?.find(item=>item.id===selected);if(benchmark)renderRadar(benchmark);}
-  }
-
   function render(cacheOnly=false) {
     window.JevMetricHelp?.hide();
     const openDetails=[...byId('leaderboardDetail').querySelectorAll('details')].map(node=>node.open);
     tabs();renderStatus();
     const benchmark=payload?.benchmarks?.find(item=>item.id===selected);
     byId('leaderboardDetail').setAttribute('aria-labelledby','lb-tab-'+selected);
-    if(!cacheOnly)window.JevElo?.setVisible(selected==='gamejevbench');
     if(!benchmark){byId('leaderboardDetail').innerHTML='<div class="lb-empty">'+(loading?'Loading results…':'No registered results yet.')+'</div>';localizeLeaderboard();return;}
     const radarMarkup='<section id="leaderboardRadar" class="lb-radar-panel" aria-label="Capability radar"></section>';
-    if(selected==='gamejevbench'){
-      byId('leaderboardDetail').innerHTML=radarMarkup;renderRadar(benchmark);if(!cacheOnly)refreshArenaRadar();
-      if(cacheOnly)byId('leaderboardDetail').querySelectorAll('details').forEach((node,index)=>{node.open=!!openDetails[index];});return;
-    }
     const chosen=(benchmark.groups||[]).find(group=>group.id===benchmark.display_group_id);
     const group={...(chosen||{id:'pending',current:true}),rows:benchmark.display_rows||[]};
     byId('leaderboardDetail').innerHTML=radarMarkup+datasetMarkup(benchmark)+groupMarkup(group,benchmark);
@@ -741,7 +673,6 @@
       byId('leaderboardRefresh').disabled = false;
       if (!payload) render();
     }
-    if (selected === 'gamejevbench') {window.JevElo?.refresh();refreshArenaRadar();}
   }
   byId('leaderboardRefresh').textContent='Refresh';
   byId('leaderboardRefresh').onclick = refresh;

@@ -272,17 +272,6 @@ export const article = {
         "leadParagraphs": 1
       },
       {
-        "id": "arena",
-        "nav": "GameJevArena",
-        "kicker": "BUILT-IN BENCHMARKS / GAMEJEVARENA",
-        "title": "GameJevArena",
-        "paragraphs": [
-          "We use [GameJevArena](https://decisionplayground.agentscope.io/?view=leaderboard) to evaluate decisions through their outcomes over a full game. All participants use the same game engines and legal-action interface. In direct board-game matches, each pair plays the same seeded opening twice with swapped seats. For single-player settings, models complete paired runs with the same game and seed, and their terminal results determine the comparison.",
-          "Ratings start at 1,500 for each game and update after each match. The update factor K = 32 controls the size of each rating adjustment. The overall rating is the equal-weight mean across registered games and requires full game coverage. The leaderboard separately reports match points: a win counts as 1, a draw as 0.5 and a loss as 0, divided by settled valid matches. This rate is distinct from Elo. Errors and unfinished matches remain in coverage accounting without being assigned invented outcomes."
-        ],
-        "takeaway": ""
-      },
-      {
         "id": "future",
         "nav": "Future Directions",
         "kicker": "FUTURE DIRECTIONS",
@@ -430,10 +419,6 @@ export const article = {
           {
             "id": "data",
             "label": "DataJevBench"
-          },
-          {
-            "id": "arena",
-            "label": "GameJevArena"
           }
         ]
       },
@@ -714,17 +699,6 @@ export const article = {
         "leadParagraphs": 1
       },
       {
-        "id": "arena",
-        "nav": "GameJevArena",
-        "kicker": "BUILT-IN BENCHMARKS / GAMEJEVARENA",
-        "title": "GameJevArena",
-        "paragraphs": [
-          "我们通过 [GameJevArena 游戏天梯](https://decisionplayground.agentscope.io/?view=leaderboard)，观察模型的连续决策能否转化为整局结果。所有参赛模型使用相同的游戏引擎与合法动作接口。棋盘对战采用相同种子的开局，每对模型交换先后手各打一局；单人场景则让模型在同一游戏、同一种子下分别完成挑战，再比较终局结果。",
-          "每个游戏的初始 Elo 为 1,500，每场对局后按结果更新；更新系数 K = 32 控制单场评级的变化幅度。总榜在覆盖全部登记游戏后，对分游戏 Elo 做等权平均。页面另行展示对局得分率：胜记 1 分、平记 0.5 分、负记 0 分，再除以已结算的有效场次；这一比例与 Elo 评级分开。执行错误和未完成对局保留在覆盖统计中，不补造胜负结果。"
-        ],
-        "takeaway": ""
-      },
-      {
         "id": "future",
         "nav": "未来方向",
         "kicker": "FUTURE DIRECTIONS",
@@ -872,10 +846,6 @@ export const article = {
           {
             "id": "data",
             "label": "DataJevBench"
-          },
-          {
-            "id": "arena",
-            "label": "GameJevArena"
           }
         ]
       },

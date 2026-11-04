@@ -16,8 +16,8 @@ body a{color:var(--fs-accent)}
 
 /* typography.css assigns Inter to every element with !important; display headings opt out. */
 html body :is(h1,h2),html body :is(h1,h2) *,
-html body :is(.lb-radar-heading,.lb-group-heading,.elo-heading,.blog-report-title) h3,
-html body :is(.lb-radar-heading,.lb-group-heading,.elo-heading,.blog-report-title) h3 *{
+html body :is(.lb-radar-heading,.lb-group-heading,.blog-report-title) h3,
+html body :is(.lb-radar-heading,.lb-group-heading,.blog-report-title) h3 *{
  font-family:var(--publication-serif)!important;font-weight:400
 }
 html body .lb-radar-heading h3 .lb-benchmark-version{font-family:var(--jev-font)!important}
@@ -71,7 +71,7 @@ body input::placeholder{color:#8c857a}
 body summary{color:var(--muted)}
 body .panel,body .goal-card,body .connection-dialog{background:var(--fs-paper);border-color:var(--line)!important;box-shadow:none!important}
 body .connection-dialog{box-shadow:0 20px 65px #30271b26!important;border-radius:10px!important}
-body .connection-dialog::backdrop,body .arv-dialog::backdrop{background:#29251f55;backdrop-filter:none}
+body .connection-dialog::backdrop{background:#29251f55;backdrop-filter:none}
 body .notice:not(.error){background:#ede8de;color:var(--muted)}
 body .content,body .result{background:#f4f0e8;border-color:var(--line);color:var(--ink)}
 body .foot{border-color:var(--line);margin-top:48px;padding-top:22px;color:var(--fs-text-tertiary)}
@@ -125,7 +125,7 @@ body .foot a{color:var(--muted)}
 .lb-radar-table-scroll table,#leaderboardView .lb-table{background:var(--fs-paper);color:var(--ink)}
 .lb-radar-table-scroll th{background:#eee8dc;color:var(--ink)}
 .lb-radar-table-scroll td,.lb-radar-table-scroll th{border-color:var(--line)}
-#leaderboardView .lb-group-heading h3,#leaderboardView #gameEloPanel h3{
+#leaderboardView .lb-group-heading h3{
  font-family:var(--publication-serif)!important;font-size:29px;line-height:1.3;font-weight:400;letter-spacing:-.65px;color:var(--ink)
 }
 #leaderboardView .lb-table th{background:#ebe4d8;color:#38332b;border-color:#d7cbbb;font-weight:550}
@@ -135,12 +135,8 @@ body .foot a{color:var(--muted)}
 #leaderboardView .lb-score,.lb-metric-value{color:#3e382f}
 #leaderboardView .lb-table th.lb-has-metric-help:hover{color:var(--fs-accent)}
 .lb-table-tools>button[aria-pressed=true]{border-color:#c8a084;background:var(--fs-accent-soft);color:var(--fs-accent)}
-.lb-protocol pre,.lb-game-cards li{background:#f4eee4;border-color:var(--line)}
-#leaderboardView #gameEloPanel .elo-configuration{background:#eee7db;color:var(--muted);border-color:var(--line)}
-#leaderboardView #gameEloPanel :is(.elo-chip,.elo-baseline-card,.elo-formula){background:#f9f5ed;border-color:var(--line);color:var(--muted)}
-#leaderboardView #gameEloPanel select{background:var(--fs-paper);color:var(--ink)}
-.lb-row-progress>div,.lb-progress,#leaderboardView #gameEloPanel .elo-baseline-bar{background:#e9dfd0}
-.lb-row-progress>div>span,.lb-progress span,#leaderboardView #gameEloPanel .elo-baseline-bar span{background:#b98661}
+.lb-row-progress>div,.lb-progress{background:#e9dfd0}
+.lb-row-progress>div>span,.lb-progress span{background:#b98661}
 .lb-bars,.lb-radar-legend,.lb-table-scroll,.lb-radar-chart{scrollbar-color:#c9bca9 transparent}
 
 /* Warm setup and scene chrome; game canvases retain their native colours. */
@@ -208,7 +204,7 @@ body .blog-article{background:#fffdf8;border-color:var(--line);border-radius:7px
  .lb-benchmark-description{font-size:12px;margin-bottom:21px}
  .lb-chart-card{padding:19px 15px 17px}
  .lb-chart-card+.lb-chart-card{box-shadow:none;border-top-color:var(--line)}
- #leaderboardView .lb-group-heading h3,#leaderboardView #gameEloPanel h3{font-size:26px}
+ #leaderboardView .lb-group-heading h3{font-size:26px}
  #leaderboardView .lb-table :is(th,td):nth-child(2){background:#fffdf8;border-right-color:var(--line)}
  #leaderboardView .lb-table th:nth-child(2){background:#ebe4d8}
  #leaderboardView .lb-table tr:hover td:nth-child(2){background:#f3eee4}

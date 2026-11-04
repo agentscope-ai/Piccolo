@@ -38,6 +38,15 @@ def test_cli_import_and_archive(tmp_path):
     assert any(json.loads(p.read_text())['rows'][0]['score'] == 0.8 for p in archives)
 
 
+def test_cli_cannot_restore_a_game_rating_import(tmp_path):
+    body = document()
+    body['benchmark_id'] = 'arena'
+    result, target = invoke(tmp_path, body)
+    assert result.returncode == 2
+    assert 'Traceback' not in result.stderr
+    assert not target.exists()
+
+
 def test_cli_rejects_unknown_fields_without_echoing_input(tmp_path):
     body = document()
     marker = 'invalid-private-value-for-redaction-test'

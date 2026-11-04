@@ -4,6 +4,8 @@ recursive-include web *.html *.css *.js *.cjs *.ttf *.woff *.woff2 *.svg *.ico *
 recursive-include config *.json
 recursive-include data/seed *.json *.jsonl *.gz
 recursive-include leaderboard *.json
+exclude leaderboard/arena.json leaderboard/arena-elo.json leaderboard/arena-independent.json leaderboard/arena-ratings.json leaderboard/arena-replays.json
+exclude web/playground/elo.js web/playground/elo.css web/playground/arena-independent.js web/playground/visible-control.js web/playground/replay.js web/playground/replay.css
 prune leaderboard/history
 recursive-include docs *.md *.json *.txt
 exclude docs/ENGINE_INTEGRATION_HANDOFF.md

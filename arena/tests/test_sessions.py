@@ -18,7 +18,8 @@ from fastapi.testclient import TestClient
 
 ROOT = Path(__file__).resolve().parents[1]
 from jev_control_scope import active_games
-GAMES = tuple(g['id'] for g in json.loads((ROOT / 'leaderboard/arena.json').read_text())['fixed_config']['games'] if active_games([g['id']]))
+from jev_engine_registry import list_engines
+GAMES = tuple(e.kind for e in list_engines(include_internal=False) if active_games([e.kind]))
 
 
 @pytest.fixture

@@ -7,7 +7,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from fastapi import FastAPI, HTTPException
-from fastapi.staticfiles import StaticFiles
+from blink_arena.public_surface import PublicStaticFiles
 import uvicorn
 from blink_arena.leaderboards import Leaderboards
 from blink_arena.paths import WEB
@@ -36,32 +36,6 @@ def create_preview_app(*, leaderboard_dir=None, web=WEB):
     def leaderboard():
         return store.projection()
 
-    @app.get('/api/elo')
-    def arena():
-        # Match production's published-result precedence and active-game scope.
-        # Reading the snapshot never loads an evaluator or starts model calls.
-        for filename, schema in (
-            ('arena-elo.json', 'jev.arena.published-elo.v1'),
-            ('arena-independent.json', 'jev.arena.independent-results.v1'),
-        ):
-            try:
-                saved = json.loads((store.data / filename).read_text())
-            except FileNotFoundError:
-                continue
-            except ValueError:
-                raise HTTPException(503, 'Published Arena results are unavailable.')
-            try:
-                if not isinstance(saved, dict) or saved.get('schema_version') != schema:
-                    raise ValueError('Unknown published Arena schema')
-                assert_public_document(saved)
-                result = project_arena(saved)
-            except ValueError:
-                raise HTTPException(503, 'Published Arena results are unavailable.')
-            return {**result, 'controls_available': False}
-        return {'state': 'idle', 'overall': [], 'by_game': {}, 'matches': [],
-                'planned': 0, 'completed': 0, 'controls_available': False,
-                'fixed_config': {'games': [], 'baseline': []}}
-
     @app.get('/api/leaderboard/source/{ident}')
     def source(ident: str):
         for benchmark in ('jevbench', 'decisionindex', 'harnessjevbench', 'datajevbench'):
@@ -83,7 +57,15 @@ def create_preview_app(*, leaderboard_dir=None, web=WEB):
             raise HTTPException(404)
         return doc.model_dump(mode='json')
 
-    app.mount('/', StaticFiles(directory=web, html=True), name='website')
+    @app.middleware('http')
+    async def public_surface(request, call_next):
+        from blink_arena.public_surface import unavailable_path
+        from fastapi.responses import Response
+        if unavailable_path(request.url.path):
+            return Response(status_code=404)
+        return await call_next(request)
+
+    app.mount('/', PublicStaticFiles(directory=web, html=True), name='website')
     return app
 
 

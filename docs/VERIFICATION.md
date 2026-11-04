@@ -117,7 +117,6 @@
 | --- | --- |
 | 品牌与页面 | 桌面 1440px、手机 390px × 中英文；每组检查 3 个主标签与 5 个榜单，无 JavaScript 异常或页面横向溢出 |
 | Showcase | 4 个游戏 × 2 个视口，共 8 组；初态、终态、滑块跳转、重播通过 |
-| 原对局回放 | 从 Piccolo Arena 榜单展开比赛记录、打开归档回放通过 |
 | 数据一致性 | 132 场对局、45 条复用 episode 的 JSON 解析结果与迁入前完全相等；4 条展示 stream 与归档对应字段完全相等 |
 | README 素材 | 原有渲染器生成 4 张 GIF 和 4 张封面；74 个采样画面，保留真实终局结果 |
 | 浏览器模型传输 | `node --test arena/tests/test_connections_transport.cjs`，8 项通过 |
@@ -136,7 +135,6 @@
 
 - `test_api.py::test_board_standard_start_and_explicit_seed_remain_distinct`：`gomoku_19x19`、`othello_8x8` 两项。
 - `test_chess_legacy_showcase.py::test_old_private_agent_handoff_and_redaction_survive[goofspiel]`。
-- `test_leaderboard_directory.py::test_one_directory_serves_benchmarks_arena_and_replays`：过滤后的游戏范围与原全量成绩比较。
 - `test_selected_games.py::test_no_additional_collected_games_are_registered`：旧数量断言。
 - `test_selected_games.py::test_go_reaches_native_terminal_through_both_seats`。
 - `test_selected_games.py::test_frontend_full_episode_evaluator_scores_selected_games`：包含已移除围棋。

@@ -338,7 +338,7 @@
     });
     nodes.result = make('small', 'home-demo-result', decision);
     nodes.timeline = make('input', 'home-demo-timeline', decision); nodes.timeline.type = 'range'; nodes.timeline.min = '0'; nodes.timeline.step = '1';
-    nodes.timeline.oninput = () => { stop(); cursor = Number(nodes.timeline.value); phase = 2; render(); };
+    nodes.timeline.oninput = () => { const position = Number(nodes.timeline.value); stop(); cursor = position; phase = 2; render(); };
     const controls = make('div', 'home-demo-controls', decision);
     nodes.play = make('button', 'home-demo-play', controls); nodes.next = make('button', 'home-demo-next', controls); nodes.reset = make('button', 'home-demo-reset', controls);
     nodes.finish = make('button', 'home-demo-finish', controls);

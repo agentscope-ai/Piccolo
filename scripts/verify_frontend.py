@@ -39,12 +39,12 @@ with tempfile.TemporaryDirectory(prefix='blink-app-check-') as tmp:
       assert not page.locator('.mast').evaluate("n=>/OneShot|GameJevArena/.test(n.innerText)")
       assert page.evaluate('document.documentElement.scrollWidth<=document.documentElement.clientWidth+1')
      page.locator('.tabs [data-tab="leaderboard"]').click()
-     for benchmark in ['jevbench','decisionindex','harnessjevbench','datajevbench','gamejevbench']:
+     for benchmark in ['jevbench','decisionindex','harnessjevbench','datajevbench']:
       page.locator(f'#leaderboardTabs [data-benchmark="{benchmark}"]').click()
       page.wait_for_timeout(200)
       assert not page.locator('body').evaluate(r"n=>/\bBlink\b|\bBLINK\b/.test(n.innerText)")
       assert page.evaluate('document.documentElement.scrollWidth<=document.documentElement.clientWidth+1')
-     report['views'].append({'device':device,'language':lang,'tabs':3,'benchmarks':5})
+     report['views'].append({'device':device,'language':lang,'tabs':3,'benchmarks':4})
      page.screenshot(path=str(art/f'piccolo-{device}-{lang}.png'))
     page.close()
    browser.close()

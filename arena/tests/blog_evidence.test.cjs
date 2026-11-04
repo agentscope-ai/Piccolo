@@ -178,7 +178,7 @@ test('zero is a valid completed result while non-finite and pending values canno
 
 test('both article languages cover the same complete sections, sources and four future directions', async () => {
   const [, , {article}] = await setup;
-  const ids = ['decision', 'demogames', 'demoharness', 'demodata', 'evidence', 'method', 'preparation', 'rsi', 'learning', 'harness', 'data', 'arena', 'future'];
+  const ids = ['decision', 'demogames', 'demoharness', 'demodata', 'evidence', 'method', 'preparation', 'rsi', 'learning', 'harness', 'data', 'future'];
   for (const lang of ['en', 'zh']) {
     const copy = article[lang];
     assert.deepEqual(copy.sections.map(section => section.id), ids);
@@ -272,7 +272,7 @@ test('the contents follow the release structure with grouped methods and built-i
     assert.deepEqual(copy.contents.map(entry => entry.id), ['articleIntro','decision','evidence','method','harness','future']);
     assert.deepEqual(copy.contents.find(entry => entry.id === 'decision').children.map(entry => entry.id), ['demogames','demoharness','demodata']);
     assert.deepEqual(copy.contents.find(entry => entry.id === 'method').children.map(entry => entry.id), ['preparation','rsi','learning']);
-    assert.deepEqual(copy.contents.find(entry => entry.id === 'harness').children.map(entry => entry.id), ['harness','data','arena']);
+    assert.deepEqual(copy.contents.find(entry => entry.id === 'harness').children.map(entry => entry.id), ['harness','data']);
     const method = copy.sections.find(section => section.id === 'method');
     assert.equal(method.headingLevel, 2);
     assert.match((await read('web/piccolo.html')), /id="method-figure-3"/);

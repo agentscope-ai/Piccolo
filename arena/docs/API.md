@@ -19,12 +19,6 @@
 | GET / DELETE | `/api/v1/sessions/{session_id}` | 观察 / 释放会话 |
 | POST | `/api/v1/sessions/{session_id}/steps` | 提交动作、模型决策或时间推进 |
 | GET | `/api/v1/sessions/{session_id}/replay` | 导出当前会话动作追踪 |
-| GET / POST | `/api/v1/evaluations` | 列举 / 创建 Arena 评测 |
-| GET | `/api/v1/evaluations/{evaluation_id}` | 查询进度与成绩 |
-| POST | `/api/v1/evaluations/{evaluation_id}/pause` | 暂停评测 |
-| POST | `/api/v1/evaluations/{evaluation_id}/resume` | 恢复评测 |
-| POST | `/api/v1/evaluations/{evaluation_id}/models/{model_id}` | 增量加入模型，保留已完成对局 |
-| GET | `/api/v1/evaluations/{evaluation_id}/export` | 导出成绩与重演记录 |
 | GET / PUT | `/api/v1/leaderboards/{benchmark}` | 读取 / 替换 Benchmark 榜单 |
 
 连接和游戏会话属于创建它们的浏览器会话。编程客户端需要在后续请求中保留服务设置的 Cookie；owner 隔离用于资源归属。默认域名部署不要求网站登录，也可单独启用可选 BasicAuth。榜单默认只读；配置 `JEV_ADMIN_TOKEN` 后，写入使用 `X-Jev-Admin-Token: <admin-token>`，并兼容 `Authorization: Bearer <admin-token>`。启用可选网站 BasicAuth 时使用前者，避免 Authorization 头冲突。管理令牌与模型服务密钥用途不同。每个写入请求体最大 4 MiB。
@@ -196,31 +190,9 @@ curl --fail-with-body -sS -c "$jev_cookie_jar" -b "$jev_cookie_jar" \
 
 `action` 与 `model_id` 互斥。`revision` 使用上次观察到的版本，避免两个请求覆盖同一状态。实时游戏的无动作推进可使用 `ticks`（0–120）；具体时钟、终局和动作持续时间由共享引擎定义，不能通过省略动作冻结实时规则。
 
-## Arena 评测
-
-创建请求：
-
-```json
-{
-  "model_ids": ["model-a", "model-b"],
-  "games": ["实际游戏 ID"],
-  "seeds": 1,
-  "seed_base": 42,
-  "concurrency": 32
-}
-```
-
-模型需已连接并归当前浏览器所有。`model_ids` 为 2–16 个唯一 ID；省略 `games` 表示当前全部 Arena 游戏，显式列表为 1–128 个唯一 ID，仍须属于当前可评测引擎；`seeds` 为 1–3，`concurrency` 为 1–64，同时受服务总模型请求并发限制。不要把对局并发与实际发出的模型请求并发混为一谈。
-
-可双人对战的游戏使用直接对局并交换席位；单人游戏以同游戏、同种子的最终结果配对。实时游戏使用单次模型决策；其他游戏的重复决策及选项换位遵循记录中的协议版本。终局、失败、超时与时间计分按共享引擎和评测协议记录，保留完整追踪来源。
-
-导入的历史成绩不会触发重新评测，服务启动也不会自动调用模型。评测任务和回放数据与浏览器临时模型连接分开存储，服务重启后需重新连接模型再显式恢复任务。
-
-增量加入模型使用 `POST /evaluations/{evaluation_id}/models/{model_id}`；原参赛模型连接仍需可用，服务只安排缺少的新对局。暂停、恢复或加入操作要求当前浏览器拥有该任务所需的模型连接。
-
 ## Benchmark 榜单导入
 
-`benchmark` 支持 `jevbench`、`decisionindex`、`harnessjevbench`、`datajevbench` 和 `arena`。文件使用 `jev.leaderboard.v1`，每次导入是对应榜单的完整快照；保留需要显示的所有模型行。
+`benchmark` 支持 `jevbench`、`decisionindex`、`harnessjevbench`和 `datajevbench`。文件使用 `jev.leaderboard.v1`，每次导入是对应榜单的完整快照；保留需要显示的所有模型行。
 
 ```json
 {
@@ -254,49 +226,10 @@ curl --fail-with-body -sS -c "$jev_cookie_jar" -b "$jev_cookie_jar" \
 
 该例为格式示例，非真实模型成绩。`score_scale` 控制总分范围，`axis_scale` 控制雷达轴范围；每条记录必须符合对应范围。模型 ID 在同一榜单内唯一，轴 ID 在同一模型内唯一。`null` 表示没有指标，不应写成 0。双语切换使用 `label_zh` 与 `label_en`。
 
-修改榜单会保留上一版 JSON 归档，不需要原始训练样本或模型 checkpoint。JevBench、DecisionIndex、HarnessJevBench 与 DataJevBench 的总分使用各自指标定义；Arena 则使用下节的 Elo 快照约定。Harness 的总分为 Hard mean task score，ACC 优先显示 `strict_task_accuracy`；DataJevBench 使用 ACC 总分及 D1–D6 雷达维度。
+修改榜单会保留上一版 JSON 归档，不需要原始训练样本或模型 checkpoint。JevBench、DecisionIndex、HarnessJevBench 与 DataJevBench 的总分使用各自指标定义。Harness 的总分为 Hard mean task score，ACC 优先显示 `strict_task_accuracy`；DataJevBench 使用 ACC 总分及 D1–D6 雷达维度。
 
-导入时对 `PUT /api/v1/leaderboards/jevbench` 发送上述完整 JSON，`benchmark_id` 必须与 URL 一致，并携带管理员认证。`GET` 同一地址可导出标准 JSON。Arena 原始逐局记录与重演使用 `/evaluations/{evaluation_id}/export`，与下面的榜单分数快照区分。
 
 在服务器上运行 `python scripts/import_leaderboard.py results.json --leaderboard-dir ./leaderboard` 可使用同一合同和归档逻辑进行本地导入，无需 Web 管理令牌。该命令不调用模型服务，失败时不会把输入内容回显到错误消息中；默认目录遵循 `JEV_LEADERBOARD_DIR`，未配置时使用仓库 `leaderboard/`。它替换指定榜单的完整快照，已存在的上一版保留在目录内的 `history/`。具体文件约定见 [榜单数据目录](LEADERBOARD_DATA.md)。
-
-## Arena Elo 快照导入
-
-`GET /api/v1/leaderboards/arena` 和 `PUT /api/v1/leaderboards/arena` 使用同一个 `jev.leaderboard.v1` 合同。`score` 是综合 Elo，`axes` 保存分游戏 Elo，`metrics` 可包含 `wins`、`draws`、`losses`，`samples` 是已比较场次。请为 Elo 明确设置总分与轴范围，而不是保留概率分数默认的 `[0,1]`。
-
-```json
-{
-  "schema_version": "jev.leaderboard.v1",
-  "benchmark_id": "arena",
-  "title": "Piccolo Arena",
-  "version": "import-example-v1",
-  "metric": "elo",
-  "score_scale": [0, 3000],
-  "axis_scale": [0, 3000],
-  "higher_is_better": true,
-  "rows": [
-    {
-      "model_id": "example-imported-model",
-      "model_name": "Imported Model",
-      "score": 1520,
-      "status": "complete",
-      "metrics": {"wins": 12, "draws": 3, "losses": 5},
-      "samples": 20,
-      "protocol": "example-elo-protocol-v1",
-      "axes": [
-        {"id": "snake_navigation", "label_en": "Snake", "label_zh": "贪吃蛇", "score": 1510},
-        {"id": "racing_sprint", "label_en": "Racing", "label_zh": "赛车", "score": 1530}
-      ]
-    }
-  ]
-}
-```
-
-这是格式示例，不是真实成绩。导入的 Arena 榜单供只读展示，没有原始 match 或回放，也不能把导入的 Elo 数值当作新对战的计算起点。后续评测需要真实连接和对局记录，按该任务自己的协议计算。
-
-前端展示优先级为：已有本地评测任务的成绩 → 导入的 `arena` 快照 → 随包历史成绩。因而本地已存在评测任务时，导入文件仍可通过标准 GET 接口读取，但不会覆盖当前任务在前端天梯中的展示。
-
-标准 Arena Elo 导入写入统一目录的 `arena-ratings.json`；原生完整 `arena.json` 与 `arena-replays.json` 继续配套保留，不会被一个纯分数快照覆盖。
 
 ## 错误处理
 

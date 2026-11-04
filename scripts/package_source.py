@@ -9,6 +9,9 @@ import subprocess
 import tarfile
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys
+sys.path.insert(0, str(ROOT / 'arena'))
+from scripts.build_release import excluded
 
 
 def main():
@@ -16,9 +19,11 @@ def main():
     parser.add_argument('--output', type=Path, default=ROOT / 'dist')
     args = parser.parse_args()
     paths = [p for p in subprocess.check_output(['git', 'ls-files', '-z'], cwd=ROOT).decode().split('\0') if p]
+    paths = [p for p in paths if not excluded(p.removeprefix('arena/'))]
     required = {'README.md', 'arena/web/piccolo.html', 'arena/web/blog/content.js',
                 'arena/web/blog/assets/data-architecture.svg', 'examples/workflows/cases.json',
-                'evaluation/reproduce.py', '.github/workflows/ci.yml'}
+                'evaluation/reproduce.py', '.github/workflows/ci.yml',
+                'arena/web/playground/data/home-decision.json', 'arena/web/playground/home-demo.js'}
     if required - set(paths):
         raise ValueError('Required source files are not tracked: ' + ', '.join(sorted(required - set(paths))))
     args.output.mkdir(parents=True, exist_ok=True)

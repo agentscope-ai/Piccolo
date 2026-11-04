@@ -1,6 +1,7 @@
 """Exercise completed Home replays without connecting a model."""
 import argparse
 import json
+import re
 from pathlib import Path
 from urllib.request import urlopen
 
@@ -12,13 +13,14 @@ def main():
     parser.add_argument('--url', required=True)
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--archive', type=Path, help='Override only the replay asset for a local preview')
+    parser.add_argument('--browser-executable')
     args = parser.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
     archive = json.loads(args.archive.read_text()) if args.archive else json.load(
         urlopen(args.url.rstrip('/') + '/playground/data/home-decision.json', timeout=30))
     checks, errors, decisions = [], [], []
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
+        browser = p.chromium.launch(headless=True, **({'executable_path': args.browser_executable} if args.browser_executable else {}))
         for width in (1440, 390):
             page = browser.new_page(viewport={'width': width, 'height': 1000})
             page.on('pageerror', lambda error: errors.append(str(error)))
@@ -34,7 +36,7 @@ def main():
                 page.locator(f'[data-language="{language}"]').click()
                 for index, clip in enumerate(archive['clips']):
                     page.locator('.home-demo-game-tabs button').nth(index).click()
-                    assert page.locator('.home-demo-model').inner_text() == clip['models'][0]['name']
+                    assert page.locator('.home-demo-model').inner_text() == re.sub(r'^(?:Blink|OneShot|QwenJev)\b', 'Piccolo', clip['models'][0]['name'])
                     assert page.locator('.home-demo-timeline').get_attribute('max') == str(len(clip['steps'])-1)
                     page.locator('.home-demo-finish').click()
                     assert page.locator('.home-demo-counter').inner_text().endswith(f'/ {len(clip["steps"])}')
@@ -51,6 +53,20 @@ def main():
                     assert page.locator('#homeDecisionDemo').get_attribute('data-phase') == '0'
                     assert page.locator('.home-demo-timeline').input_value() == '0'
                     assert not page.locator('.home-demo-next').is_disabled()
+                    page.locator('.home-demo-play').click()
+                    page.wait_for_function("document.getElementById('homeDecisionDemo').dataset.phase !== '0'")
+                    page.locator('.home-demo-play').click()
+                    assert page.locator('.home-demo-play').get_attribute('aria-pressed') == 'false'
+                    page.locator('.home-demo-reset').click()
+                    slider = page.locator('.home-demo-timeline')
+                    slider.scroll_into_view_if_needed()
+                    bounds = slider.bounding_box()
+                    start = slider.evaluate('(node)=>parseFloat(getComputedStyle(node).paddingLeft)+10')
+                    page.mouse.move(bounds['x'] + start, bounds['y'] + bounds['height']/2)
+                    page.mouse.down()
+                    page.mouse.move(bounds['x'] + bounds['width']*.6, bounds['y'] + bounds['height']/2, steps=8)
+                    page.mouse.up()
+                    assert 0 < int(slider.input_value()) < len(clip['steps'])-1
                     page.locator('.home-demo-timeline').fill(str(len(clip['steps'])//2))
                     assert page.locator('#homeDecisionDemo').get_attribute('data-phase') == '2'
                     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth + 1')

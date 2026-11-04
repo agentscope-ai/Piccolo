@@ -19,19 +19,9 @@
 - 源状态 `complete_with_errors` 转为合同的 `complete`，同时保留真实 `errors` 和说明。本次 SFT-1015 的 DecisionIndex 有 1 个失败请求，未将其抹除。
 - 未完成的记录保留 `running`/`pending`/`error` 状态，`score` 及所有轴得分为 `null`，不导出部分校准成绩。
 
-## Arena 快照
-
-`data/seed/arena.json` 使用 `jev.arena.snapshot.v1`，保留本轮 `three-models-v1` 的真实结果：3 个模型、21 个游戏、99/99 个已计分比较。参赛模型为 Qwen3.8 27B · DashScope、Qwen3.6 35B-A3B · DashScope、QwenJev 27B SFT-1015。
-
-综合榜、分游戏 Elo、胜平负数量、决策稳定性、固定种子与协议均直接复制公开聚合字段，没有重算或补测。导出时间在 `snapshot.exported_at`，原评测更新时间在 `updated_at`。快照为只读历史数据，加载它不会启动评测。
-
-源 API 的 `matches` 只返回最近 80 条摘要，因此 `snapshot.match_history_complete=false`。99 个比较的完整赛程保留在 `protocol.schedule`，汇总成绩仍来自全部 99 个结果。赛程不是重演轨迹；回放记录由单独的 `arena-replays.json` 提供，不能用摘要伪造动作动画。导出脚本不读取旧网页嵌入的回放归档。
-
-独立回放文件已从本轮实际产物导出，包含 99 个比较与 27 条复用的单人游戏 episode。校验已确认 `run_id=three-models-v1`、完整赛程身份、最近对局的结算结果与 episode 引用一致。`snapshot.replays_included=true` 表示这个独立文件随包提供。当前马里奥与泰拉瑞亚有动作日志和初末状态，但缺少逐步画面快照；这些记录仍显式保留 `missing_frames=true`，不能宣称已经包含完整动画录像。完整录像补充后，需同时刷新快照元数据并重新校验。
-
 ## 重新导出与校验
 
-在仓库根目录执行；`--api-root` 指向实际部署前端的公开 API 根路径。导出只发出两个只读 GET 请求，不连接任何模型服务，也不启动评测。
+在仓库根目录执行；`--api-root` 指向实际部署前端的公开 API 根路径。导出只发出只读 GET 请求，不连接任何模型服务，也不启动评测。
 
 ```bash
 python scripts/export_public_results.py --api-root https://example.com/api
@@ -40,7 +30,7 @@ node --check web/playground/leaderboard.js
 python tests/browser_leaderboards.py --url http://127.0.0.1:8092/
 ```
 
-导出采用嵌套字段白名单，再验证合同、数值有限性、模型/游戏引用、胜平负计数和私有路径/凭据字段。所有数据验证完成后才写入各个 JSON 文件。`--check` 完全离线。
+导出采用嵌套字段白名单，再验证合同、数值有限性、模型引用和私有路径/凭据字段。所有数据验证完成后才写入各个 JSON 文件。`--check` 完全离线。
 
 此次验证包括：三个榜单全部主分数、维度分数和补充指标与只读 API 逐项相同；运行中记录不会发布最终分数；非白名单身份字段不会进入导出；公开字段出现私有路径会拒绝导出。JavaScript 运行检查覆盖三个榜单的导入指标/雷达映射、中英文显式标签和自定义标签换行。
 

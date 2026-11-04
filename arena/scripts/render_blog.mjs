@@ -68,6 +68,7 @@ function renderSection(html, section) {
 }
 
 export function renderBlog(html) {
+  html = html.replace(/<section class="research-section" id="arena">[\s\S]*?<\/section>/g, '');
   const title = `${copy.title} ${copy.subtitle} · AgentScope Research`;
   html = replaceOnce(html, /<title>[^<]*<\/title>/, () => `<title>${escape(title)}</title>`, 'document title');
   html = replaceOnce(html, /<meta name="description" content="[^"]*">/, () => `<meta name="description" content="${escape(copy.deck)}">`, 'description');

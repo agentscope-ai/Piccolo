@@ -8,6 +8,8 @@ from .schemas import LeaderboardDocument
 from .storage import write_json as _write
 from .paths import leaderboard_directory
 
+PUBLIC_BENCHMARKS = ('jevbench', 'decisionindex', 'harnessjevbench', 'datajevbench')
+
 class Leaderboards:
     def __init__(self, data=None, seed=None, *, directory=None):
         # Positional arguments remain accepted for existing integrations; public
@@ -15,9 +17,9 @@ class Leaderboards:
         self.data = self.seed = leaderboard_directory(directory)
 
     def path(self, ident):
-        # Native Arena snapshots retain their matches/protocol. An optional
-        # normalized ratings import must never overwrite that different schema.
-        return self.data / ('arena-ratings.json' if ident == 'arena' else ident + '.json')
+        if ident not in PUBLIC_BENCHMARKS:
+            raise ValueError('Unknown public benchmark')
+        return self.data / (ident + '.json')
 
     def get(self, ident):
         return self._snapshot(ident)[0]
@@ -41,7 +43,7 @@ class Leaderboards:
 
     def projection(self, prefix=''):
         benchmarks = []
-        for ident in ('jevbench', 'decisionindex', 'harnessjevbench', 'datajevbench'):
+        for ident in PUBLIC_BENCHMARKS:
             doc, updated_at = self._snapshot(ident)
             if not doc:
                 benchmarks.append({'id': ident, 'title': ident, 'status': 'pending', 'groups': [], 'display_rows': []})
@@ -73,17 +75,6 @@ class Leaderboards:
                                'status': 'available', 'display_rows': rows, 'display_group_id': 'imported',
                                'groups': [{'id': 'imported', 'current': True, 'rows': rows}], 'dataset': {},
                                'display_policy': 'portable JSON import', 'archived_group_count': 0})
-        ratings = self.path('arena')
-        independent = self.data / 'arena-independent.json'
-        published_elo = self.data / 'arena-elo.json'
-        arena = (published_elo if published_elo.exists() else independent if independent.exists()
-                 else ratings if ratings.exists() else self.data / 'arena.json')
-        try:
-            arena_updated_at = datetime.fromtimestamp(arena.stat().st_mtime, timezone.utc).isoformat()
-        except FileNotFoundError:
-            arena_updated_at = None
-        benchmarks.append({'id': 'gamejevbench', 'title': 'GameJevArena', 'groups': [], 'display_rows': [],
-                           'updated_at': arena_updated_at, 'source_file': arena.name})
         latest = max((b['updated_at'] for b in benchmarks if b.get('updated_at')), default=None)
         return {'revision': 'jev.portable-leaderboards.v1', 'updated_at': latest,
                 'benchmarks': benchmarks}

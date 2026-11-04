@@ -202,113 +202,6 @@ def extract_selected(selection):
     return archive
 
 
-def assert_recorded_fields(generated: dict, recorded: dict, *, ignore=()) -> None:
-    # Current rules may append execution metadata that older archives omitted.
-    # Every field present in the archive must still match.
-    for key, value in recorded.items():
-        if key not in ignore:
-            assert generated.get(key) == value, f"Archived {key} differs from the shared engine"
-
-
-def extract() -> dict:
-    source = ROOT / "leaderboard" / "arena-replays.json"
-    source_bytes = source.read_bytes()
-    archive = json.loads(source_bytes)
-    arena = json.loads((ROOT / "leaderboard" / "arena.json").read_text())
-    assert archive["run_id"] == arena["run_id"], "Arena and replay runs differ"
-    model_names = {row["id"]: row["name"] for row in arena["overall"]}
-    sys.path.insert(0, str(ROOT))
-    sys.path.insert(0, str(ROOT / "blink_arena" / "engines"))
-    import jev_showcase_games as puzzles
-    import jev_snake_realtime as snake
-    import jev_demo_games as boards
-
-    clips = []
-    specs = [
-        ("merge_2048", f"merge_2048-42-{MODEL_ID}", EXCERPT_START, "2048", "2048"),
-        ("sokoban_puzzle", f"sokoban_puzzle-42-{MODEL_ID}", 0, "Sokoban", "推箱子"),
-        ("snake_navigation", f"snake_navigation-42-{MODEL_ID}", 0, "Snake", "贪吃蛇"),
-        ("othello_6x6", "match-00001", 8, "Othello", "黑白棋"),
-    ]
-    for game, episode_id, start, name_en, name_zh in specs:
-        if game == "othello_6x6":
-            replay = archive["replays"]["00001"]
-            episode = replay["streams"][0]
-            seed = replay["seed"]
-        else:
-            episode = archive["episodes"][episode_id]
-            seed = episode["initial_state"].get("seed", 42)
-            assert episode["participant"] == MODEL_ID
-        assert episode["id"] == episode_id and not episode["missing_frames"]
-        source_steps = episode["steps"][start:start + 4]
-        assert len(source_steps) == 4
-        steps = []
-        previous_after = None
-        for item in source_steps:
-            before, after, action = item["before_state"], item["state"], item["action"]
-            execution = {"status": "verified_against_shared_engine", "action_applied": True}
-            if game in ("merge_2048", "sokoban_puzzle"):
-                candidates = puzzles.choices(before)
-                assert action in candidates
-                assert_recorded_fields(puzzles.step(before, action), after)
-                if previous_after is not None:
-                    assert before == previous_after, "Puzzle excerpt is not consecutive"
-                execution["score_delta"] = after["score"] - before["score"]
-                execution["physical_moves"] = after["steps"] - before["steps"]
-            elif game == "snake_navigation":
-                # before_state is the captured input. The archive's observation
-                # field is the later arrival snapshot, not the model input.
-                candidates = snake.choices(before)
-                assert action in candidates
-                timing = item["execution"]
-                if previous_after is not None:
-                    advanced = snake.advance_idle(previous_after, timing["pre_decision_seconds"])
-                    assert_recorded_fields(advanced, before, ignore=("execution_trace",))
-                arrival = snake.advance_idle(before, timing["waiting_seconds"])
-                assert_recorded_fields(arrival, item["observation"], ignore=("execution_trace",))
-                generated = snake.step(arrival, action) if timing["action_applied"] else arrival
-                generated = snake.advance_idle(generated, timing["post_action_seconds"])
-                assert_recorded_fields(generated, after, ignore=("execution_trace",))
-                if not timing["action_applied"]:
-                    assert arrival["outcome"] and timing["reason"] == "game_finished_while_waiting"
-                execution.update(timing)
-            else:
-                candidates = boards.legal(before)
-                assert action in candidates
-                assert_recorded_fields(boards.move(before, action), after)
-                if previous_after is not None:
-                    assert before == previous_after, "Board excerpt is not consecutive"
-                execution["flipped_discs"] = len(boards.flips(before, *boards.coord(before, action)))
-            previous_after = after
-            assert item["player"] in model_names
-            steps.append({
-                "index": item["index"], "model_id": item["player"], "actor": item.get("actor"),
-                "candidates": list(candidates), "action": action,
-                "before": state_view(game, before), "after": state_view(game, after),
-                "latency_seconds": item.get("latency_seconds"),
-                "repeat_count": item.get("stability", {}).get("repeat_count"), "execution": execution,
-            })
-        ids = list(dict.fromkeys(step["model_id"] for step in steps))
-        clips.append({
-            "game": game, "name_en": name_en, "name_zh": name_zh,
-            "episode_id": episode_id, "recording": episode["recording"],
-            "models": [{"id": ident, "name": model_names[ident]} for ident in ids],
-            "seed": seed, "episode_steps": len(episode["steps"]),
-            "verification": "Shared game rules; captured-state candidates and every recorded next state verified. Snake additionally replays the original waiting and post-action times.",
-            "steps": steps,
-        })
-    return {
-        "schema": "oneshot.home-decision.v2", "run_id": archive["run_id"],
-        "source": {
-            "file": "leaderboard/arena-replays.json",
-            "sha256": hashlib.sha256(source_bytes).hexdigest(),
-            "candidate_provenance": "Reconstructed from archived captured before_state with the shipped shared engine.",
-            "probabilities": "Not included in the replay archive; not inferred.",
-        },
-        "homepage_benchmark_model_id": "oneshot-w22m05r02-v5best-avg50", "clips": clips,
-    }
-
-
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true")
@@ -320,7 +213,9 @@ def main() -> None:
         transitions = verify_completed(json.loads(target.read_text()))
         print(f"Verified: four completed winning episodes, four checkpoints, {transitions} transitions, exact final states and clock receipts.")
         return
-    archive = extract_selected(json.loads(args.selection.read_text())) if args.selection else extract()
+    if not args.selection:
+        parser.error('Provide --selection to export completed showcase episodes')
+    archive = extract_selected(json.loads(args.selection.read_text()))
     expected = json.dumps(archive, ensure_ascii=False, separators=(",", ":"), allow_nan=False) + "\n"
     if args.check:
         assert target.read_text() == expected, "Homepage clips differ from their source"

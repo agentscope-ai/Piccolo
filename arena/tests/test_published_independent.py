@@ -1,52 +1,59 @@
+"""Stale public game rankings and replay mounts must never reappear."""
 import json
-import shutil
 from pathlib import Path
-
+import pytest
 from fastapi.testclient import TestClient
 from blink_arena.app import create_app
-from blink_arena.paths import REPO
-from blink_arena.privacy import assert_public_document
 from blink_arena.schemas import AppConfig
+from blink_arena.leaderboards import Leaderboards, PUBLIC_BENCHMARKS
+from blink_arena.public_surface import REMOVED_FILES
+from scripts.preview_leaderboard import create_preview_app
+from scripts.build_release import excluded
 
-
-def test_published_results_keep_evidence_denominators_and_pending_oneshot():
-    data = json.loads((REPO/'leaderboard/arena-independent.json').read_text())
-    assert_public_document(data)
-    rows = [r for r in data['overall'] if r['status'] != 'pending']
-    assert (len(rows),len(data['by_game']),data['completed'],data['scored'],data['errors']) == (9,22,1584,1578,6)
-    assert sum(r['valid'] for r in rows) == 1578
-    assert sum(r['errors'] for r in rows) == 6
-    assert sum(r['planned'] for r in rows) == 1584
-    for row in rows:
-        per_game = [next(g for g in table if g['id']==row['id']) for table in data['by_game'].values()]
-        assert all(g['planned']==8 and g['valid']+g['errors']==8 for g in per_game)
-        assert row['score'] == sum(g['wins'] for g in per_game)/176
-        assert row['errors'] == sum(g['errors'] for g in per_game)
-        assert all(g['score']==g['wins']/8 for g in per_game)
-    for table in [data['overall'],*data['by_game'].values()]:
-        missing = [r for r in table if r['status']=='pending']
-        assert len(missing)==1 and missing[0]['name']=='Blink'
-        assert all(missing[0][k] is None for k in ('score','success_rate','success_rate_valid','wins','valid','errors','latency_current','latency_all'))
-    assert data['replay_validation']['mario']['strict_passed']==72
-    luna = next(r for r in rows if 'gpt-6-luna' in r['id'])
-    assert luna['success_rate']==49/176 and luna['success_rate_valid']==49/170
-
-
-def test_frontend_prefers_published_cohort_over_stale_runtime_and_legacy_elo(tmp_path):
-    results = tmp_path/'results'
-    results.mkdir()
-    for name in ('arena-independent.json','arena.json'):
-        shutil.copy2(REPO/'leaderboard'/name, results/name)
-    runtime = tmp_path/'runtime'
+@pytest.mark.parametrize('prefix', ['', '/piccolo'])
+@pytest.mark.parametrize('preview', [False, True])
+def test_stale_mounts_and_runtime_cannot_publish_scores_or_replays(tmp_path, prefix, preview):
+    if preview and prefix:
+        return
+    web=tmp_path/'web'; web.mkdir()
+    (web/'playground').mkdir(); (web/'leaderboard').mkdir()
+    published=tmp_path/'published'; published.mkdir()
+    marker='stale-private-game-result'
+    for name in REMOVED_FILES:
+        (web/'playground'/name).write_text(marker)
+        (web/'leaderboard'/name).write_text(marker)
+        (published/name).write_text(marker)
+    (web/'index.html').write_text('fixture')
+    runtime=tmp_path/'runtime'
     (runtime/'evaluations').mkdir(parents=True)
-    (runtime/'evaluations/latest.json').write_text(json.dumps({'run_id':'old-runtime-pointer'}))
-    app = create_app(data=runtime, config=AppConfig(), leaderboard_dir=results)
+    (runtime/'evaluations/latest.json').write_text(json.dumps({'run_id':marker}))
+    app=(create_preview_app(web=web,leaderboard_dir=published) if preview else
+         create_app(data=runtime,web=web,config=AppConfig(),leaderboard_dir=published,prefix=prefix))
     with TestClient(app) as client:
-        payload = client.get('/api/elo')
-        assert payload.status_code==200
-        from blink_arena.game_scope import project_arena
-        assert payload.json()==project_arena(json.loads((results/'arena-independent.json').read_text()))
-        assert 'blackjack' not in payload.json()['by_game']
-        projection=client.get('/api/leaderboard').json()
-        arena=next(b for b in projection['benchmarks'] if b['id']=='gamejevbench')
-        assert arena['source_file']=='arena-independent.json'
+        for route in ['/api/elo','/api/elo/join','/api/v1/leaderboards/arena',
+                      '/api/v1/evaluations','/api/v1/evaluations/old/export']:
+            for method in ('get','post','put'):
+                response=getattr(client,method)(prefix+route)
+                assert response.status_code==404,(route,method,response.text)
+                assert marker not in response.text
+        for name in REMOVED_FILES:
+            for folder in ('playground','leaderboard'):
+                assert client.get(f'{prefix}/{folder}/{name}').status_code==404
+        projection=client.get(prefix+'/api/leaderboard').json()
+        assert tuple(b['id'] for b in projection['benchmarks'])==PUBLIC_BENCHMARKS
+        assert marker not in json.dumps(projection)
+        # A mounted old index or bundled leaderboard script cannot restore even
+        # the old navigation while known score/replay assets remain blocked.
+        for name in ('index.html', 'playground/leaderboard.js', 'piccolo.html'):
+            (web/name).write_text('GameJevArena gameEloPanel gamejevbench')
+            assert client.get(prefix+'/'+name).status_code==404
+        assert client.get(prefix+'/').status_code==404
+    store=Leaderboards(directory=published)
+    with pytest.raises(ValueError):store.get('arena')
+    for name in REMOVED_FILES:assert excluded('leaderboard/'+name)
+
+def test_no_public_game_snapshots_or_players_in_current_tree():
+    root=Path(__file__).resolve().parents[1]
+    for folder in ('leaderboard','web/playground'):
+        for name in REMOVED_FILES:
+            assert not (root/folder/name).exists()

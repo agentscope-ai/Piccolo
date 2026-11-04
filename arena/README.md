@@ -65,7 +65,7 @@ Clients use `/api/v1/*`; the machine-readable contract is `/api/openapi.json`. R
 
 ## Leaderboards
 
-JevBench, Decision Index, HarnessJevBench and DataJevBench each have a `jev.leaderboard.v1` JSON file. The files include metric names, scales, model identities and bilingual chart labels. The Arena also accepts aggregate and per-game Elo snapshots.
+JevBench, Decision Index, HarnessJevBench and DataJevBench each have a `jev.leaderboard.v1` JSON file. The files include metric names, scales, model identities and bilingual chart labels.
 
 ```bash
 .venv/bin/python scripts/import_leaderboard.py results.json

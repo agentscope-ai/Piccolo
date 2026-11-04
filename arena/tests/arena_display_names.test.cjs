@@ -1,6 +1,6 @@
 const test=require('node:test');
 const assert=require('node:assert/strict');
-const {model}=require('../web/playground/elo.js');
+const {model}=require('../web/playground/model-display.js');
 
 test('registered Arena checkpoints use the requested release names',()=>{
   assert.equal(model('oneshot27b-game-rl-native-iter17','Piccolo 27B RL-1019-iter17 · Local'),'Piccolo 27B RL');

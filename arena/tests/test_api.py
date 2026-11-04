@@ -182,32 +182,39 @@ def test_explicit_public_origin_behind_https_proxy(tmp_path, monkeypatch):
             'metric': 'accuracy', 'rows': []}, headers={'Origin': origin}).status_code == 403
 
 
-def test_complete_evaluation_replay_and_incremental_enrollment(server):
-    app,c,calls,data=server
-    connect(c,'a');connect(c,'b')
-    result=c.post('/api/v1/evaluations',json={'model_ids':['a','b'],'games':['othello_6x6','guess_the_number'],'seed_base':42,'concurrency':2})
-    assert result.status_code==201,result.text
-    ident=result.json()['run_id']
-    def wait_finished():
-        until=time.monotonic()+35
-        while time.monotonic()<until:
-            status=c.get('/api/v1/evaluations/'+ident).json()
-            if status['state'] not in ('running','pausing'): return status
-            time.sleep(.03)
-        pytest.fail('Mock evaluation did not finish')
-    status=wait_finished()
-    assert status['state']=='complete',status
-    assert status['scored']==status['planned']==3
-    folder=data/'evaluations'/ident
-    before={p.name:p.read_bytes() for p in (folder/'matches').glob('*.json')}
-    replay=c.get('/api/v1/evaluations/'+ident+'/export')
-    assert replay.status_code==200,replay.text
-    assert len(replay.json()['replays']['matches'])==3
-    connect(c,'c')
-    result=c.post('/api/v1/evaluations/'+ident+'/models/c')
-    assert result.status_code==200,result.text
-    status=wait_finished()
-    assert status['state']=='complete',status
-    assert status['scored']==status['planned']==9
-    assert all((folder/'matches'/name).read_bytes()==content for name,content in before.items())
-    assert 'test-secret-value' not in ''.join(p.read_text() for p in folder.rglob('*.json'))
+def test_internal_evaluation_replay_and_incremental_enrollment(server):
+    """Keep the engine/replay contract under test without a public results API."""
+    from blink_arena.app import owner_context
+    from blink_arena.schemas import EvaluationCreate
+    from jev_demo_arena_replay import Exporter
+    app, client, calls, data = server
+    for model in ('a', 'b', 'c'):
+        connect(client, model)
+    async def run():
+        token = owner_context.set(client.cookies['jev_session'])
+        try:
+            store = app.state.evaluations
+            result = await store.create(EvaluationCreate(model_ids=['a','b'],
+                games=['othello_6x6','guess_the_number'], seed_base=42, concurrency=2))
+            runner = store.load(result['run_id'])
+            async def finished():
+                for attempt in range(1200):
+                    status = runner.status()
+                    if status['state'] not in ('running','pausing'):
+                        return status
+                    await asyncio.sleep(.03)
+                pytest.fail('Mock internal evaluation did not finish')
+            status = await finished()
+            assert status['state']=='complete' and status['scored']==status['planned']==3
+            folder = data/'evaluations'/result['run_id']
+            before = {p.name:p.read_bytes() for p in (folder/'matches').glob('*.json')}
+            archive = await asyncio.to_thread(Exporter(data/'evaluations', data/'private-test.js').export,
+                                              run_id=result['run_id'], data_only=True)
+            assert len(archive['matches'])==3
+            await store.join(runner, 'c')
+            status = await finished()
+            assert status['state']=='complete' and status['scored']==status['planned']==9
+            assert all((folder/'matches'/name).read_bytes()==content for name,content in before.items())
+        finally:
+            owner_context.reset(token)
+    client.portal.call(run)

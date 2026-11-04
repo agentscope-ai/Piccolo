@@ -86,7 +86,7 @@ python arena/tests/browser_home_replays.py --url http://127.0.0.1:8080 --out var
 
 ## 归档展示（2026-10-26，2026-10-27 扩展）
 
-展示使用随仓库提供的 `arena/leaderboard/arena-replays.json`，包含 132 场历史对局与 45 条复用 episode。原文件仅压缩 JSON 排版，解析后的内容不变；不重新执行策略、不补跑模型、不重新计分。
+展示使用 `arena/web/showcase/traces/` 中已提取的精选轨迹及各自来源回执；不重新执行策略、不补跑模型、不重新计分。可选提取工具需显式提供仓库外 archive。
 
 选取七条已有完整可视状态的轨迹。原录制类型均为 `reconstructed_verified`：归档状态由原导出器重建并验证；本次直接渲染这些已保存状态，不把它们描述为原始屏幕录像。
 

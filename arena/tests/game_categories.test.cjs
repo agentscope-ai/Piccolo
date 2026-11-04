@@ -1,9 +1,8 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const taxonomy = require('../web/playground/game-categories.js');
-const published = require('../leaderboard/arena-elo.json');
 const scope = require('../config/game-scope.json');
-const activeGames=published.fixed_config.games.filter(game=>!scope.excluded_games.includes(game.id));
+const activeGames=taxonomy.groups.flatMap(group=>group.games).filter(id=>!scope.excluded_games.includes(id)).map(id=>({id}));
 
 test('every active game has exactly one category and a matching icon',()=>{
   const ids=taxonomy.groups.flatMap(group=>group.games);

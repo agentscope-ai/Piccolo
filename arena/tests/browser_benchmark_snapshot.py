@@ -39,7 +39,11 @@ def main():
                     response = page.request.get(args.url.rstrip('/') + '/api/v1/leaderboards/' + benchmark)
                     assert response.ok
                     expected[benchmark] = response.json()['rows']
+                assert page.locator('#gameEloPanel,[data-benchmark="gamejevbench"]').count() == 0
+                assert page.request.get(args.url.rstrip('/')+'/api/elo').status == 404
+                assert page.request.get(args.url.rstrip('/')+'/playground/visible-control.js').status == 404
                 page.locator('[data-tab="leaderboard"]').click()
+                assert page.locator('#leaderboardTabs [data-benchmark]').count() == 4
                 page.wait_for_selector('.lb-metrics-table tbody tr')
                 for benchmark, source in expected.items():
                     page.locator(f'#leaderboardTabs [data-benchmark="{benchmark}"]').click()

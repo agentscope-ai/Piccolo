@@ -11,7 +11,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from pydantic import ValidationError
-from blink_arena.leaderboards import Leaderboards
+from blink_arena.leaderboards import Leaderboards, PUBLIC_BENCHMARKS
 from blink_arena.paths import leaderboard_directory
 from blink_arena.schemas import LeaderboardDocument
 
@@ -32,6 +32,9 @@ def main(argv: list[str] | None = None) -> int:
         print(f'Cannot read leaderboard file ({type(exc).__name__})', file=sys.stderr)
         return 2
 
+    if document.benchmark_id not in PUBLIC_BENCHMARKS:
+        print('Unknown public benchmark.', file=sys.stderr)
+        return 2
     store = Leaderboards(directory=leaderboard_directory(args.leaderboard_dir))
     try:
         store.put(document)

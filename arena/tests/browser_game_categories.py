@@ -12,7 +12,6 @@ def main():
     parser.add_argument('--out',type=Path,required=True)
     args=parser.parse_args();args.out.mkdir(parents=True,exist_ok=True)
     base=args.url.rstrip('/')
-    data=json.load(urlopen(base+'/api/elo',timeout=30))
     findings=[]
     with sync_playwright() as p:
         browser=p.chromium.launch()
@@ -47,46 +46,14 @@ def main():
                 positions=page.locator('#playGameCategory,#playQuickGame').evaluate_all('nodes=>nodes.map(n=>({y:n.getBoundingClientRect().y,x:n.getBoundingClientRect().x,w:n.getBoundingClientRect().width}))')
                 assert abs(positions[0]['y']-positions[1]['y'])<2 and positions[0]['x']+positions[0]['w']<=positions[1]['x']
                 page.screenshot(path=str(args.out/f'{size}-{language}-playground.png'),full_page=True)
-                page.locator('[data-tab="leaderboard"]').click()
-                page.locator('[data-benchmark="gamejevbench"]').click()
-                page.wait_for_function('document.querySelectorAll("[data-radar-group]").length===4')
-                assert page.locator('.lb-radar-group-arc').count()==0
-                game_count=sum(len(group['games']) for group in taxonomy)
-                assert game_count==17
-                assert page.locator('.lb-radar-axis').count()==game_count
-                overlaps=page.locator('.lb-radar-axis,.lb-radar-group-label').evaluate_all('nodes=>{const a=nodes.map(n=>({text:n.textContent,r:n.getBoundingClientRect()})),out=[];for(let i=0;i<a.length;i++)for(let j=i+1;j<a.length;j++){const x=a[i].r,y=a[j].r;if(Math.min(x.right,y.right)-Math.max(x.left,y.left)>2&&Math.min(x.bottom,y.bottom)-Math.max(x.top,y.top)>2)out.push([a[i].text,a[j].text]);}return out;}')
-                assert not overlaps,overlaps
-                page.locator('#lbRadarDimension').select_option('-1')
-                assert 'Elo' in page.locator('.lb-bar-metric').inner_text()
-                assert page.locator('#gameEloPanel .elo-table thead th').count()==7
-                baseline=page.locator('details.elo-baseline-section')
-                assert not baseline.evaluate('(node)=>node.open')
-                assert not page.locator('#eloBaselineProgress').is_visible()
-                baseline.locator('summary').click()
-                assert page.locator('#eloBaselineProgress').is_visible()
-                baseline.locator('summary').click()
-                arena_piccolo=page.locator('.lb-radar-legend-row').filter(has=page.locator('[data-radar-model="oneshot-rl-r6-iter0000019"]'))
-                assert arena_piccolo.locator('.lb-model-name').text_content().strip()=='Piccolo-27B'
-                arena_color=arena_piccolo.locator('.lb-radar-swatch').evaluate('(node)=>getComputedStyle(node).backgroundColor')
-                assert 'Piccolo (27B)' not in page.locator('#gameEloPanel').inner_text()
-                dims=page.evaluate('({client:document.documentElement.clientWidth,scroll:document.documentElement.scrollWidth})')
-                assert dims['scroll']<=dims['client']+1,dims
+                assert sum(len(group['games']) for group in taxonomy)==17
                 assert not errors,errors
-                page.screenshot(path=str(args.out/f'{size}-{language}-radar.png'),full_page=True)
-                page.locator('#lb-tab-jevbench').click()
-                page.wait_for_function('document.getElementById("leaderboardRadar").dataset.radarBenchmark==="jevbench"')
-                public_piccolo=page.locator('.lb-radar-legend-row').filter(has=page.locator('[data-radar-model="blink-27b-1028"]'))
-                assert public_piccolo.locator('.lb-model-name').text_content().strip()=='Piccolo-27B'
-                assert public_piccolo.locator('.lb-radar-swatch').evaluate('(node)=>getComputedStyle(node).backgroundColor')==arena_color
-                findings.append({'size':size,'language':language,'game_switches':game_count,'category_selects':2,
-                                 'radar_groups':4,'overlapping_labels':0,'columns':7,'page_errors':0,
-                                 'piccolo_label':'Piccolo-27B','piccolo_color':arena_color,'baseline_collapsed':True})
-                page.locator('[data-tab="games"]').click()
+                findings.append({'size':size,'language':language,'game_switches':17,'category_selects':2,'page_errors':0})
             page.close()
         browser.close()
     (args.out/'validation.json').write_text(json.dumps({'url':base,'checks':findings},indent=2)+'\n')
     print(json.dumps({'passed':len(findings),'game_switches':sum(f['game_switches'] for f in findings),
-                      'radar_groups':4,'overlapping_labels':0}))
+                      'active_games':17}))
 
 
 if __name__=='__main__':main()

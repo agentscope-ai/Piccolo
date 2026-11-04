@@ -25,8 +25,8 @@ See [website development](../arena/docs/WEBSITE.md) and [verification](VERIFICAT
 
 ## 本次更新
 
-- 首页、GameJevBench/Arena、模型筛选、模型连接提示、回放标题及中英文辅助标签统一显示 Piccolo。历史模型 ID、checkpoint、原始轨迹与概率保留。
-- 同步 4B、9B、27B 的 JevBench、Decision Index、HarnessJevBench、DataJevBench 成绩，以及当前游戏榜单。Piccolo-27B 的 JevBench 准确率为 92.21%，Decision Index 为 68.29；分数直接来自对应 JSON，没有重跑或改写结果。
+- 首页、模型筛选、模型连接提示、回放标题及中英文辅助标签统一显示 Piccolo。历史模型 ID、checkpoint、原始轨迹与概率保留。
+- 同步 4B、9B、27B 的 JevBench、Decision Index、HarnessJevBench、DataJevBench 成绩。Piccolo-27B 的 JevBench 准确率为 92.21%，Decision Index 为 68.29；分数直接来自对应 JSON，没有重跑或改写结果。
 - 更新八张 GIF：完整保留 210 次记录转换、2,805 帧及 195 次模型判断的候选概率。右侧显示选项、概率与实际选择；自动执行和唯一合法动作不伪造概率。详见 [Showcase 来源](SHOWCASE.md)。
 - 保留本仓库独有的完整动画采样、成功 Snake 轨迹、棋类 teacher 回放与暂停/模拟推理时钟支持。`blink_arena` 包名、`jev.*` 协议和 `JEV_*` 环境变量保持兼容。
 - 独立网站同步不包含内部模型服务启动器、私有依赖、运行日志或凭据；参考推理和发布模型说明仍由原目录维护。
@@ -35,7 +35,7 @@ See [website development](../arena/docs/WEBSITE.md) and [verification](VERIFICAT
 
 - Python：339 项通过，22 项需显式连接运行服务的测试跳过，另有 2 项子测试通过。
 - 前端单元检查：49 项通过。
-- 两份本地网页分别通过 16 组中英文、桌面/手机榜单检查；首页、GameJevBench 与 Playground 的品牌检查通过。
+- 两份本地网页分别通过 16 组中英文、桌面/手机榜单检查；首页与 Playground 的品牌检查通过。
 - 完整 Showcase：5 项数据回归、16 组桌面/手机回放检查通过，未请求模型或外部服务。
 - 发行范围检查通过；原始回放和候选概率摘要保持一致。
 - 附加运行的旧 Terra 记录兼容脚本存在 `last_seen_frame` 字段比较失败；对应脚本、游戏核心与压缩合同均未被本次同步修改。该独立检查不属于上述 pytest 通过集合。

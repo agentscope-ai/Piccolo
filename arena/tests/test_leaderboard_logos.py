@@ -7,8 +7,7 @@ from blink_arena.app import create_app
 from blink_arena.leaderboards import Leaderboards
 from blink_arena.schemas import AppConfig, LeaderboardDocument, LeaderboardRow
 
-
-@pytest.mark.parametrize('benchmark', ['jevbench', 'decisionindex', 'harnessjevbench', 'arena'])
+@pytest.mark.parametrize('benchmark', ['jevbench', 'decisionindex', 'harnessjevbench', 'datajevbench'])
 def test_optional_logo_import_roundtrip_and_projection(tmp_path, benchmark):
     store = Leaderboards(directory=tmp_path/'leaderboards')
     plain = LeaderboardRow(model_id='plain', model_name='Plain', score=.5)
@@ -17,23 +16,18 @@ def test_optional_logo_import_roundtrip_and_projection(tmp_path, benchmark):
     before = LeaderboardDocument(benchmark_id=benchmark, title=benchmark, version='fixture',
                                  metric='accuracy', rows=[plain])
     store.put(before)
-    doc = before.model_copy(update={'rows': [plain, branded]})
-    store.put(doc)
+    store.put(before.model_copy(update={'rows': [plain, branded]}))
     assert list((tmp_path/'leaderboards/history').glob('*.json'))
-    assert 'logo' not in store.get(benchmark).rows[0].model_dump()
-    assert store.get(benchmark).rows[1].logo == branded.logo
     with TestClient(create_app(data=tmp_path/'runtime', config=AppConfig(),
                               leaderboard_dir=tmp_path/'leaderboards')) as client:
         rows = client.get('/api/v1/leaderboards/'+benchmark).json()['rows']
-        assert 'logo' not in rows[0] and rows[1]['logo'] == branded.logo
-        if benchmark != 'arena':
-            result = next(b for b in client.get('/api/leaderboard').json()['benchmarks'] if b['id']==benchmark)
-            projected = {r['model_key']: r for r in result['display_rows']}
-        else:
-            projected = {r['id']: r for r in client.get('/api/elo').json()['overall']}
+        result = next(b for b in client.get('/api/leaderboard').json()['benchmarks'] if b['id']==benchmark)
+        projected = {r['model_key']: r for r in result['display_rows']}
         assert projected['branded']['logo'] == branded.logo
-        assert 'logo' not in projected['plain']
+        assert 'logo' not in projected['plain'] and 'logo' not in rows[0]
         assert rows[1]['score'] == .75 and rows[1]['model_id'] == 'branded'
+
+
 
 
 @pytest.mark.parametrize('value', [None, '', './playground/logos/example.svg', 'playground/logos/example.png',

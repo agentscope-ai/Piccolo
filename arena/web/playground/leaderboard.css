@@ -163,7 +163,6 @@
 .lb-score,.lb-rank{font-variant-numeric:tabular-nums}
 #leaderboardView .lb-metrics-table td[data-metric],#leaderboardView .lb-metrics-table th:nth-child(n+3){text-align:right}
 .lb-metrics-table td[data-metric]{min-width:80px}
-#leaderboardView .elo-table>thead>tr>th:first-child,#leaderboardView .elo-table>tbody>tr>td:first-child{display:none}
 #leaderboardView .lb-metrics-table>thead>tr>th:first-child,#leaderboardView .lb-metrics-table>tbody>tr>td:first-child{width:44px;text-align:center;color:var(--fs-text-tertiary)}
 .lb-source{margin:0;max-width:320px;min-width:55px}
 .lb-source div{margin:6px 0;font-size:11px;overflow-wrap:anywhere}
@@ -188,24 +187,7 @@
 .lb-live-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:20px 0}
 .lb-live-summary div{border:1px solid var(--fs-border);background:#fff;border-radius:10px;padding:15px}
 .lb-live-summary strong{display:block;font-size:22px;font-weight:550}.lb-live-summary span{color:var(--fs-text-tertiary);font-size:12px}
-.lb-game-details>td{padding-top:0!important}.lb-game-details details{margin-top:0}
-.lb-game-cards{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;padding:0;margin:14px 0}
-.lb-game-cards li{border:1px solid var(--fs-border);border-radius:10px;background:#fbfcfc;padding:12px;white-space:normal}
-.lb-game-cards strong,.lb-game-cards span{display:block}.lb-game-cards span{font-size:12px;color:var(--fs-text-tertiary);overflow-wrap:anywhere}
 .lb-breakdown-scroll{overflow-x:auto;max-width:100%;margin-top:12px}.lb-breakdown-table{min-width:900px;width:100%;border-collapse:collapse;font-size:12px}.lb-breakdown-table td,.lb-breakdown-table th{padding:9px!important;white-space:nowrap}
-#gameJevBenchLive{margin-top:22px}#gameJevBenchLive .game-evaluation-scroll{display:none}
-#leaderboardView #gameEloPanel{border:0!important;background:transparent;box-shadow:none!important;padding:8px 0 0;margin:0}
-#leaderboardView #gameEloPanel h3{font-size:20px;font-weight:550;letter-spacing:-.45px;color:#4f686c;margin:0}
-#leaderboardView #gameEloPanel .elo-heading>.eyebrow,#leaderboardView #gameEloPanel .elo-heading .eyebrow{display:none}
-#leaderboardView #gameEloPanel .elo-configuration{background:#f3f7f5;border:1px solid var(--fs-border);border-radius:9px;color:var(--fs-text-tertiary);font-size:12px;padding:10px 13px}
-#leaderboardView #gameEloPanel .elo-chip,#leaderboardView #gameEloPanel .elo-baseline-card,#leaderboardView #gameEloPanel .elo-method .elo-formula{background:#f9fafa;border-color:var(--fs-border);border-radius:9px;color:var(--fs-text-tertiary)}
-#leaderboardView #gameEloPanel .elo-baseline-bar{height:3px;background:#e6edea;border-radius:3px}
-#leaderboardView #gameEloPanel .elo-baseline-bar span{background:#b0c2c5;border-radius:3px}
-#leaderboardView #gameEloPanel :is(.elo-baseline-section,.elo-ranking-head,.elo-method,.elo-matches){border-color:var(--line)}
-#leaderboardView #gameEloPanel summary,#leaderboardView #gameEloPanel .elo-baseline-card>span{color:var(--fs-text-tertiary)}
-#leaderboardView #gameEloPanel select{background:#fff;border-color:var(--fs-border);color:#749398;font-size:12px}
-#leaderboardView #gameEloPanel .elo-state{font-size:12px;color:var(--fs-text-tertiary)}
-#leaderboardView #gameEloPanel .elo-table .elo-stability>strong{font-size:12px;font-weight:500}
 #leaderboardView .lb-has-metric-help{cursor:help;text-decoration:none}
 #leaderboardView .lb-has-metric-help:hover{color:var(--fs-accent);text-decoration:underline dotted;text-underline-offset:4px}
 #leaderboardView .lb-table th.lb-has-metric-help:hover{color:#e6ad8d}
@@ -233,7 +215,7 @@
  .lb-radar-panel{column-gap:8px}.lb-radar-heading{margin-bottom:8px;min-height:36px;gap:3px}#leaderboardView .lb-radar-heading h3{font-size:19px;letter-spacing:-.4px}
  .lb-benchmark-about>summary{width:36px;height:40px}.lb-benchmark-description{font-size:12px;line-height:1.8;margin-bottom:18px}.lb-benchmark-about-body{padding:17px 18px}
  .lb-model-picker{margin:0 0 14px;align-self:start}.lb-model-picker>summary{font-size:11px;padding:7px 9px;min-height:34px}
- .lb-model-picker-body{width:calc(100vw - 36px);padding:12px;grid-template-columns:minmax(0,1fr)}.lb-selection-actions{justify-content:flex-end}.lb-radar-legend{grid-template-columns:minmax(0,1fr);max-height:230px}
+ .lb-model-picker-body{left:0;right:auto;width:calc(100vw - 78px);padding:12px;grid-template-columns:minmax(0,1fr)}.lb-selection-actions{justify-content:flex-end}.lb-radar-legend{grid-template-columns:minmax(0,1fr);max-height:230px}
  .lb-comparison-grid{grid-template-columns:minmax(0,1fr);border-radius:12px}
  .lb-chart-card{padding:18px 15px}.lb-chart-card+.lb-chart-card{box-shadow:none;border-top:1px solid #eaf0ed}
  .lb-chart-title h4{font-size:12px}.lb-chart-title select{font-size:11px;min-height:30px}
@@ -260,7 +242,6 @@
  #leaderboardView .lb-table .lb-model-logo{width:19px;height:19px;flex-basis:19px}
  .lb-table-tools{gap:8px;flex-wrap:wrap}.lb-table-search{width:auto;flex:1;min-width:140px}.lb-table-count{width:100%;font-size:10.5px;margin:0}
  #leaderboardView .lb-group-heading h3{font-size:18px}.lb-live-summary{grid-template-columns:repeat(2,minmax(0,1fr))}
- #leaderboardView #gameEloPanel h3{font-size:18px}.elo-heading{align-items:center!important}
 }
 
 #leaderboardView .lb-benchmark-version {font-size:12px;font-weight:400;letter-spacing:normal;color:var(--fs-text-tertiary,#7c8c92);margin-left:10px;white-space:nowrap;}
