@@ -1,0 +1,57 @@
+{# Piccolo Qwen3.5 full chat template: decision
+Python prepares field parts and media order; this template owns the task layout.
+#}
+{%- macro render_parts(parts) -%}
+{%- for part in parts -%}
+{%- if part.type == 'text' -%}{{- part.text -}}
+{%- elif part.type == 'image_ref' -%}{{- 'Image ' ~ part.index -}}
+{%- else -%}{{- raise_exception('Unexpected Jev field part.') -}}
+{%- endif -%}
+{%- endfor -%}
+{%- endmacro -%}
+{%- if messages | length != 1 or messages[0].role != 'user' or messages[0].jev is undefined or tools -%}
+{{- raise_exception('Piccolo requires one Jev user message without tools.') -}}
+{%- endif -%}
+{%- set message = messages[0] -%}
+{%- set j = message.jev -%}
+{%- set header -%}
+{{- 'Questions that will be asked about the context:\n' -}}
+{%- for question in j.questions -%}
+{{- '- ' -}}{{- render_parts(question.instructions) -}}{{- '\n' -}}
+{%- endfor -%}
+{{- '\n' -}}
+{%- endset -%}
+{%- set body -%}
+{%- if not j.state_is_asset_only -%}{{- render_parts(j.state) -}}{{- '\n\n' -}}{%- endif -%}
+{{- render_parts(j.instructions) -}}{{- '\n' -}}
+{%- for option in j.options -%}
+{{- option.label + '. ' -}}
+{%- if j.kind == 'choice' -%}
+{{- option.key -}}{%- if option.has_description -%}{{- ': ' -}}{{- render_parts(option.content) -}}{%- endif -%}
+{%- else -%}{{- render_parts(option.content) -}}
+{%- endif -%}
+{%- endfor -%}
+{{- "Answer with the option's letter from the given choices directly." -}}
+{%- endset -%}
+{%- set rendered = namespace(value=header + body, images=0) -%}
+{%- for image in message.content -%}
+{%- if message.content | length > 1 -%}
+{%- set rendered.value = rendered.value + 'Image ' ~ loop.index ~ ':' -%}
+{%- endif -%}
+{%- set rendered.images = rendered.images + 1 -%}
+{%- if add_vision_id -%}
+{%- set rendered.value = rendered.value + 'Picture ' ~ rendered.images ~ ': ' -%}
+{%- endif -%}
+{%- set rendered.value = rendered.value + '<|vision_start|><|image_pad|><|vision_end|>' -%}
+{%- endfor -%}
+{%- if not message.content -%}{%- set rendered.value = rendered.value + '\n\n' -%}{%- endif -%}
+{%- set rendered.value = rendered.value + body -%}
+{{- '<|im_start|>user\n' + (rendered.value | trim) + '<|im_end|>\n' -}}
+{%- if add_generation_prompt -%}
+{{- '<|im_start|>assistant\n' -}}
+{%- if enable_thinking is defined and enable_thinking is true -%}
+{{- '<think>\n' -}}
+{%- else -%}
+{{- '<think>\n\n</think>\n\n' -}}
+{%- endif -%}
+{%- endif -%}

@@ -2,7 +2,20 @@
 
 [request.json](request.json) asks whether a read-only tool operation may delete or overwrite data. The example returns candidate probabilities without executing the tool. The [workflow collection](workflows/README.md) contains 12 bilingual examples from agent and data workflows.
 
-## Full checkpoint
+## Current HF checkpoint
+
+With a current HF Piccolo export, run from the repository root:
+
+```bash
+python -m pip install -r inference/reference/requirements.txt
+python inference/reference/piccolo_inference.py \
+  --model /models/Piccolo-current --request examples/request.json --device cuda:0 --output result.json
+```
+
+The checkpoint bundles its model, processor and frozen prompt. It also accepts
+image assets; see the [reference guide](../inference/reference/README.md).
+
+## Historical full checkpoint
 
 Run from the repository root in a Python environment with sufficient memory for the 4B weights:
 
@@ -13,6 +26,7 @@ python inference/reference/piccolo_inference.py \
   --model Piccolo-4B --request examples/request.json --device cuda:0 --output result.json
 ```
 
+The reference automatically detects the historical checkpoint format above.
 For CPU inference, use `--device cpu --dtype float32`. The output includes `attention_mode`, `layout` and `results`. Each `option_keys` list corresponds to `bidirectional_prompt.probabilities`; the probabilities sum to one.
 
 ## QwenPaw
