@@ -10,7 +10,7 @@
 
 ## Reproduce in one command
 
-Start a [Piccolo decision server](../inference/piccolo_inference_sglang/README.md), then run from the repository root with Python 3.12 and Git:
+Start a [Piccolo decision server](../inference/sglang/README.md), then run from the repository root with Python 3.12 and Git:
 
 ```bash
 python evaluation/reproduce.py --base-url http://127.0.0.1:18604 --model Piccolo-4B

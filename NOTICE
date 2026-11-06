@@ -13,7 +13,7 @@ Copyright (c) 2026 1000luca, under the MIT License. The full notice is in
 inference/reference/THIRD_PARTY_LICENSES.md.
 The SGLang plugin retains the FlexDM MIT notice and the MIT notice for
 Decision Index image resizing, Copyright (c) 2026 Apolinário Passos, in
-inference/piccolo_inference_sglang/piccolo_inference_sglang/licenses/.
+inference/hf/piccolo_hf/licenses/.
 
 See arena/docs/THIRD_PARTY.md for game engines, fonts and other components,
 and assets/brands/README.md for external brand assets.

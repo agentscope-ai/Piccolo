@@ -1,6 +1,6 @@
 # Third-party notices
 
-`piccolo_layout.py` uses the FlexDM v1.0 layout and retains its MIT license.
+`legacy/piccolo_layout.py` uses the FlexDM v1.0 layout and retains its MIT license.
 
 MIT License
 
