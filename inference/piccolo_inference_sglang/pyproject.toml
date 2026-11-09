@@ -7,14 +7,15 @@ name = "piccolo-inference-sglang"
 version = "0.2.1"
 description = "Piccolo text and vision inference for SGLang, with optional frozen PaddleOCR"
 requires-python = ">=3.12"
-dependencies = [
+dependencies = []
+
+[project.optional-dependencies]
+inference = [
     "sglang==0.5.22",
     "transformers==5.19.0",
     "fastapi==0.141.1",
     "Pillow==11.3.0",
 ]
-
-[project.optional-dependencies]
 ocr = [
     "paddlepaddle-gpu==3.3.0",
     "paddleocr==3.7.0",

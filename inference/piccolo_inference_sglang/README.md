@@ -15,7 +15,7 @@ Using pip:
 python3.12 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
-python -m pip install --pre .
+python -m pip install --pre '.[inference]'
 ```
 
 Or using [uv](https://docs.astral.sh/uv/):
@@ -23,25 +23,26 @@ Or using [uv](https://docs.astral.sh/uv/):
 ```bash
 uv venv --python 3.12 .venv
 source .venv/bin/activate
-uv pip install --prerelease=allow .
+uv pip install --prerelease=allow '.[inference]'
 ```
 
-The default installation includes only the main inference dependencies. OCR is optional and disabled by default; it requires the `ocr` extra and `PICCOLO_OCR_ENABLED=1`.
+Install `.[inference]` for the model server; installing `.` alone installs only the package. OCR is optional and disabled by default.
 
 ### Optional OCR setup
 
-Install the `ocr` extra into the same `.venv` created above:
+Install `.[ocr]` in a separate environment to keep Paddle's CUDA libraries separate from PyTorch's. Keep the `inference` and `ocr` extras in their respective environments:
 
 ```bash
-uv pip install --python .venv/bin/python --prerelease=allow '.[ocr]' \
+uv venv --python 3.12 .venv-ocr
+uv pip install --python .venv-ocr/bin/python --prerelease=allow '.[ocr]' \
   --extra-index-url https://www.paddlepaddle.org.cn/packages/stable/cu126/ \
   --index-strategy unsafe-best-match
 ```
 
-Prepare the OCR weights:
+Prepare the OCR weights using the OCR environment:
 
 ```bash
-uv run --no-sync python -m piccolo_inference_sglang.prepare_ocr_models \
+.venv-ocr/bin/python -m piccolo_inference_sglang.prepare_ocr_models \
   --out "$PWD/ocr_models"
 ```
 
@@ -95,7 +96,7 @@ The vision command above runs without OCR. To enable it, restart the vision serv
 
 ```bash
 PICCOLO_OCR_ENABLED=1 \
-PICCOLO_OCR_PYTHON="$PWD/.venv/bin/python" \
+PICCOLO_OCR_PYTHON="$PWD/.venv-ocr/bin/python" \
 PICCOLO_OCR_MODEL_DIR="$PWD/ocr_models" \
 PYTHON="$PWD/.venv/bin/python" \
   bash scripts/launch_vision.sh /models/piccolo-4B-1028 0 18704
