@@ -8,98 +8,16 @@ import hashlib
 import io
 import json
 import math
+import time
 
 from fastapi import Request
 from starlette.responses import JSONResponse
 from PIL import Image
-from sglang.srt.managers.io_struct import GenerateReqInput
 from transformers import AutoTokenizer
 
-MAX_PIXELS = 1638400
-LETTERS = 'ABCDEFGHIJKL'
-TAIL = "Answer with the option's letter from the given choices directly."
-VISION_FORMAT = 'question_list_text_images_text'
-PROMPT_REVISION = '20261030'
-
-
-def image_url(ref):
-    """Accept data URLs or base64 from the HTTP client; cap before processing."""
-    raw = base64.b64decode(ref.split(',', 1)[1] if ref.startswith('data:') else ref, validate=True)
-    with Image.open(io.BytesIO(raw)) as image:
-        width, height = image.size
-        fmt = image.format
-        if width * height > MAX_PIXELS:
-            scale = (MAX_PIXELS / (width * height)) ** 0.5
-            width, height = max(1, int(width * scale)), max(1, int(height * scale))
-            fmt = 'PNG' if fmt == 'PNG' else 'JPEG'
-            mode = 'RGBA' if fmt == 'PNG' and ('A' in image.mode or 'transparency' in image.info) else 'RGB'
-            resized = image.convert(mode).resize((width, height), Image.Resampling.LANCZOS)
-            buffer = io.BytesIO()
-            resized.save(buffer, format=fmt, **({'quality': 95} if fmt == 'JPEG' else {}))
-            raw = buffer.getvalue()
-        elif fmt not in ('PNG', 'JPEG', 'WEBP', 'GIF'):
-            buffer = io.BytesIO()
-            image.convert('RGB').save(buffer, format='JPEG', quality=95)
-            raw, fmt = buffer.getvalue(), 'JPEG'
-    return f'data:image/{fmt.lower()};base64,' + base64.b64encode(raw).decode(), width * height
-
-
-def conversations(state, questions, images, prompt, max_images=4):
-    if not isinstance(questions, dict) or not questions:
-        raise ValueError('questions must be a nonempty mapping')
-    texts = []
-    for key, question in questions.items():
-        if not isinstance(key, str) or not isinstance(question, dict):
-            raise ValueError('Question IDs must be strings and questions must be objects')
-        if question['type'] != 'choice':
-            raise ValueError('vision requests take choice questions only')
-        keys = list(question['criteria'])
-        if not 2 <= len(keys) <= len(LETTERS) or keys != list(LETTERS[:len(keys)]):
-            raise ValueError('options per choice: vision requires 2..12 consecutive keys A, B, C, ...')
-        text = question['instructions']
-        texts.append(text if isinstance(text, str) else json.dumps(text, ensure_ascii=False))
-    header = 'Questions that will be asked about the context:\n' + '\n'.join('- '+t for t in texts) + '\n\n'
-    if not isinstance(images, list) or not 1 <= len(images) <= max_images:
-        raise ValueError(f'the canvas holds 1..{max_images} images per request')
-    prompt = {} if prompt is None else prompt
-    if not isinstance(prompt, dict) or set(prompt) - {'readout', 'options_in_image'}:
-        raise ValueError('prompt accepts only readout and options_in_image')
-    readout = prompt.get('readout')
-    if readout is not None and not isinstance(readout, str):
-        raise ValueError('readout must be a string or null')
-    if 'options_in_image' in prompt and type(prompt['options_in_image']) is not bool:
-        raise ValueError('options_in_image must be boolean')
-    urls, pixels, hashes = [], [], []
-    for ref in images:
-        url, count = image_url(ref)
-        urls.append(url)
-        pixels.append(count)
-        hashes.append(hashlib.sha256(base64.b64decode(url.split(',', 1)[1])).hexdigest())
-    metadata = dict(image_pixels=pixels, image_sha256=hashes,
-        image_order=list(range(1, len(images)+1)), readout=readout,
-        options_in_image=bool(prompt.get('options_in_image')), vision_format=VISION_FORMAT,
-        prompt_revision=PROMPT_REVISION, question_list_prefix=True,
-        question_count=len(questions), body_copies=2,
-        header_sha256=hashlib.sha256(header.encode()).hexdigest())
-    rows = []
-    for key, question in questions.items():
-        if prompt.get('options_in_image'):
-            body = f"{question['instructions']} {TAIL}"
-        else:
-            options = '\n'.join(f'{k}. {v}' for k, v in question['criteria'].items())
-            body = f"{question['instructions']}\n{options}\n{TAIL}"
-        if state not in (None, {}, ''):
-            context = state if isinstance(state, str) else json.dumps(state, ensure_ascii=False, separators=(',', ':'))
-            body = 'State:\n' + context + '\n\n' + body
-        content = [dict(type='text', text=header), dict(type='text', text=body)]
-        content.extend(dict(type='image_url', image_url=dict(url=url)) for url in urls)
-        content.append(dict(type='text', text=body))
-        messages = [dict(role='user', content=content)]
-        if readout:
-            messages.append(dict(role='assistant', content=readout))
-        rows.append((key, list(question['criteria']), messages,
-                     hashlib.sha256(body.encode()).hexdigest()))
-    return rows, urls, metadata
+from .vision_prompt import MAX_PIXELS, LETTERS, conversations, prepare_images
+from .ocr import OCRPool
+from .ocr_common import inject_ocr
 
 
 class Vision:
@@ -112,25 +30,77 @@ class Vision:
         self.label_ids = [ids[0] for ids in self.label_ids]
         self.image_token_id = self.tokenizer.convert_tokens_to_ids('<|image_pad|>')
         self.lock = asyncio.Lock()
+        self.ocr = OCRPool()
+
+    async def close(self):
+        await self.ocr.close()
+
+    async def runtime(self):
+        await self.ocr.start()
+        return dict(backend='sglang',ocr=self.ocr.runtime(),
+                    vision_format='question_list_text_images_text',
+                    prompt_revision=('20261030+ocr-state-once-20261102'
+                                     if self.ocr.settings.enabled else '20261030'),
+                    ocr_dependency=('OCR completes before the decision forward pass'
+                                    if self.ocr.settings.enabled else 'disabled'))
+
+    async def runtime_handle(self):
+        try:
+            return JSONResponse(await self.runtime())
+        except (RuntimeError,OSError,asyncio.TimeoutError):
+            return JSONResponse({'error':'OCR initialization failed; see server stderr'},status_code=503)
 
     async def handle(self, request: Request):
         try:
             body = await request.json()
-            async with self.lock:
-                return JSONResponse(await self.infer(body, request))
+            if not isinstance(body,dict):raise ValueError('request must be an object')
+            return JSONResponse(await self.infer(body, request))
         except (ValueError, KeyError, TypeError) as error:
             return JSONResponse({'error': str(error)}, status_code=422)
-        except (RuntimeError, OSError) as error:
-            return JSONResponse({'error': str(error)}, status_code=502)
+        except (RuntimeError, OSError, asyncio.TimeoutError):
+            # No silent no-OCR prediction when the frozen branch fails.
+            return JSONResponse({'error': 'Inference failed; inspect server stderr'}, status_code=502)
 
     async def infer(self, body, request):
         from sglang.srt.entrypoints.http_server import get_global_state
         manager = get_global_state().tokenizer_manager
 
+        started=time.perf_counter()
         if body.get('model', self.model) != self.model:
             raise ValueError('model must match the served model')
-        rows, images, metadata = await asyncio.to_thread(
-            conversations, body['state'], body['questions'], body['images'], body.get('prompt'))
+        prepared=await asyncio.to_thread(prepare_images,body['images'])
+        prompt_task=asyncio.create_task(asyncio.to_thread(conversations,
+            body['state'],body['questions'],body['images'],body.get('prompt'),prepared_images=prepared))
+        ocr_task=asyncio.create_task(self.ocr.recognize(prepared[0]))
+        try:
+            (rows, images, metadata),(texts,ocr_metadata)=await asyncio.gather(prompt_task,ocr_task)
+        except BaseException:
+            prompt_task.cancel();ocr_task.cancel()
+            await asyncio.gather(prompt_task,ocr_task,return_exceptions=True)
+            raise
+        if texts is not None:
+            if ocr_metadata['image_sha256'] != metadata['image_sha256']:
+                raise RuntimeError('OCR and decision model saw different image bytes/order')
+            rows=inject_ocr(rows,body['state'],texts,len(images))
+            metadata['prompt_revision']='20261030+ocr-state-once-20261102'
+        metadata['ocr']=ocr_metadata
+        ready=time.perf_counter()
+        # While this request uses the GPU reader, following requests can do OCR.
+        # A request's own reader still depends on its completed OCR text.
+        async with self.lock:
+            acquired=time.perf_counter()
+            result=await self.run_rows(rows,images,metadata,manager,request)
+        finished=time.perf_counter()
+        result['inference']['timing_ms']=dict(
+            server_total_including_wait=(finished-started)*1000,
+            preparation_including_ocr=(ready-started)*1000,
+            reader_lock_wait=(acquired-ready)*1000,
+            reader_stage_wall=(finished-acquired)*1000,
+            note='Reader time includes tokenizer/backend scheduling; not isolated GPU kernel latency.')
+        return result
+
+    async def run_rows(self, rows, images, metadata, manager, request):
+        from sglang.srt.managers.io_struct import GenerateReqInput
         answers, readouts = {}, {}
         usage = dict(input_tokens=0, output_tokens=0, cached_tokens=0)
         for key, keys, messages, body_hash in rows:

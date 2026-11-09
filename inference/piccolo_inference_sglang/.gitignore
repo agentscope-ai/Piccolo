@@ -9,3 +9,7 @@ __pycache__/
 
 /_archive/
 .venv/
+
+.venv-ocr/
+ocr_models/
+dist/
