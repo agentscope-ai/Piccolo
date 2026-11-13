@@ -7,7 +7,7 @@ from blink_arena.app import create_app
 from blink_arena.leaderboards import Leaderboards
 from blink_arena.schemas import AppConfig, LeaderboardDocument, LeaderboardRow
 
-@pytest.mark.parametrize('benchmark', ['jevbench', 'decisionindex', 'harnessjevbench', 'datajevbench'])
+@pytest.mark.parametrize('benchmark', ['jevbench', 'decisionindex', 'decisionindex-vision', 'harnessjevbench', 'datajevbench'])
 def test_optional_logo_import_roundtrip_and_projection(tmp_path, benchmark):
     store = Leaderboards(directory=tmp_path/'leaderboards')
     plain = LeaderboardRow(model_id='plain', model_name='Plain', score=.5)

@@ -35,7 +35,7 @@ def main():
                 if size == 'desktop':
                     page.screenshot(path=str(args.output / f'{size}-{language}-home.png'), full_page=True)
                 expected = {}
-                for benchmark in ['jevbench', 'decisionindex', 'harnessjevbench', 'datajevbench']:
+                for benchmark in ['jevbench', 'decisionindex', 'decisionindex-vision', 'harnessjevbench', 'datajevbench']:
                     response = page.request.get(args.url.rstrip('/') + '/api/v1/leaderboards/' + benchmark)
                     assert response.ok
                     expected[benchmark] = response.json()['rows']
@@ -43,18 +43,18 @@ def main():
                 assert page.request.get(args.url.rstrip('/')+'/api/elo').status == 404
                 assert page.request.get(args.url.rstrip('/')+'/playground/visible-control.js').status == 404
                 page.locator('[data-tab="leaderboard"]').click()
-                assert page.locator('#leaderboardTabs [data-benchmark]').count() == 4
+                assert page.locator('#leaderboardTabs [data-benchmark]').count() == len(expected)
                 page.wait_for_selector('.lb-metrics-table tbody tr')
                 for benchmark, source in expected.items():
                     page.locator(f'#leaderboardTabs [data-benchmark="{benchmark}"]').click()
                     table = page.locator('.lb-metrics-table')
                     rows = table.locator('tbody tr[data-result-model]')
-                    assert rows.count() == 11
-                    assert rows.first.get_attribute('data-result-model') == 'blink-27b-1028'
-                    assert table.get_attribute('data-sort-key') == 'featured'
-                    assert page.locator('.lb-featured-note').is_visible()
+                    assert rows.count() == len(source)
+                    assert rows.first.get_attribute('data-result-model') == ('piccolo-27b-vl' if benchmark == 'decisionindex-vision' else 'blink-27b-1028')
+                    assert table.get_attribute('data-sort-key') == ('native' if benchmark == 'decisionindex-vision' else 'featured')
+                    assert page.locator('.lb-featured-note').is_visible() == (benchmark != 'decisionindex-vision')
                     assert table.locator('.lb-rank:visible').count() == 11
-                    assert 'Blink' not in table.inner_text() and 'StartLux' not in table.inner_text()
+                    assert 'Blink' not in table.inner_text() and (benchmark == 'decisionindex-vision' or 'StartLux' not in table.inner_text())
                     assert {r['model_id'] for r in source} == set(rows.evaluate_all('(rs)=>rs.map(r=>r.dataset.resultModel)'))
                     for r in source:
                         row = table.locator(f'tr[data-result-model="{r["model_id"]}"]')
@@ -79,7 +79,7 @@ def main():
                     assert not page.locator('.lb-featured-note').is_visible()
                     scores = rows.locator('td[data-metric]').evaluate_all('(ns)=>ns.filter(n=>n.dataset.metric==="accuracy"||n.dataset.metric==="native").map(n=>n.dataset.sortValue)')
                     present = [float(v) for v in scores if v != '']
-                    assert present == sorted(present, reverse=True)
+                    assert present == sorted(present, reverse=table.get_attribute('data-sort-direction') == 'descending')
                     if benchmark == 'harnessjevbench':
                         assert rows.first.get_attribute('data-result-model') == max((r for r in source if r['score'] is not None), key=lambda r: r['score'])['model_id']
                     own_filter = page.locator('#leaderboardDetail [data-table-own]')

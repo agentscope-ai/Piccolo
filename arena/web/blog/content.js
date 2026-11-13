@@ -7,7 +7,7 @@ export const article = {
     "deck": "27B, 9B and 4B models for intelligent routing in harnesses, data workflows and successive decisions in games.",
     "readTime": "18–22 min · technical report",
     "intro": [
-      "Today we release Piccolo, a family of decision models in three sizes: 27B, 9B and 4B. Piccolo-27B achieves 92.21% accuracy on JevBench Public and 68.59 on text Decision Index.",
+      "Piccolo-27B-VL ranks first on Decision Index Vision Full with 75.59. Piccolo-9B-VL scores 68.35 and Piccolo-4B-VL scores 67.46.",
       "From tool review and context selection in agent harnesses, to decisions in data workflows and successive moves in games, Piccolo interprets the current state, compares candidates and returns results and probabilities that programs can use directly. To develop the Piccolo family, we designed a research framework around recursive self-improvement (RSI): research agents use model errors and training feedback to select data, test changes and choose the next experiment. This report presents Piccolo’s applications, benchmark results and development process."
     ],
     "sections": [
@@ -67,8 +67,8 @@ export const article = {
         "kicker": "BENCHMARK EVALUATION",
         "title": "Benchmark evaluation",
         "paragraphs": [
-          "Piccolo is evaluated on [JevBench Public](https://github.com/fstandhartinger/jevbench), [Decision Index](https://huggingface.co/spaces/multimodalart/jev-decision-index), [HarnessJevBench Hard](https://github.com/agentscope-ai/HarnessJevBench) and [DataJevBench](https://github.com/datajuicer/DataJevBench). In the 11-model comparison updated on 2 November, Piccolo-27B achieves **92.21%** on JevBench Public, **84.41%** on HarnessJevBench Hard and **82.60%** on DataJevBench, ranking first on all three. Its reported text Decision Index score is **68.59**.",
-          "Piccolo-9B and Piccolo-4B also provide strong performance: their JevBench Public accuracies are 89.61% and 87.01%, Harness Hard accuracies are 68.81% and 62.03%, and DataJevBench accuracies are 69.40% and 70.60%. Their reported text Decision Index scores are **60.86** and **58.00**, respectively. When deployment cost or GPU memory is a constraint, consider 9B and 4B first, balancing performance on the target task against resource use."
+          "Piccolo-27B-VL ranked first on Decision Index Vision Full with **75.59**. Its Public and Private scores were **80.22** and **70.97**. Piccolo-9B-VL and Piccolo-4B-VL scored **68.35** and **67.46** on Vision Full.",
+          "The foundation models scored **68.40**, **57.34** and **50.00** on Decision Index Text Full for 27B, 9B and 4B. On JevBench-231, their accuracies were 92.21%, 89.61% and 87.01%. HarnessJevBench Hard scores were 84.41%, 70.68% and 63.22%. DataJevBench accuracies were 82.60%, 69.20% and 71.20%."
         ],
         "takeaway": ""
       },
@@ -300,7 +300,7 @@ export const article = {
         "text": "Extend System 1 fast thinking beyond choice, score and noul. Develop new structured primitives, with corresponding supervision and evaluation, to broaden the model’s decision capabilities."
       }
     ],
-    "benchmarkNotes": "Updated 2 November 2026. Scores report selected variants within each Piccolo model size for each benchmark; the variants may differ between benchmarks. JevBench, HarnessJevBench and DataJevBench rankings cover this 11-model set. Decision Index uses a 0–100 scale. Piccolo research text results and external official Public results are shown in separate groups, without ranking across evaluation scopes.",
+    "benchmarkNotes": "Vision and Text scores use the Decision Index scale of 0–100. The charts show Public scores. The performance summary reports Vision Full. JevBench, HarnessJevBench and DataJevBench show the published application results for the foundation models.",
     "sources": [
       {
         "label": "Piccolo",
@@ -434,7 +434,7 @@ export const article = {
     "deck": "27B、9B、4B 三个尺寸，面向 Harness 中的智能路由、数据工作流，以及游戏中的连续决策。",
     "readTime": "18–22 分钟 · 技术报告",
     "intro": [
-      "今天，我们发布 Piccolo 决策模型系列，包含 27B、9B 和 4B 三个尺寸。Piccolo-27B 在 JevBench Public 上取得 92.21% 的准确率，在文本 Decision Index 上取得 68.59 分。",
+      "Piccolo-27B-VL ranks first on Decision Index Vision Full with 75.59. Piccolo-9B-VL scores 68.35 and Piccolo-4B-VL scores 67.46.",
       "从智能体的工具审核与上下文筛选，到数据处理环境中的关键决策，再到游戏场景下的连续判断，Piccolo 理解当前状态、比较候选项，返回程序可以直接使用的结果与概率。为迭代 Piccolo 系列，我们设计了一套基于递归自改进（RSI）的研发框架：研究 Agent 根据模型的错误和训练反馈选择数据、检验改动，并决定下一轮实验。本文介绍 Piccolo 的应用场景、榜单表现与迭代过程。"
     ],
     "sections": [
@@ -494,8 +494,8 @@ export const article = {
         "kicker": "BENCHMARK EVALUATION",
         "title": "基准评测",
         "paragraphs": [
-          "我们在 [JevBench Public](https://github.com/fstandhartinger/jevbench)、[Decision Index](https://huggingface.co/spaces/multimodalart/jev-decision-index)、[HarnessJevBench Hard](https://github.com/agentscope-ai/HarnessJevBench) 和 [DataJevBench](https://github.com/datajuicer/DataJevBench) 上评测 Piccolo。在 11 月 2 日更新的 11 模型对比中，Piccolo-27B 的 JevBench Public 准确率为 **92.21%**，HarnessJevBench Hard 为 **84.41%**，DataJevBench 为 **82.60%**，三项均排名第一。其文本 Decision Index 成绩为 **68.59**。",
-          "Piccolo-9B 和 Piccolo-4B 也保持了较强的表现：JevBench Public 准确率分别为 89.61% 和 87.01%，Harness Hard 为 68.81% 和 62.03%，DataJevBench 为 69.40% 和 70.60%，文本 Decision Index 分别为 **60.86** 和 **58.00**。对于部署成本或显存预算更敏感的场景，可以优先考虑 9B 和 4B，在目标任务上权衡效果与资源开销。"
+          "Piccolo-27B-VL ranked first on Decision Index Vision Full with **75.59**. Its Public and Private scores were **80.22** and **70.97**. Piccolo-9B-VL and Piccolo-4B-VL scored **68.35** and **67.46** on Vision Full.",
+          "The foundation models scored **68.40**, **57.34** and **50.00** on Decision Index Text Full for 27B, 9B and 4B. On JevBench-231, their accuracies were 92.21%, 89.61% and 87.01%. HarnessJevBench Hard scores were 84.41%, 70.68% and 63.22%. DataJevBench accuracies were 82.60%, 69.20% and 71.20%."
         ],
         "takeaway": ""
       },
@@ -727,7 +727,7 @@ export const article = {
         "text": "System 1 快思考不局限于 choice、score 和 noul。我们将探索更多结构化原语，并建立对应的监督与评测，丰富模型的决策能力。"
       }
     ],
-    "benchmarkNotes": "更新于 2026 年 11 月 2 日。各尺寸按评测项展示所选版本的成绩，具体版本可能不同。JevBench、HarnessJevBench 与 DataJevBench 的排名限于这组 11 模型对比。Decision Index 采用 0–100 分制；Piccolo 研发文本结果与外部模型官方 Public 结果分组展示，不作跨范围排名。",
+    "benchmarkNotes": "Vision and Text scores use the Decision Index scale of 0–100. The charts show Public scores. The performance summary reports Vision Full. JevBench, HarnessJevBench and DataJevBench show the published application results for the foundation models.",
     "sources": [
       {
         "label": "Piccolo",

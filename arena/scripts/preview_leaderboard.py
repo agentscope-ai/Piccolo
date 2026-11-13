@@ -9,7 +9,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from fastapi import FastAPI, HTTPException
 from blink_arena.public_surface import PublicStaticFiles
 import uvicorn
-from blink_arena.leaderboards import Leaderboards
+from blink_arena.leaderboards import Leaderboards, PUBLIC_BENCHMARKS
 from blink_arena.paths import WEB
 from blink_arena.game_scope import project_arena
 from blink_arena.privacy import assert_public_document
@@ -38,7 +38,7 @@ def create_preview_app(*, leaderboard_dir=None, web=WEB):
 
     @app.get('/api/leaderboard/source/{ident}')
     def source(ident: str):
-        for benchmark in ('jevbench', 'decisionindex', 'harnessjevbench', 'datajevbench'):
+        for benchmark in PUBLIC_BENCHMARKS:
             if ident.startswith(benchmark + '-'):
                 doc = store.get(benchmark)
                 if doc:
@@ -50,7 +50,7 @@ def create_preview_app(*, leaderboard_dir=None, web=WEB):
 
     @app.get('/api/v1/leaderboards/{ident}')
     def document(ident: str):
-        if ident not in {'harnessjevbench','datajevbench','jevbench','decisionindex'}:
+        if ident not in PUBLIC_BENCHMARKS:
             raise HTTPException(404)
         doc = store.get(ident)
         if doc is None:

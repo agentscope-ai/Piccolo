@@ -32,7 +32,7 @@ PRIVATE_TEXT = (
     ('private_key', re.compile(r'-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----')),
     ('provider_credential', re.compile(r'\bsk-[A-Za-z0-9]{24,}\b')),
 )
-REQUIRED = frozenset(('web/index.html', 'web/playground/leaderboard.js', 'web/playground/data/home-decision.json', 'web/playground/home-demo.js', 'leaderboard/jevbench.json', 'leaderboard/decisionindex.json',
+REQUIRED = frozenset(('web/index.html', 'web/playground/leaderboard.js', 'web/playground/data/home-decision.json', 'web/playground/home-demo.js', 'leaderboard/jevbench.json', 'leaderboard/decisionindex.json', 'leaderboard/decisionindex-vision.json',
     'leaderboard/harnessjevbench.json', 'leaderboard/datajevbench.json', 'web/playground/logos/blink.svg', 'blink_arena/rollouts.py',
     'blink_arena/engines/jev_engine_rollout_backend.py', 'blink_arena/engines/jev_engine_rollout_store.py',
     'blink_arena/engines/jev_engine_episode_runner.py', 'docs/ROLLOUT.md',

@@ -10,11 +10,19 @@
 </p>
 <p align="center"><a href="README.md">English</a> / 简体中文 · <a href="docs/piccolo-blog.md">发布 Blog</a> · <a href="docs/MODELS.md">模型说明</a> · <a href="LICENSE">Apache-2.0</a></p>
 
-Piccolo 是一个 **4B、9B、27B 决策模型系列**。给定当前状态、问题与候选项，它返回程序可以直接使用的结构化判断与候选概率，适用于工具审核、上下文筛选、数据工作流和交互环境。**Piccolo-27B 在 JevBench Public 上取得 92.21% 的准确率，在 Decision Index Public 上取得 68.59 分。** 访问 [Decision 官网](https://decisionplayground.agentscope.io/)体验，或通过 QwenPaw 在本地使用。
+Piccolo 是一个 **4B、9B、27B 决策模型系列**。给定当前状态、问题与候选项，它返回程序可以直接使用的结构化判断与候选概率，适用于工具审核、上下文筛选、数据工作流和交互环境。访问 [Decision 官网](https://decisionplayground.agentscope.io/)体验，或通过 QwenPaw 在本地使用。
+
+## News
+
+- **October 30, 2026** — [Piccolo v1.0.0](https://github.com/agentscope-ai/Piccolo/tree/v1.0.0) released the 4B, 9B and 27B decision models.
+- **November 8, 2026** — We released Piccolo-VL checkpoints in [4B](https://huggingface.co/agentscope-ai/Piccolo-4B-VL), [9B](https://huggingface.co/agentscope-ai/Piccolo-9B-VL) and [27B](https://huggingface.co/agentscope-ai/Piccolo-27B-VL) sizes.
+- **November 12, 2026** — **Piccolo-27B-VL ranked first on Decision Index Vision Full (75.59)**. Piccolo-9B-VL and Piccolo-4B-VL scored 68.35 and 67.46. [Leaderboard](https://huggingface.co/spaces/multimodalart/jev-decision-index)
 
 ## 模型下载
 
-以下 **12 个 Hugging Face 仓库均已发布**，权重采用 Apache-2.0：
+Vision-language checkpoints: [Piccolo-4B-VL](https://huggingface.co/agentscope-ai/Piccolo-4B-VL), [Piccolo-9B-VL](https://huggingface.co/agentscope-ai/Piccolo-9B-VL), and [Piccolo-27B-VL](https://huggingface.co/agentscope-ai/Piccolo-27B-VL).
+
+The foundation checkpoints and text GGUF releases are available in the following formats.
 
 | 模型 | 完整 Safetensors | BF16 GGUF | Q8_0 GGUF | Q4_K_M GGUF |
 | --- | --- | --- | --- | --- |
@@ -24,15 +32,18 @@ Piccolo 是一个 **4B、9B、27B 决策模型系列**。给定当前状态、�
 
 `-BF16` GGUF 从完整 Safetensors 直接转换，部分归一化和递归状态张量保留 F32；Q8_0、Q4_K_M 用较小体积换取一定数值精度损失。下载分片模型时，须将**全部 GGUF 分片放在同一目录**。[完整模型说明、固定 revision 与限制](docs/MODELS.md)。
 
-[ModelScope / Piccolo-27B](https://www.modelscope.cn/models/AgentScope/Piccolo-27B) 已开放下载，全部 12 个 Piccolo 仓库收录在 [AgentScope 模型合集](https://www.modelscope.cn/collections/AgentScope/QwenPaw-Flash)。
+[ModelScope / Piccolo-27B](https://www.modelscope.cn/models/AgentScope/Piccolo-27B) 已开放下载，全部 12 个 Piccolo 仓库收录在 [AgentScope 模型合集](https://www.modelscope.cn/collections/AgentScope/Piccolo)。
 
 ## 评测表现
 
-| 模型 | HarnessJevBench Hard ↑ | DataJevBench ↑ | JevBench Public ↑ | Decision Index Public ↑ |
-| --- | ---: | ---: | ---: | ---: |
-| **Piccolo-27B** | **84.41%** | **82.60%** | **92.21%** | **68.59** |
-| Piccolo-9B | 68.81% | 69.40% | 89.61% | 60.86 |
-| Piccolo-4B | 62.03% | 70.60% | 87.01% | 58.00 |
+| Model | Vision Full | Vision Public | Vision Private | Text Full | Text Public | JevBench-231 | HarnessJevBench Hard | DataJevBench |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| **Piccolo-27B-VL** | **75.59** | **80.22** | **70.97** | — | — | — | — | — |
+| Piccolo-9B-VL | 68.35 | 71.67 | 65.04 | — | — | — | — | — |
+| Piccolo-4B-VL | 67.46 | 71.42 | 63.49 | — | — | — | — | — |
+| Piccolo-27B | — | — | — | 68.40 | 68.08 | 92.21% | 84.41% | 82.60% |
+| Piccolo-9B | — | — | — | 57.34 | 60.30 | 89.61% | 70.68% | 69.20% |
+| Piccolo-4B | — | — | — | 50.00 | 57.14 | 87.01% | 63.22% | 71.20% |
 
 Piccolo 的评测成绩与 [结果数据](evaluation/README.md)同步，完整排名见 [在线榜单](https://decisionplayground.agentscope.io/)。
 

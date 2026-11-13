@@ -1,6 +1,6 @@
 # Piccolo：为智能体工作流提供快速决策
 
-今天，我们发布 **Piccolo**，一个面向智能体工作流的决策模型系列，提供 **4B、9B、27B** 三个尺寸。Piccolo-27B 在 JevBench Public 上取得 **92.21%** 的准确率，在 Decision Index Public 上取得 **68.59** 分。
+今天，我们发布 **Piccolo**，一个面向智能体工作流的决策模型系列，提供 **4B、9B、27B** 三个尺寸。Piccolo-27B-VL ranked first on Decision Index Vision Full with a score of 75.59.
 
 从智能体的工具审核与上下文筛选，到数据处理环境中的关键决策，再到游戏场景下的连续判断，Piccolo 理解当前状态、比较候选项，返回程序可以直接使用的结果与概率。我们通过交互展示、评测结果和本地接入，呈现它的能力与实际用法。
 
@@ -52,13 +52,16 @@
 
 ## 02 评测：三个尺寸，不同能力选择
 
-我们观察了 Piccolo 在 JevBench Public、Decision Index Public、HarnessJevBench Hard 与 DataJevBench 上的决策表现：
+The Vision scores below belong to the VL releases. Text and application results belong to the foundation releases.
 
-| 模型 | HarnessJevBench Hard ↑ | DataJevBench ↑ | JevBench Public ↑ | Decision Index Public ↑ |
-| --- | ---: | ---: | ---: | ---: |
-| **Piccolo-27B** | **84.41%** | **82.60%** | **92.21%** | **68.59** |
-| Piccolo-9B | 68.81% | 69.40% | 89.61% | 60.86 |
-| Piccolo-4B | 62.03% | 70.60% | 87.01% | 58.00 |
+| Model | Vision Full | Vision Public | Vision Private | Text Full | Text Public | JevBench-231 | HarnessJevBench Hard | DataJevBench |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| **Piccolo-27B-VL** | **75.59** | **80.22** | **70.97** | — | — | — | — | — |
+| Piccolo-9B-VL | 68.35 | 71.67 | 65.04 | — | — | — | — | — |
+| Piccolo-4B-VL | 67.46 | 71.42 | 63.49 | — | — | — | — | — |
+| Piccolo-27B | — | — | — | 68.40 | 68.08 | 92.21% | 84.41% | 82.60% |
+| Piccolo-9B | — | — | — | 57.34 | 60.30 | 89.61% | 70.68% | 69.20% |
+| Piccolo-4B | — | — | — | 50.00 | 57.14 | 87.01% | 63.22% | 71.20% |
 
 Piccolo-27B 在四项评测中均取得三个尺寸中的最高分；9B 与 4B 在 JevBench Public 上分别达到 **89.61%** 与 **87.01%**，为资源有限的部署提供更多选择。[评测结果](../evaluation/README.md) · [完整在线榜单](https://decisionplayground.agentscope.io/)。
 

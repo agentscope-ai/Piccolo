@@ -1,12 +1,17 @@
 # Evaluation
 
-| Model | HarnessJevBench Hard ↑ | DataJevBench ↑ | JevBench Public ↑ | Decision Index Public ↑ |
-| --- | ---: | ---: | ---: | ---: |
-| Piccolo-27B | 84.41% | 82.60% | 92.21% | 68.59 |
-| Piccolo-9B | 68.81% | 69.40% | 89.61% | 60.86 |
-| Piccolo-4B | 62.03% | 70.60% | 87.01% | 58.00 |
+Decision Index Vision scores belong to the VL checkpoints. Text scores and the three application benchmarks belong to the foundation releases. All Decision Index scores use the board’s 0–100 scale.
 
-[Results JSON](results.json) · [Live leaderboard](https://decisionplayground.agentscope.io/)
+| Model | Vision Full | Vision Public | Vision Private | Text Full | Text Public | JevBench-231 | HarnessJevBench Hard | DataJevBench |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| **Piccolo-27B-VL** | **75.59** | **80.22** | **70.97** | — | — | — | — | — |
+| Piccolo-9B-VL | 68.35 | 71.67 | 65.04 | — | — | — | — | — |
+| Piccolo-4B-VL | 67.46 | 71.42 | 63.49 | — | — | — | — | — |
+| Piccolo-27B | — | — | — | 68.40 | 68.08 | 92.21% | 84.41% | 82.60% |
+| Piccolo-9B | — | — | — | 57.34 | 60.30 | 89.61% | 70.68% | 69.20% |
+| Piccolo-4B | — | — | — | 50.00 | 57.14 | 87.01% | 63.22% | 71.20% |
+
+[Decision Index leaderboard](https://huggingface.co/spaces/multimodalart/jev-decision-index) · [Results JSON](results.json) · [Live leaderboard](https://decisionplayground.agentscope.io/)
 
 ## Reproduce in one command
 

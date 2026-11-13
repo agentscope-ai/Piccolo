@@ -1,25 +1,40 @@
-/* Public comparisons and clearly marked internal previews use registered results. */
+/* Home benchmark cards use the registered results and metric definitions. */
 (() => {
   'use strict';
   const modelId = 'blink-27b-1028';
+  const visionModelId = 'piccolo-27b-vl';
+  const news = document.getElementById('performanceNews');
+  const dismissalKey = 'piccolo.news.vision-full-75-59.dismissed';
+  if (news) {
+    try { news.hidden = localStorage.getItem(dismissalKey) === '1'; } catch {}
+    document.getElementById('dismissPerformanceNews').addEventListener('click', () => {
+      news.hidden = true;
+      try { localStorage.setItem(dismissalKey, '1'); } catch {}
+      document.querySelector('.home-actions button')?.focus({preventScroll:true});
+    });
+  }
   const tr = (en, zh) => window.JevI18n?.t(en, zh) ?? en;
   const definitions = [
     {id: 'jevbench', title: 'JevBench Public', publicVersion: true, url: 'https://github.com/fstandhartinger/jevbench', metric: ['Accuracy', '准确率'],
-      scope: ['231 examples · Self-run evaluation', '231 个样本 · 自行复现评测'],
-      note: ['All eleven registered models use the Public-231 protocol, with fresh inference on October 28. This is separate from the 1,500-item Capability test.',
-        '十一个登记模型均采用 Public-231 协议，成绩来自 10 月 28 日重新推理；与 1,500 条 Capability 测试分开。']},
-    {id: 'decisionindex', title: 'Decision Index Public', publicVersion: true, url: 'https://huggingface.co/spaces/multimodalart/jev-decision-index', metric: ['Public Index · 0–100', '公开决策指数 · 0–100'],
-      scope: ['Public suite · Chance-corrected index', '公开评测集 · 随机基线校正指数'],
-      note: ['The three Piccolo sizes reuse training-team Public results (140,178 requests); other available scores use official Public results. Seven of eleven models have scores. No new Decision Index inference was run; official per-request error coverage is unverified.',
-        'Piccolo 三个尺寸复用训练侧 Public 成绩（140,178 个请求），其他已有分数来自官方 Public 榜单；11 个模型中有 7 个取得成绩。本次未重跑 Decision Index，官方逐请求错误覆盖未经独立核验。']},
+      scope: ['231 questions', '231 道题'],
+      note: ['Public-231 accuracy. Piccolo results were updated on 2 November; other models retain their recorded evaluation dates.',
+        'Public-231 答题准确率。Piccolo 成绩更新于 11 月 2 日，其他模型沿用各自评测日期。']},
+    {id: 'decisionindex', title: 'Decision Index · Text Public', titleZh: 'Decision Index · 文本 Public', publicVersion: true, url: 'https://huggingface.co/spaces/multimodalart/jev-decision-index', metric: ['Decision Index · 0–100', '决策指数 · 0–100'],
+      scope: ['Public suite · Five domains', 'Public 公开集 · 五个领域'],
+      note: ['Text Public scores combine five domain skills after chance correction.',
+        '文本 Public 成绩按五个领域的随机基线校正能力分加权汇总。']},
+    {id: 'decisionindex-vision', title: 'Decision Index · Vision Public', titleZh: 'Decision Index · 多模态 Public', publicVersion: true, url: 'https://huggingface.co/spaces/multimodalart/jev-decision-index', metric: ['Public vision index · 0–100', '多模态公开指数 · 0–100'],
+      scope: ['11 benchmarks · 11 models', '11 benchmarks · 11 models'],
+      note: ['Public vision suite: 12,210 questions across perception, charts, documents and visual reasoning. The index averages chance-corrected benchmark skills with the official weights.',
+        '公开视觉题集共 12,210 道题，覆盖感知、图表、文档与视觉推理；按官方权重汇总各子基准的随机基线校正能力分。']},
     {id: 'harnessjevbench', title: 'HarnessJevBench', publicVersion: true, url: 'https://github.com/agentscope-ai/HarnessJevBench', metric: ['Mean Hard task score', 'Hard 任务平均分'],
-      scope: ['295 Hard tasks · Soft scores separate', '295 个 Hard 任务 · Soft 单独计分'],
-      note: ['Scores use the October 28 evaluation of 295 Hard tasks / 303 questions; failures score zero. Soft is separate. Radar dimensions use the same scored predictions.',
-        '成绩来自 10 月 28 日评测：295 个 Hard 任务、303 个问题，失败计零分；Soft 单独计分，雷达维度来自同轮预测。']},
+      scope: ['295 Hard tasks · 303 questions', '295 个 Hard 任务 · 303 个问题'],
+      note: ['Hard scores are averaged equally across tasks; Soft TV measures probability-distribution distance. Radar axes show the corresponding scenario scores.',
+        'Hard 分数按任务等权平均；Soft TV 衡量概率分布差异。雷达图展示对应场景的得分。']},
     {id: 'datajevbench', title: 'DataJevBench', publicVersion: true, url: 'https://github.com/datajuicer/DataJevBench', metric: ['Accuracy', '准确率'],
-      scope: ['500 examples · Six data decision subsets', '500 个样本 · 六类数据决策'],
-      note: ['October 28 inference, rescored with probability-sum tolerance 1e-3 and no probability normalization. All 500 records remain in the denominator; each contributes 0.2 percentage points.',
-        '采用 10 月 28 日推理结果，概率和容差 1e-3，不归一化原始概率。全部 500 条记录保留在分母中，每条对应 0.2 个百分点。']},
+      scope: ['500 questions · Six data decision subsets', '500 道题 · 六类数据决策'],
+      note: ['Accuracy covers all 500 questions. Probability validation uses a sum tolerance of 1e-3 and retains the original values.',
+        '准确率按全部 500 道题计算；概率和容差为 1e-3，使用原始概率值计分。']},
   ];
   const host = document.getElementById('homeResults');
   const chart = document.getElementById('homeComparison');
@@ -63,7 +78,7 @@
   };
   const complete = row => row?.status === 'complete' && Number.isFinite(row.score);
   const versionText = benchmark => benchmark?.version ? 'v' + String(benchmark.version).replace(/^v/i, '') : '';
-  const titleText = (definition, benchmark) => definition.title +
+  const titleText = (definition, benchmark) => tr(definition.title, definition.titleZh ?? definition.title) +
     (definition.publicVersion && versionText(benchmark) ? ' ' + versionText(benchmark) : '');
   function navigate(mode) {
     const destination = document.querySelector(`.tabs [data-tab="${mode}"]`);
@@ -81,7 +96,7 @@
     host.replaceChildren();
     for (const definition of definitions) {
       const benchmark = payload?.benchmarks?.find(item => item.id === definition.id);
-      const row = benchmark?.display_rows?.find(item => item.model_key === modelId);
+      const row = benchmark?.display_rows?.find(item => item.model_key === (definition.id === 'decisionindex-vision' ? visionModelId : modelId));
       const button = make('button', 'home-result' + (selected === definition.id ? ' is-selected' : ''));
       button.type = 'button';
       button.dataset.benchmark = definition.id;
@@ -89,10 +104,9 @@
       button.setAttribute('aria-controls', 'homeComparison');
       const copy = make('span', 'home-result-copy');
       copy.append(make('span', 'home-result-name', titleText(definition, benchmark)), make('small', '', tr(...definition.metric)));
-      if (definition.unreleased) copy.append(make('span', 'home-result-status', tr('Internal preview · Coming Soon', '内部预览 · Coming Soon')));
       const value = complete(row) ? row.score_display : '—';
       button.append(copy, make('strong', '', value), make('span', 'home-result-arrow', '↗'));
-      button.setAttribute('aria-label', `${titleText(definition, benchmark)} · ${value} · ${definition.unreleased ? tr('Internal preview · Coming Soon', '内部预览 · Coming Soon') : tr('Compare results', '对比成绩')}`);
+      button.setAttribute('aria-label', `${titleText(definition, benchmark)} · ${value} · ${tr('Compare results', '对比成绩')}`);
       button.onclick = () => {
         selected = definition.id;
         render();
@@ -127,16 +141,8 @@
     titleBlock.append(title, make('p', '', benchmark
       ? `${definition.publicVersion ? '' : versionText(benchmark) + ' · '}${tr(...definition.scope)}`
       : tr('Registered evaluation results', '已登记评测成绩')));
-    heading.append(titleBlock, make('span', 'home-chart-badge', tr('Piccolo-27B highlighted', '铜橙色标记 Piccolo-27B')));
+    heading.append(titleBlock, make('span', 'home-chart-badge', selected === 'decisionindex-vision' ? 'Piccolo-27B-VL highlighted' : tr('Piccolo-27B highlighted', '铜橙色标记 Piccolo-27B')));
     chart.append(heading);
-    if (definition.unreleased) {
-      const release = make('div', 'home-internal-preview');
-      release.append(
-        make('span', 'home-release-badge', tr('Unreleased · Coming Soon', '未公开 · Coming Soon')),
-        make('p', '', tr('A benchmark developed by Piccolo. Results shown here are an internal evaluation preview.', 'Piccolo 自建基准；当前成绩为内部评测预览，基准尚未公开发布。'))
-      );
-      chart.append(release);
-    }
     if (!rows.length || failed) {
       const empty = make('div', 'home-chart-empty', tr(
         failed ? 'Results could not be loaded.' : loading ? 'Loading registered results…' : 'No results for this benchmark yet.',
@@ -158,7 +164,7 @@
     const list = make('ol', 'home-bar-list');
     list.setAttribute('aria-label', `${definition.title} · ${tr(...definition.metric)}`);
     for (const row of rows) {
-      const valid = complete(row), ours = row.model_key === modelId;
+      const valid = complete(row), ours = row.model_key === (selected === 'decisionindex-vision' ? visionModelId : modelId);
       const item = make('li', 'home-bar-row' + (ours ? ' is-ours' : '') + (!valid ? ' is-pending' : ''));
       item.dataset.modelKey = row.model_key;
       const name = window.JevModelLabels?.displayName(row.model_key, row.model) ?? row.model;
@@ -181,7 +187,7 @@
       track.setAttribute('aria-hidden', 'true');
       if (valid) {
         const bar = make('span', 'home-bar-fill');
-        const maximum = row.score_scale?.[1] ?? (selected === 'decisionindex' ? 100 : 1);
+        const maximum = row.score_scale?.[1] ?? (selected.startsWith('decisionindex') ? 100 : 1);
         const width = Math.max(0, Math.min(100, 100 * row.score / maximum));
         bar.style.width = `${width}%`; bar.dataset.width = String(width);
         track.append(bar);
@@ -193,9 +199,7 @@
     revealBars(list, previous);
     const caption = make('p', 'home-chart-note', tr(...definition.note));
     const footer = make('div', 'home-chart-footer');
-    const open = make('button', 'home-inline-link', definition.unreleased
-      ? tr('Explore the internal preview ↗', '查看内部评测预览 ↗')
-      : tr('Explore the full leaderboard ↗', '查看完整榜单 ↗'));
+    const open = make('button', 'home-inline-link', tr('Open leaderboard ↗', '查看榜单 ↗'));
     open.type = 'button';
     open.onclick = () => openBenchmark(selected);
     const completed = rows.filter(complete).length;

@@ -22,7 +22,7 @@ def test_one_directory_serves_benchmarks_arena_and_replays(tmp_path):
     directory = copied_results(tmp_path)
     app = create_app(data=tmp_path / 'runtime', config=AppConfig(), leaderboard_dir=directory)
     with TestClient(app) as client:
-        for benchmark in ('jevbench', 'decisionindex', 'harnessjevbench', 'datajevbench'):
+        for benchmark in ('jevbench', 'decisionindex', 'decisionindex-vision', 'harnessjevbench', 'datajevbench'):
             expected = json.loads((directory / f'{benchmark}.json').read_text())
             response = client.get(f'/api/v1/leaderboards/{benchmark}')
             assert response.status_code == 200
@@ -67,7 +67,7 @@ def test_projection_timestamps_follow_each_source_file(tmp_path):
     from datetime import datetime, timezone
     directory = copied_results(tmp_path)
     expected = {}
-    for index, (ident, filename) in enumerate((('jevbench', 'jevbench.json'), ('decisionindex', 'decisionindex.json'),
+    for index, (ident, filename) in enumerate((('jevbench', 'jevbench.json'), ('decisionindex', 'decisionindex.json'), ('decisionindex-vision', 'decisionindex-vision.json'),
                                               ('harnessjevbench', 'harnessjevbench.json'), ('datajevbench', 'datajevbench.json'))):
         stamp = 1_700_000_000 + index * 3600
         os.utime(directory / filename, (stamp, stamp))

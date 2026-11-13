@@ -8,7 +8,7 @@ from .schemas import LeaderboardDocument
 from .storage import write_json as _write
 from .paths import leaderboard_directory
 
-PUBLIC_BENCHMARKS = ('jevbench', 'decisionindex', 'harnessjevbench', 'datajevbench')
+PUBLIC_BENCHMARKS = ('jevbench', 'decisionindex', 'decisionindex-vision', 'harnessjevbench', 'datajevbench')
 
 class Leaderboards:
     def __init__(self, data=None, seed=None, *, directory=None):

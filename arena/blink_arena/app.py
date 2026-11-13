@@ -25,7 +25,7 @@ from .providers import Providers
 from .connections import Connections
 from .sessions import Sessions
 from .evaluations import Evaluations
-from .leaderboards import Leaderboards
+from .leaderboards import Leaderboards, PUBLIC_BENCHMARKS
 import jev_demo_games as board
 import jev_demo_showcases as showcases
 import jev_demo_mbti as mbti
@@ -241,14 +241,14 @@ def create_app(*, data=DATA, seed=SEED, web=WEB, config=None, prefix='', fronten
 
     @app.get(prefix+'/api/v1/leaderboards/{ident}')
     async def get_leaderboard(ident: str):
-        if ident not in ('jevbench','decisionindex','harnessjevbench','datajevbench'): raise HTTPException(404, 'Unknown benchmark')
+        if ident not in PUBLIC_BENCHMARKS: raise HTTPException(404, 'Unknown benchmark')
         doc = leaderboards.get(ident)
         if not doc: raise HTTPException(404, 'No imported results')
         return doc
 
     @app.put(prefix+'/api/v1/leaderboards/{ident}')
     async def put_leaderboard(ident: str, body: LeaderboardDocument, request: Request):
-        if ident not in ('jevbench','decisionindex','harnessjevbench','datajevbench'): raise HTTPException(404, 'Unknown benchmark')
+        if ident not in PUBLIC_BENCHMARKS: raise HTTPException(404, 'Unknown benchmark')
         check_admin(request)
         if body.benchmark_id != ident: raise HTTPException(422, 'Benchmark ID differs from URL')
         leaderboards.put(body)
@@ -274,7 +274,7 @@ def create_app(*, data=DATA, seed=SEED, web=WEB, config=None, prefix='', fronten
 
     @app.get(prefix+'/api/leaderboard/source/{ident}')
     async def leaderboard_source(ident: str):
-        for benchmark in ('jevbench','decisionindex','harnessjevbench','datajevbench'):
+        for benchmark in PUBLIC_BENCHMARKS:
             if ident.startswith(benchmark+'-'):
                 doc = leaderboards.get(benchmark)
                 if doc:

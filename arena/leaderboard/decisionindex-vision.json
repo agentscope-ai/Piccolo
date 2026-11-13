@@ -1,0 +1,1209 @@
+{
+  "schema_version": "jev.leaderboard.v1",
+  "benchmark_id": "decisionindex-vision",
+  "title": "Decision Index · Vision Public",
+  "version": "0.4",
+  "metric": "vision_public_index",
+  "score_scale": [
+    0,
+    100
+  ],
+  "higher_is_better": true,
+  "axis_scale": [
+    0,
+    1
+  ],
+  "rows": [
+    {
+      "model_id": "access-Rover00--WeMM-JEV",
+      "model_name": "WeMM-JEV-27B",
+      "score": 77.93,
+      "status": "complete",
+      "metrics": {
+        "public_index": 77.93,
+        "private_index": 69.7,
+        "full_index": 73.81,
+        "official_full_rank": 3,
+        "official_public_rank": 5
+      },
+      "axes": [
+        {
+          "id": "cvbench",
+          "label_en": "Spatial · CV-Bench",
+          "label_zh": "空间感知 · CV-Bench",
+          "score": 0.8138,
+          "metric": "vision_skill",
+          "samples": 2038
+        },
+        {
+          "id": "blink",
+          "label_en": "Visual perception · BLINK",
+          "label_zh": "视觉感知 · BLINK",
+          "score": 0.7422,
+          "metric": "vision_skill",
+          "samples": 961
+        },
+        {
+          "id": "realworldqa",
+          "label_en": "Real-world scenes · RealWorldQA",
+          "label_zh": "真实场景 · RealWorldQA",
+          "score": 0.742,
+          "metric": "vision_skill",
+          "samples": 589
+        },
+        {
+          "id": "charxiv",
+          "label_en": "Chart reasoning · CharXiv",
+          "label_zh": "图表推理 · CharXiv",
+          "score": 0.817,
+          "metric": "vision_skill",
+          "samples": 532
+        },
+        {
+          "id": "infographicvqa",
+          "label_en": "Infographics · InfographicVQA",
+          "label_zh": "信息图理解 · InfographicVQA",
+          "score": 0.9836,
+          "metric": "vision_skill",
+          "samples": 244
+        },
+        {
+          "id": "mind2web",
+          "label_en": "Web navigation · Mind2Web",
+          "label_zh": "网页操作 · Mind2Web",
+          "score": 0.8589,
+          "metric": "vision_skill",
+          "samples": 973
+        },
+        {
+          "id": "winoground",
+          "label_en": "Image–text matching · Winoground",
+          "label_zh": "图文匹配 · Winoground",
+          "score": 0.87,
+          "metric": "vision_skill",
+          "samples": 800
+        },
+        {
+          "id": "kie",
+          "label_en": "Document extraction · KIE (CORD+FUNSD)",
+          "label_zh": "文档信息提取 · KIE (CORD+FUNSD)",
+          "score": 0.9379,
+          "metric": "vision_skill",
+          "samples": 2465
+        },
+        {
+          "id": "moderation",
+          "label_en": "Moderation · Hateful Memes",
+          "label_zh": "内容审核 · Moderation (Hateful Memes)",
+          "score": 0.5251,
+          "metric": "vision_skill",
+          "samples": 1213
+        },
+        {
+          "id": "rbenchm",
+          "label_en": "Expert visual reasoning · R-Bench-M",
+          "label_zh": "专业视觉推理 · R-Bench-M",
+          "score": 0.3846,
+          "metric": "vision_skill",
+          "samples": 665
+        },
+        {
+          "id": "mmmupro",
+          "label_en": "Visual exam reasoning · MMMU-Pro vision",
+          "label_zh": "图像试题推理 · MMMU-Pro vision",
+          "score": 0.4623,
+          "metric": "vision_skill",
+          "samples": 1730
+        }
+      ],
+      "samples": 12210,
+      "errors": null,
+      "evaluated_at": "2026-11-12",
+      "protocol": "Decision-Index-Vision-Public-0.4",
+      "notes": []
+    },
+    {
+      "model_id": "piccolo-27b-vl",
+      "model_name": "Piccolo-27B-VL",
+      "logo": "./playground/logos/agentscope.svg",
+      "score": 80.22,
+      "status": "complete",
+      "metrics": {
+        "public_index": 80.22,
+        "private_index": 70.97,
+        "full_index": 75.59,
+        "official_full_rank": 1,
+        "official_public_rank": 2
+      },
+      "axes": [
+        {
+          "id": "cvbench",
+          "label_en": "Spatial · CV-Bench",
+          "label_zh": "空间感知 · CV-Bench",
+          "score": 0.8341,
+          "metric": "vision_skill",
+          "samples": 2038
+        },
+        {
+          "id": "blink",
+          "label_en": "Visual perception · BLINK",
+          "label_zh": "视觉感知 · BLINK",
+          "score": 0.8276,
+          "metric": "vision_skill",
+          "samples": 961
+        },
+        {
+          "id": "realworldqa",
+          "label_en": "Real-world scenes · RealWorldQA",
+          "label_zh": "真实场景 · RealWorldQA",
+          "score": 0.7253,
+          "metric": "vision_skill",
+          "samples": 589
+        },
+        {
+          "id": "charxiv",
+          "label_en": "Chart reasoning · CharXiv",
+          "label_zh": "图表推理 · CharXiv",
+          "score": 0.8095,
+          "metric": "vision_skill",
+          "samples": 532
+        },
+        {
+          "id": "infographicvqa",
+          "label_en": "Infographics · InfographicVQA",
+          "label_zh": "信息图理解 · InfographicVQA",
+          "score": 0.9891,
+          "metric": "vision_skill",
+          "samples": 244
+        },
+        {
+          "id": "mind2web",
+          "label_en": "Web navigation · Mind2Web",
+          "label_zh": "网页操作 · Mind2Web",
+          "score": 0.9096,
+          "metric": "vision_skill",
+          "samples": 973
+        },
+        {
+          "id": "winoground",
+          "label_en": "Image–text matching · Winoground",
+          "label_zh": "图文匹配 · Winoground",
+          "score": 0.885,
+          "metric": "vision_skill",
+          "samples": 800
+        },
+        {
+          "id": "kie",
+          "label_en": "Document extraction · KIE (CORD+FUNSD)",
+          "label_zh": "文档信息提取 · KIE (CORD+FUNSD)",
+          "score": 0.9379,
+          "metric": "vision_skill",
+          "samples": 2465
+        },
+        {
+          "id": "moderation",
+          "label_en": "Moderation · Hateful Memes",
+          "label_zh": "内容审核 · Moderation (Hateful Memes)",
+          "score": 0.5301,
+          "metric": "vision_skill",
+          "samples": 1213
+        },
+        {
+          "id": "rbenchm",
+          "label_en": "Expert visual reasoning · R-Bench-M",
+          "label_zh": "专业视觉推理 · R-Bench-M",
+          "score": 0.473,
+          "metric": "vision_skill",
+          "samples": 665
+        },
+        {
+          "id": "mmmupro",
+          "label_en": "Visual exam reasoning · MMMU-Pro vision",
+          "label_zh": "图像试题推理 · MMMU-Pro vision",
+          "score": 0.5459,
+          "metric": "vision_skill",
+          "samples": 1730
+        }
+      ],
+      "samples": 12210,
+      "errors": null,
+      "evaluated_at": "2026-11-12",
+      "protocol": "Decision-Index-Vision-Public-0.4",
+      "notes": []
+    },
+    {
+      "model_id": "access-perplexity-ai--pplx-decider-v1.2",
+      "model_name": "Perplexity Decider v1.2 (27B)",
+      "score": 77.25,
+      "status": "complete",
+      "metrics": {
+        "public_index": 77.25,
+        "private_index": 66.18,
+        "full_index": 71.72,
+        "official_full_rank": 12,
+        "official_public_rank": 8
+      },
+      "axes": [
+        {
+          "id": "cvbench",
+          "label_en": "Spatial · CV-Bench",
+          "label_zh": "空间感知 · CV-Bench",
+          "score": 0.7758,
+          "metric": "vision_skill",
+          "samples": 2038
+        },
+        {
+          "id": "blink",
+          "label_en": "Visual perception · BLINK",
+          "label_zh": "视觉感知 · BLINK",
+          "score": 0.6327,
+          "metric": "vision_skill",
+          "samples": 961
+        },
+        {
+          "id": "realworldqa",
+          "label_en": "Real-world scenes · RealWorldQA",
+          "label_zh": "真实场景 · RealWorldQA",
+          "score": 0.7364,
+          "metric": "vision_skill",
+          "samples": 589
+        },
+        {
+          "id": "charxiv",
+          "label_en": "Chart reasoning · CharXiv",
+          "label_zh": "图表推理 · CharXiv",
+          "score": 0.8346,
+          "metric": "vision_skill",
+          "samples": 532
+        },
+        {
+          "id": "infographicvqa",
+          "label_en": "Infographics · InfographicVQA",
+          "label_zh": "信息图理解 · InfographicVQA",
+          "score": 0.9836,
+          "metric": "vision_skill",
+          "samples": 244
+        },
+        {
+          "id": "mind2web",
+          "label_en": "Web navigation · Mind2Web",
+          "label_zh": "网页操作 · Mind2Web",
+          "score": 0.9329,
+          "metric": "vision_skill",
+          "samples": 973
+        },
+        {
+          "id": "winoground",
+          "label_en": "Image–text matching · Winoground",
+          "label_zh": "图文匹配 · Winoground",
+          "score": 0.8775,
+          "metric": "vision_skill",
+          "samples": 800
+        },
+        {
+          "id": "kie",
+          "label_en": "Document extraction · KIE (CORD+FUNSD)",
+          "label_zh": "文档信息提取 · KIE (CORD+FUNSD)",
+          "score": 0.9245,
+          "metric": "vision_skill",
+          "samples": 2465
+        },
+        {
+          "id": "moderation",
+          "label_en": "Moderation · Hateful Memes",
+          "label_zh": "内容审核 · Moderation (Hateful Memes)",
+          "score": 0.5532,
+          "metric": "vision_skill",
+          "samples": 1213
+        },
+        {
+          "id": "rbenchm",
+          "label_en": "Expert visual reasoning · R-Bench-M",
+          "label_zh": "专业视觉推理 · R-Bench-M",
+          "score": 0.3449,
+          "metric": "vision_skill",
+          "samples": 665
+        },
+        {
+          "id": "mmmupro",
+          "label_en": "Visual exam reasoning · MMMU-Pro vision",
+          "label_zh": "图像试题推理 · MMMU-Pro vision",
+          "score": 0.4338,
+          "metric": "vision_skill",
+          "samples": 1730
+        }
+      ],
+      "samples": 12210,
+      "errors": null,
+      "evaluated_at": "2026-11-12",
+      "protocol": "Decision-Index-Vision-Public-0.4",
+      "notes": []
+    },
+    {
+      "model_id": "access-taoszhang--VisionJEV",
+      "model_name": "VisionJEV 1.0.0 (27B)",
+      "score": 76.77,
+      "status": "complete",
+      "metrics": {
+        "public_index": 76.77,
+        "private_index": 66.07,
+        "full_index": 71.42,
+        "official_full_rank": 16,
+        "official_public_rank": 10
+      },
+      "axes": [
+        {
+          "id": "cvbench",
+          "label_en": "Spatial · CV-Bench",
+          "label_zh": "空间感知 · CV-Bench",
+          "score": 0.8017,
+          "metric": "vision_skill",
+          "samples": 2038
+        },
+        {
+          "id": "blink",
+          "label_en": "Visual perception · BLINK",
+          "label_zh": "视觉感知 · BLINK",
+          "score": 0.7406,
+          "metric": "vision_skill",
+          "samples": 961
+        },
+        {
+          "id": "realworldqa",
+          "label_en": "Real-world scenes · RealWorldQA",
+          "label_zh": "真实场景 · RealWorldQA",
+          "score": 0.742,
+          "metric": "vision_skill",
+          "samples": 589
+        },
+        {
+          "id": "charxiv",
+          "label_en": "Chart reasoning · CharXiv",
+          "label_zh": "图表推理 · CharXiv",
+          "score": 0.7644,
+          "metric": "vision_skill",
+          "samples": 532
+        },
+        {
+          "id": "infographicvqa",
+          "label_en": "Infographics · InfographicVQA",
+          "label_zh": "信息图理解 · InfographicVQA",
+          "score": 0.9891,
+          "metric": "vision_skill",
+          "samples": 244
+        },
+        {
+          "id": "mind2web",
+          "label_en": "Web navigation · Mind2Web",
+          "label_zh": "网页操作 · Mind2Web",
+          "score": 0.8452,
+          "metric": "vision_skill",
+          "samples": 973
+        },
+        {
+          "id": "winoground",
+          "label_en": "Image–text matching · Winoground",
+          "label_zh": "图文匹配 · Winoground",
+          "score": 0.8575,
+          "metric": "vision_skill",
+          "samples": 800
+        },
+        {
+          "id": "kie",
+          "label_en": "Document extraction · KIE (CORD+FUNSD)",
+          "label_zh": "文档信息提取 · KIE (CORD+FUNSD)",
+          "score": 0.9319,
+          "metric": "vision_skill",
+          "samples": 2465
+        },
+        {
+          "id": "moderation",
+          "label_en": "Moderation · Hateful Memes",
+          "label_zh": "内容审核 · Moderation (Hateful Memes)",
+          "score": 0.5433,
+          "metric": "vision_skill",
+          "samples": 1213
+        },
+        {
+          "id": "rbenchm",
+          "label_en": "Expert visual reasoning · R-Bench-M",
+          "label_zh": "专业视觉推理 · R-Bench-M",
+          "score": 0.316,
+          "metric": "vision_skill",
+          "samples": 665
+        },
+        {
+          "id": "mmmupro",
+          "label_en": "Visual exam reasoning · MMMU-Pro vision",
+          "label_zh": "图像试题推理 · MMMU-Pro vision",
+          "score": 0.4464,
+          "metric": "vision_skill",
+          "samples": 1730
+        }
+      ],
+      "samples": 12210,
+      "errors": null,
+      "evaluated_at": "2026-11-12",
+      "protocol": "Decision-Index-Vision-Public-0.4",
+      "notes": []
+    },
+    {
+      "model_id": "access-h2oai--h2o-lightning-31b",
+      "model_name": "H2O Lightning 31B v1.3.0",
+      "score": 76.59,
+      "status": "complete",
+      "metrics": {
+        "public_index": 76.59,
+        "private_index": 69.15,
+        "full_index": 72.87,
+        "official_full_rank": 6,
+        "official_public_rank": 13
+      },
+      "axes": [
+        {
+          "id": "cvbench",
+          "label_en": "Spatial · CV-Bench",
+          "label_zh": "空间感知 · CV-Bench",
+          "score": 0.8082,
+          "metric": "vision_skill",
+          "samples": 2038
+        },
+        {
+          "id": "blink",
+          "label_en": "Visual perception · BLINK",
+          "label_zh": "视觉感知 · BLINK",
+          "score": 0.5779,
+          "metric": "vision_skill",
+          "samples": 961
+        },
+        {
+          "id": "realworldqa",
+          "label_en": "Real-world scenes · RealWorldQA",
+          "label_zh": "真实场景 · RealWorldQA",
+          "score": 0.6698,
+          "metric": "vision_skill",
+          "samples": 589
+        },
+        {
+          "id": "charxiv",
+          "label_en": "Chart reasoning · CharXiv",
+          "label_zh": "图表推理 · CharXiv",
+          "score": 0.8697,
+          "metric": "vision_skill",
+          "samples": 532
+        },
+        {
+          "id": "infographicvqa",
+          "label_en": "Infographics · InfographicVQA",
+          "label_zh": "信息图理解 · InfographicVQA",
+          "score": 0.9727,
+          "metric": "vision_skill",
+          "samples": 244
+        },
+        {
+          "id": "mind2web",
+          "label_en": "Web navigation · Mind2Web",
+          "label_zh": "网页操作 · Mind2Web",
+          "score": 0.8698,
+          "metric": "vision_skill",
+          "samples": 973
+        },
+        {
+          "id": "winoground",
+          "label_en": "Image–text matching · Winoground",
+          "label_zh": "图文匹配 · Winoground",
+          "score": 0.8625,
+          "metric": "vision_skill",
+          "samples": 800
+        },
+        {
+          "id": "kie",
+          "label_en": "Document extraction · KIE (CORD+FUNSD)",
+          "label_zh": "文档信息提取 · KIE (CORD+FUNSD)",
+          "score": 0.9185,
+          "metric": "vision_skill",
+          "samples": 2465
+        },
+        {
+          "id": "moderation",
+          "label_en": "Moderation · Hateful Memes",
+          "label_zh": "内容审核 · Moderation (Hateful Memes)",
+          "score": 0.5845,
+          "metric": "vision_skill",
+          "samples": 1213
+        },
+        {
+          "id": "rbenchm",
+          "label_en": "Expert visual reasoning · R-Bench-M",
+          "label_zh": "专业视觉推理 · R-Bench-M",
+          "score": 0.4134,
+          "metric": "vision_skill",
+          "samples": 665
+        },
+        {
+          "id": "mmmupro",
+          "label_en": "Visual exam reasoning · MMMU-Pro vision",
+          "label_zh": "图像试题推理 · MMMU-Pro vision",
+          "score": 0.5101,
+          "metric": "vision_skill",
+          "samples": 1730
+        }
+      ],
+      "samples": 12210,
+      "errors": null,
+      "evaluated_at": "2026-11-12",
+      "protocol": "Decision-Index-Vision-Public-0.4",
+      "notes": []
+    },
+    {
+      "model_id": "access-mukaddamzaid--amos-1-large",
+      "model_name": "Amos 1 Large (27B)",
+      "score": 76.1,
+      "status": "complete",
+      "metrics": {
+        "public_index": 76.1,
+        "private_index": 68.71,
+        "full_index": 72.4,
+        "official_full_rank": 9,
+        "official_public_rank": 14
+      },
+      "axes": [
+        {
+          "id": "cvbench",
+          "label_en": "Spatial · CV-Bench",
+          "label_zh": "空间感知 · CV-Bench",
+          "score": 0.7733,
+          "metric": "vision_skill",
+          "samples": 2038
+        },
+        {
+          "id": "blink",
+          "label_en": "Visual perception · BLINK",
+          "label_zh": "视觉感知 · BLINK",
+          "score": 0.7938,
+          "metric": "vision_skill",
+          "samples": 961
+        },
+        {
+          "id": "realworldqa",
+          "label_en": "Real-world scenes · RealWorldQA",
+          "label_zh": "真实场景 · RealWorldQA",
+          "score": 0.7614,
+          "metric": "vision_skill",
+          "samples": 589
+        },
+        {
+          "id": "charxiv",
+          "label_en": "Chart reasoning · CharXiv",
+          "label_zh": "图表推理 · CharXiv",
+          "score": 0.7995,
+          "metric": "vision_skill",
+          "samples": 532
+        },
+        {
+          "id": "infographicvqa",
+          "label_en": "Infographics · InfographicVQA",
+          "label_zh": "信息图理解 · InfographicVQA",
+          "score": 0.9727,
+          "metric": "vision_skill",
+          "samples": 244
+        },
+        {
+          "id": "mind2web",
+          "label_en": "Web navigation · Mind2Web",
+          "label_zh": "网页操作 · Mind2Web",
+          "score": 0.8219,
+          "metric": "vision_skill",
+          "samples": 973
+        },
+        {
+          "id": "winoground",
+          "label_en": "Image–text matching · Winoground",
+          "label_zh": "图文匹配 · Winoground",
+          "score": 0.8625,
+          "metric": "vision_skill",
+          "samples": 800
+        },
+        {
+          "id": "kie",
+          "label_en": "Document extraction · KIE (CORD+FUNSD)",
+          "label_zh": "文档信息提取 · KIE (CORD+FUNSD)",
+          "score": 0.9239,
+          "metric": "vision_skill",
+          "samples": 2465
+        },
+        {
+          "id": "moderation",
+          "label_en": "Moderation · Hateful Memes",
+          "label_zh": "内容审核 · Moderation (Hateful Memes)",
+          "score": 0.4279,
+          "metric": "vision_skill",
+          "samples": 1213
+        },
+        {
+          "id": "rbenchm",
+          "label_en": "Expert visual reasoning · R-Bench-M",
+          "label_zh": "专业视觉推理 · R-Bench-M",
+          "score": 0.3376,
+          "metric": "vision_skill",
+          "samples": 665
+        },
+        {
+          "id": "mmmupro",
+          "label_en": "Visual exam reasoning · MMMU-Pro vision",
+          "label_zh": "图像试题推理 · MMMU-Pro vision",
+          "score": 0.455,
+          "metric": "vision_skill",
+          "samples": 1730
+        }
+      ],
+      "samples": 12210,
+      "errors": null,
+      "evaluated_at": "2026-11-12",
+      "protocol": "Decision-Index-Vision-Public-0.4",
+      "notes": []
+    },
+    {
+      "model_id": "access-vllm-sr--d3",
+      "model_name": "vLLM-SR d3 (27B)",
+      "score": 74.08,
+      "status": "complete",
+      "metrics": {
+        "public_index": 74.08,
+        "private_index": 68.45,
+        "full_index": 71.26,
+        "official_full_rank": 17,
+        "official_public_rank": 22
+      },
+      "axes": [
+        {
+          "id": "cvbench",
+          "label_en": "Spatial · CV-Bench",
+          "label_zh": "空间感知 · CV-Bench",
+          "score": 0.7636,
+          "metric": "vision_skill",
+          "samples": 2038
+        },
+        {
+          "id": "blink",
+          "label_en": "Visual perception · BLINK",
+          "label_zh": "视觉感知 · BLINK",
+          "score": 0.6021,
+          "metric": "vision_skill",
+          "samples": 961
+        },
+        {
+          "id": "realworldqa",
+          "label_en": "Real-world scenes · RealWorldQA",
+          "label_zh": "真实场景 · RealWorldQA",
+          "score": 0.7392,
+          "metric": "vision_skill",
+          "samples": 589
+        },
+        {
+          "id": "charxiv",
+          "label_en": "Chart reasoning · CharXiv",
+          "label_zh": "图表推理 · CharXiv",
+          "score": 0.7945,
+          "metric": "vision_skill",
+          "samples": 532
+        },
+        {
+          "id": "infographicvqa",
+          "label_en": "Infographics · InfographicVQA",
+          "label_zh": "信息图理解 · InfographicVQA",
+          "score": 0.9781,
+          "metric": "vision_skill",
+          "samples": 244
+        },
+        {
+          "id": "mind2web",
+          "label_en": "Web navigation · Mind2Web",
+          "label_zh": "网页操作 · Mind2Web",
+          "score": 0.8328,
+          "metric": "vision_skill",
+          "samples": 973
+        },
+        {
+          "id": "winoground",
+          "label_en": "Image–text matching · Winoground",
+          "label_zh": "图文匹配 · Winoground",
+          "score": 0.8575,
+          "metric": "vision_skill",
+          "samples": 800
+        },
+        {
+          "id": "kie",
+          "label_en": "Document extraction · KIE (CORD+FUNSD)",
+          "label_zh": "文档信息提取 · KIE (CORD+FUNSD)",
+          "score": 0.9259,
+          "metric": "vision_skill",
+          "samples": 2465
+        },
+        {
+          "id": "moderation",
+          "label_en": "Moderation · Hateful Memes",
+          "label_zh": "内容审核 · Moderation (Hateful Memes)",
+          "score": 0.446,
+          "metric": "vision_skill",
+          "samples": 1213
+        },
+        {
+          "id": "rbenchm",
+          "label_en": "Expert visual reasoning · R-Bench-M",
+          "label_zh": "专业视觉推理 · R-Bench-M",
+          "score": 0.334,
+          "metric": "vision_skill",
+          "samples": 665
+        },
+        {
+          "id": "mmmupro",
+          "label_en": "Visual exam reasoning · MMMU-Pro vision",
+          "label_zh": "图像试题推理 · MMMU-Pro vision",
+          "score": 0.4637,
+          "metric": "vision_skill",
+          "samples": 1730
+        }
+      ],
+      "samples": 12210,
+      "errors": null,
+      "evaluated_at": "2026-11-12",
+      "protocol": "Decision-Index-Vision-Public-0.4",
+      "notes": []
+    },
+    {
+      "model_id": "access-StartLux-Decision-v1.1-27B-Instant",
+      "model_name": "StartLux-Decision v1.1 27B",
+      "score": 73.83,
+      "status": "complete",
+      "metrics": {
+        "public_index": 73.83,
+        "private_index": 69.39,
+        "full_index": 71.61,
+        "official_full_rank": 13,
+        "official_public_rank": 23
+      },
+      "axes": [
+        {
+          "id": "cvbench",
+          "label_en": "Spatial · CV-Bench",
+          "label_zh": "空间感知 · CV-Bench",
+          "score": 0.762,
+          "metric": "vision_skill",
+          "samples": 2038
+        },
+        {
+          "id": "blink",
+          "label_en": "Visual perception · BLINK",
+          "label_zh": "视觉感知 · BLINK",
+          "score": 0.6053,
+          "metric": "vision_skill",
+          "samples": 961
+        },
+        {
+          "id": "realworldqa",
+          "label_en": "Real-world scenes · RealWorldQA",
+          "label_zh": "真实场景 · RealWorldQA",
+          "score": 0.7198,
+          "metric": "vision_skill",
+          "samples": 589
+        },
+        {
+          "id": "charxiv",
+          "label_en": "Chart reasoning · CharXiv",
+          "label_zh": "图表推理 · CharXiv",
+          "score": 0.792,
+          "metric": "vision_skill",
+          "samples": 532
+        },
+        {
+          "id": "infographicvqa",
+          "label_en": "Infographics · InfographicVQA",
+          "label_zh": "信息图理解 · InfographicVQA",
+          "score": 0.9836,
+          "metric": "vision_skill",
+          "samples": 244
+        },
+        {
+          "id": "mind2web",
+          "label_en": "Web navigation · Mind2Web",
+          "label_zh": "网页操作 · Mind2Web",
+          "score": 0.8452,
+          "metric": "vision_skill",
+          "samples": 973
+        },
+        {
+          "id": "winoground",
+          "label_en": "Image–text matching · Winoground",
+          "label_zh": "图文匹配 · Winoground",
+          "score": 0.865,
+          "metric": "vision_skill",
+          "samples": 800
+        },
+        {
+          "id": "kie",
+          "label_en": "Document extraction · KIE (CORD+FUNSD)",
+          "label_zh": "文档信息提取 · KIE (CORD+FUNSD)",
+          "score": 0.9265,
+          "metric": "vision_skill",
+          "samples": 2465
+        },
+        {
+          "id": "moderation",
+          "label_en": "Moderation · Hateful Memes",
+          "label_zh": "内容审核 · Moderation (Hateful Memes)",
+          "score": 0.4328,
+          "metric": "vision_skill",
+          "samples": 1213
+        },
+        {
+          "id": "rbenchm",
+          "label_en": "Expert visual reasoning · R-Bench-M",
+          "label_zh": "专业视觉推理 · R-Bench-M",
+          "score": 0.3015,
+          "metric": "vision_skill",
+          "samples": 665
+        },
+        {
+          "id": "mmmupro",
+          "label_en": "Visual exam reasoning · MMMU-Pro vision",
+          "label_zh": "图像试题推理 · MMMU-Pro vision",
+          "score": 0.461,
+          "metric": "vision_skill",
+          "samples": 1730
+        }
+      ],
+      "samples": 12210,
+      "errors": null,
+      "evaluated_at": "2026-11-12",
+      "protocol": "Decision-Index-Vision-Public-0.4",
+      "notes": []
+    },
+    {
+      "model_id": "piccolo-9b-vl",
+      "model_name": "Piccolo-9B-VL",
+      "logo": "./playground/logos/agentscope.svg",
+      "score": 71.67,
+      "status": "complete",
+      "metrics": {
+        "public_index": 71.67,
+        "private_index": 65.04,
+        "full_index": 68.35,
+        "official_full_rank": 26,
+        "official_public_rank": 33
+      },
+      "axes": [
+        {
+          "id": "cvbench",
+          "label_en": "Spatial · CV-Bench",
+          "label_zh": "空间感知 · CV-Bench",
+          "score": 0.8065,
+          "metric": "vision_skill",
+          "samples": 2038
+        },
+        {
+          "id": "blink",
+          "label_en": "Visual perception · BLINK",
+          "label_zh": "视觉感知 · BLINK",
+          "score": 0.586,
+          "metric": "vision_skill",
+          "samples": 961
+        },
+        {
+          "id": "realworldqa",
+          "label_en": "Real-world scenes · RealWorldQA",
+          "label_zh": "真实场景 · RealWorldQA",
+          "score": 0.6754,
+          "metric": "vision_skill",
+          "samples": 589
+        },
+        {
+          "id": "charxiv",
+          "label_en": "Chart reasoning · CharXiv",
+          "label_zh": "图表推理 · CharXiv",
+          "score": 0.7644,
+          "metric": "vision_skill",
+          "samples": 532
+        },
+        {
+          "id": "infographicvqa",
+          "label_en": "Infographics · InfographicVQA",
+          "label_zh": "信息图理解 · InfographicVQA",
+          "score": 0.9344,
+          "metric": "vision_skill",
+          "samples": 244
+        },
+        {
+          "id": "mind2web",
+          "label_en": "Web navigation · Mind2Web",
+          "label_zh": "网页操作 · Mind2Web",
+          "score": 0.8575,
+          "metric": "vision_skill",
+          "samples": 973
+        },
+        {
+          "id": "winoground",
+          "label_en": "Image–text matching · Winoground",
+          "label_zh": "图文匹配 · Winoground",
+          "score": 0.8375,
+          "metric": "vision_skill",
+          "samples": 800
+        },
+        {
+          "id": "kie",
+          "label_en": "Document extraction · KIE (CORD+FUNSD)",
+          "label_zh": "文档信息提取 · KIE (CORD+FUNSD)",
+          "score": 0.9279,
+          "metric": "vision_skill",
+          "samples": 2465
+        },
+        {
+          "id": "moderation",
+          "label_en": "Moderation · Hateful Memes",
+          "label_zh": "内容审核 · Moderation (Hateful Memes)",
+          "score": 0.3322,
+          "metric": "vision_skill",
+          "samples": 1213
+        },
+        {
+          "id": "rbenchm",
+          "label_en": "Expert visual reasoning · R-Bench-M",
+          "label_zh": "专业视觉推理 · R-Bench-M",
+          "score": 0.3142,
+          "metric": "vision_skill",
+          "samples": 665
+        },
+        {
+          "id": "mmmupro",
+          "label_en": "Visual exam reasoning · MMMU-Pro vision",
+          "label_zh": "图像试题推理 · MMMU-Pro vision",
+          "score": 0.4358,
+          "metric": "vision_skill",
+          "samples": 1730
+        }
+      ],
+      "samples": 12210,
+      "errors": null,
+      "evaluated_at": "2026-11-12",
+      "protocol": "Decision-Index-Vision-Public-0.4",
+      "notes": []
+    },
+    {
+      "model_id": "piccolo-4b-vl",
+      "model_name": "Piccolo-4B-VL",
+      "logo": "./playground/logos/agentscope.svg",
+      "score": 71.42,
+      "status": "complete",
+      "metrics": {
+        "public_index": 71.42,
+        "private_index": 63.49,
+        "full_index": 67.46,
+        "official_full_rank": 28,
+        "official_public_rank": 35
+      },
+      "axes": [
+        {
+          "id": "cvbench",
+          "label_en": "Spatial · CV-Bench",
+          "label_zh": "空间感知 · CV-Bench",
+          "score": 0.8122,
+          "metric": "vision_skill",
+          "samples": 2038
+        },
+        {
+          "id": "blink",
+          "label_en": "Visual perception · BLINK",
+          "label_zh": "视觉感知 · BLINK",
+          "score": 0.6633,
+          "metric": "vision_skill",
+          "samples": 961
+        },
+        {
+          "id": "realworldqa",
+          "label_en": "Real-world scenes · RealWorldQA",
+          "label_zh": "真实场景 · RealWorldQA",
+          "score": 0.6254,
+          "metric": "vision_skill",
+          "samples": 589
+        },
+        {
+          "id": "charxiv",
+          "label_en": "Chart reasoning · CharXiv",
+          "label_zh": "图表推理 · CharXiv",
+          "score": 0.7243,
+          "metric": "vision_skill",
+          "samples": 532
+        },
+        {
+          "id": "infographicvqa",
+          "label_en": "Infographics · InfographicVQA",
+          "label_zh": "信息图理解 · InfographicVQA",
+          "score": 0.929,
+          "metric": "vision_skill",
+          "samples": 244
+        },
+        {
+          "id": "mind2web",
+          "label_en": "Web navigation · Mind2Web",
+          "label_zh": "网页操作 · Mind2Web",
+          "score": 0.8301,
+          "metric": "vision_skill",
+          "samples": 973
+        },
+        {
+          "id": "winoground",
+          "label_en": "Image–text matching · Winoground",
+          "label_zh": "图文匹配 · Winoground",
+          "score": 0.835,
+          "metric": "vision_skill",
+          "samples": 800
+        },
+        {
+          "id": "kie",
+          "label_en": "Document extraction · KIE (CORD+FUNSD)",
+          "label_zh": "文档信息提取 · KIE (CORD+FUNSD)",
+          "score": 0.9265,
+          "metric": "vision_skill",
+          "samples": 2465
+        },
+        {
+          "id": "moderation",
+          "label_en": "Moderation · Hateful Memes",
+          "label_zh": "内容审核 · Moderation (Hateful Memes)",
+          "score": 0.3487,
+          "metric": "vision_skill",
+          "samples": 1213
+        },
+        {
+          "id": "rbenchm",
+          "label_en": "Expert visual reasoning · R-Bench-M",
+          "label_zh": "专业视觉推理 · R-Bench-M",
+          "score": 0.3358,
+          "metric": "vision_skill",
+          "samples": 665
+        },
+        {
+          "id": "mmmupro",
+          "label_en": "Visual exam reasoning · MMMU-Pro vision",
+          "label_zh": "图像试题推理 · MMMU-Pro vision",
+          "score": 0.4046,
+          "metric": "vision_skill",
+          "samples": 1730
+        }
+      ],
+      "samples": 12210,
+      "errors": null,
+      "evaluated_at": "2026-11-12",
+      "protocol": "Decision-Index-Vision-Public-0.4",
+      "notes": []
+    },
+    {
+      "model_id": "jdi-decision-v1",
+      "model_name": "JDI-Decision-V1",
+      "score": 79.58,
+      "status": "complete",
+      "metrics": {
+        "public_index": 79.58,
+        "private_index": 70.52,
+        "full_index": 75.05,
+        "official_full_rank": 2,
+        "official_public_rank": 4
+      },
+      "axes": [
+        {
+          "id": "cvbench",
+          "label_en": "Spatial · CV-Bench",
+          "label_zh": "空间感知 · CV-Bench",
+          "score": 0.8163,
+          "metric": "vision_skill",
+          "samples": 2038
+        },
+        {
+          "id": "blink",
+          "label_en": "Visual perception · BLINK",
+          "label_zh": "视觉感知 · BLINK",
+          "score": 0.7874,
+          "metric": "vision_skill",
+          "samples": 961
+        },
+        {
+          "id": "realworldqa",
+          "label_en": "Real-world scenes · RealWorldQA",
+          "label_zh": "真实场景 · RealWorldQA",
+          "score": 0.7475,
+          "metric": "vision_skill",
+          "samples": 589
+        },
+        {
+          "id": "charxiv",
+          "label_en": "Chart reasoning · CharXiv",
+          "label_zh": "图表推理 · CharXiv",
+          "score": 0.8195,
+          "metric": "vision_skill",
+          "samples": 532
+        },
+        {
+          "id": "infographicvqa",
+          "label_en": "Infographics · InfographicVQA",
+          "label_zh": "信息图理解 · InfographicVQA",
+          "score": 0.9836,
+          "metric": "vision_skill",
+          "samples": 244
+        },
+        {
+          "id": "mind2web",
+          "label_en": "Web navigation · Mind2Web",
+          "label_zh": "网页操作 · Mind2Web",
+          "score": 0.889,
+          "metric": "vision_skill",
+          "samples": 973
+        },
+        {
+          "id": "winoground",
+          "label_en": "Image–text matching · Winoground",
+          "label_zh": "图文匹配 · Winoground",
+          "score": 0.8675,
+          "metric": "vision_skill",
+          "samples": 800
+        },
+        {
+          "id": "kie",
+          "label_en": "Document extraction · KIE (CORD+FUNSD)",
+          "label_zh": "文档信息提取 · KIE (CORD+FUNSD)",
+          "score": 0.9366,
+          "metric": "vision_skill",
+          "samples": 2465
+        },
+        {
+          "id": "moderation",
+          "label_en": "Moderation · Hateful Memes",
+          "label_zh": "内容审核 · Moderation (Hateful Memes)",
+          "score": 0.568,
+          "metric": "vision_skill",
+          "samples": 1213
+        },
+        {
+          "id": "rbenchm",
+          "label_en": "Expert visual reasoning · R-Bench-M",
+          "label_zh": "专业视觉推理 · R-Bench-M",
+          "score": 0.4315,
+          "metric": "vision_skill",
+          "samples": 665
+        },
+        {
+          "id": "mmmupro",
+          "label_en": "Visual exam reasoning · MMMU-Pro vision",
+          "label_zh": "图像试题推理 · MMMU-Pro vision",
+          "score": 0.5121,
+          "metric": "vision_skill",
+          "samples": 1730
+        }
+      ],
+      "samples": 12210,
+      "errors": null,
+      "evaluated_at": "2026-11-12",
+      "protocol": "Decision-Index-Vision-Public-0.4",
+      "notes": []
+    }
+  ]
+}

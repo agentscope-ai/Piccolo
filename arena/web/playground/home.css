@@ -128,3 +128,22 @@ html body .home-usecase h3{font-size:clamp(23px,2.4vw,34px);letter-spacing:-.8px
 
 .home-release-links {display:flex;gap:1rem;flex-wrap:wrap;margin-top:1rem}
 .home-release-links a {color:inherit;text-decoration:underline;text-underline-offset:3px}
+
+.performance-news {position:relative;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,1fr);align-items:center;gap:36px;background:#eaf3f0;border-top:3px solid #087366;border-bottom:1px solid #adcac3;padding:26px 55px 26px 32px;margin:0 0 20px;color:#163e39}
+.performance-news[hidden] {display:none}
+.performance-news-label {display:block;color:#08675e;font:650 11px/1.4 -apple-system,BlinkMacSystemFont,sans-serif;letter-spacing:1.8px;text-transform:uppercase}
+html body .home-page .performance-news h2 {font-size:clamp(27px,2.8vw,40px);font-weight:400;line-height:1.12;letter-spacing:-1px;margin:8px 0 10px;color:#173e39}
+.performance-news-story a {color:#085f56;text-decoration:underline;text-underline-offset:4px;font-size:13px}
+.performance-news-scores {margin:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-left:1px solid #a9c9c1;padding-left:25px;gap:12px}
+.performance-news-scores dt {font-size:12px;color:#3c5d58}
+.performance-news-scores dd {margin:2px 0 0;font:400 clamp(25px,2.5vw,38px)/1.2 Georgia,serif;color:#284e48;font-variant-numeric:tabular-nums}
+.performance-news-scores div:first-child dd {color:#00675a}
+html body #dismissPerformanceNews {position:absolute;top:6px;right:6px;width:36px;height:36px;padding:0;border:0;background:transparent;color:#23594f;font:400 24px/1 sans-serif}
+html body #dismissPerformanceNews:hover {background:#d5e8e2}
+#dismissPerformanceNews:focus-visible,.performance-news-story a:focus-visible {outline:2px solid #005e55;outline-offset:2px}
+@media(max-width:800px) {
+  .performance-news {grid-template-columns:1fr;gap:15px;padding:19px 18px}
+  html body .home-page .performance-news h2 {font-size:29px;margin-right:18px}
+  .performance-news-scores {padding:11px 0 0;border-left:0;border-top:1px solid #a9c9c1}
+  .performance-news-scores dd {font-size:27px}
+}

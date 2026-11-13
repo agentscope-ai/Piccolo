@@ -172,7 +172,7 @@ class LeaderboardRow(Contract):
 
 class LeaderboardDocument(Contract):
     schema_version: Literal['jev.leaderboard.v1'] = 'jev.leaderboard.v1'
-    benchmark_id: Literal['jevbench', 'decisionindex', 'harnessjevbench', 'datajevbench', 'arena']
+    benchmark_id: Literal['jevbench', 'decisionindex', 'decisionindex-vision', 'harnessjevbench', 'datajevbench', 'arena']
     title: str
     version: str
     metric: str

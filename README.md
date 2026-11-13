@@ -10,11 +10,19 @@
 </p>
 <p align="center">English / <a href="README_zh.md">简体中文</a> · <a href="docs/piccolo-blog.md">Launch blog 中文</a> · <a href="docs/MODELS.md">Model guide</a> · <a href="LICENSE">Apache-2.0</a></p>
 
-Piccolo is a family of **4B, 9B and 27B decision models**. Given a state, a question and candidate options, it returns structured decisions and candidate probabilities for tool review, context retention, data workflows and interactive environments. **Piccolo-27B scores 92.21% on JevBench Public and 68.59 on Decision Index Public.** Try the [Decision website](https://decisionplayground.agentscope.io/) or run Piccolo locally through QwenPaw.
+Piccolo is a family of **4B, 9B and 27B decision models**. Given a state, a question and candidate options, it returns structured decisions and candidate probabilities for tool review, context retention, data workflows and interactive environments. Try the [Decision website](https://decisionplayground.agentscope.io/) or run Piccolo locally through QwenPaw.
+
+## News
+
+- **October 30, 2026** — [Piccolo v1.0.0](https://github.com/agentscope-ai/Piccolo/tree/v1.0.0) released the 4B, 9B and 27B decision models.
+- **November 8, 2026** — We released Piccolo-VL checkpoints in [4B](https://huggingface.co/agentscope-ai/Piccolo-4B-VL), [9B](https://huggingface.co/agentscope-ai/Piccolo-9B-VL) and [27B](https://huggingface.co/agentscope-ai/Piccolo-27B-VL) sizes.
+- **November 12, 2026** — **Piccolo-27B-VL ranked first on Decision Index Vision Full (75.59)**. Piccolo-9B-VL and Piccolo-4B-VL scored 68.35 and 67.46. [Leaderboard](https://huggingface.co/spaces/multimodalart/jev-decision-index)
 
 ## Models
 
-All **12 Hugging Face repositories are published** under Apache-2.0:
+Vision-language checkpoints: [Piccolo-4B-VL](https://huggingface.co/agentscope-ai/Piccolo-4B-VL), [Piccolo-9B-VL](https://huggingface.co/agentscope-ai/Piccolo-9B-VL), and [Piccolo-27B-VL](https://huggingface.co/agentscope-ai/Piccolo-27B-VL).
+
+The foundation checkpoints and text GGUF releases are available in the following formats.
 
 | Model | Complete Safetensors | BF16 GGUF | Q8_0 GGUF | Q4_K_M GGUF |
 | --- | --- | --- | --- | --- |
@@ -24,15 +32,18 @@ All **12 Hugging Face repositories are published** under Apache-2.0:
 
 The `-BF16` GGUFs are converted directly from the complete checkpoints; some normalization and recurrent-state tensors remain F32. Q8_0 and Q4_K_M trade size for numerical precision. Download **every GGUF shard** into one directory. [Model guide and download details](docs/MODELS.md).
 
-[ModelScope / Piccolo-27B](https://www.modelscope.cn/models/AgentScope/Piccolo-27B) is available alongside the other Piccolo releases in the [AgentScope collection](https://www.modelscope.cn/collections/AgentScope/QwenPaw-Flash).
+[ModelScope / Piccolo-27B](https://www.modelscope.cn/models/AgentScope/Piccolo-27B) is available alongside the other Piccolo releases in the [AgentScope collection](https://www.modelscope.cn/collections/AgentScope/Piccolo).
 
 ## Evaluation
 
-| Model | HarnessJevBench Hard ↑ | DataJevBench ↑ | JevBench Public ↑ | Decision Index Public ↑ |
-| --- | ---: | ---: | ---: | ---: |
-| **Piccolo-27B** | **84.41%** | **82.60%** | **92.21%** | **68.59** |
-| Piccolo-9B | 68.81% | 69.40% | 89.61% | 60.86 |
-| Piccolo-4B | 62.03% | 70.60% | 87.01% | 58.00 |
+| Model | Vision Full | Vision Public | Vision Private | Text Full | Text Public | JevBench-231 | HarnessJevBench Hard | DataJevBench |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| **Piccolo-27B-VL** | **75.59** | **80.22** | **70.97** | — | — | — | — | — |
+| Piccolo-9B-VL | 68.35 | 71.67 | 65.04 | — | — | — | — | — |
+| Piccolo-4B-VL | 67.46 | 71.42 | 63.49 | — | — | — | — | — |
+| Piccolo-27B | — | — | — | 68.40 | 68.08 | 92.21% | 84.41% | 82.60% |
+| Piccolo-9B | — | — | — | 57.34 | 60.30 | 89.61% | 70.68% | 69.20% |
+| Piccolo-4B | — | — | — | 50.00 | 57.14 | 87.01% | 63.22% | 71.20% |
 
 Piccolo benchmark results. [Results and source data](evaluation/README.md) · [Live leaderboard](https://decisionplayground.agentscope.io/).
 

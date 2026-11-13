@@ -9,6 +9,6 @@ CONFIG = Path(os.environ.get('JEV_CONFIG', str(REPO / 'config' / 'app.json'))).r
 
 
 def leaderboard_directory(directory=None):
-    """One portable directory for the four public benchmark documents."""
+    """One portable directory for public benchmark documents."""
     value = directory if directory is not None else os.environ.get('JEV_LEADERBOARD_DIR', REPO / 'leaderboard')
     return Path(value).expanduser().resolve()
