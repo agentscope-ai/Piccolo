@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "piccolo-hf"
+version = "0.1.0"
+description = "Standalone Piccolo HF models, processors and checkpoint tools"
+requires-python = ">=3.12"
+dependencies = ["torch>=2.11", "transformers==5.19.0", "pydantic>=2.0", "Pillow>=11.3.0", "httpx>=0.27.0", "safetensors>=0.8", "jinja2>=3.1.0"]
+
+[project.scripts]
+piccolo-checkpoint = "piccolo_hf.checkpoint:main"
+
+[tool.setuptools.package-data]
+piccolo_hf = ["*.jinja", "licenses/*.txt"]
+
+[tool.setuptools.packages.find]
+include = ["piccolo_hf*"]
