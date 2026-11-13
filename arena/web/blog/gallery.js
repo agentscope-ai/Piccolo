@@ -16,6 +16,7 @@ const button=(text,callback,selected)=>{
 const demos=[
  {id:'mario',title:'Mario',kind:['Movement and timing','移动与时机'],caption:['Watch the ranking of movement actions change as the character approaches an obstacle.','观察角色接近障碍物时，不同移动动作的候选概率怎样变化。']},
  {id:'zenless-zone-zero',title:'Zenless Zone Zero',zhTitle:'绝区零',video:'./blog/assets/zenless-zone-zero.mp4',kind:['Combat footage · 1:35','战斗实录 · 1:35'],caption:['Watch the highlighted inputs alongside the fight as the character moves, attacks and dodges.','左侧按键随战斗高亮，可以对照角色的移动、攻击和闪避。']},
+ {id:'black-myth-wukong',title:'Black Myth: Wukong',video:'https://decisionplayground.agentscope.io/blog/assets/black-myth-wukong.mp4',previewBase:'https://decisionplayground.agentscope.io/blog/assets/black-myth-wukong',kind:['Combat footage · 2:16','Combat footage · 2:16'],caption:['Watch a staff fight against a wolf-like opponent in the forest arena.','Watch a staff fight against a wolf-like opponent in the forest arena.']},
  {id:'hex',title:'Hex',kind:['Board strategy','对局策略'],caption:['Follow how a placement changes the path across the board, then compare the next set of legal moves.','观察一次落子怎样改变连通路径，再比较下一步的合法落点。']},
  {id:'sokoban',title:'Sokoban',kind:['Constrained planning','约束规划'],caption:['Compare the box–goal assignments. A nearby goal is useful only if the remaining boxes can still be moved.','比较箱子与目标的分配：目标近还不够，剩余箱子也要有继续移动的空间。']},
  {id:'2048',title:'2048',kind:['Sequential decisions','连续决策'],caption:['Watch which merges remain available after each move, and how that changes the ranking of the four directions.','观察每一步之后还剩哪些合并机会，以及四个方向的排序如何随之变化。']},
@@ -28,9 +29,9 @@ const demos=[
  {id:'data-judge',anchor:'datajev-showcase',title:'Data queries',kind:['Evidence judgments','证据充分性判断'],caption:['Piccolo-4B-Q4_K_M judges 24 full DataJevBench evidence cases. The queries are abbreviated on screen. Each percentage is the probability assigned to the displayed judgment.','Piccolo-4B-Q4_K_M 对 DataJevBench 的 24 条完整样本逐项判断。画面左侧是问题简写，右侧是判断及其候选概率。'],source:'./blog/assets/data-judge-cases.json'}
 ];
 export function mountGallery(host,{gamesOnly=false,ids=null}={}){
- const featured=['mario','zenless-zone-zero','qwenpaw-audit','data-judge','sokoban','hex'].map(id=>demos.findIndex(demo=>demo.id===id));
+ const featured=['mario','zenless-zone-zero','black-myth-wukong','qwenpaw-audit','data-judge','sokoban','hex'].map(id=>demos.findIndex(demo=>demo.id===id));
  // Keep every published game recording available in the article.
- const articleGames=['zenless-zone-zero','mario','jump','sokoban','2048','tetris','hex','othello','dots-boxes','snake'];
+ const articleGames=['zenless-zone-zero','black-myth-wukong','mario','jump','sokoban','2048','tetris','hex','othello','dots-boxes','snake'];
  const order=ids?ids.map(id=>demos.findIndex(demo=>demo.id===id)):gamesOnly?articleGames.map(id=>demos.findIndex(demo=>demo.id===id))
   :[...featured,...demos.map((_game,i)=>i).filter(i=>!featured.includes(i))];
  let index=order[0],wanted=!reduced.matches,modalPlaying=false,previews=[],motionButton,modalImage,modalMotion,returnGame=demos[index].id;
@@ -46,7 +47,7 @@ export function mountGallery(host,{gamesOnly=false,ids=null}={}){
  }
  function replaySrc(game,playing){
   const id=locale.lang==='zh'&&game.zhReplay?game.zhReplay:game.id;
-  return './blog/assets/'+id+(playing?'.gif':'-poster.png');
+  return (game.previewBase || './blog/assets/'+id)+(playing?'.gif':'-poster.png');
  }
  function setImage(image,game,playing){
   const src=replaySrc(game,playing);

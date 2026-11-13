@@ -29,7 +29,7 @@ export const article = {
         "kicker": "2.1 / GAME",
         "title": "Game · successive decisions",
         "paragraphs": [
-          "Nine game recordings are grouped into action, puzzle and board games. Mario tests jump timing, 2048 tests merge direction and Sokoban tests box-to-goal assignments. The 95-second Zenless Zone Zero combat recording shows the active controls alongside the character’s movements, attacks and dodges."
+          "Nine game recordings are grouped into action, puzzle and board games. Mario tests jump timing, 2048 tests merge direction and Sokoban tests box-to-goal assignments. The 95-second Zenless Zone Zero combat recording shows the active controls alongside the character’s movements, attacks and dodges. The adjacent Black Myth: Wukong recording follows a two-minute staff fight in a forest arena."
         ],
         "leadParagraphs": 1,
         "headingLevel": 3,
@@ -456,7 +456,7 @@ export const article = {
         "kicker": "2.1 / GAME",
         "title": "Game · 连续动作中的判断",
         "paragraphs": [
-          "九个游戏回放按动作、益智和棋盘对局排列。Mario 关注跳跃时机，2048 关注合并方向，推箱子关注箱子与目标的分配。《绝区零》的 95 秒战斗实录将按键和游戏画面放在一起，可以对照角色何时移动、攻击和闪避。"
+          "九个游戏回放按动作、益智和棋盘对局排列。Mario 关注跳跃时机，2048 关注合并方向，推箱子关注箱子与目标的分配。《绝区零》的 95 秒战斗实录将按键和游戏画面放在一起，可以对照角色何时移动、攻击和闪避。 The adjacent Black Myth: Wukong recording follows a two-minute staff fight in a forest arena."
         ],
         "leadParagraphs": 1,
         "headingLevel": 3,
