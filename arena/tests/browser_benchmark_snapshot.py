@@ -32,6 +32,12 @@ def main():
                 home_card = page.locator('.home-usecase').filter(has=page.locator('[data-home-benchmark="harnessjevbench"]'))
                 assert 'Coming Soon' not in home_card.inner_text()
                 assert home_card.locator('a[href="https://github.com/agentscope-ai/HarnessJevBench"]').count() == 1
+                news = page.locator('#performanceNews')
+                assert news.is_visible()
+                page.locator('#dismissPerformanceNews').click()
+                assert news.is_hidden()
+                page.reload(wait_until='networkidle')
+                assert news.is_hidden()
                 if size == 'desktop':
                     page.screenshot(path=str(args.output / f'{size}-{language}-home.png'), full_page=True)
                 expected = {}

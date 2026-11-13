@@ -3,16 +3,6 @@
   'use strict';
   const modelId = 'blink-27b-1028';
   const visionModelId = 'piccolo-27b-vl';
-  const news = document.getElementById('performanceNews');
-  const dismissalKey = 'piccolo.news.vision-full-75-59.dismissed';
-  if (news) {
-    try { news.hidden = localStorage.getItem(dismissalKey) === '1'; } catch {}
-    document.getElementById('dismissPerformanceNews').addEventListener('click', () => {
-      news.hidden = true;
-      try { localStorage.setItem(dismissalKey, '1'); } catch {}
-      document.querySelector('.home-actions button')?.focus({preventScroll:true});
-    });
-  }
   const tr = (en, zh) => window.JevI18n?.t(en, zh) ?? en;
   const definitions = [
     {id: 'jevbench', title: 'JevBench Public', publicVersion: true, url: 'https://github.com/fstandhartinger/jevbench', metric: ['Accuracy', '准确率'],
