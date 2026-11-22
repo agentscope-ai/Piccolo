@@ -13,8 +13,15 @@ def main():
     # Native Paddle logs also go to stderr; keep protocol stdout uncontaminated.
     protocol=os.fdopen(os.dup(1),'w',buffering=1)
     os.dup2(2,1)
-    sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-    from piccolo_inference_sglang.ocr_common import verify_models, MODELS
+    # Import this one stdlib-only helper file, not the serving environment's
+    # whole site-packages directory. A wheel may be installed beside a different
+    # NumPy/Torch stack from the isolated Paddle environment.
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('_piccolo_ocr_common',Path(__file__).with_name('ocr_common.py'))
+    common=importlib.util.module_from_spec(spec)
+    sys.modules[spec.name]=common
+    spec.loader.exec_module(common)
+    verify_models,MODELS=common.verify_models,common.MODELS
     config=json.loads(sys.stdin.readline())
     try:
         identity=verify_models(config['model_dir'])

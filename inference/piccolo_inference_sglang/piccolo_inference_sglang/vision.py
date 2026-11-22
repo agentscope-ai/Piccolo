@@ -36,8 +36,14 @@ class Vision:
         await self.ocr.close()
 
     async def runtime(self):
+        import os
+        from pathlib import Path
         await self.ocr.start()
+        profile_path = os.environ.get('PICCOLO_LOOP_PROFILE')
+        profile = json.loads(Path(profile_path).read_text()) if profile_path else None
         return dict(backend='sglang',ocr=self.ocr.runtime(),
+                    shared_depth_profile=profile,
+                    language_residual_materialized_each_layer=os.environ.get('V35_SGLANG_MATERIALIZE_EACH_LAYER') == '1',
                     vision_format='question_list_text_images_text',
                     prompt_revision=('20261030+ocr-state-once-20261102'
                                      if self.ocr.settings.enabled else '20261030'),

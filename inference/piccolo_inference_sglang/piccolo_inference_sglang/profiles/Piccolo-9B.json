@@ -1,0 +1,42 @@
+{
+  "name": "Piccolo-9B-MM-Loop",
+  "model_index_sha256": "51a23d8c8d999a32d5b6a455afed55340b0c98261d25d6a8913251a778ae98ec",
+  "tokenizer_sha256": "87a7830d63fcf43bf241c3c5242e96e62dd3fdc29224ca26fed8ea333db72de4",
+  "recipe": {
+    "blocks": [
+      [
+        4,
+        8
+      ],
+      [
+        8,
+        12
+      ]
+    ],
+    "effort": 1,
+    "alpha": 0.5,
+    "family": "normalized_glide",
+    "per_block_pass_alphas": [
+      0.5,
+      0.5
+    ],
+    "language_layer_calls": 40,
+    "vision": {
+      "blocks": [
+        [
+          18,
+          19
+        ]
+      ],
+      "effort": 1,
+      "alpha": 0.25,
+      "family": "first_native",
+      "per_block_pass_alphas": [
+        1.0,
+        0.25
+      ]
+    }
+  },
+  "layer_index_convention": "zero-based, half-open [start,end)",
+  "size": "9B"
+}

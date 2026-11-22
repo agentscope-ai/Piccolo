@@ -49,6 +49,12 @@ class VisionEngine(Engine):
         )
 
     def __call__(self, state, questions, images=(), prompt=None):
+        if not 1 <= len(images) <= 4:
+            raise Unsupported('Declared capacity: 1..4 images per request')
+        if any(q.get('type') != 'choice' for q in questions.values()):
+            raise Unsupported('Declared capacity: multimodal choice questions only')
+        if any(not 2 <= len(q.get('criteria', {})) <= 12 for q in questions.values()):
+            raise Unsupported('Declared capacity: 2..12 options per choice')
         urls = [image_io.data_url(ref, self.image_root, MAX_PIXELS) for ref in images]
         response = self.clients.get().post("/v1/decisions", json=dict(
             model=self.model, state=state, questions=questions, images=urls, prompt=prompt))

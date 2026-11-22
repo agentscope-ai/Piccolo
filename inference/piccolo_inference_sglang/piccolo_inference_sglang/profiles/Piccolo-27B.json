@@ -1,0 +1,34 @@
+{
+  "name": "Piccolo-27B-MM-Loop",
+  "model_index_sha256": "f772bc96b53c59af2140db56a8c2c6c5acaa56a30123a9f4a261988433cea931",
+  "recipe": {
+    "blocks": [
+      [
+        24,
+        36
+      ],
+      [
+        36,
+        48
+      ]
+    ],
+    "alpha": 0.375,
+    "family": "first_native",
+    "per_block_pass_alphas": [
+      1.0,
+      0.375
+    ],
+    "language_layer_calls": 88,
+    "vision": {
+      "blocks": [],
+      "alpha": 0.5,
+      "effort": 0,
+      "family": "normalized_glide",
+      "per_block_pass_alphas": [
+        1.0
+      ]
+    }
+  },
+  "layer_index_convention": "zero-based, half-open [start,end)",
+  "size": "27B"
+}

@@ -59,6 +59,22 @@ bash scripts/launch_vision.sh /models/piccolo-4B-1028 0 18704
 
 The served model name defaults to `Piccolo`, independently of the checkpoint directory name; set `SERVED_MODEL_NAME` to override it.
 
+### Optional loop inference
+
+For loop inference, select a fixed configuration with `--size` (`0.8B`, `2B`, `4B`, `9B` or `27B`):
+
+```bash
+export DECISION_INDEX_API_KEY=EMPTY
+python -m piccolo_inference_sglang.launch \
+  --model /models/Piccolo-2B --size 2B --gpu 0 --port 18704 \
+  --ocr-model-dir "$PWD/ocr_models" \
+  --ocr-python "$PWD/.venv-ocr/bin/python"
+```
+
+This entry point enables OCR and uses BF16, TP1, a 32,768-token context and one concurrent request. Prepare the separate OCR environment and weights as described above. It listens on `127.0.0.1` by default; add `--host 0.0.0.0` for remote access. Use `--served-model-name` to override `Piccolo`.
+
+The launcher checks the checkpoint index SHA256 and layer count against the selected [profile](piccolo_inference_sglang/profiles). Loop passes reuse layer weights; the 9B profile also repeats a vision block. Attention defaults to `auto` (FA3 on CUDA compute capability 9.x, Triton otherwise); override it with `--attention-backend fa3` or `--attention-backend triton`. `--dry-run` prints the command without loading the model or checking GPU capability. The shell launchers above do not enable loop inference by default.
+
 ### Optional text input profiles
 
 The text service defaults to the original `flexdm` input format. Select a profile at startup:
@@ -111,6 +127,8 @@ curl -fsS http://model-host:18704/v1/decisions/runtime -H 'Authorization: Bearer
 OCR runs in a single worker, sharing the main model's GPU by default. It uses PP-OCRv5_mobile_det and en_PP-OCRv5_mobile_rec, with a detection side limit of 960 and recognition batch size 8.
 
 ## Official vision evaluation
+
+The `VisionEngine` adapter supports choice questions with 1–4 images per request and 2–12 candidates per question.
 
 ```bash
 PLUGIN_ROOT=/path/to/piccolo_inference_sglang

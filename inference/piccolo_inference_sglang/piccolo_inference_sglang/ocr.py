@@ -28,10 +28,15 @@ class OCRWorker:
 
     async def start(self):
         if self.process and self.process.returncode is None:return
+        worker_env=dict(os.environ,PYTHONDONTWRITEBYTECODE='1',PYTHONNOUSERSITE='1')
+        # The optional OCR Python must use its own NumPy/Paddle libraries.
+        # Parent training/serving PYTHONPATH or PYTHONHOME must not override it.
+        worker_env.pop('PYTHONPATH',None)
+        worker_env.pop('PYTHONHOME',None)
         self.process=await asyncio.create_subprocess_exec(self.settings.python,'-u',
             str(Path(__file__).with_name('ocr_worker.py')),
             stdin=asyncio.subprocess.PIPE,stdout=asyncio.subprocess.PIPE,
-            limit=16*1024*1024,env=dict(os.environ,PYTHONDONTWRITEBYTECODE='1'))
+            limit=16*1024*1024,env=worker_env)
         try:
             self.process.stdin.write((json.dumps(asdict(self.settings))+'\n').encode())
             await self.process.stdin.drain()

@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "piccolo-inference-sglang"
-version = "0.2.1"
-description = "Piccolo text and vision inference for SGLang, with optional frozen PaddleOCR"
+version = "0.3.0"
+description = "Portable Piccolo shared-depth multimodal decision inference for SGLang"
 requires-python = ">=3.12"
 dependencies = []
 
@@ -31,8 +31,20 @@ paddle-index-url = "https://www.paddlepaddle.org.cn/packages/stable/cu126/"
 [project.entry-points."sglang.srt.plugins"]
 piccolo = "piccolo_inference_sglang.plugin:register"
 
+[project.scripts]
+piccolo-serve = "piccolo_inference_sglang.launch:main"
+piccolo-prepare-ocr = "piccolo_inference_sglang.prepare_ocr_models:main"
+
+[tool.setuptools]
+include-package-data = false
+
 [tool.setuptools.packages.find]
 include = ["piccolo_inference_sglang*"]
+exclude = ["*__pycache__*"]
+namespaces = false
 
 [tool.setuptools.package-data]
-piccolo_inference_sglang = ["licenses/*.txt"]
+piccolo_inference_sglang = ["licenses/*.txt", "profiles/*.json"]
+
+[tool.setuptools.exclude-package-data]
+"*" = ["__pycache__/*", "*.pyc", "*.pyo"]
