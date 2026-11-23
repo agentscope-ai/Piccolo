@@ -1,6 +1,6 @@
 # Published Piccolo models
 
-Vision-language checkpoints: [Piccolo-4B-VL](https://huggingface.co/agentscope-ai/Piccolo-4B-VL), [Piccolo-9B-VL](https://huggingface.co/agentscope-ai/Piccolo-9B-VL), and [Piccolo-27B-VL](https://huggingface.co/agentscope-ai/Piccolo-27B-VL).
+Vision-language checkpoints: [Piccolo-0.8B-VL](https://huggingface.co/agentscope-ai/Piccolo-0.8B-VL), [Piccolo-2B-VL](https://huggingface.co/agentscope-ai/Piccolo-2B-VL), [Piccolo-4B-VL](https://huggingface.co/agentscope-ai/Piccolo-4B-VL), [Piccolo-9B-VL](https://huggingface.co/agentscope-ai/Piccolo-9B-VL), and [Piccolo-27B-VL](https://huggingface.co/agentscope-ai/Piccolo-27B-VL).
 
 The 12 foundation and GGUF repositories below are public on Hugging Face and ModelScope and use Apache-2.0. Download links point to the current cards; [the manifest](../models/manifest.json) pins weight-bearing revisions, sizes and LFS SHA-256 checksums.
 

@@ -20,7 +20,7 @@ Piccolo is a family of **4B, 9B and 27B decision models**. Given a state, a ques
 
 ## Models
 
-Vision-language checkpoints: [Piccolo-4B-VL](https://huggingface.co/agentscope-ai/Piccolo-4B-VL), [Piccolo-9B-VL](https://huggingface.co/agentscope-ai/Piccolo-9B-VL), and [Piccolo-27B-VL](https://huggingface.co/agentscope-ai/Piccolo-27B-VL).
+Vision-language checkpoints: [Piccolo-0.8B-VL](https://huggingface.co/agentscope-ai/Piccolo-0.8B-VL), [Piccolo-2B-VL](https://huggingface.co/agentscope-ai/Piccolo-2B-VL), [Piccolo-4B-VL](https://huggingface.co/agentscope-ai/Piccolo-4B-VL), [Piccolo-9B-VL](https://huggingface.co/agentscope-ai/Piccolo-9B-VL), and [Piccolo-27B-VL](https://huggingface.co/agentscope-ai/Piccolo-27B-VL).
 
 The foundation checkpoints and text GGUF releases are available in the following formats.
 
