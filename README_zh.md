@@ -144,7 +144,7 @@ python3.12 scripts/export_home_decision.py --check
 python3.12 -m unittest tests.test_home_decision -v
 ```
 
-素材复现见 [Showcase 说明](docs/SHOWCASE.md)。反馈问题时附玩法、种子、步骤及脱敏回放，保留原参与者身份与终局。[验证记录](docs/VERIFICATION.md) · [变更说明](CHANGELOG.md)。
+素材复现见 [Showcase 说明](docs/SHOWCASE.md)。反馈问题时附玩法、种子、步骤及脱敏回放，保留原参与者身份与终局。版本变更见 [变更说明](CHANGELOG.md)。
 
 ## 许可与署名
 
