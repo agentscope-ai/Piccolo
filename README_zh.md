@@ -89,7 +89,7 @@ Piccolo 已集成到 **[QwenPaw 主分支](https://github.com/agentscope-ai/Qwen
 
 启动模型不会自动开启审核与压缩。内置 llama.cpp 同时运行**一个模型**，对话模型可以使用其他提供商。原生审批阈值和人工确认回退继续生效。[三步配置截图](assets/qwenpaw/README.md)。
 
-Piccolo 在全注意力层使用双向 prompt attention，保留线性注意力层计算，直接读取候选 token 的 logits 并归一化，通过原生 `/v1/systemone` 返回结果，不生成回答文本。普通因果聊天接口不实现这一协议。[参考推理与请求示例](inference/README.md)。
+Piccolo 在全注意力层使用双向 prompt attention，保留线性注意力层计算，直接读取候选 token 的 logits 并归一化，通过原生 `/v1/systemone` 返回结果，不生成回答文本。普通因果聊天接口不实现这一协议。[推理总览与请求格式](inference/README.md)。
 
 ## 本地运行 Arena
 
@@ -117,7 +117,7 @@ bash scripts/run.sh
 | 目录 | 内容 |
 | --- | --- |
 | [models/](models/README.md) | 已发布模型入口与固定 revision 清单 |
-| [inference/](inference/README.md) | 完整 checkpoint 参考推理与原生协议 |
+| [inference/](inference/README.md) | HF 推理与 SGLang 服务 |
 | [examples/](examples/README.md) | 最小决策请求与本地调用 |
 | [evaluation/](evaluation/README.md) | 基准成绩与一键复现脚本 |
 | [arena/](arena/README.md) | 交互应用、引擎、榜单和回放 |
@@ -137,4 +137,4 @@ python3.12 -m unittest tests.test_home_decision -v
 
 ## 许可与署名
 
-仓库自有代码采用 **[Apache-2.0](LICENSE)**，已发布模型权重也采用 Apache-2.0。第三方组件保留各自许可，详见 [NOTICE](NOTICE)、[Arena 第三方说明](arena/docs/THIRD_PARTY.md) 与 [FlexDM MIT 声明](inference/reference/THIRD_PARTY_LICENSES.md)。Arena 改编自 JevArena，历史 `jev.*` 协议、`JEV_*` 环境变量与回放 ID 保留。
+仓库自有代码采用 **[Apache-2.0](LICENSE)**，已发布模型权重也采用 Apache-2.0。第三方组件保留各自许可，详见 [NOTICE](NOTICE)、[Arena 第三方说明](arena/docs/THIRD_PARTY.md) 与 [FlexDM MIT 声明](scripts/checkpoints/piccolo_checkpoint/licenses/FlexDM-MIT.txt)。Arena 改编自 JevArena，历史 `jev.*` 协议、`JEV_*` 环境变量与回放 ID 保留。

@@ -14,6 +14,11 @@ MODULES = (
     "common_media",
     "piccolo_images",
 )
+LOOP_MODULES = ("piccolo_loop_configuration", "piccolo_loop_modeling", "loop_utils")
+MODEL_TYPES = {
+    "piccolo_qwen3_5": ("piccolo", "Piccolo"),
+    "piccolo_qwen3_5_loop": ("piccolo_loop", "PiccoloLoop"),
+}
 
 
 def _write_json(path, data):
@@ -25,15 +30,23 @@ def _write_json(path, data):
 def read_hf_inference_assets(directory):
     directory = Path(directory)
     config = json.loads((directory / "config.json").read_text())
-    if config.get("model_type") != "piccolo_qwen3_5" or config.get("architectures") != [
-        "PiccoloModel"
-    ]:
+    model_type = config.get("model_type")
+    if model_type not in MODEL_TYPES:
         raise ValueError("Expected a current Piccolo HF checkpoint")
-    if config.get("auto_map", {}).get("AutoModel") not in {
-        "piccolo_modeling.PiccoloModel",
-        "modeling_piccolo.PiccoloModel",
-    }:
+    stem, name = MODEL_TYPES[model_type]
+    if config.get("architectures") != [name + "Model"]:
+        raise ValueError("Incomplete Piccolo HF model architecture")
+    if config.get("auto_map", {}).get("AutoModel") != f"{stem}_modeling.{name}Model":
         raise ValueError("Incomplete Piccolo HF model configuration")
+    loop_config = None
+    if model_type == "piccolo_qwen3_5_loop":
+        from .piccolo_loop_configuration import PiccoloLoopConfig
+
+        loop_config = PiccoloLoopConfig(
+            **{key: value for key, value in config.items() if key != "model_type"}
+        ).loop_config
+    elif "loop_config" in config:
+        raise ValueError("loop_config requires the PiccoloLoop architecture")
     processor = json.loads((directory / "processor_config.json").read_text())
     if not isinstance(processor.get("auto_map", {}).get("AutoProcessor"), str):
         raise ValueError("Incomplete HF processor export")
@@ -53,35 +66,56 @@ def read_hf_inference_assets(directory):
     limit = processor.get("max_length")
     if limit is not None and (type(limit) is not int or limit <= 0):
         raise ValueError("max_length must be a positive integer")
-    return {
-        "model_type": "piccolo_qwen3_5",
+    metadata = {
+        "model_type": model_type,
         "processor_options": {} if limit is None else {"max_length": limit},
         "image_size": {"shortest_edge": low, "longest_edge": high},
-    }, template
+    }
+    if loop_config is not None:
+        metadata["loop_config"] = loop_config
+    return metadata, template
 
 
 def write_hf_inference_assets(
-    directory, *, template, image_size, processor_options=None, model_type="piccolo_qwen3_5"
+    directory,
+    *,
+    template,
+    image_size,
+    processor_options=None,
+    model_type="piccolo_qwen3_5",
+    loop_config=None,
 ):
-    if model_type != "piccolo_qwen3_5":
+    if model_type not in MODEL_TYPES:
         raise ValueError("Only Piccolo exports are supported")
+    stem, name = MODEL_TYPES[model_type]
     options = dict(processor_options or {})
     if options.keys() - {"max_length"}:
         raise ValueError("Piccolo processor options accept only max_length")
     directory = Path(directory)
     config = json.loads((directory / "config.json").read_text())
-    if config.get("model_type") not in {"qwen3_5", "piccolo_qwen3_5"}:
+    if config.get("model_type") not in {"qwen3_5", *MODEL_TYPES}:
         raise ValueError("Expected Qwen3.5 VL weights")
     config.update(
-        model_type="piccolo_qwen3_5",
-        architectures=["PiccoloModel"],
+        model_type=model_type,
+        architectures=[name + "Model"],
         use_cache=False,
         auto_map={
-            "AutoConfig": "piccolo_configuration.PiccoloConfig",
-            "AutoModel": "piccolo_modeling.PiccoloModel",
+            "AutoConfig": f"{stem}_configuration.{name}Config",
+            "AutoModel": f"{stem}_modeling.{name}Model",
         },
     )
-    config["text_config"].update(model_type="piccolo_qwen3_5_text", use_cache=False)
+    config["text_config"].update(model_type=model_type + "_text", use_cache=False)
+    if model_type == "piccolo_qwen3_5_loop":
+        from .piccolo_loop_configuration import PiccoloLoopConfig
+
+        config["loop_config"] = (
+            loop_config if loop_config is not None else config.get("loop_config")
+        )
+        config = PiccoloLoopConfig(
+            **{key: value for key, value in config.items() if key != "model_type"}
+        ).to_dict()
+    elif loop_config is not None or "loop_config" in config:
+        raise ValueError("loop_config requires the PiccoloLoop architecture")
     _write_json(directory / "config.json", config)
     processor_path = directory / "processor_config.json"
     processor = json.loads(processor_path.read_text()) if processor_path.exists() else {}
@@ -127,7 +161,8 @@ def write_hf_inference_assets(
         "decision-inference.json",
     ):
         (directory / name).unlink(missing_ok=True)
-    for module in MODULES:
+    modules = MODULES + (LOOP_MODULES if model_type == "piccolo_qwen3_5_loop" else ())
+    for module in modules:
         shutil.copy2(Path(__file__).with_name(module + ".py"), directory / (module + ".py"))
     read_hf_inference_assets(directory)
     readme = directory / "README.md"
@@ -139,7 +174,12 @@ def write_hf_inference_assets(
         "Full attention is bidirectional; GDN remains causal. Complete prompts only, "
         "without incremental generation or KV caching. Load with AutoProcessor and "
         "AutoModel using trust_remote_code=True. Iterate processor.encode_request(payload) "
-        "and pass each item's inputs to the model. Probabilities follow item.option_keys.\n",
+        "and pass each item's inputs to the model. Probabilities follow item.option_keys.\n"
+        + (
+            "Shared-weight text/vision recurrence is defined by loop_config in config.json.\n"
+            if model_type == "piccolo_qwen3_5_loop"
+            else ""
+        ),
         encoding="utf-8",
     )
 
@@ -189,12 +229,21 @@ def validate_checkpoint(directory):
     return metadata
 
 
-def convert(source, output, *, template, image_size, max_length=None):
+def convert(
+    source, output, *, template, image_size, max_length=None, model_type=None, loop_config=None
+):
     source, output = Path(source).resolve(), Path(output).resolve()
     if not source.is_dir() or output == source or source in output.parents:
         raise ValueError("Use an existing source and a separate output directory")
     if output.exists():
         raise ValueError("Output directory must not exist")
+    if model_type is None:
+        source_type = json.loads((source / "config.json").read_text()).get("model_type")
+        model_type = (
+            "piccolo_qwen3_5_loop"
+            if loop_config is not None or source_type == "piccolo_qwen3_5_loop"
+            else "piccolo_qwen3_5"
+        )
     low, high = image_size["shortest_edge"], image_size["longest_edge"]
     if type(low) is not int or type(high) is not int or not 0 < low <= high:
         raise ValueError("Invalid image pixel budget")
@@ -235,6 +284,8 @@ def convert(source, output, *, template, image_size, max_length=None):
             template=template,
             image_size=image_size,
             processor_options={} if max_length is None else {"max_length": max_length},
+            model_type=model_type,
+            loop_config=loop_config,
         )
         validate_checkpoint(output)
     except Exception:
@@ -255,6 +306,12 @@ def main():
     migrate.add_argument("--image-min-pixels", type=int, required=True)
     migrate.add_argument("--image-max-pixels", type=int, required=True)
     migrate.add_argument("--max-length", type=int)
+    migrate.add_argument("--model-type", choices=tuple(MODEL_TYPES))
+    migrate.add_argument(
+        "--loop-config",
+        type=Path,
+        help="JSON text/vision loop layout; selects PiccoloLoop unless --model-type is given",
+    )
     args = parser.parse_args()
     if args.command == "validate":
         print(json.dumps(validate_checkpoint(args.directory), indent=2))
@@ -269,6 +326,12 @@ def main():
                     "longest_edge": args.image_max_pixels,
                 },
                 max_length=args.max_length,
+                model_type=args.model_type,
+                loop_config=(
+                    json.loads(args.loop_config.read_text())
+                    if args.loop_config is not None
+                    else None
+                ),
             )
         )
 

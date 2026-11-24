@@ -1,54 +1,77 @@
-# Piccolo HF
+# Piccolo HF guide
 
-Standalone Piccolo configuration, model, processor and checkpoint tools.
-SGLang and training packages are not required. The source modules are flat so
-exports can copy them directly into an HF directory without an AST packager.
-The exported AutoClass names remain `piccolo_configuration.PiccoloConfig`,
-`piccolo_modeling.PiccoloModel` and `piccolo_processing.PiccoloProcessor`.
+[Back to the inference overview](../README.md)
 
-From the repository root:
+This guide covers Transformers inference for Piccolo and PiccoloLoop. Both load
+their model, processor and template from the checkpoint, without installing this
+repository's model definitions or serving plugin. See the overview for shared
+[inputs and outputs](../README.md#inputs-and-outputs).
+
+## Installation
 
 ```bash
-python -m pip install ./inference/hf
-piccolo-checkpoint validate /models/Piccolo-current
+python -m pip install -r inference/hf/requirements.txt
 ```
 
-Validation loads local configuration and processor assets, checks the frozen
-template, verifies shard-index entries and compares required parameter names and
-shapes against a model constructed on the meta device. It reads Safetensors
-headers without loading the full weight tensors into memory. This verifies
-structural completeness; numerical quality still requires inference evaluation.
+The example defaults to `device="cuda:0"`, `dtype=torch.bfloat16` and SDPA. For CPU
+inference, set `device="cpu"` and `dtype=torch.float32`. Avoid optional GPU-only
+FLA or causal-conv1d packages in a CPU environment, since Transformers may select
+kernels that cannot run on CPU.
+
+## Using Transformers
+
+[example.py](example.py) is a complete minimal example. Set `model_path`, `device`,
+`dtype` and `payload`, then run it from the repository root:
+
+```bash
+python inference/hf/example.py
+```
+
+The example calls `AutoProcessor.from_pretrained()` and
+`AutoModel.from_pretrained()`, encodes requests with `processor.encode_request()`,
+and runs the model forward pass. Piccolo and PiccoloLoop use the same flow.
+
+`encode_request()` returns one encoded item per question. For a single question,
+you can also use `processor(payload)`. Image requests pass through the complete
+multimodal model. Probabilities always follow `item.option_keys`. The model and
+processor support independent reloading after `save_pretrained()`.
+
+## Requests and results
+
+To use an existing request file, replace the example's `payload` with:
 
 ```python
-from transformers import AutoModel, AutoProcessor
+import json
+from pathlib import Path
 
-processor = AutoProcessor.from_pretrained(path, trust_remote_code=True)
-model = AutoModel.from_pretrained(path, trust_remote_code=True, attn_implementation="sdpa")
-for item in processor.encode_request(payload):
-    result = model(**item.inputs.to(model.device))
-    print(item.question_id, item.option_keys, result.probabilities)
+payload = json.loads(Path("examples/request.json").read_text())
 ```
 
-Text and image requests use the checkpoint's frozen prompt and image budget.
-Noul candidates follow false/true order. Full attention is bidirectional, GDN
-remains causal, and incremental decoding and KV caching are rejected.
+Inputs contain `state`, `questions` and optional `assets`. They do not need the
+`model` field used by HTTP requests.
 
-## Historical full checkpoint conversion
+| Field | Meaning |
+| --- | --- |
+| `item.question_id` | Current question ID |
+| `item.option_keys` | Candidate order |
+| `item.inputs` | Encoded tensors ready to pass to the model |
+| `result.logits` | Candidate scores |
+| `result.probabilities` | Probabilities normalized over the candidate set |
 
-Convert into a new directory with explicit inference settings:
+HF `noul` probabilities use false, true order. The model does not generate answer
+tokens, and the checkpoint's processor rejects prompts exceeding its context limit.
 
-```bash
-piccolo-checkpoint convert /models/Piccolo-legacy /models/Piccolo-current \
-  --template inference/hf/piccolo_hf/piccolo_qwen35.jinja \
-  --image-min-pixels 65536 --image-max-pixels 1638400 --max-length 32768
-```
+## PiccoloLoop
 
-The source must contain full Qwen3.5 VL Safetensors weights and processor assets.
-GGUF files cannot be converted by this tool. Failed conversions remove the new
-output directory; the source is preserved. Weight files are hardlinked when
-possible and copied otherwise. Treat linked weights as immutable. License and
-notice files are preserved.
+PiccoloLoop uses the same calls as Piccolo, without a separate profile or extra
+inference parameters. Language and vision blocks execute according to the
+checkpoint configuration, with one weight set per physical layer.
 
-Selecting a different template changes inference semantics. Historical published
-scores do not validate the new prompt. Released revisions in the model manifest
-remain unchanged. Third-party notices are in [licenses](piccolo_hf/licenses/).
+Each loop block completes all its passes before proceeding to later layers.
+Every pass computes `h_next = h + alpha × (block(h) - h)` in FP32 and casts the
+result back to the input dtype. Candidate scoring is unchanged; inference does
+not use `generate()` or reuse KV/GDN caches.
+
+To choose loop ranges or prepare a checkpoint, see the checkpoint tools'
+[loop configuration](../../scripts/checkpoints/README.md#loop-configuration).
+Existing checkpoints require neither reconversion nor local model source maintenance.

@@ -30,21 +30,9 @@ class PiccoloTextModel(Qwen3_5TextModel):
             if layer.block_type == "full_attention":
                 layer.self_attn.is_causal = False
 
-    def forward(
-        self,
-        input_ids=None,
-        attention_mask=None,
-        position_ids=None,
-        past_key_values=None,
-        inputs_embeds=None,
-        use_cache=False,
-        **kwargs,
-    ):
-        if use_cache or past_key_values is not None:
-            raise ValueError("Piccolo requires independent complete prompts without a KV cache")
+    def _prepare_attention_masks(self, embeds, attention_mask, position_ids):
         if isinstance(attention_mask, dict):
             raise ValueError("Piccolo constructs its own full/GDN masks")
-        embeds = inputs_embeds if inputs_embeds is not None else self.embed_tokens(input_ids)
         batch, length = embeds.shape[:2]
         if attention_mask is not None and attention_mask.shape != (batch, length):
             raise ValueError("Piccolo attention_mask must be a 2D padding mask")
@@ -67,10 +55,26 @@ class PiccoloTextModel(Qwen3_5TextModel):
             past_key_values=None,
             position_ids=text_positions,
         )
+        return {"full_attention": full, "linear_attention": recurrent}
+
+    def forward(
+        self,
+        input_ids=None,
+        attention_mask=None,
+        position_ids=None,
+        past_key_values=None,
+        inputs_embeds=None,
+        use_cache=False,
+        **kwargs,
+    ):
+        if use_cache or past_key_values is not None:
+            raise ValueError("Piccolo requires independent complete prompts without a KV cache")
+        embeds = inputs_embeds if inputs_embeds is not None else self.embed_tokens(input_ids)
+        masks = self._prepare_attention_masks(embeds, attention_mask, position_ids)
         return super().forward(
             input_ids=input_ids,
             inputs_embeds=inputs_embeds,
-            attention_mask={"full_attention": full, "linear_attention": recurrent},
+            attention_mask=masks,
             position_ids=position_ids,
             past_key_values=None,
             use_cache=False,

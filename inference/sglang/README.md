@@ -1,64 +1,97 @@
-# Piccolo inference on SGLang
+# Piccolo SGLang guide
 
-Independent native plugin for `/v1/systemone` text and image scoring. It consumes
-current Piccolo HF exports and the shared [HF component](../hf/README.md).
-The runtime must support native SystemOne candidate scoring, processor-output
-multimodal input and bidirectional Qwen3.5 full attention. No runtime source
-patch is required.
+[Back to the inference overview](../README.md)
 
-From the repository root, after installing a compatible SGLang runtime:
+This guide covers plugin installation, server startup and `/v1/systemone` calls.
+Piccolo and PiccoloLoop share the same interface. See the overview for common
+[inputs and outputs](../README.md#inputs-and-outputs).
+
+## Installation and startup
+
+Prepare a compatible SGLang runtime with native SystemOne candidate scoring,
+processor-output multimodal inputs and bidirectional Qwen3.5 full attention.
+The plugin requires no runtime source patch:
 
 ```bash
-python -m pip install ./inference/hf ./inference/sglang
-piccolo-checkpoint validate /models/Piccolo-current
-bash inference/sglang/scripts/launch_sglang.sh /models/Piccolo-current 0 18604
+python -m pip install ./inference/sglang
+bash inference/sglang/scripts/launch_sglang.sh /models/Piccolo 0 18604
 ```
 
-The script serves text and vision with BF16, TP1, 32K context and localhost by
-default. Append native SGLang arguments after the three positional arguments.
-Set `HOST` to expose a server deliberately and use `--api-key` for authentication.
-The plugin name is `piccolo`; manual launches must include it in `SGLANG_PLUGINS`.
-For direct library use, call `sglang.srt.plugins.load_plugins()` before creating
+The three positional arguments are checkpoint path, GPU and port. The launcher
+uses BF16, TP1 and a 32K context, binds to `127.0.0.1`, and derives the served
+model name from the checkpoint directory name. Append native SGLang arguments
+after the positional arguments. `HOST` controls the bind address;
+`CONTEXT_LENGTH` and `MEM_FRACTION_STATIC` control context and memory budgets.
+Use the native `--api-key` argument for authentication.
+
+The plugin name is `piccolo`. Include it in `SGLANG_PLUGINS` for manual launches.
+For Python API use, call `sglang.srt.plugins.load_plugins()` before constructing
 ModelConfig or ServerArgs.
 
-| Module | Responsibility |
-| --- | --- |
-| `plugin.py` | Register lifecycle hooks and adapt initialization, validation and warmup. |
-| `model.py` | Adapt the private HF configuration and enforce Piccolo execution constraints. |
-| `encoding.py` | Load request images before locking the shared processor, then prepare native inputs. |
-| `serving.py` | Bind the schema and native SystemOne handler, preserve route dependencies and convert responses. |
+The distribution is `piccolo-serving`; the Python package is `piccolo_serving`.
 
-Only explicit `piccolo_qwen3_5` checkpoints are adapted. Other models retain
-native settings and handlers. Full attention is bidirectional; GDN remains
-causal. Prefix reuse and chunked prefill are disabled. Overlong requests fail
-without truncation. Candidate scoring generates zero answer tokens. Image
-I/O happens outside the processor lock, allowing text requests to proceed while
-another request waits for an image.
+## HTTP requests
 
-The plugin uses runtime lifecycle internals. When changing runtimes, verify server initialization and representative
-text/image requests on the deployment GPU. Checkpoint format,
-conversion and model code belong to the HF component, not the adapter.
-
-## Requests
+The request model name must match the server. This example uses `/models/Piccolo`:
 
 ```bash
 curl --fail-with-body http://127.0.0.1:18604/v1/systemone \
   -H 'Content-Type: application/json' \
-  -d '{"model":"Piccolo-current","state":"The sky is blue.","questions":{"q":{"type":"noul","instructions":"Is the sky blue?"}}}'
+  -d '{"model":"Piccolo","state":"The sky is blue.","questions":{"q":{"type":"noul","instructions":"Is the sky blue?"}}}'
 ```
 
-For vision, reference image asset IDs from state or question fields:
+For image requests, use the overview's assets format and add the same `model`
+field. HTTP image sources support HTTP/HTTPS URLs and `data_base64`;
+client-supplied local paths are rejected.
 
-```json
-{
-  "model": "Piccolo-current",
-  "state": {"image": "photo"},
-  "questions": {"q": {"type": "noul", "instructions": "Is the image red?"}},
-  "assets": {"photo": {"type": "image", "format": "png", "data_base64": "..."}}
-}
-```
+Responses contain `model`, `answers` and `usage`. Answers are keyed by question ID:
 
-Image assets support HTTP/HTTPS `url` and `data_base64`; client-supplied local
-paths are rejected. The historical `/v1/decisions` vision payload is replaced by
-this asset protocol. Legacy full checkpoints require
-[explicit conversion](../hf/README.md#historical-full-checkpoint-conversion).
+| Type | Main fields |
+| --- | --- |
+| `choice` | `choice`, candidate `probabilities`, `confidence` |
+| `noul` | `noul`, the probability that the proposition is true |
+| `score` | `score`, level `probabilities`, `confidence`, `legend` |
+
+Candidate scoring generates no answer tokens, so `usage.output_tokens` is 0.
+Image I/O happens outside the shared processor lock, preventing slow downloads
+from blocking other requests' encoding.
+
+## Runtime constraints
+
+The plugin adapts only explicitly tagged Piccolo and PiccoloLoop checkpoints;
+other models retain native settings. Both architectures disable prefix reuse and
+chunked prefill. Complete prompts must fit in one prefill; overlong inputs fail.
+Configuration, request schemas and input processing come from the checkpoint.
+The serving package does not depend on checkpoint preparation tools.
+
+Piccolo uses the native Qwen3.5 execution class. PiccoloLoop selects a dedicated
+class from `loop_config` and requires:
+
+- Unquantized inference, TP=PP=1 and `kv_cache_dtype=auto`.
+- Physical `layer_types` matching the runtime's `full_attention_interval`.
+- No MTP, deepstack or incremental generation.
+- Disabled language CUDA graphs, empty GDN scan states per pass, and materialized residuals between physical layers.
+
+When vision loop blocks are nonempty, the execution class disables vision CUDA
+graphs before constructing the vision model. Piccolo and language-only PiccoloLoop
+do not change `SGLANG_VIT_ENABLE_CUDA_GRAPH`; no manual setting is needed.
+
+The plugin uses runtime lifecycle interfaces. After changing runtimes, verify
+server initialization and representative text/image requests on the deployment GPU.
+
+## Source layout
+
+Paths below are relative to `inference/sglang/piccolo_serving/`:
+
+| Path | Responsibility |
+| --- | --- |
+| `plugin.py` | Register initialization, request validation, server configuration and warmup hooks |
+| `models/__init__.py` | Select the adapter by checkpoint type |
+| `models/piccolo/adapter.py` | Adapt native Qwen3.5 configuration and enforce complete-prompt constraints |
+| `models/piccolo_loop/adapter.py` | Configure loop execution and its additional constraints |
+| `models/piccolo_loop/modeling.py`, `execution.py` | Execute native recurrence, schedule layers and mix hidden states in FP32 |
+| `encoding.py` | Use checkpoint schemas and processors to prepare native scoring inputs |
+| `serving.py` | Bind HTTP routes and convert structured responses |
+
+Each architecture has its own package. Piccolo reuses the native model and needs
+no separate `modeling.py`.

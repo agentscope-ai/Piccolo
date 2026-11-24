@@ -3,17 +3,17 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "piccolo-inference-sglang"
+name = "piccolo-serving"
 version = "0.2.0"
 description = "Independent Piccolo frozen-prompt scoring adapter for SGLang"
 requires-python = ">=3.12"
-dependencies = ["piccolo-hf", "fastapi>=0.115.0", "orjson>=3.10"]
+dependencies = ["torch>=2.11", "transformers==5.19.0", "Pillow>=11.3.0", "httpx>=0.27.0", "pydantic>=2.0", "safetensors>=0.8", "jinja2>=3.1.0", "fastapi>=0.115.0", "orjson>=3.10"]
 
 [project.entry-points."sglang.srt.plugins"]
-piccolo = "piccolo_inference_sglang.plugin:register"
+piccolo = "piccolo_serving.plugin:register"
 
 [tool.setuptools.packages.find]
-include = ["piccolo_inference_sglang*"]
+include = ["piccolo_serving*"]
 
 [tool.ruff]
 line-length = 100

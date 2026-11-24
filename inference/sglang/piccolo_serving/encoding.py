@@ -2,9 +2,8 @@
 
 import os
 import threading
+from importlib import import_module
 
-from piccolo_hf.common_inputs import image_sources
-from piccolo_hf.common_media import load_image_source
 from transformers import AutoProcessor
 
 
@@ -18,7 +17,7 @@ def download_image(url):
 
 
 class PiccoloEncoder:
-    def __init__(self, manager, *, directory=None, processor=None):
+    def __init__(self, manager, *, processor=None):
         self.processor = processor or AutoProcessor.from_pretrained(
             manager.model_path,
             revision=getattr(getattr(manager, "server_args", None), "revision", None),
@@ -28,6 +27,13 @@ class PiccoloEncoder:
         self.processor.max_length = min(self.processor.max_length, self.context_length)
         self.model_name = manager.served_model_name
         self.lock = threading.Lock()
+        # These modules are bundled with the selected checkpoint's processor.
+        package = type(self.processor).__module__.rpartition(".")[0]
+        inputs = import_module(".common_inputs", package)
+        media = import_module(".common_media", package)
+        self.request_schema = inputs.SystemOneTextRequest
+        self.image_sources = inputs.image_sources
+        self.load_image_source = media.load_image_source
 
     def encode_request(self, body):
         if body.model != self.model_name:
@@ -40,8 +46,8 @@ class PiccoloEncoder:
         # Decode each distinct source before locking. Slow downloads do not block
         # text requests or requests whose images are already available.
         images = {
-            source: load_image_source(source, download=download_image)
-            for source in dict.fromkeys(image_sources(assets).values())
+            source: self.load_image_source(source, download=download_image)
+            for source in dict.fromkeys(self.image_sources(assets).values())
         }
         with self.lock:
             previous_loader = self.processor.image_loader

@@ -27,11 +27,11 @@ def configure_model(previous, config, *args, **kwargs):
     if (
         model is not None
         and config is getattr(model, "hf_config", None)
-        and config.model_type == "piccolo_qwen3_5"
+        and config.model_type in {"piccolo_qwen3_5", "piccolo_qwen3_5_loop"}
     ):
-        from .model import create_piccolo_adapter
+        from .models import create_adapter
 
-        model._piccolo_adapter = create_piccolo_adapter(model)
+        model._piccolo_adapter = create_adapter(model)
         return model.hf_text_config
     return previous(config, *args, **kwargs)
 

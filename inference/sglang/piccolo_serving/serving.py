@@ -6,7 +6,6 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.responses import ORJSONResponse
 from fastapi.routing import APIRoute
-from piccolo_hf.common_inputs import SystemOneTextRequest as PiccoloRequest
 from sglang.srt.entrypoints.openai.serving_decisions import QuestionView
 from sglang.srt.entrypoints.systemone.serving import (
     SystemOneServing,
@@ -64,9 +63,9 @@ def answer(view, probabilities, question_id):
 
 
 class PiccoloServing(SystemOneServing):
-    def __init__(self, chat_serving, *, directory):
+    def __init__(self, chat_serving):
         super().__init__(chat_serving)
-        self.encoder = PiccoloEncoder(self.tokenizer_manager, directory=directory)
+        self.encoder = PiccoloEncoder(self.tokenizer_manager)
 
     def _validate_request(self, request):
         if request.model != self.tokenizer_manager.served_model_name:
@@ -105,7 +104,7 @@ def bind_systemone_adapter(app: FastAPI, serving) -> None:
     async def decisions(request, raw_request: Request):
         return await raw_request.app.state.systemone_serving.handle_request(request, raw_request)
 
-    decisions.__annotations__["request"] = PiccoloRequest
+    decisions.__annotations__["request"] = serving.encoder.request_schema
     for index, route in enumerate(app.router.routes):
         if (
             isinstance(route, APIRoute)

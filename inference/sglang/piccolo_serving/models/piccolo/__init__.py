@@ -1,0 +1,1 @@
+"""Ordinary Piccolo architecture adaptation."""

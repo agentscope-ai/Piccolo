@@ -1,65 +1,91 @@
-# Inference and local integration
+# Piccolo inference overview
 
-Piccolo supports local HF inference and SGLang serving. Both current paths read
-the prompt, image budgets and context limit from the same HF checkpoint. For
-published GGUF models, use the compatible llama.cpp runtime managed by
-[QwenPaw](../docs/QWENPAW.md). See the [model matrix](../docs/MODELS.md).
+Piccolo and PiccoloLoop use the same candidate-scoring protocol. Normalized HF
+checkpoints support local Transformers inference and HTTP serving through SGLang.
 
-## Current HF reference inference
+## Getting started
 
-Run from the repository root with a current Piccolo HF export:
+| Task | Guide | Scope |
+| --- | --- | --- |
+| Local HF inference | [HF guide](hf/README.md) | AutoModel/AutoProcessor, input encoding and result handling |
+| HTTP serving | [SGLang guide](sglang/README.md) | Installation, startup, HTTP requests and runtime constraints |
+| Checkpoint preparation | [Checkpoint tools](../scripts/checkpoints/README.md) | Qwen3.5 conversion, source packaging, loop configuration and structural validation |
 
-```bash
-python -m pip install -r inference/reference/requirements.txt
-python inference/reference/piccolo_inference.py \
-  --model /models/Piccolo-current --request examples/request.json --device cuda:0
+`inference/hf/` contains the Transformers example, dependencies and usage guide.
+`inference/sglang/` contains the serving plugin and native execution adapters.
+Model, processor and template sources for checkpoint preparation live in
+`scripts/checkpoints/`; inference does not depend on those tools.
+
+This overview defines the shared inputs and execution semantics. Each backend
+guide covers its own invocation method. Run all commands from the repository root.
+
+## Checkpoint requirements
+
+| Architecture | `model_type` | HF model class |
+| --- | --- | --- |
+| Piccolo | `piccolo_qwen3_5` | `PiccoloModel` |
+| PiccoloLoop | `piccolo_qwen3_5_loop` | `PiccoloLoopModel` |
+
+A complete checkpoint provides `config.json`, Safetensors weights, processor and
+tokenizer assets, `chat_template.jinja`, and the Python modules referenced by
+`auto_map`. Configuration, input processing and templates are loaded from the
+checkpoint. PiccoloLoop defines its language and vision recurrence in
+`config.json` through `loop_config`.
+
+The candidate-scoring interface described here requires a normalized Piccolo or
+PiccoloLoop checkpoint. For historical models, use the inference code commit
+specified in their Hugging Face model cards. Prepare Qwen3.5 checkpoints with
+the checkpoint tools before using this interface. Changing the template changes
+inference semantics; historical published scores do not validate a new configuration.
+
+Published GGUF models use the compatible llama.cpp runtime managed by
+[QwenPaw](../docs/QWENPAW.md). See the [model guide](../docs/MODELS.md) for formats
+and pinned revisions.
+
+## Inputs and outputs
+
+HF requests contain `state`, the complete `questions` mapping and optional image
+`assets`. HTTP requests add `model`, which must match the served model name.
+
+```json
+{
+  "state": "The sky is blue.",
+  "questions": {
+    "q": {"type": "noul", "instructions": "Is the sky blue?"}
+  }
+}
 ```
 
-The reference uses the checkpoint's bundled `AutoProcessor` and `AutoModel`, with
-no serving or training package dependency. Text and image assets pass through
-the complete multimodal model. CPU inference uses `--device cpu --dtype float32`;
-see the [reference guide](reference/README.md) for requirements and output fields.
+| Question type | `criteria` | Meaning |
+| --- | --- | --- |
+| `choice` | Mapping from option keys to descriptions | Score and normalize over the candidates |
+| `noul` | Optional `true` / `false` descriptions | Estimate the probability that a proposition is true |
+| `score` | Ordered list of level descriptions, from lowest to highest | Score the ordered levels |
 
-HF model sources and checkpoint tools live in the independent [HF component](hf/README.md).
+Images are referenced by asset ID from the state, questions or candidate fields.
+Replace `data_base64` below with actual PNG data. An asset may also use
+`{"type":"image","url":"https://..."}`.
 
-## SGLang server
-
-The [SGLang plugin](sglang/README.md) provides a unified `/v1/systemone` endpoint
-for text and vision. It requires current HF exports and native SystemOne scoring,
-multimodal input and bidirectional full-attention support in the runtime. The
-adapter is installed as an independent plugin; no runtime patch is needed.
-
-## Current decision protocol
-
-- **Input:** `state`, complete `questions` and optional image `assets`, encoded by
-  the checkpoint's `chat_template.jinja` and processor settings.
-- **Attention:** full-attention layers are bidirectional; linear-attention layers
-  retain their original causal computation.
-- **Output:** read candidate logits at the last real prompt token and apply a
-  temperature-1 softmax over the candidate set. No answer tokens are generated.
-- **Runtime:** complete independent prompts, no prefix reuse, chunked prefill or
-  silent truncation.
-
-## Historical release checkpoints and GGUF
-
-The fixed model revisions in the release manifest use the historical Flex
-protocol. The reference entry point still detects full `qwen3_5` checkpoints
-with `decision-inference.json` and delegates to its preserved legacy text path:
-
-```bash
-hf download agentscope-ai/Piccolo-4B --revision ae30995bef9b0f0fa7d12adf517c63cdbc4d10d2 --local-dir Piccolo-4B
-python inference/reference/piccolo_inference.py \
-  --model Piccolo-4B --request examples/request.json --device cuda:0
+```json
+{
+  "state": {"image": "photo"},
+  "questions": {
+    "q": {"type": "noul", "instructions": "Is the image red?"}
+  },
+  "assets": {
+    "photo": {"type": "image", "format": "png", "data_base64": "..."}
+  }
+}
 ```
 
-The historical `flex_twice` layout rereads requests whose single-pass input fits
-within 3,000 tokens and whose compiled rows fit the context window. Candidate
-readout is at `Answer: (`. QwenPaw allows up to 8,192 tokens per compiled row;
-`blink` in GGUF files is its serialized architecture name. The Flex layout retains
-its [MIT notice](reference/THIRD_PARTY_LICENSES.md).
+The model reads candidate logits at the last real prompt token and applies a
+softmax over the candidate set at temperature 1. HF probabilities follow the
+processor's `option_keys`; `noul` uses false, true order. The HTTP service converts
+these scores into structured answers and returns the probability of true for `noul`.
 
-Historical checkpoints require [explicit migration](hf/README.md#historical-full-checkpoint-conversion)
-before current SGLang serving. Changing the prompt creates a different inference
-configuration; historical benchmark scores do not validate that configuration.
+## Execution semantics
 
-[Examples](../examples/README.md) · [Models](../docs/MODELS.md) · [Evaluation](../evaluation/README.md)
+- Full-attention layers are bidirectional; GDN layers retain causal scans.
+- Each call processes an independent complete prompt, without incremental generation, prefix reuse or silent truncation.
+- Models return candidate scores and probabilities without generating answer tokens.
+- PiccoloLoop shares physical layer weights across passes. Each GDN pass starts with an empty scan state while hidden states continue from the preceding pass.
