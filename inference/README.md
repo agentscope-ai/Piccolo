@@ -63,6 +63,14 @@ HF requests contain `state`, the complete `questions` mapping and optional image
 | `score` | Ordered list of level descriptions, from lowest to highest | Score the ordered levels |
 
 Images are referenced by asset ID from the state, questions or candidate fields.
+Following [Jev reference semantics](https://docs.typesafe.ai/images#references),
+IDs match literal substrings anywhere in string values: `cat` also matches the
+start of `category`. Whole values match first; longer strings are scanned from
+left to right without overlapping replacements. Object keys, option keys and
+question IDs stay unchanged. Use UUIDs or explicitly delimited IDs to avoid
+accidental matches. When several IDs match at the same position, this
+implementation prefers the longest ID; Jev does not specify that tie-break.
+
 Replace `data_base64` below with actual PNG data. An asset may also use
 `{"type":"image","url":"https://..."}`.
 

@@ -210,13 +210,10 @@ _ReferenceParts = tuple[str | _AssetRef, ...]
 
 
 def _reference_pattern(asset_ids) -> re.Pattern[str] | None:
+    """Match literal substrings, preferring the longest ID at the same position."""
     if not asset_ids:
         return None
-    return re.compile(
-        "(?<!\\w)(?:"
-        + "|".join(re.escape(key) for key in sorted(asset_ids, key=len, reverse=True))
-        + ")(?!\\w)"
-    )
+    return re.compile("|".join(re.escape(key) for key in sorted(asset_ids, key=len, reverse=True)))
 
 
 def _string_parts(text: str, pattern: re.Pattern[str]):
