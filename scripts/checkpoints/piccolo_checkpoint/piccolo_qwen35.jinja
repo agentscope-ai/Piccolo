@@ -21,10 +21,10 @@
 {%- endset -%}
 
 {%- set body -%}
-    {%- if not prompt.state_is_asset_only -%}
-        {{- render_field(field_parts(request.state)) ~ '\n\n' -}}
+    {%- if state_parts is not none -%}
+        {{- render_field(state_parts) ~ '\n\n' -}}
     {%- endif -%}
-    {{- render_field(field_parts(question.get('instructions'))) ~ '\n' -}}
+    {{- render_field(instruction_parts) ~ '\n' -}}
     {%- for option in candidates -%}
         {{- option.label ~ '. ' -}}
         {%- if question.type == 'choice' -%}

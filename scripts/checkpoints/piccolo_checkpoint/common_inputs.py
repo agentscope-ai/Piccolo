@@ -5,8 +5,8 @@ from __future__ import annotations
 import base64
 import json
 import re
-from collections.abc import Callable, Mapping
-from dataclasses import dataclass
+from collections.abc import Mapping
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Annotated, Any, Literal, NotRequired, TypedDict
 from urllib.parse import urlparse
@@ -68,15 +68,15 @@ class SystemOneTextRequest(SystemOneInputs):
     model: str
 
 
-def render_text(value):
+def _compact_json(value) -> str:
+    return json.dumps(value, ensure_ascii=False, separators=(",", ":"), allow_nan=False)
+
+
+def render_text(value) -> str:
     """Serialize structured content only at the prompt boundary."""
     if value is None:
         return ""
-    return (
-        value
-        if isinstance(value, str)
-        else json.dumps(value, ensure_ascii=False, separators=(",", ":"), allow_nan=False)
-    )
+    return value if isinstance(value, str) else _compact_json(value)
 
 
 def question_options(question):
@@ -112,8 +112,23 @@ DEFAULT_CHOICE_LABELS = tuple(
 )
 
 
-def image_sources(assets):
-    """Validate storage descriptors and expose image sources in registry order."""
+def image_source_name(asset, source: str | bytes) -> str:
+    """Return the source string expected by custom image loaders."""
+    if isinstance(source, str):
+        return source
+    fmt = "jpeg" if asset["format"] == "jpg" else asset["format"]
+    return f"data:image/{fmt};base64,{asset['data_base64']}"
+
+
+def image_sources(assets) -> dict[str, str]:
+    """Validate asset descriptors and return their original loader source strings."""
+    return {
+        key: image_source_name(assets[key], source) for key, source in _validated_sources(assets)
+    }
+
+
+def _validated_sources(assets):
+    """Yield validated sources, keeping the bytes produced by strict Base64 decoding."""
     if not isinstance(assets, Mapping):
         raise ValueError("Piccolo assets must be an object")
     if any(
@@ -124,7 +139,6 @@ def image_sources(assets):
         )
     if sum(len(key.encode()) for key in assets) > 65536:
         raise ValueError("Piccolo asset references exceed 65536 UTF-8 bytes")
-    images = {}
     for key, asset in assets.items():
         if not isinstance(asset, Mapping) or set(asset) - {
             "type",
@@ -156,7 +170,7 @@ def image_sources(assets):
                 valid = False
             if not valid or value.strip() != value:
                 raise ValueError("Piccolo image url must have a valid HTTP/HTTPS host")
-            images[key] = value
+            yield key, value
             continue
         if "path" in asset:
             if set(asset) != {"type", "path"}:
@@ -167,81 +181,18 @@ def image_sources(assets):
             path = Path(value).expanduser()
             if not path.is_absolute():
                 raise ValueError("Resolve relative Piccolo image paths at the dataset boundary")
-            images[key] = str(path)
+            yield key, str(path)
             continue
         fmt, data = (asset.get("format"), asset.get("data_base64"))
         if fmt not in {"png", "jpg", "jpeg"} or not isinstance(data, str) or (not data):
             raise ValueError("Piccolo image assets require png/jpg/jpeg format and data_base64")
         try:
-            base64.b64decode(data, validate=True)
+            decoded = base64.b64decode(data, validate=True)
         except (ValueError, TypeError) as error:
             raise ValueError(
                 "Piccolo data_base64 must be standard base64 without a data: prefix"
             ) from error
-        images[key] = f"data:image/{('jpeg' if fmt == 'jpg' else fmt)};base64,{data}"
-    return images
-
-
-def _asset_binder(payload):
-    """Bind references in JSON values before serialization, leaving keys intact."""
-    assets = payload.get("assets", {})
-    if not assets:
-        return (lambda value: value), {}
-
-    pattern = re.compile(
-        "(?<!\\w)(?:"
-        + "|".join(re.escape(key) for key in sorted(assets, key=len, reverse=True))
-        + ")(?!\\w)"
-    )
-
-    def strings(value):
-        if isinstance(value, str):
-            yield value
-        elif isinstance(value, Mapping):
-            for key, item in value.items():
-                yield str(key)
-                yield from strings(item)
-        elif isinstance(value, list):
-            for item in value:
-                yield from strings(item)
-
-    contents = [*strings(payload["state"]), *strings(payload["questions"]), *assets]
-    prefix = "__JEV_IMAGE_"
-    while any(prefix in text for text in contents):
-        prefix += "X"
-    markers = {key: f"{prefix}{index}__" for index, key in enumerate(assets)}
-
-    def bind(value):
-        if isinstance(value, str):
-            if value in markers:
-                return markers[value]
-            return pattern.sub(lambda match: markers[match.group()], value)
-        if isinstance(value, Mapping):
-            return {key: bind(item) for key, item in value.items()}
-        if isinstance(value, list):
-            return [bind(item) for item in value]
-        return value
-
-    return bind, markers
-
-
-def _asset_markers(value, markers):
-    """Yield bound image occurrences in value order, leaving object keys as text."""
-    if not markers:
-        return
-    pattern = re.compile("|".join(re.escape(marker) for marker in markers))
-
-    def visit(item):
-        if isinstance(item, str):
-            yield from (match.group() for match in pattern.finditer(item))
-        elif isinstance(item, Mapping):
-            for child in item.values():
-                yield from visit(child)
-        elif isinstance(item, (list, tuple)):
-            for child in item:
-                yield from visit(child)
-
-    yield from visit(value)
+        yield key, decoded
 
 
 class JevRequest(TypedDict):
@@ -252,6 +203,93 @@ class JevRequest(TypedDict):
 
 # Strings are literal text. Integers are one-based indices into asset_order.
 FieldParts = tuple[str | int, ...]
+
+
+@dataclass(frozen=True)
+class _AssetRef:
+    asset_id: str
+
+
+_ReferenceParts = tuple[str | _AssetRef, ...]
+
+
+def _reference_pattern(asset_ids) -> re.Pattern[str] | None:
+    if not asset_ids:
+        return None
+    return re.compile(
+        "(?<!\\w)(?:"
+        + "|".join(re.escape(key) for key in sorted(asset_ids, key=len, reverse=True))
+        + ")(?!\\w)"
+    )
+
+
+def _string_parts(text: str, pattern: re.Pattern[str]):
+    cursor = 0
+    for match in pattern.finditer(text):
+        if cursor < match.start():
+            yield text[cursor : match.start()]
+        yield _AssetRef(match.group())
+        cursor = match.end()
+    if cursor < len(text):
+        yield text[cursor:]
+
+
+def _json_key(key) -> str:
+    if isinstance(key, str):
+        return _compact_json(key)
+    # Let json.dumps handle coercion and validation of non-string Python keys.
+    return _compact_json({key: None}).removeprefix("{").removesuffix(":null}")
+
+
+def _json_parts(value, pattern: re.Pattern[str]):
+    if isinstance(value, str):
+        yield '"'
+        for part in _string_parts(value, pattern):
+            # The template's Image N text needs no JSON escaping.
+            yield _compact_json(part)[1:-1] if isinstance(part, str) else part
+        yield '"'
+    elif isinstance(value, Mapping):
+        yield "{"
+        for index, (key, item) in enumerate(value.items()):
+            if index:
+                yield ","
+            yield _json_key(key)
+            yield ":"
+            yield from _json_parts(item, pattern)
+        yield "}"
+    elif isinstance(value, list):
+        yield "["
+        for index, item in enumerate(value):
+            if index:
+                yield ","
+            yield from _json_parts(item, pattern)
+        yield "]"
+    else:
+        yield _compact_json(value)
+
+
+def _reference_parts(value, pattern: re.Pattern[str] | None) -> _ReferenceParts:
+    if value is None:
+        return ()
+    if pattern is None:
+        text = render_text(value)
+        return (text,) if text else ()
+    if isinstance(value, str):
+        return tuple(_string_parts(value, pattern))
+
+    parts: list[str | _AssetRef] = []
+    literal: list[str] = []
+    for part in _json_parts(value, pattern):
+        if isinstance(part, str):
+            literal.append(part)
+        else:
+            if literal:
+                parts.append("".join(literal))
+                literal.clear()
+            parts.append(part)
+    if literal:
+        parts.append("".join(literal))
+    return tuple(parts)
 
 
 @dataclass(frozen=True)
@@ -279,61 +317,73 @@ class Candidate:
 class PreparedDecision:
     prompt: PiccoloInputs
     candidates: tuple[Candidate, ...]
-    image_sources: tuple[str, ...]
-    field_parts: Callable[[DecisionText | None], FieldParts]
+    image_sources: tuple[str | bytes, ...]
+    state_parts: FieldParts | None
+    instruction_parts: FieldParts
 
 
-def prepare_decision(payload: JevRequest, question_key: str) -> PreparedDecision:
-    """Prepare one question while retaining the original request for Jinja."""
+@dataclass(frozen=True)
+class PreparedRequest:
+    payload: JevRequest
+    image_sources: dict[str, str | bytes]
+    _asset_pattern: re.Pattern[str] | None = field(repr=False)
+    _state_parts: _ReferenceParts = field(repr=False)
+
+
+def prepare_request(payload: JevRequest) -> PreparedRequest:
+    """Validate and prepare data shared by every question in the request."""
     SystemOneInputs.model_validate(payload)
-    sources = image_sources(payload.get("assets", {}))
-    bind, markers = _asset_binder(payload)
+    sources = dict(_validated_sources(payload.get("assets", {})))
+    pattern = _reference_pattern(sources)
+    return PreparedRequest(payload, sources, pattern, _reference_parts(payload["state"], pattern))
+
+
+def prepare_decision(request: PreparedRequest, question_key: str) -> PreparedDecision:
+    """Prepare one question while retaining the original request for Jinja."""
+    payload = request.payload
+    pattern = request._asset_pattern
     question = payload["questions"][question_key]
-    # Bind only supplied criteria. The default noul descriptions are literal text.
-    bound_question = {**question, "criteria": bind(question.get("criteria"))}
-    options = question_options(bound_question)
-    if question["type"] == "noul":
+    options = question_options(question)
+    is_noul = question["type"] == "noul"
+    if is_noul:
         options.reverse()
     if len(options) > len(DEFAULT_CHOICE_LABELS):
         raise ValueError("Piccolo candidates exceed the checkpoint candidate inventory")
 
-    values = [
-        bind(payload["state"]),
-        bind(question.get("instructions")),
-        [description for _, description in options],
-    ]
-    marker_assets = {marker: key for key, marker in markers.items()}
-    order = dict.fromkeys(_asset_markers(values, marker_assets))
-    for marker in marker_assets:
-        order.setdefault(marker)
-    asset_order = tuple(marker_assets[marker] for marker in order)
-    indices = {marker: index for index, marker in enumerate(order, start=1)}
-    pattern = re.compile("|".join(map(re.escape, indices))) if indices else None
+    state = request._state_parts
+    instructions = _reference_parts(question.get("instructions"), pattern)
+    criteria = question.get("criteria") or {}
+    # Default noul descriptions are literal text even if an asset ID occurs in them.
+    descriptions = tuple(
+        None
+        if description is None
+        else _reference_parts(description, None if is_noul and key not in criteria else pattern)
+        for key, description in options
+    )
+    order = dict.fromkeys(
+        part.asset_id
+        for parts in (state, instructions, *descriptions)
+        if parts is not None
+        for part in parts
+        if isinstance(part, _AssetRef)
+    )
+    for key in request.image_sources:
+        order.setdefault(key)
+    asset_order = tuple(order)
+    indices = {key: index for index, key in enumerate(asset_order, start=1)}
 
-    def split_field(value) -> FieldParts:
-        text = render_text(value)
-        parts: list[str | int] = []
-        cursor = 0
-        if pattern is not None:
-            for match in pattern.finditer(text):
-                if cursor < match.start():
-                    parts.append(text[cursor : match.start()])
-                parts.append(indices[match.group()])
-                cursor = match.end()
-        if cursor < len(text):
-            parts.append(text[cursor:])
-        return tuple(parts)
-
-    def field_parts(value: DecisionText | None) -> FieldParts:
-        return split_field(bind(value))
+    def number_refs(parts: _ReferenceParts) -> FieldParts:
+        return tuple(indices[part.asset_id] if isinstance(part, _AssetRef) else part for part in parts)
 
     labels = DEFAULT_CHOICE_LABELS[: len(options)]
+    prompt = PiccoloInputs(payload, question_key, asset_order)
     return PreparedDecision(
-        prompt=PiccoloInputs(payload, question_key, asset_order),
+        prompt=prompt,
         candidates=tuple(
-            Candidate(key, label, None if description is None else split_field(description))
-            for (key, description), label in zip(options, labels, strict=True)
+            Candidate(key, label, None if description is None else number_refs(description))
+            for (key, _), label, description in zip(options, labels, descriptions, strict=True)
         ),
-        image_sources=tuple(sources[key] for key in asset_order),
-        field_parts=field_parts,
+        image_sources=tuple(request.image_sources[key] for key in asset_order),
+        state_parts=None if prompt.state_is_asset_only else number_refs(state),
+        instruction_parts=number_refs(instructions),
     )

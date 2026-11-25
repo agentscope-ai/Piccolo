@@ -1,13 +1,21 @@
 """Frozen Piccolo request processor for text and image candidate scoring."""
 
+from collections.abc import Mapping
 from dataclasses import dataclass
 
 import torch
+from PIL import Image
 from transformers.feature_extraction_utils import BatchFeature
 from transformers.models.qwen3_vl.processing_qwen3_vl import Qwen3VLProcessor
 
-from .common_inputs import SystemOneInputs, prepare_decision
-from .common_media import encode_prompt, load_image_source
+from .common_inputs import (
+    JevRequest,
+    PreparedRequest,
+    image_source_name,
+    prepare_decision,
+    prepare_request,
+)
+from .common_media import encode_prompt
 from .piccolo_images import load_piccolo_image
 
 
@@ -50,20 +58,46 @@ class PiccoloProcessor(Qwen3VLProcessor):
             kwargs["text"] = payload
         return super().__call__(**kwargs)
 
-    def encode_request(self, payload):
-        SystemOneInputs.model_validate(payload)
-        return [self.encode_question(payload, key) for key in payload["questions"]]
+    def encode_request(
+        self,
+        payload: JevRequest | PreparedRequest,
+        *,
+        images: Mapping[str, Image.Image] | None = None,
+    ) -> list[EncodedDecision]:
+        """Encode questions in order, optionally reusing images keyed by asset ID."""
+        request = payload if isinstance(payload, PreparedRequest) else prepare_request(payload)
+        return [
+            self.encode_question(request, key, images=images) for key in request.payload["questions"]
+        ]
 
-    def encode_question(self, payload, question_key):
-        decision = prepare_decision(payload, question_key)
+    def encode_question(
+        self,
+        payload: JevRequest | PreparedRequest,
+        question_key: str,
+        *,
+        images: Mapping[str, Image.Image] | None = None,
+    ) -> EncodedDecision:
+        """Encode one question from a raw request or reuse its prepared data."""
+        request = payload if isinstance(payload, PreparedRequest) else prepare_request(payload)
+        decision = prepare_decision(request, question_key)
         limit = self.image_processor.size["longest_edge"]
-        encoded = encode_prompt(
-            self,
-            decision,
-            image_loader=lambda source: load_piccolo_image(
-                source, limit, image_loader=self.image_loader or load_image_source
-            ),
-        )
+        if images is not None:
+            ordered_images = [
+                load_piccolo_image(images[key], limit) for key in decision.prompt.asset_order
+            ]
+        else:
+            sources = decision.image_sources
+            loader = self.image_loader
+            if loader:
+                assets = request.payload.get("assets", {})
+                sources = tuple(
+                    image_source_name(assets[key], source)
+                    for key, source in zip(decision.prompt.asset_order, sources, strict=True)
+                )
+            ordered_images = [
+                load_piccolo_image(source, limit, image_loader=loader) for source in sources
+            ]
+        encoded = encode_prompt(self, decision, images=ordered_images)
         tokens = encoded["input_ids"][0].tolist()
         if not tokens or len(tokens) > self.max_length:
             raise ValueError("Piccolo prompt exceeds max_length; no truncation")

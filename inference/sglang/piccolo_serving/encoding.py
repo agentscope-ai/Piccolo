@@ -32,6 +32,7 @@ class PiccoloEncoder:
         inputs = import_module(".common_inputs", package)
         media = import_module(".common_media", package)
         self.request_schema = inputs.SystemOneTextRequest
+        self.prepare_request = getattr(inputs, "prepare_request", None)
         self.image_sources = inputs.image_sources
         self.load_image_source = media.load_image_source
 
@@ -45,17 +46,24 @@ class PiccoloEncoder:
         payload = {"state": body.state, "questions": raw["questions"], "assets": assets}
         # Decode each distinct source before locking. Slow downloads do not block
         # text requests or requests whose images are already available.
-        images = {
+        request = self.prepare_request(payload) if self.prepare_request is not None else None
+        sources = request.image_sources if request is not None else self.image_sources(assets)
+        loaded = {
             source: self.load_image_source(source, download=download_image)
-            for source in dict.fromkeys(self.image_sources(assets).values())
+            for source in dict.fromkeys(sources.values())
         }
         with self.lock:
-            previous_loader = self.processor.image_loader
-            self.processor.image_loader = images.__getitem__
-            try:
-                items = self.processor.encode_request(payload)
-            finally:
-                self.processor.image_loader = previous_loader
+            if request is not None:
+                images = {key: loaded[source] for key, source in sources.items()}
+                items = self.processor.encode_request(request, images=images)
+            else:
+                # Published checkpoints without request preparation use a source-string loader.
+                previous_loader = self.processor.image_loader
+                self.processor.image_loader = loaded.__getitem__
+                try:
+                    items = self.processor.encode_request(payload)
+                finally:
+                    self.processor.image_loader = previous_loader
         encoded = []
         for item in items:
             tensors = item.inputs

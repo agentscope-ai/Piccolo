@@ -45,7 +45,8 @@ def render_prompt(
     return _compile_jinja_template(template).render(
         prompt=decision.prompt,
         candidates=decision.candidates,
-        field_parts=decision.field_parts,
+        state_parts=decision.state_parts,
+        instruction_parts=decision.instruction_parts,
         render_text=render_text,
         add_generation_prompt=add_generation_prompt,
         enable_thinking=enable_thinking,
@@ -53,9 +54,8 @@ def render_prompt(
     )
 
 
-def encode_prompt(processor, decision: PreparedDecision, *, image_loader):
+def encode_prompt(processor, decision: PreparedDecision, *, images: list[Image.Image]):
     """Prepare image tensors once and expand their placeholders before tokenization."""
-    images = [image_loader(source) for source in decision.image_sources]
     kwargs = processor._merge_kwargs(
         Qwen3VLProcessorKwargs,
         tokenizer_init_kwargs=processor.tokenizer.init_kwargs,
