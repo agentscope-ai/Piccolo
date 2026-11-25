@@ -1,7 +1,7 @@
 {
   "schema_version": "jev.leaderboard.v1",
   "benchmark_id": "decisionindex",
-  "title": "Decision Index",
+  "title": "Decision Index · Text Public",
   "version": "0.3",
   "metric": "decision_index",
   "score_scale": [
@@ -18,17 +18,59 @@
       "model_id": "blink-27b-1028",
       "model_name": "Piccolo-27B",
       "logo": "./playground/logos/agentscope.svg",
-      "score": 68.59,
+      "score": 68.08,
       "status": "complete",
-      "metrics": {},
-      "axes": [],
+      "metrics": {
+        "public_index": 68.08,
+        "full_index": 68.4
+      },
+      "axes": [
+        {
+          "id": "knowledge",
+          "label_en": "Knowledge & Reasoning",
+          "label_zh": "Knowledge & Reasoning",
+          "score": 0.5526,
+          "metric": "area_skill",
+          "samples": 11
+        },
+        {
+          "id": "language",
+          "label_en": "Language Understanding",
+          "label_zh": "Language Understanding",
+          "score": 0.7185,
+          "metric": "area_skill",
+          "samples": 9
+        },
+        {
+          "id": "retrieval",
+          "label_en": "Retrieval & Classification",
+          "label_zh": "Retrieval & Classification",
+          "score": 0.7247,
+          "metric": "area_skill",
+          "samples": 6
+        },
+        {
+          "id": "tools",
+          "label_en": "Tools & Automation",
+          "label_zh": "Tools & Automation",
+          "score": 0.8175,
+          "metric": "area_skill",
+          "samples": 5
+        },
+        {
+          "id": "arts",
+          "label_en": "Arts & Human Taste",
+          "label_zh": "Arts & Human Taste",
+          "score": 0.5771,
+          "metric": "area_skill",
+          "samples": 6
+        }
+      ],
       "samples": 0,
       "errors": null,
-      "evaluated_at": null,
-      "protocol": "Decision-Index-text",
-      "notes": [
-        "Piccolo series results; selected variants are reported per benchmark."
-      ]
+      "evaluated_at": "2026-11-12",
+      "protocol": "Decision-Index-Text-Public-0.4.1",
+      "notes": []
     },
     {
       "model_id": "access-perplexity-ai--pplx-decider-v1.2",
@@ -86,8 +128,7 @@
       "evaluated_at": null,
       "protocol": "Decision-Index-text-Public-0.3/source-lookup-20261028",
       "notes": [
-        "Official text Public score looked up on 2026-10-28; no new local inference. Not the private Full score. Official global rank is not the rank within this selected roster.",
-        "Per-request official coverage and errors were not independently verified; samples=0 means unreported, not an empty evaluation. Errors and invalid rate remain unknown."
+        "Official Decision Index v0.3 Text Public result."
       ]
     },
     {
@@ -146,9 +187,7 @@
       "evaluated_at": null,
       "protocol": "Decision-Index-text-Public-0.3/source-lookup-20261028",
       "notes": [
-        "Official text Public score looked up on 2026-10-28; no new local inference. Not the private Full score. Official global rank is not the rank within this selected roster.",
-        "Per-request official coverage and errors were not independently verified; samples=0 means unreported, not an empty evaluation. Errors and invalid rate remain unknown.",
-        "Official Public entry uses v3.1.0; the local three-benchmark run used a different runtime revision. Matching weights do not prove identical runtime behavior."
+        "Official Decision Index v0.3 Text Public result."
       ]
     },
     {
@@ -207,25 +246,66 @@
       "evaluated_at": null,
       "protocol": "Decision-Index-text-Public-0.3/source-lookup-20261028",
       "notes": [
-        "Official text Public score looked up on 2026-10-28; no new local inference. Not the private Full score. Official global rank is not the rank within this selected roster.",
-        "Per-request official coverage and errors were not independently verified; samples=0 means unreported, not an empty evaluation. Errors and invalid rate remain unknown."
+        "Official Decision Index v0.3 Text Public result."
       ]
     },
     {
       "model_id": "blink-9b-1028",
       "model_name": "Piccolo-9B",
       "logo": "./playground/logos/agentscope.svg",
-      "score": 60.86,
+      "score": 60.3,
       "status": "complete",
-      "metrics": {},
-      "axes": [],
+      "metrics": {
+        "public_index": 60.3,
+        "full_index": 57.34
+      },
+      "axes": [
+        {
+          "id": "knowledge",
+          "label_en": "Knowledge & Reasoning",
+          "label_zh": "Knowledge & Reasoning",
+          "score": 0.4436,
+          "metric": "area_skill",
+          "samples": 11
+        },
+        {
+          "id": "language",
+          "label_en": "Language Understanding",
+          "label_zh": "Language Understanding",
+          "score": 0.6685,
+          "metric": "area_skill",
+          "samples": 9
+        },
+        {
+          "id": "retrieval",
+          "label_en": "Retrieval & Classification",
+          "label_zh": "Retrieval & Classification",
+          "score": 0.6616,
+          "metric": "area_skill",
+          "samples": 6
+        },
+        {
+          "id": "tools",
+          "label_en": "Tools & Automation",
+          "label_zh": "Tools & Automation",
+          "score": 0.7513,
+          "metric": "area_skill",
+          "samples": 5
+        },
+        {
+          "id": "arts",
+          "label_en": "Arts & Human Taste",
+          "label_zh": "Arts & Human Taste",
+          "score": 0.457,
+          "metric": "area_skill",
+          "samples": 6
+        }
+      ],
       "samples": 0,
       "errors": null,
-      "evaluated_at": null,
-      "protocol": "Decision-Index-text",
-      "notes": [
-        "Piccolo series results; selected variants are reported per benchmark."
-      ]
+      "evaluated_at": "2026-11-12",
+      "protocol": "Decision-Index-Text-Public-0.4.1",
+      "notes": []
     },
     {
       "model_id": "access-typesafe--jev-1.14",
@@ -284,25 +364,66 @@
       "evaluated_at": null,
       "protocol": "Decision-Index-text-Public-0.3/source-lookup-20261028",
       "notes": [
-        "Official text Public score looked up on 2026-10-28; no new local inference. Not the private Full score. Official global rank is not the rank within this selected roster.",
-        "Per-request official coverage and errors were not independently verified; samples=0 means unreported, not an empty evaluation. Errors and invalid rate remain unknown."
+        "Official Decision Index v0.3 Text Public result."
       ]
     },
     {
       "model_id": "blink-4b-1028",
       "model_name": "Piccolo-4B",
       "logo": "./playground/logos/agentscope.svg",
-      "score": 58.0,
+      "score": 57.14,
       "status": "complete",
-      "metrics": {},
-      "axes": [],
+      "metrics": {
+        "public_index": 57.14,
+        "full_index": 50
+      },
+      "axes": [
+        {
+          "id": "knowledge",
+          "label_en": "Knowledge & Reasoning",
+          "label_zh": "Knowledge & Reasoning",
+          "score": 0.3998,
+          "metric": "area_skill",
+          "samples": 11
+        },
+        {
+          "id": "language",
+          "label_en": "Language Understanding",
+          "label_zh": "Language Understanding",
+          "score": 0.6319,
+          "metric": "area_skill",
+          "samples": 9
+        },
+        {
+          "id": "retrieval",
+          "label_en": "Retrieval & Classification",
+          "label_zh": "Retrieval & Classification",
+          "score": 0.6298,
+          "metric": "area_skill",
+          "samples": 6
+        },
+        {
+          "id": "tools",
+          "label_en": "Tools & Automation",
+          "label_zh": "Tools & Automation",
+          "score": 0.7375,
+          "metric": "area_skill",
+          "samples": 5
+        },
+        {
+          "id": "arts",
+          "label_en": "Arts & Human Taste",
+          "label_zh": "Arts & Human Taste",
+          "score": 0.4379,
+          "metric": "area_skill",
+          "samples": 6
+        }
+      ],
       "samples": 0,
       "errors": null,
-      "evaluated_at": null,
-      "protocol": "Decision-Index-text",
-      "notes": [
-        "Piccolo series results; selected variants are reported per benchmark."
-      ]
+      "evaluated_at": "2026-11-12",
+      "protocol": "Decision-Index-Text-Public-0.4.1",
+      "notes": []
     },
     {
       "model_id": "access-inception--mercury-decide",
@@ -319,9 +440,7 @@
       "errors": null,
       "evaluated_at": null,
       "protocol": "Decision-Index-text-Public-0.3/source-lookup-20261028",
-      "notes": [
-        "No matching model/version score was found in the saved official text Public leaderboard or Playground snapshot. Missing is not zero; no inference was run."
-      ]
+      "notes": []
     },
     {
       "model_id": "access-microsoft--microsoft-decision-1",
@@ -338,9 +457,7 @@
       "errors": null,
       "evaluated_at": null,
       "protocol": "Decision-Index-text-Public-0.3/source-lookup-20261028",
-      "notes": [
-        "No matching model/version score was found in the saved official text Public leaderboard or Playground snapshot. Missing is not zero; no inference was run."
-      ]
+      "notes": []
     },
     {
       "model_id": "access-openai--gpt-6-luna-decisions",
@@ -356,9 +473,7 @@
       "errors": null,
       "evaluated_at": null,
       "protocol": "Decision-Index-text-Public-0.3/source-lookup-20261028",
-      "notes": [
-        "No matching model/version score was found in the saved official text Public leaderboard or Playground snapshot. Missing is not zero; no inference was run."
-      ]
+      "notes": []
     },
     {
       "model_id": "access-strands-decider-26B-A4B-gemma4-v1-2610",
@@ -374,9 +489,7 @@
       "errors": null,
       "evaluated_at": null,
       "protocol": "Decision-Index-text-Public-0.3/source-lookup-20261028",
-      "notes": [
-        "No matching model/version score was found in the saved official text Public leaderboard or Playground snapshot. Missing is not zero; no inference was run."
-      ]
+      "notes": []
     }
   ]
 }

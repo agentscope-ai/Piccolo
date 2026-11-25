@@ -1,6 +1,6 @@
 {
-  "snapshot_date": "2026-11-02",
-  "inference_date": "2026-11-02",
+  "snapshot_date": "2026-11-12",
+  "inference_date": null,
   "benchmarks": [
     {
       "id": "jevbench",
@@ -89,17 +89,18 @@
     },
     {
       "id": "decisionindex",
-      "title": "Decision Index",
+      "title": "Decision Index · Text Public",
       "version": "0.3",
       "scale": 100,
       "rows": [
         {
           "model_key": "blink-27b-1028",
           "model": "Piccolo-27B",
-          "score": 68.59,
-          "score_display": "68.59 / 100",
+          "score": 68.08,
+          "score_display": "68.08 / 100",
           "status": "complete",
-          "evaluation_scope": "research-text"
+          "evaluation_scope": "public-text",
+          "full": 68.4
         },
         {
           "model_key": "access-perplexity-ai--pplx-decider-v1.2",
@@ -107,7 +108,7 @@
           "score": 67.74,
           "score_display": "67.74 / 100",
           "status": "complete",
-          "evaluation_scope": "public"
+          "evaluation_scope": "public-text"
         },
         {
           "model_key": "access-vllm-sr--d3",
@@ -115,7 +116,7 @@
           "score": 65.45,
           "score_display": "65.45 / 100",
           "status": "complete",
-          "evaluation_scope": "public"
+          "evaluation_scope": "public-text"
         },
         {
           "model_key": "access-Clef-27B-original",
@@ -123,15 +124,16 @@
           "score": 61.71,
           "score_display": "61.71 / 100",
           "status": "complete",
-          "evaluation_scope": "public"
+          "evaluation_scope": "public-text"
         },
         {
           "model_key": "blink-9b-1028",
           "model": "Piccolo-9B",
-          "score": 60.86,
-          "score_display": "60.86 / 100",
+          "score": 60.3,
+          "score_display": "60.30 / 100",
           "status": "complete",
-          "evaluation_scope": "research-text"
+          "evaluation_scope": "public-text",
+          "full": 57.34
         },
         {
           "model_key": "access-typesafe--jev-1.14",
@@ -139,15 +141,16 @@
           "score": 60.7,
           "score_display": "60.70 / 100",
           "status": "complete",
-          "evaluation_scope": "public"
+          "evaluation_scope": "public-text"
         },
         {
           "model_key": "blink-4b-1028",
           "model": "Piccolo-4B",
-          "score": 58.0,
-          "score_display": "58.00 / 100",
+          "score": 57.14,
+          "score_display": "57.14 / 100",
           "status": "complete",
-          "evaluation_scope": "research-text"
+          "evaluation_scope": "public-text",
+          "full": 50
         },
         {
           "model_key": "access-inception--mercury-decide",
@@ -155,7 +158,7 @@
           "score": null,
           "score_display": "—",
           "status": "pending",
-          "evaluation_scope": "public"
+          "evaluation_scope": "public-text"
         },
         {
           "model_key": "access-microsoft--microsoft-decision-1",
@@ -163,7 +166,7 @@
           "score": null,
           "score_display": "—",
           "status": "pending",
-          "evaluation_scope": "public"
+          "evaluation_scope": "public-text"
         },
         {
           "model_key": "access-openai--gpt-6-luna-decisions",
@@ -171,7 +174,7 @@
           "score": null,
           "score_display": "—",
           "status": "pending",
-          "evaluation_scope": "public"
+          "evaluation_scope": "public-text"
         },
         {
           "model_key": "access-strands-decider-26B-A4B-gemma4-v1-2610",
@@ -179,7 +182,136 @@
           "score": null,
           "score_display": "—",
           "status": "pending",
-          "evaluation_scope": "public"
+          "evaluation_scope": "public-text"
+        }
+      ]
+    },
+    {
+      "id": "decisionindex-vision",
+      "title": "Decision Index · Vision Public",
+      "version": "0.4",
+      "scale": 100,
+      "rows": [
+        {
+          "model_key": "access-Rover00--WeMM-JEV",
+          "model": "WeMM-JEV-27B",
+          "score": 77.93,
+          "score_display": "77.93 / 100",
+          "status": "complete",
+          "evaluation_scope": "public-vision",
+          "full": 73.81,
+          "private": 69.7,
+          "official_full_rank": 3
+        },
+        {
+          "model_key": "piccolo-27b-vl",
+          "model": "Piccolo-27B-VL",
+          "score": 80.22,
+          "score_display": "80.22 / 100",
+          "status": "complete",
+          "evaluation_scope": "public-vision",
+          "full": 75.59,
+          "private": 70.97,
+          "official_full_rank": 1
+        },
+        {
+          "model_key": "access-perplexity-ai--pplx-decider-v1.2",
+          "model": "Perplexity Decider v1.2 (27B)",
+          "score": 77.25,
+          "score_display": "77.25 / 100",
+          "status": "complete",
+          "evaluation_scope": "public-vision",
+          "full": 71.72,
+          "private": 66.18,
+          "official_full_rank": 12
+        },
+        {
+          "model_key": "access-taoszhang--VisionJEV",
+          "model": "VisionJEV 1.0.0 (27B)",
+          "score": 76.77,
+          "score_display": "76.77 / 100",
+          "status": "complete",
+          "evaluation_scope": "public-vision",
+          "full": 71.42,
+          "private": 66.07,
+          "official_full_rank": 16
+        },
+        {
+          "model_key": "access-h2oai--h2o-lightning-31b",
+          "model": "H2O Lightning 31B v1.3.0",
+          "score": 76.59,
+          "score_display": "76.59 / 100",
+          "status": "complete",
+          "evaluation_scope": "public-vision",
+          "full": 72.87,
+          "private": 69.15,
+          "official_full_rank": 6
+        },
+        {
+          "model_key": "access-mukaddamzaid--amos-1-large",
+          "model": "Amos 1 Large (27B)",
+          "score": 76.1,
+          "score_display": "76.10 / 100",
+          "status": "complete",
+          "evaluation_scope": "public-vision",
+          "full": 72.4,
+          "private": 68.71,
+          "official_full_rank": 9
+        },
+        {
+          "model_key": "access-vllm-sr--d3",
+          "model": "vLLM-SR d3 (27B)",
+          "score": 74.08,
+          "score_display": "74.08 / 100",
+          "status": "complete",
+          "evaluation_scope": "public-vision",
+          "full": 71.26,
+          "private": 68.45,
+          "official_full_rank": 17
+        },
+        {
+          "model_key": "access-StartLux-Decision-v1.1-27B-Instant",
+          "model": "StartLux-Decision v1.1 27B",
+          "score": 73.83,
+          "score_display": "73.83 / 100",
+          "status": "complete",
+          "evaluation_scope": "public-vision",
+          "full": 71.61,
+          "private": 69.39,
+          "official_full_rank": 13
+        },
+        {
+          "model_key": "piccolo-9b-vl",
+          "model": "Piccolo-9B-VL",
+          "score": 71.67,
+          "score_display": "71.67 / 100",
+          "status": "complete",
+          "evaluation_scope": "public-vision",
+          "full": 68.35,
+          "private": 65.04,
+          "official_full_rank": 26
+        },
+        {
+          "model_key": "piccolo-4b-vl",
+          "model": "Piccolo-4B-VL",
+          "score": 71.42,
+          "score_display": "71.42 / 100",
+          "status": "complete",
+          "evaluation_scope": "public-vision",
+          "full": 67.46,
+          "private": 63.49,
+          "official_full_rank": 28
+        },
+        {
+          "model_key": "jdi-decision-v1",
+          "model": "JDI-Decision-V1",
+          "score": 79.58,
+          "score_display": "79.58 / 100",
+          "status": "complete",
+          "evaluation_scope": "public-vision",
+          "full": 75.05,
+          "private": 70.52,
+          "official_full_rank": 2
         }
       ]
     },
@@ -218,17 +350,17 @@
           "status": "complete"
         },
         {
+          "model_key": "blink-9b-1028",
+          "model": "Piccolo-9B",
+          "score": 0.7067796610169491,
+          "score_display": "70.68%",
+          "status": "complete"
+        },
+        {
           "model_key": "access-microsoft--microsoft-decision-1",
           "model": "Microsoft Decision-1",
           "score": 0.6949152542372882,
           "score_display": "69.49%",
-          "status": "complete"
-        },
-        {
-          "model_key": "blink-9b-1028",
-          "model": "Piccolo-9B",
-          "score": 0.688135593220339,
-          "score_display": "68.81%",
           "status": "complete"
         },
         {
@@ -239,17 +371,17 @@
           "status": "complete"
         },
         {
+          "model_key": "blink-4b-1028",
+          "model": "Piccolo-4B",
+          "score": 0.6322033898305085,
+          "score_display": "63.22%",
+          "status": "complete"
+        },
+        {
           "model_key": "access-openai--gpt-6-luna-decisions",
           "model": "GPT-6 Luna Decisions",
           "score": 0.6237288135593221,
           "score_display": "62.37%",
-          "status": "complete"
-        },
-        {
-          "model_key": "blink-4b-1028",
-          "model": "Piccolo-4B",
-          "score": 0.6203389830508474,
-          "score_display": "62.03%",
           "status": "complete"
         },
         {
@@ -333,15 +465,15 @@
         {
           "model_key": "blink-4b-1028",
           "model": "Piccolo-4B",
-          "score": 0.706,
-          "score_display": "70.60%",
+          "score": 0.712,
+          "score_display": "71.20%",
           "status": "complete"
         },
         {
           "model_key": "blink-9b-1028",
           "model": "Piccolo-9B",
-          "score": 0.694,
-          "score_display": "69.40%",
+          "score": 0.692,
+          "score_display": "69.20%",
           "status": "complete"
         },
         {

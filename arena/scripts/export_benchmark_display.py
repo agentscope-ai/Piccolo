@@ -4,7 +4,7 @@ import argparse
 import json
 from pathlib import Path
 
-BENCHMARKS = ('harnessjevbench', 'datajevbench', 'jevbench', 'decisionindex')
+BENCHMARKS = ('harnessjevbench', 'datajevbench', 'jevbench', 'decisionindex', 'decisionindex-vision')
 EXCLUDED = {
     'access-StartLux-Decision-v1.1-27B-AutoThink',
     'access-qwen38-27b',

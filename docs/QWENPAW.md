@@ -1,91 +1,91 @@
-# Piccolo：QwenPaw 本地决策模型
+# Piccolo: Local Decision Models in QwenPaw
 
-Piccolo 复用 QwenPaw 的 GGUF 下载器、llama.cpp 管理，以及 Jev 原有的决策模型选择、自动审核与上下文压缩入口。完整权重、BF16、Q8_0、Q4_K_M 均已发布在 [Hugging Face](MODELS.md)，不需要额外 Skill、云端密钥或独立 Jev 服务地址。
+Piccolo reuses QwenPaw's GGUF downloader and llama.cpp management, along with Jev's existing decision model selection, automatic review, and context compaction controls. Complete weights, BF16, Q8_0, and Q4_K_M are published on [Hugging Face](MODELS.md). No additional Skill, cloud API key, or separate Jev service URL is required.
 
-## 安装 QwenPaw 与运行时
+## Install QwenPaw and the runtime
 
-Piccolo 本地决策接入已通过 **[PR #8463](https://github.com/agentscope-ai/QwenPaw/pull/8463)** 合入 QwenPaw 主分支。获取官方源码，按仓库的开发安装说明准备 QwenPaw：
+Local Piccolo decision model integration was merged into QwenPaw main through **[PR #8463](https://github.com/agentscope-ai/QwenPaw/pull/8463)**. Get the official source and follow the repository's development installation instructions to set up QwenPaw:
 
 ```bash
 git clone --branch main https://github.com/agentscope-ai/QwenPaw.git QwenPaw-Piccolo
 cd QwenPaw-Piccolo
 ```
 
-随后按官方 **[运行时构建与安装说明](https://github.com/agentscope-ai/QwenPaw/blob/main/docs/local-piccolo.md#compatible-runtime)** 构建配套 llama.cpp。该指南固定上游 commit `f4d8af608a6b39946406f9439edfb6e83ca6a923`，并应用仓库自带的 `docs/patches/piccolo-llama.cpp.patch`。停止本地模型后，备份原运行时，将新 `llama-server` 及匹配共享库安装到指南打印的 QwenPaw 运行时目录。
+Then build the compatible llama.cpp runtime using the official **[runtime build and installation instructions](https://github.com/agentscope-ai/QwenPaw/blob/main/docs/local-piccolo.md#compatible-runtime)**. The guide pins upstream commit `f4d8af608a6b39946406f9439edfb6e83ca6a923` and applies the repository's `docs/patches/piccolo-llama.cpp.patch`. Stop the local model, back up the existing runtime, and install the new `llama-server` and matching shared libraries into the QwenPaw runtime directory printed by the guide.
 
-未适配的上游二进制和普通 Ollama 聊天接口不实现 Piccolo 协议。重新安装未适配运行时会移除支持。无需改变用户已有审批或压缩设置来安装运行时。
+Unmodified upstream binaries and standard Ollama chat interfaces do not implement the Piccolo protocol. Reinstalling an unmodified runtime removes support. Installing the runtime does not require changing the user's existing approval or compaction settings.
 
-## 下载与启动
+## Download and start
 
-1. 打开 **模型 → QwenPaw Local → 决策模型**，下载适合设备的 BF16 或 Q8_0 模型。如果条目未显示，可在自定义下载中选择 Hugging Face，输入如 `agentscope-ai/Piccolo-4B-BF16`、`agentscope-ai/Piccolo-9B-Q8_0` 或 `agentscope-ai/Piccolo-27B-Q4_K_M`。
-2. 下载器获取 GGUF 与推理所需说明，下载所有标准分片；无后缀的 Safetensors 仓库用于完整 checkpoint 参考推理。
-3. 下载完成点击 **启动**，再到 **模型 → 默认模型 → 决策模型** 确认选择。智能体专属设置可以覆盖全局默认。
+1. Open **Models → QwenPaw Local → Decision Models** and download a BF16 or Q8_0 model suitable for your device. If the entry is missing, select Hugging Face in custom downloads and enter a repository ID such as `agentscope-ai/Piccolo-4B-BF16`, `agentscope-ai/Piccolo-9B-Q8_0`, or `agentscope-ai/Piccolo-27B-Q4_K_M`.
+2. The downloader fetches the GGUF files and instructions needed for inference, including all standard shards. Safetensors repositories without a suffix are for reference inference with complete checkpoints.
+3. Once downloaded, click **Start**, then confirm the selection under **Models → Default Models → Decision Model**. Agent-specific settings can override the global default.
 
-独立下载可使用 [ModelScope 合集](https://www.modelscope.cn/collections/AgentScope/QwenPaw-Flash)中的 `AgentScope/Piccolo-*` 仓库。QwenPaw 当前按 `agentscope-ai/Piccolo-*` 识别本地决策模型，在自定义下载中请选择 Hugging Face 和对应的仓库 ID。
+For standalone downloads, use the `AgentScope/Piccolo-*` repositories in the [ModelScope collection](https://www.modelscope.cn/collections/AgentScope/QwenPaw-Flash). QwenPaw currently identifies local decision models by `agentscope-ai/Piccolo-*`; select Hugging Face and the corresponding repository ID for custom downloads.
 
-目录按设备内存推荐 BF16 与 Q8_0：
+The catalog recommends BF16 and Q8_0 based on device memory:
 
-| 尺寸 | Q8_0 推荐门槛 | BF16 推荐门槛 | BF16 下载体积 |
+| Size | Q8_0 recommendation threshold | BF16 recommendation threshold | BF16 download size |
 | --- | ---: | ---: | ---: |
 | 4B | 16 GB | 24 GB | 8.42 GB |
 | 9B | 24 GB | 32 GB | 17.92 GB |
 | 27B | 48 GB | 80 GB | 53.81 GB |
 
-这些是目录展示门槛，不是峰值内存实测保证。Q4_K_M 已通过扩大数值回归并发布，可按仓库 ID 下载；其误差与限制见各模型卡。内置 llama.cpp **一次管理一个运行模型**，启动 Piccolo 会替换同一实例中的本地聊天模型；对话可使用其他提供商。
+These are catalog display thresholds, not measured peak-memory guarantees. Q4_K_M has passed expanded numerical regression checks and is published for download by repository ID; see each model card for errors and limitations. The built-in llama.cpp runtime **manages one running model at a time**. Starting Piccolo replaces the local chat model in the same instance; conversations can use other providers.
 
-## 沿用 Jev 的启用位置
+## Use Jev's existing activation controls
 
-- **自动审核：**在会话模型菜单的高级选项中打开 **使用决策模型**，并将工具审批设为 **决策模型模式**。智能体默认模式位于 **运行配置 → 执行方式 → 工具审批模式**。
-- **上下文压缩：**在 **运行配置 → 上下文容量** 中启用上下文压缩，再展开 **决策模型压缩** 并打开独立开关。
+- **Automatic review:** Enable **Use Decision Model** in the advanced options of the conversation's model menu, and set tool approval to **Decision Model Mode**. The agent's default mode is under **Runtime Configuration → Execution → Tool Approval Mode**.
+- **Context compaction:** Enable context compaction under **Runtime Configuration → Context Capacity**, then expand **Decision Model Compaction** and enable its separate switch.
 
-模型列表只负责下载、启动、停止和删除。启动 Piccolo 不会自动开启这两项功能。[三步配置截图](../assets/qwenpaw/README.md)记录了入口。
+The model list only handles downloading, starting, stopping, and deleting models. Starting Piccolo does not automatically enable either feature. The [three-step setup screenshots](../assets/qwenpaw/README.md) show these controls.
 
-## 本地推理协议
+## Local inference protocol
 
 ```text
-Hugging Face GGUF → QwenPaw 管理的 llama.cpp
-                 → /v1/systemone 候选 token 评分
-                 → AgentScope Jev → 自动审核 / ReMe 压缩
+Hugging Face GGUF → QwenPaw-managed llama.cpp
+                 → /v1/systemone candidate-token scoring
+                 → AgentScope Jev → automatic review / ReMe compaction
 ```
 
-使用 `flex_twice` 布局，在 `Answer: (` 后读取单 token 候选标签的 logits，以温度 1 对候选集合归一化，等价于对候选 token 的 logprob 再归一化。不生成回答文本或概率 JSON。全注意力层使用双向 prompt attention，线性注意力层保持原计算。
+The protocol uses the `flex_twice` layout, reads logits for single-token candidate labels after `Answer: (`, and normalizes over the candidate set at temperature 1. This is equivalent to renormalizing the candidate tokens' log probabilities. It generates neither answer text nor probability JSON. Full-attention layers use bidirectional prompt attention; linear-attention layers retain their original computation.
 
-每个问题使用完整提示，禁用前缀缓存与上下文滑移，context/batch/microbatch 保持一致；当前 QwenPaw 实现最多 8,192 token（含重复布局），超出预算显式失败并走原有回退，不静默截断。原始 checkpoint 的配置上限与这一运行预算分开理解。
+Each question uses the complete prompt, with prefix caching and context shifting disabled and matching context/batch/microbatch sizes. The current QwenPaw implementation supports at most 8,192 tokens, including the repeated layout. Requests exceeding the budget fail explicitly and use the existing fallback rather than silently truncating. The original checkpoint's configured limit is separate from this runtime budget.
 
-原生审批阈值、人工确认回退与上下文恢复继续生效。候选概率不能视为经过任务校准的安全保证。参考实现与最小请求见 [推理说明](../inference/README.md)，转换与量化证据见各模型卡。
+Native approval thresholds, manual-confirmation fallback, and context recovery remain in effect. Candidate probabilities are not a task-calibrated safety guarantee. See [inference documentation](../inference/README.md) for the reference implementation and minimal requests, and individual model cards for conversion and quantization evidence.
 
-## macOS 本地延迟
+## Local latency on macOS
 
-在搭载 M4 Pro 和 24 GB 统一内存的 Mac 上，用同一套 Piccolo llama.cpp 运行时分别加载三个 4B GGUF。通过本机的 `/v1/systemone` 重放同一条四问工具审核，每个格式连续运行四次，取后三次的中位数。四问合计处理 2,020 个输入 token，生成 0 个 token。计时从发送本地 HTTP 请求开始，到收到决策结果为止。
+On a Mac with an M4 Pro and 24 GB of unified memory, three 4B GGUF formats were loaded separately using the same Piccolo llama.cpp runtime. The same four-question tool review was replayed through the local `/v1/systemone` endpoint four times consecutively per format; the median of the last three runs was taken. The four questions processed 2,020 input tokens in total and generated 0 tokens. Timing started when the local HTTP request was sent and ended when the decision result arrived.
 
-| 4B 格式 | GGUF 下载体积 | 热机审核中位数 |
+| 4B format | GGUF download size | Median warm review latency |
 | --- | ---: | ---: |
-| Q4_K_M | 2.71 GB | 3.25 秒 |
-| Q8_0 | 4.48 GB | 4.59 秒 |
-| BF16 | 8.42 GB | 3.11 秒 |
+| Q4_K_M | 2.71 GB | 3.25 s |
+| Q8_0 | 4.48 GB | 4.59 s |
+| BF16 | 8.42 GB | 3.11 s |
 
-BF16 在这条请求上比 Q4_K_M 少用 0.14 秒，权重文件大 5.72 GB。回到原来的 Q4_K_M 服务后再次测量，热机中位数为 3.32 秒。
+BF16 took 0.14 seconds less than Q4_K_M for this request, with 5.72 GB larger weight files. After returning to the original Q4_K_M service, another measurement gave a warm median of 3.32 seconds.
 
-Q4_K_M 的默认配置为 3.25 秒。显式启用全层 GPU 和 Flash Attention 为 3.26 秒，独立服务在相同的 8,192 总上下文预算下启用四个 slot，耗时 3,255 毫秒。三种配置对这条请求返回了相同的决策和概率。连续执行工具时可以保持模型运行，并只传入判断所需的工具信息，包括风险信号和目标参数。审核保留默认 7 秒等待预算。
+Q4_K_M took 3.25 seconds with the default configuration. Explicitly enabling all-layer GPU offload and Flash Attention took 3.26 seconds; a standalone service with four slots under the same 8,192-token total context budget took 3,255 ms. All three configurations returned identical decisions and probabilities for this request. For consecutive tool calls, keep the model running and pass only the tool information needed for judgment, including risk signals and target parameters. Review retains the default 7-second wait budget.
 
-**控制上下文压缩的等待时间。** 在 QwenPaw 的决策模型压缩设置中，可以调整「总超时（秒）」。在一段含订单原文和旧日志的合成历史上，以本机 Q4_K_M 实测。输入均为 10,432 个 token。
+**Control the wait for context compaction.** In QwenPaw's decision model compaction settings, adjust “Total timeout (seconds).” Local Q4_K_M measurements used a synthetic history containing an original order and old logs. Both inputs contained 10,432 tokens.
 
-| 压缩总超时 | 单次压缩耗时 | 压缩后 token 数 |
+| Compaction total timeout | Time per compaction | Tokens after compaction |
 | --- | ---: | ---: |
-| 30 秒 | 24.02 秒 | 8,924 |
-| 15 秒 | 12.02 秒 | 9,677 |
+| 30 s | 24.02 s | 8,924 |
+| 15 s | 12.02 s | 9,677 |
 
-两次运行均保留了订单原文、最后的用户请求和最近六条消息。较短的预算减少了单轮停顿，也让更多原文留到下一轮。此设置只影响压缩，工具审核有独立的等待预算。
+Both runs retained the original order, the last user request, and the six most recent messages. The shorter budget reduced the pause per round while leaving more original text for the next round. This setting affects compaction only; tool review has its own wait budget.
 
-[观看 QwenPaw 工具审核实录](https://decisionplayground.agentscope.io/piccolo.html#qwenpaw-showcase)。
+[Watch the QwenPaw tool review recording](https://decisionplayground.agentscope.io/piccolo.html#qwenpaw-showcase).
 
-## 检查当前选择
+## Check the current selection
 
-在支持该集成的 QwenPaw Python 环境，从 Piccolo 仓库运行：
+From the Piccolo repository, in a QwenPaw Python environment that supports this integration:
 
 ```bash
 python scripts/check_qwenpaw_local.py
 python -m pytest tests/test_qwenpaw_local.py
 ```
 
-校验脚本只发送合成输入，不执行示例工具、不下载模型、不修改配置。测试连接回环协议替身，不能代替实际模型质量或完整工作流评测。
+The check script sends only synthetic inputs. It does not execute example tools, download models, or modify configuration. Tests connect to a loopback protocol stub and do not replace actual model-quality or full-workflow evaluation.

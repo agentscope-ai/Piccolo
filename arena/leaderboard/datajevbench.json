@@ -87,9 +87,7 @@
       "errors": 0,
       "evaluated_at": "2026-11-02",
       "protocol": "DataJevBench-V0.5/probability-sum-tol-1e-3",
-      "notes": [
-        "Piccolo series results; selected variants are reported per benchmark."
-      ]
+      "notes": []
     },
     {
       "model_id": "access-vllm-sr--d3",
@@ -645,19 +643,19 @@
       "model_id": "blink-4b-1028",
       "model_name": "Piccolo-4B",
       "logo": "./playground/logos/agentscope.svg",
-      "score": 0.706,
+      "score": 0.712,
       "status": "complete",
       "metrics": {
-        "accuracy": 0.706,
+        "accuracy": 0.712,
         "accuracy_n": 500,
-        "correct": 353,
-        "brier": 0.40912387813347173,
-        "ece": 0.07753168053717335,
+        "correct": 356,
+        "brier": 0.4053433328832719,
+        "ece": 0.0629405088623766,
         "brier_n": 500,
         "ece_n": 500,
         "valid": 500,
         "missing": 0,
-        "invalid_rate": 0,
+        "invalid_rate": 0.0,
         "probability_sum_tolerance": 0.001
       },
       "axes": [
@@ -681,7 +679,7 @@
           "id": "D3",
           "label_en": "Quality Assessment",
           "label_zh": "数据产物质量评估",
-          "score": 0.775,
+          "score": 0.7875,
           "metric": "accuracy",
           "samples": 80
         },
@@ -697,7 +695,7 @@
           "id": "D5",
           "label_en": "Evidence & Privacy",
           "label_zh": "结论核验与隐私审查",
-          "score": 0.825,
+          "score": 0.8375,
           "metric": "accuracy",
           "samples": 80
         },
@@ -705,36 +703,34 @@
           "id": "D6",
           "label_en": "Data-workflow Control",
           "label_zh": "数据任务决策",
-          "score": 0.6,
+          "score": 0.6166666666666667,
           "metric": "accuracy",
           "samples": 60
         }
       ],
       "samples": 500,
       "errors": 0,
-      "evaluated_at": "2026-11-02",
+      "evaluated_at": "2026-11-04",
       "protocol": "DataJevBench-V0.5/probability-sum-tol-1e-3",
-      "notes": [
-        "Piccolo series results; selected variants are reported per benchmark."
-      ]
+      "notes": []
     },
     {
       "model_id": "blink-9b-1028",
       "model_name": "Piccolo-9B",
       "logo": "./playground/logos/agentscope.svg",
-      "score": 0.694,
+      "score": 0.692,
       "status": "complete",
       "metrics": {
-        "accuracy": 0.694,
+        "accuracy": 0.692,
         "accuracy_n": 500,
-        "correct": 347,
-        "brier": 0.39605140620261536,
-        "ece": 0.06568921648949087,
+        "correct": 346,
+        "brier": 0.396300316999059,
+        "ece": 0.05992284743339632,
         "brier_n": 500,
         "ece_n": 500,
         "valid": 500,
         "missing": 0,
-        "invalid_rate": 0,
+        "invalid_rate": 0.0,
         "probability_sum_tolerance": 0.001
       },
       "axes": [
@@ -750,7 +746,7 @@
           "id": "D2",
           "label_en": "Operator Selection",
           "label_zh": "算子与处理方案选择",
-          "score": 0.4111111111111111,
+          "score": 0.3888888888888889,
           "metric": "accuracy",
           "samples": 90
         },
@@ -758,7 +754,7 @@
           "id": "D3",
           "label_en": "Quality Assessment",
           "label_zh": "数据产物质量评估",
-          "score": 0.75,
+          "score": 0.7625,
           "metric": "accuracy",
           "samples": 80
         },
@@ -766,7 +762,7 @@
           "id": "D4",
           "label_en": "Information Sufficiency",
           "label_zh": "所需信息充分性",
-          "score": 0.76,
+          "score": 0.75,
           "metric": "accuracy",
           "samples": 100
         },
@@ -774,7 +770,7 @@
           "id": "D5",
           "label_en": "Evidence & Privacy",
           "label_zh": "结论核验与隐私审查",
-          "score": 0.725,
+          "score": 0.7375,
           "metric": "accuracy",
           "samples": 80
         },
@@ -791,9 +787,7 @@
       "errors": 0,
       "evaluated_at": "2026-11-02",
       "protocol": "DataJevBench-V0.5/probability-sum-tol-1e-3",
-      "notes": [
-        "Piccolo series results; selected variants are reported per benchmark."
-      ]
+      "notes": []
     },
     {
       "model_id": "access-strands-decider-26B-A4B-gemma4-v1-2610",

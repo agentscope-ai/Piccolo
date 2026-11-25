@@ -270,9 +270,7 @@
       "errors": 0,
       "evaluated_at": "2026-11-02",
       "protocol": "HarnessJevBench-V0.5/hard-task-macro+soft-two-view",
-      "notes": [
-        "Piccolo series results; selected variants are reported per benchmark."
-      ]
+      "notes": []
     },
     {
       "model_id": "access-vllm-sr--d3",
@@ -1325,17 +1323,17 @@
       "model_id": "blink-9b-1028",
       "model_name": "Piccolo-9B",
       "logo": "./playground/logos/agentscope.svg",
-      "score": 0.688135593220339,
+      "score": 0.7067796610169491,
       "status": "complete",
       "metrics": {
-        "accuracy": 0.688135593220339,
+        "accuracy": 0.7067796610169491,
         "accuracy_n": 295,
         "hard_questions": 303,
         "hard_valid": 303,
         "hard_invalid": 0,
         "hard_invalid_rate": 0,
-        "soft_tv": 0.2930187445634669,
-        "soft_valid": 60,
+        "soft_tv": null,
+        "soft_valid": 0,
         "soft_total": 60,
         "soft_tv_valid_only_diagnostic": null
       },
@@ -1344,7 +1342,7 @@
           "id": "argument_validation",
           "label_en": "Argument Validation",
           "label_zh": "参数校验",
-          "score": 0.07142857142857142,
+          "score": 0.14285714285714285,
           "metric": "mean_task_score",
           "samples": 14
         },
@@ -1376,7 +1374,7 @@
           "id": "cache_validity",
           "label_en": "Cache Validity",
           "label_zh": "缓存有效性",
-          "score": 0.625,
+          "score": 0.75,
           "metric": "mean_task_score",
           "samples": 8
         },
@@ -1464,7 +1462,7 @@
           "id": "privacy_release",
           "label_en": "Privacy Release",
           "label_zh": "隐私披露",
-          "score": 0.6363636363636364,
+          "score": 0.7272727272727273,
           "metric": "mean_task_score",
           "samples": 11
         },
@@ -1472,7 +1470,7 @@
           "id": "reasoning_budget",
           "label_en": "Reasoning Budget",
           "label_zh": "推理预算",
-          "score": 0.6666666666666666,
+          "score": 0.6666666666666665,
           "metric": "mean_task_score",
           "samples": 9
         },
@@ -1520,7 +1518,7 @@
           "id": "subagent_dispatch",
           "label_en": "Subagent Dispatch",
           "label_zh": "子代理调度",
-          "score": 0.23076923076923078,
+          "score": 0.3076923076923077,
           "metric": "mean_task_score",
           "samples": 13
         },
@@ -1536,7 +1534,7 @@
           "id": "tool_call_review",
           "label_en": "Tool Call Review",
           "label_zh": "工具调用审查",
-          "score": 0.8461538461538461,
+          "score": 0.8846153846153846,
           "metric": "mean_task_score",
           "samples": 13
         },
@@ -1568,18 +1566,16 @@
           "id": "version_conflict",
           "label_en": "Version Conflict",
           "label_zh": "版本冲突",
-          "score": 0.6666666666666666,
+          "score": 0.7777777777777779,
           "metric": "mean_task_score",
           "samples": 9
         }
       ],
-      "samples": 325,
+      "samples": 295,
       "errors": 0,
       "evaluated_at": "2026-11-02",
       "protocol": "HarnessJevBench-V0.5/hard-task-macro+soft-two-view",
-      "notes": [
-        "Piccolo series results; selected variants are reported per benchmark."
-      ]
+      "notes": []
     },
     {
       "model_id": "access-typesafe--jev-1.14",
@@ -2109,17 +2105,17 @@
       "model_id": "blink-4b-1028",
       "model_name": "Piccolo-4B",
       "logo": "./playground/logos/agentscope.svg",
-      "score": 0.6203389830508474,
+      "score": 0.6322033898305085,
       "status": "complete",
       "metrics": {
-        "accuracy": 0.6203389830508474,
+        "accuracy": 0.6322033898305085,
         "accuracy_n": 295,
         "hard_questions": 303,
         "hard_valid": 303,
         "hard_invalid": 0,
         "hard_invalid_rate": 0,
-        "soft_tv": 0.27652691482072517,
-        "soft_valid": 60,
+        "soft_tv": null,
+        "soft_valid": 0,
         "soft_total": 60,
         "soft_tv_valid_only_diagnostic": null
       },
@@ -2152,7 +2148,7 @@
           "id": "budget_allocation",
           "label_en": "Budget Allocation",
           "label_zh": "预算分配",
-          "score": 0.2857142857142857,
+          "score": 0.35714285714285715,
           "metric": "mean_task_score",
           "samples": 14
         },
@@ -2160,7 +2156,7 @@
           "id": "cache_validity",
           "label_en": "Cache Validity",
           "label_zh": "缓存有效性",
-          "score": 0.625,
+          "score": 0.75,
           "metric": "mean_task_score",
           "samples": 8
         },
@@ -2184,7 +2180,7 @@
           "id": "concurrency_transaction",
           "label_en": "Concurrency Transaction",
           "label_zh": "并发与事务",
-          "score": 0.6363636363636364,
+          "score": 0.5454545454545454,
           "metric": "mean_task_score",
           "samples": 11
         },
@@ -2232,7 +2228,7 @@
           "id": "model_routing",
           "label_en": "Model Routing",
           "label_zh": "模型路由",
-          "score": 0.21428571428571427,
+          "score": 0.14285714285714285,
           "metric": "mean_task_score",
           "samples": 14
         },
@@ -2248,7 +2244,7 @@
           "id": "privacy_release",
           "label_en": "Privacy Release",
           "label_zh": "隐私披露",
-          "score": 0.45454545454545453,
+          "score": 0.5454545454545454,
           "metric": "mean_task_score",
           "samples": 11
         },
@@ -2272,7 +2268,7 @@
           "id": "retry_or_escalate",
           "label_en": "Retry Or Escalate",
           "label_zh": "重试或升级",
-          "score": 0.7777777777777778,
+          "score": 0.7777777777777779,
           "metric": "mean_task_score",
           "samples": 9
         },
@@ -2304,7 +2300,7 @@
           "id": "subagent_dispatch",
           "label_en": "Subagent Dispatch",
           "label_zh": "子代理调度",
-          "score": 0.38461538461538464,
+          "score": 0.3846153846153847,
           "metric": "mean_task_score",
           "samples": 13
         },
@@ -2320,7 +2316,7 @@
           "id": "tool_call_review",
           "label_en": "Tool Call Review",
           "label_zh": "工具调用审查",
-          "score": 0.8461538461538461,
+          "score": 0.8846153846153846,
           "metric": "mean_task_score",
           "samples": 13
         },
@@ -2328,7 +2324,7 @@
           "id": "tool_permission",
           "label_en": "Tool Permission",
           "label_zh": "工具权限",
-          "score": 0.7142857142857143,
+          "score": 0.8571428571428571,
           "metric": "mean_task_score",
           "samples": 14
         },
@@ -2352,18 +2348,16 @@
           "id": "version_conflict",
           "label_en": "Version Conflict",
           "label_zh": "版本冲突",
-          "score": 0.6666666666666666,
+          "score": 0.6666666666666665,
           "metric": "mean_task_score",
           "samples": 9
         }
       ],
-      "samples": 325,
+      "samples": 295,
       "errors": 0,
-      "evaluated_at": "2026-11-02",
+      "evaluated_at": "2026-11-04",
       "protocol": "HarnessJevBench-V0.5/hard-task-macro+soft-two-view",
-      "notes": [
-        "Piccolo series results; selected variants are reported per benchmark."
-      ]
+      "notes": []
     },
     {
       "model_id": "access-Clef-27B-original",

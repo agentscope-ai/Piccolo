@@ -249,3 +249,7 @@
 .lb-scenario-controls select {max-width:100%;}
 .lb-radar-main .lb-chart-title {flex-wrap:wrap;}
 @media(max-width:600px){.lb-scenario-controls{flex-basis:100%;}.lb-scenario-controls select{flex:1;}}
+
+/* Keep text and image–text Decision Index tracks compact in the same tab strip. */
+#leaderboardView .lb-tab-scope{display:block;font-size:10px;line-height:1.2;letter-spacing:.02em;margin-top:3px;color:var(--fs-text-tertiary)}
+#leaderboardView .lb-tab.active .lb-tab-scope{color:inherit}

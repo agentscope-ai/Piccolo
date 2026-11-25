@@ -1,6 +1,8 @@
 # Published Piccolo models
 
-All 12 repositories below are public on Hugging Face and ModelScope and use Apache-2.0. Download links point to the current cards; [the manifest](../models/manifest.json) pins weight-bearing revisions, sizes and LFS SHA-256 checksums.
+Vision-language checkpoints: [Piccolo-0.8B-VL](https://huggingface.co/agentscope-ai/Piccolo-0.8B-VL), [Piccolo-2B-VL](https://huggingface.co/agentscope-ai/Piccolo-2B-VL), [Piccolo-4B-VL](https://huggingface.co/agentscope-ai/Piccolo-4B-VL), [Piccolo-9B-VL](https://huggingface.co/agentscope-ai/Piccolo-9B-VL), and [Piccolo-27B-VL](https://huggingface.co/agentscope-ai/Piccolo-27B-VL).
+
+The 12 foundation and GGUF repositories below are public on Hugging Face and ModelScope and use Apache-2.0. Download links point to the current cards; [the manifest](../models/manifest.json) pins weight-bearing revisions, sizes and LFS SHA-256 checksums.
 
 | Size | Complete Safetensors | BF16 GGUF | Q8_0 GGUF | Q4_K_M GGUF |
 | --- | --- | --- | --- | --- |
@@ -34,4 +36,4 @@ Piccolo or PiccoloLoop HF exports.
 
 - Website: [Decision](https://decisionplayground.agentscope.io/).
 - Source and release notes: [agentscope-ai/Piccolo](https://github.com/agentscope-ai/Piccolo).
-- ModelScope: [AgentScope model collection](https://www.modelscope.cn/collections/AgentScope/QwenPaw-Flash).
+- ModelScope: [AgentScope model collection](https://www.modelscope.cn/collections/AgentScope/Piccolo).

@@ -4,9 +4,9 @@ export const benchmarkProfiles = {
   "harness": {
     "title": "HarnessJevBench",
     "version": "V0.5",
-    "evaluatedAt": "2026-10-28 – 2026-11-02",
+    "evaluatedAt": "2026-10-28 – 2026-11-04",
     "source": "leaderboard/harnessjevbench.json",
-    "sourceSha256": "e002890a5b09bfe4c886969702e18fd1f3efc6a910e8b51463746401d42b848f",
+    "sourceSha256": "34b6ca892a9edc40ed38009a318dfb7d0a42643ccd6d62acb72135f1a8bec67a",
     "protocol": "HarnessJevBench-V0.5/hard-task-macro+soft-two-view",
     "scoreUnit": "accuracy_fraction",
     "defaultVisible": [
@@ -247,20 +247,20 @@ export const benchmarkProfiles = {
         "sourceModelId": "blink-9b-1028",
         "evaluatedAt": "2026-11-02",
         "values": [
-          0.4666666666666667,
-          0.43333333333333335,
-          0.6666666666666666,
-          0.8983050847457628,
-          0.8823529411764706,
+          0.49166666666666664,
+          0.45,
+          0.6923076923076923,
+          0.9152542372881356,
+          0.9019607843137255,
           0.9615384615384616
         ],
         "metrics": {
-          "accuracy": 0.688135593220339,
-          "tv": 0.2930187445634669,
+          "accuracy": 0.7067796610169491,
+          "tv": null,
           "ece": null,
           "brier": null
         },
-        "validProbabilityViews": 60,
+        "validProbabilityViews": 0,
         "plannedProbabilityViews": 60
       },
       {
@@ -311,22 +311,22 @@ export const benchmarkProfiles = {
         "id": "p4",
         "label": "Piccolo-4B",
         "sourceModelId": "blink-4b-1028",
-        "evaluatedAt": "2026-11-02",
+        "evaluatedAt": "2026-11-04",
         "values": [
-          0.36666666666666664,
+          0.35833333333333334,
           0.43333333333333335,
-          0.6410256410256411,
-          0.7457627118644068,
+          0.6666666666666666,
+          0.7966101694915254,
           0.8431372549019608,
           0.8846153846153846
         ],
         "metrics": {
-          "accuracy": 0.6203389830508474,
-          "tv": 0.27652691482072517,
+          "accuracy": 0.6322033898305085,
+          "tv": null,
           "ece": null,
           "brier": null
         },
-        "validProbabilityViews": 60,
+        "validProbabilityViews": 0,
         "plannedProbabilityViews": 60
       },
       {
@@ -383,9 +383,9 @@ export const benchmarkProfiles = {
   "data": {
     "title": "DataJevBench",
     "version": "V0.5",
-    "evaluatedAt": "2026-10-28 – 2026-11-02",
+    "evaluatedAt": "2026-10-28 – 2026-11-04",
     "source": "leaderboard/datajevbench.json",
-    "sourceSha256": "479b7dcc55ec59494e3340f5295bbce268e861516810cb1fa685bbc9022bf47c",
+    "sourceSha256": "e7c7e7213edf9fc84023dde6dbf7824d11ad868d62a888a496c44a81f42ea0c3",
     "protocol": "DataJevBench-V0.5/probability-sum-tol-1e-3",
     "scoreUnit": "accuracy_fraction",
     "defaultVisible": [
@@ -667,20 +667,20 @@ export const benchmarkProfiles = {
         "id": "p4",
         "label": "Piccolo-4B",
         "sourceModelId": "blink-4b-1028",
-        "evaluatedAt": "2026-11-02",
+        "evaluatedAt": "2026-11-04",
         "values": [
           0.7777777777777778,
           0.4666666666666667,
-          0.775,
+          0.7875,
           0.77,
-          0.825,
-          0.6
+          0.8375,
+          0.6166666666666667
         ],
         "metrics": {
-          "accuracy": 0.706,
+          "accuracy": 0.712,
           "tv": null,
-          "ece": 0.07753168053717335,
-          "brier": 0.40912387813347173
+          "ece": 0.0629405088623766,
+          "brier": 0.4053433328832719
         },
         "validProbabilityViews": 500,
         "plannedProbabilityViews": 500
@@ -692,17 +692,17 @@ export const benchmarkProfiles = {
         "evaluatedAt": "2026-11-02",
         "values": [
           0.8111111111111111,
-          0.4111111111111111,
+          0.3888888888888889,
+          0.7625,
           0.75,
-          0.76,
-          0.725,
+          0.7375,
           0.7166666666666667
         ],
         "metrics": {
-          "accuracy": 0.694,
+          "accuracy": 0.692,
           "tv": null,
-          "ece": 0.06568921648949087,
-          "brier": 0.39605140620261536
+          "ece": 0.05992284743339632,
+          "brier": 0.396300316999059
         },
         "validProbabilityViews": 500,
         "plannedProbabilityViews": 500

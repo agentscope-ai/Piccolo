@@ -2,8 +2,9 @@ import {rankedRows, barPercent} from './evidence.js';
 
 const ownModel = 'blink-27b-1028';
 const benchmarks = {
+  'decisionindex-vision': {title:'Decision Index · Vision Public', url:'https://huggingface.co/spaces/multimodalart/jev-decision-index', scope:['Piccolo-27B-VL', 'Piccolo-27B-VL']},
   jevbench: {title:'JevBench Public', url:'https://github.com/fstandhartinger/jevbench', scope:['231 questions', '231 道题']},
-  decisionindex: {title:'Decision Index', url:'https://huggingface.co/spaces/multimodalart/jev-decision-index', scope:['Text index', '文本指数']},
+  decisionindex: {title:'Decision Index · Text Public', url:'https://huggingface.co/spaces/multimodalart/jev-decision-index', scope:['Text Public index', '文本 Public 指数']},
   harnessjevbench: {title:'HarnessJevBench Hard', url:'https://github.com/agentscope-ai/HarnessJevBench', scope:['295 tasks · macro accuracy', '295 个任务 · 宏平均准确率']},
   datajevbench: {title:'DataJevBench', url:'https://github.com/datajuicer/DataJevBench', scope:['500 tasks', '500 道任务']},
 };
@@ -13,7 +14,7 @@ export function benchmarkSummary(benchmark) {
   if (!benchmark || !Number.isFinite(benchmark.scale) || benchmark.scale <= 0) return null;
   const rows = rankedRows(benchmark).filter(row => row.status === 'complete'
     && Number.isFinite(row.score) && row.score >= 0 && row.score <= benchmark.scale);
-  const own = rows.find(row => row.model_key === ownModel);
+  const own = rows.find(row => row.model_key === (benchmark.id === 'decisionindex-vision' ? 'piccolo-27b-vl' : ownModel));
   if (!own) return null;
   const peers = rows.filter(row => !/^Piccolo(?:-|$)/i.test(row.model));
   const peer = peers.reduce((best, row) => !best || Math.abs(row.score - own.score) < Math.abs(best.score - own.score) ? row : best, null);
@@ -94,11 +95,11 @@ export function mountBenchmarkOverview(host) {
       return;
     }
     const heading = node('div', 'bo-heading');
-    heading.append(node('h3', '', t('Piccolo-27B at a glance', 'Piccolo-27B 成绩概览')),
+    heading.append(node('h3', '', 'Piccolo benchmark results'),
       node('span', '', snapshot.snapshot_date));
     host.append(heading);
     const groups = [
-      {title:['External benchmarks', '外部基准'], ids:['jevbench', 'decisionindex']},
+      {title:['External benchmarks', '外部基准'], ids:['decisionindex-vision', 'decisionindex', 'jevbench']},
       {title:['Benchmarks we designed', '我们设计的基准'], ids:['harnessjevbench', 'datajevbench']},
     ];
     for (const group of groups) {

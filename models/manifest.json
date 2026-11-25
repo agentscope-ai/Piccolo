@@ -5,7 +5,7 @@
   "license": "Apache-2.0",
   "modelscope": {
     "url": "https://www.modelscope.cn/models/AgentScope/Piccolo-27B",
-    "collection": "https://www.modelscope.cn/collections/AgentScope/QwenPaw-Flash",
+    "collection": "https://www.modelscope.cn/collections/AgentScope/Piccolo",
     "status": "published"
   },
   "revision_scope": "Immutable weight-bearing revisions verified at release preparation; later model-card-only edits can advance repository HEAD without changing these weights.",
@@ -378,6 +378,198 @@
           "path": "Piccolo-27B-Q4_K_M-00004-of-00004.gguf",
           "size": 1920384352,
           "sha256": "aff6287c3994b4c14a24c14ca08cec19300c45f5dced07753b4cbadaa18d3191"
+        }
+      ]
+    },
+    {
+      "repo": "agentscope-ai/Piccolo-4B-VL",
+      "revision": "a8fb097a5aacee7bdfc0ae4b511dd43e8ce351c4",
+      "public": true,
+      "license": "apache-2.0",
+      "weight_files": [
+        {
+          "path": "model-00001-of-00002.safetensors",
+          "size": 4972951784,
+          "sha256": "45f317c856ecdbc5cdcbcf4f7537d6ff255b3d206d429ccb24151bb7f092c251"
+        },
+        {
+          "path": "model-00002-of-00002.safetensors",
+          "size": 4105675712,
+          "sha256": "51f312c0fe61dbaa678670ce2b5d568742bda010dc767b4fbd6f3538a0d8f085"
+        },
+        {
+          "path": "model-frozen-mtp.safetensors",
+          "size": 241200736,
+          "sha256": "e5fc485d419f2c554169c1fc441f57a1a45a50673bdb4e41d3dd0261b21abe7c"
+        }
+      ]
+    },
+    {
+      "repo": "agentscope-ai/Piccolo-9B-VL",
+      "revision": "49fc36378f9bef27999015cccd83e92664f0ea92",
+      "public": true,
+      "license": "apache-2.0",
+      "weight_files": [
+        {
+          "path": "model-00001-of-00004.safetensors",
+          "size": 4942706752,
+          "sha256": "6f37339d340a72f75844944a03342f930307a3e5d3c6ed40b35ecf9105705d65"
+        },
+        {
+          "path": "model-00002-of-00004.safetensors",
+          "size": 4987760536,
+          "sha256": "480adc3c6844463ecee15e5f4b8f604ea994546eedf40126e97f678293077aea"
+        },
+        {
+          "path": "model-00003-of-00004.safetensors",
+          "size": 4954812640,
+          "sha256": "3fe8e2d628116f7edbda4149dcabef02e8cee4ad08939cd2ef26d99183cb6ac0"
+        },
+        {
+          "path": "model-00004-of-00004.safetensors",
+          "size": 3934448256,
+          "sha256": "ddc664b97eb1029e8ee1ad276e2126e16100f60a0810f893641415b06135555f"
+        },
+        {
+          "path": "model-frozen-mtp.safetensors",
+          "size": 486582880,
+          "sha256": "c41ed69b9d21f0772737d4fb74bf48283a473ec34fb5df07afb487f35d67c28f"
+        }
+      ]
+    },
+    {
+      "repo": "agentscope-ai/Piccolo-27B-VL",
+      "revision": "e5745cfaa73b804896937b3f2f6c96c232eb546e",
+      "public": true,
+      "license": "apache-2.0",
+      "weight_files": [
+        {
+          "path": "model-00001-of-00011.safetensors",
+          "size": 3657045376,
+          "sha256": "6b5b0210cd87b25f05a3ee4d92292731e3462802b54dd4aca54ff8636e131a37"
+        },
+        {
+          "path": "model-00002-of-00011.safetensors",
+          "size": 5325257632,
+          "sha256": "f8e74916c75ffa76abab307afa899794927200778a44a2f37e85c4ded0aa04e3"
+        },
+        {
+          "path": "model-00003-of-00011.safetensors",
+          "size": 5201203480,
+          "sha256": "6aab759dc1d46011172b3e0864a41655c633aa9b3f8a098abb68b50602fa4902"
+        },
+        {
+          "path": "model-00004-of-00011.safetensors",
+          "size": 5287601240,
+          "sha256": "2fbd2afc4e390823da6043c7339f8260f7b1ac73769fd0fe1dfad2ea1c5af3fb"
+        },
+        {
+          "path": "model-00005-of-00011.safetensors",
+          "size": 5295579920,
+          "sha256": "e003d538f728921867df261d0f41df5f0a8dc09f0df02ebadf6de30073c78101"
+        },
+        {
+          "path": "model-00006-of-00011.safetensors",
+          "size": 5242885920,
+          "sha256": "f512394e5bf94c2e9134319f730bba1a4c385ec1c5657b6fafe8f7af519761e5"
+        },
+        {
+          "path": "model-00007-of-00011.safetensors",
+          "size": 5363064688,
+          "sha256": "7d97d2da83208d049b2c0dd1535e778beef5cf7f2e5b36964b46e3ae458d2522"
+        },
+        {
+          "path": "model-00008-of-00011.safetensors",
+          "size": 5332334112,
+          "sha256": "f8d7955697c4777137fb71f9783603b2a5b6f6ac87415b061611bafdfcabe2d3"
+        },
+        {
+          "path": "model-00009-of-00011.safetensors",
+          "size": 5341457592,
+          "sha256": "c524cd90baffea9e85aa4f417f8d00fa1d1620d429a74cbb04e584505e06aae2"
+        },
+        {
+          "path": "model-00010-of-00011.safetensors",
+          "size": 5297986136,
+          "sha256": "c67b3f69ea1eaa6d3dfc3760916e26125658c638148d0fda6bcd0d0df45b052c"
+        },
+        {
+          "path": "model-00011-of-00011.safetensors",
+          "size": 3369190544,
+          "sha256": "930cb0baeeab1c7694e8d30118bf685338063f6035218eaed5359fe70eb893f4"
+        },
+        {
+          "path": "model-frozen-mtp.safetensors",
+          "size": 849400424,
+          "sha256": "07908fa1f1875aec7f4608bbd0123b7f1b1f59b4d1fee1a993a0ca4c58ff6307"
+        }
+      ]
+    },
+    {
+      "repo": "agentscope-ai/Piccolo-27B-VL-1108",
+      "revision": "fb994578f3080a1d1dcc0c4f2977f7169add5e98",
+      "public": true,
+      "license": "apache-2.0",
+      "weight_files": [
+        {
+          "path": "model-00001-of-00011.safetensors",
+          "size": 3657045376,
+          "sha256": "6b5b0210cd87b25f05a3ee4d92292731e3462802b54dd4aca54ff8636e131a37"
+        },
+        {
+          "path": "model-00002-of-00011.safetensors",
+          "size": 5325257632,
+          "sha256": "f8e74916c75ffa76abab307afa899794927200778a44a2f37e85c4ded0aa04e3"
+        },
+        {
+          "path": "model-00003-of-00011.safetensors",
+          "size": 5201203480,
+          "sha256": "6aab759dc1d46011172b3e0864a41655c633aa9b3f8a098abb68b50602fa4902"
+        },
+        {
+          "path": "model-00004-of-00011.safetensors",
+          "size": 5287601240,
+          "sha256": "2fbd2afc4e390823da6043c7339f8260f7b1ac73769fd0fe1dfad2ea1c5af3fb"
+        },
+        {
+          "path": "model-00005-of-00011.safetensors",
+          "size": 5295579920,
+          "sha256": "e003d538f728921867df261d0f41df5f0a8dc09f0df02ebadf6de30073c78101"
+        },
+        {
+          "path": "model-00006-of-00011.safetensors",
+          "size": 5242885920,
+          "sha256": "f512394e5bf94c2e9134319f730bba1a4c385ec1c5657b6fafe8f7af519761e5"
+        },
+        {
+          "path": "model-00007-of-00011.safetensors",
+          "size": 5363064688,
+          "sha256": "7d97d2da83208d049b2c0dd1535e778beef5cf7f2e5b36964b46e3ae458d2522"
+        },
+        {
+          "path": "model-00008-of-00011.safetensors",
+          "size": 5332334112,
+          "sha256": "f8d7955697c4777137fb71f9783603b2a5b6f6ac87415b061611bafdfcabe2d3"
+        },
+        {
+          "path": "model-00009-of-00011.safetensors",
+          "size": 5341457592,
+          "sha256": "c524cd90baffea9e85aa4f417f8d00fa1d1620d429a74cbb04e584505e06aae2"
+        },
+        {
+          "path": "model-00010-of-00011.safetensors",
+          "size": 5297986136,
+          "sha256": "c67b3f69ea1eaa6d3dfc3760916e26125658c638148d0fda6bcd0d0df45b052c"
+        },
+        {
+          "path": "model-00011-of-00011.safetensors",
+          "size": 3369190544,
+          "sha256": "930cb0baeeab1c7694e8d30118bf685338063f6035218eaed5359fe70eb893f4"
+        },
+        {
+          "path": "model-frozen-mtp.safetensors",
+          "size": 849400424,
+          "sha256": "07908fa1f1875aec7f4608bbd0123b7f1b1f59b4d1fee1a993a0ca4c58ff6307"
         }
       ]
     }

@@ -17,7 +17,7 @@ const setup = Promise.all([
   moduleFrom('web/blog/evidence.js'),
   moduleFrom('web/blog/content.js'),
 ]);
-const benchmarkIds = ['jevbench', 'decisionindex', 'harnessjevbench', 'datajevbench'];
+const benchmarkIds = ['jevbench', 'decisionindex', 'decisionindex-vision', 'harnessjevbench', 'datajevbench'];
 
 test('the Blog index, release article and local assets remain navigable and packaged', async () => {
   const index = await read('web/blog.html');
@@ -61,9 +61,7 @@ test('cached entry points cannot resolve unversioned Blog module dependencies', 
 test('benchmark overview keeps the correct cohort, closest external peer and score units', async () => {
   const {benchmarkSummary} = await import(pathToFileURL(path.join(root,'web/blog/benchmark-overview.js')).href);
   const [snapshot] = await setup;
-  // Decision Index mixes reported research and official Public scopes.
-  // Its groups are checked separately below, without a cross-scope ranking.
-  const expected = [[1,11,'2.16'],null,[1,11,'2.03'],[1,11,'1.00']];
+  const expected = [[1,11,'2.16'],[1,7,'0.34'],[1,11,'0.64'],[1,11,'2.03'],[1,11,'1.00']];
   snapshot.benchmarks.forEach((benchmark,index) => {
     if (!expected[index]) return;
     const summary = benchmarkSummary(benchmark);
@@ -90,11 +88,12 @@ test('the frozen article edition supports its stated scores, scope and cohort ra
   // silently rewrite the evidence used by this edition.
   const facts = {
     jevbench: {version: '1.2', scale: 1, own: 0.922077922077922, rank: 1},
-    decisionindex: {version: '0.3', scale: 100, own: 68.59, rank: null},
+    decisionindex: {version: '0.3', scale: 100, own: 68.08, rank: 1},
+    'decisionindex-vision': {version:'0.4', scale:100, own:80.22, rank:1},
     harnessjevbench: {version: 'V0.5', scale: 1, own: 0.8440677966101695, rank: 1},
     datajevbench: {version: 'V0.5', scale: 1, own: 0.826, rank: 1},
   };
-  assert.equal(snapshot.snapshot_date, '2026-11-02');
+  assert.equal(snapshot.snapshot_date, '2026-11-12');
   assert.deepEqual(snapshot.benchmarks.map(item => item.id), benchmarkIds);
   for (const benchmark of snapshot.benchmarks) {
     const expectedFact = facts[benchmark.id];
@@ -102,8 +101,9 @@ test('the frozen article edition supports its stated scores, scope and cohort ra
     assert.equal(benchmark.scale, expectedFact.scale);
     assert.equal(benchmark.rows.length, 11);
     assert.equal(new Set(benchmark.rows.map(row => row.model_key)).size, 11);
-    const own = benchmark.rows.find(row => row.model_key === 'blink-27b-1028');
-    assert.equal(own.model, 'Piccolo-27B');
+    const vision = benchmark.id === 'decisionindex-vision';
+    const own = benchmark.rows.find(row => row.model_key === (vision ? 'piccolo-27b-vl' : 'blink-27b-1028'));
+    assert.equal(own.model, vision ? 'Piccolo-27B-VL' : 'Piccolo-27B');
     assert.equal(own.score, expectedFact.own);
     if (expectedFact.rank !== null) {
       assert.equal(rankedRows(benchmark).findIndex(row => row.model_key === own.model_key) + 1, expectedFact.rank);
@@ -121,22 +121,21 @@ test('the frozen article edition supports its stated scores, scope and cohort ra
   }
 });
 
-test('Decision Index separates research and Public scopes without dropping any model', async () => {
+test('Decision Index Text contains the submitted public cohort and preserves missing scores', async () => {
   const [snapshot, {comparisonGroups}] = await setup;
   for (const benchmark of snapshot.benchmarks) {
     const groups = comparisonGroups(benchmark);
     const flattened = groups.flatMap(group => group.rows);
     assert.deepEqual(flattened.map(row => row.model_key).sort(), benchmark.rows.map(row => row.model_key).sort());
     if (benchmark.id === 'decisionindex') {
-      assert.deepEqual(groups.map(group => [group.id, group.rows.length]), [['research-text',3],['public',8]]);
+      assert.deepEqual(groups.map(group => [group.id, group.rows.length]), [['public-text',11]]);
       for (const group of groups) {
         assert.ok(group.rows.every(row => row.evaluation_scope === group.id));
         const scores = group.rows.filter(row => row.status === 'complete' && row.score !== null).map(row => row.score);
         assert.deepEqual(scores, [...scores].sort((a,b) => b-a));
       }
-      assert.ok(groups[0].rows.every(row => /^Piccolo-/.test(row.model)));
-      assert.ok(groups[1].rows.every(row => !/^Piccolo-/.test(row.model)));
-      assert.equal(groups[1].rows.filter(row => row.score === null).length,4);
+      assert.equal(groups[0].rows.filter(row => /^Piccolo-/.test(row.model)).length, 3);
+      assert.equal(groups[0].rows.filter(row => row.score === null).length, 4);
     } else {
       assert.deepEqual(groups.map(group => group.id), ['comparable']);
     }
@@ -189,7 +188,7 @@ test('both article languages cover the same complete sections, sources and four 
       assert.equal(typeof section.takeaway, 'string');
       assert.ok(section.paragraphs.length >= (section.id === 'future' ? 0 : ['method', 'decision', 'demogames'].includes(section.id) ? 1 : 2));
       assert.ok(section.paragraphs.every(paragraph => paragraph.length > 30));
-      if (lang === 'zh' && section.paragraphs.length) assert.match(section.paragraphs.join(''), /[\u4e00-\u9fff]/);
+      if (lang === 'zh' && section.id !== 'evidence' && section.paragraphs.length) assert.match(section.paragraphs.join(''), /[\u4e00-\u9fff]/);
     }
     const directions = copy.futureDirections.map(item => item.title + ' ' + item.text);
     const concepts = lang === 'en' ? [/RSI/, /multimodal|cross.modal|embodied/i, /time|trajector/i, /System 1/] : [/RSI/, /多模态|跨模态|具身/, /长程|跨步骤/, /System 1/];
@@ -203,12 +202,12 @@ test('updated release scores are presented as per-benchmark series results in bo
   for (const lang of ['en', 'zh']) {
     const copy = article[lang];
     const evidence = copy.sections.find(section => section.id === 'evidence').paragraphs.join(' ');
-    for (const value of ['92.21%', '68.59', '84.41%', '82.60%']) assert.ok(evidence.includes(value), `${lang}: ${value}`);
+    for (const value of ['75.59','80.22','70.97','68.35','67.46','92.21%', '68.40', '84.41%', '82.60%']) assert.ok(evidence.includes(value), `${lang}: ${value}`);
     const learning = copy.sections.find(section => section.id === 'learning').paragraphs.join(' ');
     assert.match(learning, /68\.59/);
-    assert.match(copy.benchmarkNotes, lang === 'en' ? /selected variants/ : /所选版本/);
+    assert.match(copy.benchmarkNotes, /Vision Full/);
     assert.match(copy.benchmarkNotes, /Public/);
-    assert.match(copy.benchmarkNotes, lang === 'en' ? /research/i : /研发/);
+    assert.match(copy.benchmarkNotes, /foundation models/);
     assert.match(learning, lang === 'en' ? /full.suite/i : /全集/);
     assert.match(copy.benchmarkNotes, /0[–-]100/);
   }
@@ -413,11 +412,11 @@ test('final Method assets retain their documented bytes and are included in sour
 test('November release synchronizes the selected series scores across public surfaces', async () => {
   const [snapshot] = await setup;
   const expected = {
-    'blink-4b-1028': [201/231,58,183/295,353/500],
-    'blink-9b-1028': [207/231,60.86,203/295,347/500],
-    'blink-27b-1028': [213/231,68.59,249/295,413/500],
+    'blink-4b-1028': [201/231,57.14,186.5/295,356/500],
+    'blink-9b-1028': [207/231,60.30,208.5/295,346/500],
+    'blink-27b-1028': [213/231,68.08,249/295,413/500],
   };
-  for (const [index,id] of benchmarkIds.entries()) {
+  for (const [index,id] of benchmarkIds.filter(id=>id !== 'decisionindex-vision').entries()) {
     const registered=await json('leaderboard/'+id+'.json');
     for (const [model,values] of Object.entries(expected)) {
       const row=registered.rows.find(r=>r.model_id===model);

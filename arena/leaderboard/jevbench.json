@@ -183,9 +183,7 @@
       "errors": 0,
       "evaluated_at": "2026-11-02",
       "protocol": "JevBench-Public231",
-      "notes": [
-        "Piccolo series results; selected variants are reported per benchmark."
-      ]
+      "notes": []
     },
     {
       "model_id": "access-microsoft--microsoft-decision-1",
@@ -703,9 +701,7 @@
       "errors": 0,
       "evaluated_at": "2026-11-02",
       "protocol": "JevBench-Public231",
-      "notes": [
-        "Piccolo series results; selected variants are reported per benchmark."
-      ]
+      "notes": []
     },
     {
       "model_id": "access-perplexity-ai--pplx-decider-v1.2",
@@ -1917,9 +1913,7 @@
       "errors": 0,
       "evaluated_at": "2026-11-02",
       "protocol": "JevBench-Public231",
-      "notes": [
-        "Piccolo series results; selected variants are reported per benchmark."
-      ]
+      "notes": []
     }
   ]
 }
