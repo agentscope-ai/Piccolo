@@ -7,6 +7,9 @@ from io import BytesIO
 import httpx
 from PIL import Image, UnidentifiedImageError
 from transformers.models.qwen3_vl.processing_qwen3_vl import Qwen3VLProcessorKwargs
+from transformers.utils.chat_template_utils import _compile_jinja_template
+
+from .common_inputs import PreparedDecision, render_text
 
 
 def load_image_source(source, *, download=None):
@@ -31,14 +34,28 @@ def load_image_source(source, *, download=None):
     return image
 
 
-def encode_prompt(processor, messages, *, image_loader):
+def render_prompt(
+    template: str,
+    decision: PreparedDecision,
+    *,
+    add_generation_prompt: bool = True,
+    enable_thinking: bool = False,
+    add_vision_id: bool = False,
+) -> str:
+    return _compile_jinja_template(template).render(
+        prompt=decision.prompt,
+        candidates=decision.candidates,
+        field_parts=decision.field_parts,
+        render_text=render_text,
+        add_generation_prompt=add_generation_prompt,
+        enable_thinking=enable_thinking,
+        add_vision_id=add_vision_id,
+    )
+
+
+def encode_prompt(processor, decision: PreparedDecision, *, image_loader):
     """Prepare image tensors once and expand their placeholders before tokenization."""
-    images = [
-        image_loader(block["image"])
-        for message in messages
-        for block in message["content"]
-        if block["type"] == "image"
-    ]
+    images = [image_loader(source) for source in decision.image_sources]
     kwargs = processor._merge_kwargs(
         Qwen3VLProcessorKwargs,
         tokenizer_init_kwargs=processor.tokenizer.init_kwargs,
@@ -47,13 +64,12 @@ def encode_prompt(processor, messages, *, image_loader):
         truncation=False,
         add_special_tokens=False,
     )
-    text = processor.apply_chat_template(
-        messages,
-        chat_template=processor.chat_template,
-        tokenize=False,
-        add_generation_prompt=True,
-        enable_thinking=False,
-    )
+    template = processor.chat_template
+    if isinstance(template, dict):
+        template = template.get("default")
+    if template is None:
+        raise ValueError("Piccolo requires a default decision template")
+    text = render_prompt(template, decision)
     pixels = processor.image_processor(images=images, **kwargs["images_kwargs"]) if images else {}
     if text.count(processor.image_token) != len(images):
         raise ValueError("Rendered image placeholders do not match request images")

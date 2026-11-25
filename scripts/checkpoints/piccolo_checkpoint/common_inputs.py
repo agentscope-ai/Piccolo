@@ -5,10 +5,10 @@ from __future__ import annotations
 import base64
 import json
 import re
-from collections.abc import Mapping
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Annotated, Any, Literal
+from typing import Annotated, Any, Literal, NotRequired, TypedDict
 from urllib.parse import urlparse
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
@@ -182,17 +182,12 @@ def image_sources(assets):
     return images
 
 
-def bind_assets(payload, *, require_references=True):
-    """Validate the whole record, then bind JSON values to private image markers.
-
-    Binding before prompt serialization keeps object keys, labels and template
-    literals from becoming image references. Only markers that the selected
-    question renders are expanded, so other questions' images are not loaded.
-    """
+def _asset_binder(payload):
+    """Bind references in JSON values before serialization, leaving keys intact."""
     assets = payload.get("assets", {})
-    images = image_sources(assets)
-    if not images:
-        return (payload["state"], payload["questions"], {})
+    if not assets:
+        return (lambda value: value), {}
+
     pattern = re.compile(
         "(?<!\\w)(?:"
         + "|".join(re.escape(key) for key in sorted(assets, key=len, reverse=True))
@@ -215,47 +210,26 @@ def bind_assets(payload, *, require_references=True):
     while any(prefix in text for text in contents):
         prefix += "X"
     markers = {key: f"{prefix}{index}__" for index, key in enumerate(assets)}
-    used = set()
-
-    def reference(key):
-        used.add(key)
-        return markers[key]
 
     def bind(value):
         if isinstance(value, str):
-            return (
-                reference(value)
-                if value in assets
-                else pattern.sub(lambda m: reference(m.group()), value)
-            )
+            if value in markers:
+                return markers[value]
+            return pattern.sub(lambda match: markers[match.group()], value)
         if isinstance(value, Mapping):
             return {key: bind(item) for key, item in value.items()}
         if isinstance(value, list):
             return [bind(item) for item in value]
         return value
 
-    state = bind(payload["state"])
-    questions = {
-        key: {
-            **question,
-            **{
-                field: bind(question[field])
-                for field in ("instructions", "criteria")
-                if field in question
-            },
-        }
-        for key, question in payload["questions"].items()
-    }
-    if require_references and used != set(assets):
-        raise ValueError(f"Unreferenced Piccolo assets: {sorted(set(assets) - used)}")
-    return (state, questions, {markers[key]: images[key] for key in assets})
+    return bind, markers
 
 
-def asset_markers(value, images):
+def _asset_markers(value, markers):
     """Yield bound image occurrences in value order, leaving object keys as text."""
-    if not images:
+    if not markers:
         return
-    pattern = re.compile("|".join(re.escape(marker) for marker in images))
+    pattern = re.compile("|".join(re.escape(marker) for marker in markers))
 
     def visit(item):
         if isinstance(item, str):
@@ -270,87 +244,96 @@ def asset_markers(value, images):
     yield from visit(value)
 
 
-def prepare_field_parts(value, image_indices=None):
-    """Encode one field as text/image-reference parts for a standalone template.
+class JevRequest(TypedDict):
+    state: DecisionText
+    questions: dict[str, dict[str, Any]]
+    assets: NotRequired[dict[str, dict[str, Any]]]
 
-    Values have already been bound by bind_assets. JSON encoding happens once,
-    before private markers become explicit references; templates never parse
-    markers or receive the image registry. Empty/null fields produce no parts.
-    """
-    text = render_text(value)
-    indices = image_indices or {}
-    if not indices:
-        return [{"type": "text", "text": text}] if text else []
-    pattern = re.compile("|".join(re.escape(marker) for marker in indices))
-    parts, cursor = ([], 0)
-    for match in pattern.finditer(text):
-        if match.start() > cursor:
-            parts.append({"type": "text", "text": text[cursor : match.start()]})
-        parts.append({"type": "image_ref", "index": indices[match.group()]})
-        cursor = match.end()
-    if cursor < len(text):
-        parts.append({"type": "text", "text": text[cursor:]})
-    return parts
+
+# Strings are literal text. Integers are one-based indices into asset_order.
+FieldParts = tuple[str | int, ...]
 
 
 @dataclass(frozen=True)
 class PiccoloInputs:
-    messages: list[dict]
-    option_keys: tuple[str, ...]
-    candidate_labels: tuple[str, ...]
-    asset_ids: tuple[str, ...]
+    jev_request: JevRequest
+    question_key: str
+    asset_order: tuple[str, ...]
+
+    @property
+    def state_is_asset_only(self) -> bool:
+        state = self.jev_request["state"]
+        return isinstance(state, dict) and all(
+            isinstance(value, str) and value in self.asset_order for value in state.values()
+        )
 
 
-def prepare_piccolo_inputs(payload, question_key):
-    """Prepare field parts and media mappings; Jinja lays out the question."""
+@dataclass(frozen=True)
+class Candidate:
+    key: str
+    label: str
+    description: FieldParts | None
+
+
+@dataclass(frozen=True)
+class PreparedDecision:
+    prompt: PiccoloInputs
+    candidates: tuple[Candidate, ...]
+    image_sources: tuple[str, ...]
+    field_parts: Callable[[DecisionText | None], FieldParts]
+
+
+def prepare_decision(payload: JevRequest, question_key: str) -> PreparedDecision:
+    """Prepare one question while retaining the original request for Jinja."""
     SystemOneInputs.model_validate(payload)
-    state, questions, images = bind_assets(payload, require_references=False)
-    question = questions[question_key]
-    options = question_options(question)
+    sources = image_sources(payload.get("assets", {}))
+    bind, markers = _asset_binder(payload)
+    question = payload["questions"][question_key]
+    # Bind only supplied criteria. The default noul descriptions are literal text.
+    bound_question = {**question, "criteria": bind(question.get("criteria"))}
+    options = question_options(bound_question)
     if question["type"] == "noul":
-        options = options[::-1]
+        options.reverse()
     if len(options) > len(DEFAULT_CHOICE_LABELS):
         raise ValueError("Piccolo candidates exceed the checkpoint candidate inventory")
-    keys, descriptions = zip(*options, strict=True)
-    order = list(
-        dict.fromkeys(asset_markers([state, question.get("instructions"), descriptions], images))
-    )
-    order.extend(marker for marker in images if marker not in order)
-    labels = DEFAULT_CHOICE_LABELS[: len(keys)]
-    indices = {marker: index + 1 for index, marker in enumerate(order)}
-    state_is_asset_only = isinstance(state, dict) and all(
-        isinstance(value, str) and value in indices for value in state.values()
-    )
-    variables = {
-        "mode": "decision",
-        "state": [] if state_is_asset_only else prepare_field_parts(state, indices),
-        "state_is_asset_only": state_is_asset_only,
-        "instructions": prepare_field_parts(question.get("instructions"), indices),
-        "questions": [
-            {"instructions": prepare_field_parts(item.get("instructions"))}
-            for item in payload["questions"].values()
-        ],
-        "kind": question["type"],
-        "options": [
-            {
-                "key": key,
-                "label": label,
-                "has_description": description is not None,
-                "content": prepare_field_parts(description, indices),
-            }
+
+    values = [
+        bind(payload["state"]),
+        bind(question.get("instructions")),
+        [description for _, description in options],
+    ]
+    marker_assets = {marker: key for key, marker in markers.items()}
+    order = dict.fromkeys(_asset_markers(values, marker_assets))
+    for marker in marker_assets:
+        order.setdefault(marker)
+    asset_order = tuple(marker_assets[marker] for marker in order)
+    indices = {marker: index for index, marker in enumerate(order, start=1)}
+    pattern = re.compile("|".join(map(re.escape, indices))) if indices else None
+
+    def split_field(value) -> FieldParts:
+        text = render_text(value)
+        parts: list[str | int] = []
+        cursor = 0
+        if pattern is not None:
+            for match in pattern.finditer(text):
+                if cursor < match.start():
+                    parts.append(text[cursor : match.start()])
+                parts.append(indices[match.group()])
+                cursor = match.end()
+        if cursor < len(text):
+            parts.append(text[cursor:])
+        return tuple(parts)
+
+    def field_parts(value: DecisionText | None) -> FieldParts:
+        return split_field(bind(value))
+
+    labels = DEFAULT_CHOICE_LABELS[: len(options)]
+    return PreparedDecision(
+        prompt=PiccoloInputs(payload, question_key, asset_order),
+        candidates=tuple(
+            Candidate(key, label, None if description is None else split_field(description))
             for (key, description), label in zip(options, labels, strict=True)
-        ],
-    }
-    markers_to_ids = dict(zip(images, payload.get("assets", {}), strict=True))
-    return PiccoloInputs(
-        messages=[
-            {
-                "role": "user",
-                "content": [{"type": "image", "image": images[marker]} for marker in order],
-                "jev": variables,
-            }
-        ],
-        option_keys=tuple(keys),
-        candidate_labels=labels,
-        asset_ids=tuple(markers_to_ids[marker] for marker in order),
+        ),
+        image_sources=tuple(sources[key] for key in asset_order),
+        field_parts=field_parts,
     )

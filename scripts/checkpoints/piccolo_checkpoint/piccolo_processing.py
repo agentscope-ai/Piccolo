@@ -6,7 +6,7 @@ import torch
 from transformers.feature_extraction_utils import BatchFeature
 from transformers.models.qwen3_vl.processing_qwen3_vl import Qwen3VLProcessor
 
-from .common_inputs import SystemOneInputs, prepare_piccolo_inputs
+from .common_inputs import SystemOneInputs, prepare_decision
 from .common_media import encode_prompt, load_image_source
 from .piccolo_images import load_piccolo_image
 
@@ -55,11 +55,11 @@ class PiccoloProcessor(Qwen3VLProcessor):
         return [self.encode_question(payload, key) for key in payload["questions"]]
 
     def encode_question(self, payload, question_key):
-        prompt = prepare_piccolo_inputs(payload, question_key)
+        decision = prepare_decision(payload, question_key)
         limit = self.image_processor.size["longest_edge"]
         encoded = encode_prompt(
             self,
-            prompt.messages,
+            decision,
             image_loader=lambda source: load_piccolo_image(
                 source, limit, image_loader=self.image_loader or load_image_source
             ),
@@ -67,15 +67,19 @@ class PiccoloProcessor(Qwen3VLProcessor):
         tokens = encoded["input_ids"][0].tolist()
         if not tokens or len(tokens) > self.max_length:
             raise ValueError("Piccolo prompt exceeds max_length; no truncation")
-        ids = [self.tokenizer.convert_tokens_to_ids(label) for label in prompt.candidate_labels]
+        ids = [
+            self.tokenizer.convert_tokens_to_ids(candidate.label)
+            for candidate in decision.candidates
+        ]
         if len(set(ids)) != len(ids) or any(
-            self.tokenizer.encode(label, add_special_tokens=False) != [token_id]
-            for label, token_id in zip(prompt.candidate_labels, ids, strict=True)
+            self.tokenizer.encode(candidate.label, add_special_tokens=False) != [token_id]
+            for candidate, token_id in zip(decision.candidates, ids, strict=True)
         ):
             raise ValueError("Piccolo candidates must be distinct single-token labels")
         encoded["mm_token_type_ids"] = torch.tensor(self.create_mm_token_type_ids([tokens]))
         encoded["candidate_token_ids"] = torch.tensor([ids], dtype=torch.long)
-        return EncodedDecision(question_key, prompt.option_keys, BatchFeature(encoded))
+        option_keys = tuple(candidate.key for candidate in decision.candidates)
+        return EncodedDecision(decision.prompt.question_key, option_keys, BatchFeature(encoded))
 
 
 PiccoloProcessor.register_for_auto_class()
