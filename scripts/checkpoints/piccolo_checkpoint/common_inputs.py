@@ -6,6 +6,7 @@ import base64
 import json
 import re
 from collections.abc import Mapping
+from copy import deepcopy
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Annotated, Any, Literal, NotRequired, TypedDict
@@ -332,6 +333,7 @@ class PreparedRequest:
 
 def prepare_request(payload: JevRequest) -> PreparedRequest:
     """Validate and prepare data shared by every question in the request."""
+    payload = deepcopy(payload)
     SystemOneInputs.model_validate(payload)
     sources = dict(_validated_sources(payload.get("assets", {})))
     pattern = _reference_pattern(sources)

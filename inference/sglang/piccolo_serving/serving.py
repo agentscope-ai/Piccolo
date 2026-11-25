@@ -30,7 +30,7 @@ def question_view(question):
         return QuestionView(
             kind="yes_no",
             question=question.instructions,
-            names=["yes", "no"],
+            names=["true", "false"],
             details=[criteria.true if criteria else None, criteria.false if criteria else None],
         )
     return QuestionView(
@@ -41,12 +41,20 @@ def question_view(question):
     )
 
 
-def answer(view, probabilities, question_id):
-    if len(probabilities) != len(view.names) or not all(math.isfinite(p) for p in probabilities):
+def answer(view, option_keys, probabilities, question_id):
+    if (
+        len(probabilities) != len(option_keys)
+        or len(option_keys) != len(view.names)
+        or set(option_keys) != set(view.names)
+        or not all(math.isfinite(p) for p in probabilities)
+    ):
         raise RuntimeError(f"question {question_id!r} scored invalid values")
+    by_key = dict(zip(option_keys, probabilities, strict=True))
     if view.kind == "yes_no":
-        return {"type": "noul", "noul": probabilities[0]}
-    result = {"type": view.kind, "probabilities": dict(zip(view.names, probabilities, strict=True))}
+        return {"type": "noul", "noul": by_key["true"]}
+    by_key = {key: by_key[key] for key in view.names}
+    probabilities = list(by_key.values())
+    result = {"type": view.kind, "probabilities": by_key}
     normalized = _normalized(probabilities)
     if view.kind == "choice":
         result.update(
@@ -73,12 +81,12 @@ class PiccoloServing(SystemOneServing):
         return None
 
     def _convert_to_internal_request(self, request, raw_request=None):
-        views = [question_view(question) for question in request.questions.values()]
-        encoded = self.encoder.encode_request(request)
-        return encoded, (request, views)
+        encoded, questions = self.encoder.encode_request(request)
+        views = {key: question_view(question) for key, question in request.questions.items()}
+        return encoded, (questions, views)
 
     async def _handle_non_streaming_request(self, adapted_request, processed, raw_request):
-        request, views = processed
+        questions, views = processed
         _, _, result = await self._score(
             adapted_request=adapted_request,
             raw_request=raw_request,
@@ -90,9 +98,9 @@ class PiccoloServing(SystemOneServing):
             content={
                 "model": self.tokenizer_manager.served_model_name,
                 "answers": {
-                    key: answer(view, probabilities, key)
-                    for key, view, probabilities in zip(
-                        request.questions, views, result.scores, strict=True
+                    key: answer(views[key], option_keys, probabilities, key)
+                    for (key, option_keys), probabilities in zip(
+                        questions, result.scores, strict=True
                     )
                 },
                 "usage": {"input_tokens": result.prompt_tokens, "output_tokens": 0},

@@ -65,14 +65,13 @@ class PiccoloEncoder:
                 finally:
                     self.processor.image_loader = previous_loader
         encoded = []
+        questions = []
         for item in items:
             tensors = item.inputs
             tokens = tensors["input_ids"][0].tolist()
             ids = tensors["candidate_token_ids"][0].tolist()
             if not tokens or len(tokens) > self.context_length:
                 raise ValueError("Piccolo prompt exceeds context length; no truncation")
-            if payload["questions"][item.question_id]["type"] == "noul":
-                ids = ids[::-1]
             media = []
             if "pixel_values" in tensors:
                 media = [
@@ -84,4 +83,5 @@ class PiccoloEncoder:
                     }
                 ]
             encoded.append((tokens, ids, media))
-        return iter(encoded)
+            questions.append((item.question_id, item.option_keys))
+        return iter(encoded), questions

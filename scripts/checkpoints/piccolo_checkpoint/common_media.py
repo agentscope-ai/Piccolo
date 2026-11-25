@@ -5,6 +5,7 @@ import os
 from io import BytesIO
 
 import httpx
+import torch
 from PIL import Image, UnidentifiedImageError
 from transformers.models.qwen3_vl.processing_qwen3_vl import Qwen3VLProcessorKwargs
 from transformers.utils.chat_template_utils import _compile_jinja_template
@@ -54,9 +55,8 @@ def render_prompt(
     )
 
 
-def encode_prompt(processor, decision: PreparedDecision, *, images: list[Image.Image]):
-    """Prepare image tensors once and expand their placeholders before tokenization."""
-    kwargs = processor._merge_kwargs(
+def prompt_encoding_kwargs(processor):
+    return processor._merge_kwargs(
         Qwen3VLProcessorKwargs,
         tokenizer_init_kwargs=processor.tokenizer.init_kwargs,
         return_tensors="pt",
@@ -64,16 +64,40 @@ def encode_prompt(processor, decision: PreparedDecision, *, images: list[Image.I
         truncation=False,
         add_special_tokens=False,
     )
+
+
+class EncodedImages:
+    """Reuse Qwen image tensors across questions, packing them in each prompt's order."""
+
+    def __init__(self, asset_order, pixels):
+        self._batches = {asset_order: pixels}
+        self._by_asset = {}
+        if asset_order:
+            grid = pixels["image_grid_thw"]
+            patches = pixels["pixel_values"].split(grid.prod(dim=1).tolist())
+            self._by_asset = dict(zip(asset_order, zip(patches, grid, strict=True), strict=True))
+
+    def for_order(self, asset_order):
+        if asset_order not in self._batches:
+            patches, grids = zip(*(self._by_asset[key] for key in asset_order), strict=True)
+            self._batches[asset_order] = {
+                "pixel_values": torch.cat(patches),
+                "image_grid_thw": torch.stack(grids),
+            }
+        return self._batches[asset_order]
+
+
+def encode_prompt(processor, decision: PreparedDecision, *, pixels, text_kwargs):
+    """Expand image placeholders and tokenize one complete prompt."""
     template = processor.chat_template
     if isinstance(template, dict):
         template = template.get("default")
     if template is None:
         raise ValueError("Piccolo requires a default decision template")
     text = render_prompt(template, decision)
-    pixels = processor.image_processor(images=images, **kwargs["images_kwargs"]) if images else {}
-    if text.count(processor.image_token) != len(images):
+    if text.count(processor.image_token) != len(decision.prompt.asset_order):
         raise ValueError("Rendered image placeholders do not match request images")
-    if images:
+    if pixels:
         merge = processor.image_processor.merge_size**2
         replacements = [
             processor.image_token * (int(grid.prod()) // merge) for grid in pixels["image_grid_thw"]
@@ -82,7 +106,7 @@ def encode_prompt(processor, decision: PreparedDecision, *, images: list[Image.I
         text = parts[0] + "".join(
             image + part for image, part in zip(replacements, parts[1:], strict=True)
         )
-    text_kwargs = dict(kwargs["text_kwargs"])
+    text_kwargs = dict(text_kwargs)
     text_kwargs.pop("return_mm_token_type_ids", None)
     encoded = processor.tokenizer([text], **text_kwargs)
     processor._check_special_mm_tokens([text], encoded, modalities=["image"])
