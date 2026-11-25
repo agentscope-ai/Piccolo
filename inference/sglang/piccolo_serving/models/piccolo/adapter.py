@@ -22,6 +22,7 @@ class PiccoloAdapter:
         model_config.hf_config = Qwen3_5Config(**config)
         model_config.hf_text_config = model_config.hf_config.text_config
         model_config.hf_text_config.is_causal = False
+        model_config.hf_text_config.enable_lm_head_fp32 = True
         return config
 
     def configure_server_args(self, server_args):
@@ -31,6 +32,7 @@ class PiccoloAdapter:
         declare_resolution(
             server_args,
             "piccolo_serving_adapter",
+            enable_fp32_lm_head=True,
             disable_radix_cache=True,
             chunked_prefill_size=-1,
         )

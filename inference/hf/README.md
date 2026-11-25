@@ -58,6 +58,10 @@ Inputs contain `state`, `questions` and optional `assets`. They do not need the
 | `result.logits` | Candidate scores |
 | `result.probabilities` | Probabilities normalized over the candidate set |
 
+Candidate projection uses only the requested LM-head rows. Projection and softmax
+run in FP32 with autocast disabled; the backbone retains its configured dtype.
+This policy also applies to PiccoloLoop.
+
 HF `noul` probabilities use false, true order. The model does not generate answer
 tokens, and the checkpoint's processor rejects prompts exceeding its context limit.
 
@@ -74,4 +78,6 @@ not use `generate()` or reuse KV/GDN caches.
 
 To choose loop ranges or prepare a checkpoint, see the checkpoint tools'
 [loop configuration](../../scripts/checkpoints/README.md#loop-configuration).
-Existing checkpoints require neither reconversion nor local model source maintenance.
+Existing checkpoints load their bundled inference code. To adopt an updated
+readout implementation, re-export the checkpoint with the current checkpoint
+tools; updating this repository alone does not update existing checkpoint code.

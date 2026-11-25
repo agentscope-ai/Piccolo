@@ -61,6 +61,9 @@ from blocking other requests' encoding.
 The plugin adapts only explicitly tagged Piccolo and PiccoloLoop checkpoints;
 other models retain native settings. Both architectures disable prefix reuse and
 chunked prefill. Complete prompts must fit in one prefill; overlong inputs fail.
+Both adapters explicitly enable FP32 LM-head output for candidate scoring,
+including when the backbone uses BF16. This controls readout precision; it does
+not guarantee identical probabilities across HF and SGLang kernels.
 Configuration, request schemas and input processing come from the checkpoint.
 The serving package does not depend on checkpoint preparation tools.
 

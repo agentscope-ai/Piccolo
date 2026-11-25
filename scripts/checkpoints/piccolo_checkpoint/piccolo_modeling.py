@@ -124,22 +124,25 @@ class PiccoloModel(Qwen3_5ForConditionalGeneration):
                 .max(-1)
                 .values
             )
-        logits = self.lm_head(
-            hidden[torch.arange(hidden.shape[0], device=hidden.device), positions]
-        )
-        ids = torch.as_tensor(candidate_token_ids, device=logits.device, dtype=torch.long)
+        readout = hidden[torch.arange(hidden.shape[0], device=hidden.device), positions]
+        ids = torch.as_tensor(candidate_token_ids, device=readout.device, dtype=torch.long)
         if ids.ndim == 1:
-            ids = ids.unsqueeze(0).expand(logits.shape[0], -1)
-        if ids.ndim != 2 or ids.shape[0] != logits.shape[0] or ids.shape[1] == 0:
+            ids = ids.unsqueeze(0).expand(hidden.shape[0], -1)
+        if ids.ndim != 2 or ids.shape[0] != hidden.shape[0] or ids.shape[1] == 0:
             raise ValueError(
                 "candidate_token_ids must have shape [candidates] or [batch, candidates]"
             )
-        if (ids < 0).any() or (ids >= logits.shape[-1]).any():
+        if (ids < 0).any() or (ids >= self.lm_head.weight.shape[0]).any():
             raise ValueError("Candidate token id is outside the model vocabulary")
         if any(row.unique().numel() != row.numel() for row in ids):
             raise ValueError("Candidate token ids must be distinct")
-        candidates = logits.gather(-1, ids).float()
-        return CandidateOutput(logits=candidates, probabilities=candidates.softmax(-1))
+        # Project only candidate rows. Explicitly disable autocast so the
+        # projection and softmax stay FP32 even inside a mixed-precision caller.
+        with torch.autocast(device_type=readout.device.type, enabled=False):
+            weights = self.lm_head.weight[ids].float()
+            candidates = torch.bmm(weights, readout.float().unsqueeze(-1)).squeeze(-1)
+            probabilities = candidates.softmax(-1)
+        return CandidateOutput(logits=candidates, probabilities=probabilities)
 
     def generate(self, *args, **kwargs):
         raise ValueError("Piccolo is a prompt classifier; use forward with candidate_token_ids")
