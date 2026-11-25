@@ -66,14 +66,7 @@ class PiccoloProcessor(Qwen3VLProcessor):
         images: Mapping[str, Image.Image] | None = None,
     ) -> list[EncodedDecision]:
         """Encode questions in order, optionally reusing images keyed by asset ID."""
-        request = payload if isinstance(payload, PreparedRequest) else prepare_request(payload)
-        decisions = [prepare_decision(request, key) for key in request.payload["questions"]]
-        kwargs = prompt_encoding_kwargs(self)
-        encoded_images = self._encode_images(decisions[0], images, kwargs["images_kwargs"])
-        return [
-            self._encode_decision(decision, encoded_images, kwargs["text_kwargs"])
-            for decision in decisions
-        ]
+        return self._encode_questions(payload, None, images)
 
     def encode_question(
         self,
@@ -83,31 +76,39 @@ class PiccoloProcessor(Qwen3VLProcessor):
         images: Mapping[str, Image.Image] | None = None,
     ) -> EncodedDecision:
         """Encode one question from a raw request or reuse its prepared data."""
-        request = payload if isinstance(payload, PreparedRequest) else prepare_request(payload)
-        decision = prepare_decision(request, question_key)
-        kwargs = prompt_encoding_kwargs(self)
-        encoded_images = self._encode_images(decision, images, kwargs["images_kwargs"])
-        return self._encode_decision(decision, encoded_images, kwargs["text_kwargs"])
+        return self._encode_questions(payload, (question_key,), images)[0]
 
-    def _encode_images(self, decision: PreparedDecision, images, image_kwargs):
-        asset_order = decision.prompt.asset_order
+    def _encode_questions(self, payload, question_keys, images):
+        request = payload if isinstance(payload, PreparedRequest) else prepare_request(payload)
+        keys = request.payload["questions"] if question_keys is None else question_keys
+        decisions = [prepare_decision(request, key) for key in keys]
+        kwargs = prompt_encoding_kwargs(self)
+        asset_order = decisions[0].prompt.asset_order
+        encoded_images = self._encode_images(request, asset_order, images, kwargs["images_kwargs"])
+        return [
+            self._encode_decision(decision, encoded_images, kwargs["text_kwargs"])
+            for decision in decisions
+        ]
+
+    def _encode_images(self, request: PreparedRequest, asset_order, images, image_kwargs):
         if not asset_order:
             return EncodedImages(asset_order, {})
         limit = self.image_processor.size["longest_edge"]
+        loader = None
         if images is not None:
-            ordered_images = [load_piccolo_image(images[key], limit) for key in asset_order]
+            sources = (images[key] for key in asset_order)
         else:
-            sources = decision.image_sources
+            sources = (request.image_sources[key] for key in asset_order)
             loader = self.image_loader
             if loader:
-                assets = decision.prompt.jev_request.get("assets", {})
-                sources = tuple(
+                assets = request.payload.get("assets", {})
+                sources = (
                     image_source_name(assets[key], source)
                     for key, source in zip(asset_order, sources, strict=True)
                 )
-            ordered_images = [
-                load_piccolo_image(source, limit, image_loader=loader) for source in sources
-            ]
+        ordered_images = [
+            load_piccolo_image(source, limit, image_loader=loader) for source in sources
+        ]
         return EncodedImages(asset_order, self.image_processor(images=ordered_images, **image_kwargs))
 
     def _encode_decision(self, decision: PreparedDecision, images: EncodedImages, text_kwargs):

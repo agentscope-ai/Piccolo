@@ -15,18 +15,25 @@ from urllib.parse import urlparse
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 DecisionText = str | dict[str, Any] | list[Any]
-MAX_CHOICE_OPTIONS = 255
 MAX_SCORE_LEVELS = 10
+DEFAULT_CHOICE_LABELS = tuple(
+    (
+        "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z AA AB AC AD AE AF AG"
+        " AH AI AJ AK AL AM AN AO AP AQ AR AS AT AU AV AW AX AY AZ BA BB BC BD BE"
+        " BF BG BH BI BJ BK BL BM BN BO BP BR BS BT BU BV BW BX BY CA CB CC CD CE"
+        " CF CG CH CI CK CL CM CN CO CP CR CS CT CU CV CW CX CY DA DB DC DD DE DF"
+        " DG DH DI DJ DK DL DM DN DO DP DR DS DT DU DV DW DX DY EA EB EC ED EE EF"
+        " EG EH EI EK EL EM EN EO EP EQ ER ES ET EU EV EW EX EZ FA FB FC FD FE FF"
+        " FG FH FI FK FL FM FN FO FP FR FS FT FU FW FX FY GA GB GC GD GE GF GG GH"
+        " GI GL GM GN GO GP GR GS GT GU GV GW GX GY HA HB HC HD HE HF HG HH HI HK"
+        " HL HM HN HO HP HQ HR HS HT HU HV HW HX HY HZ IA IB IC ID IE IF IG IH II"
+        " IJ IK IL IM IN IO IP IQ IR IS IT IU IV IW IX IZ JA JB JC JD JE JI JJ JK"
+        " JM JO JP JR JS JT"
+    ).split()
+)
 
 
-class _JsonModel(BaseModel):
-    @model_validator(mode="after")
-    def _finite_json(self):
-        json.dumps(self.model_dump(exclude_unset=True), allow_nan=False)
-        return self
-
-
-class _Question(_JsonModel):
+class _Question(BaseModel):
     model_config = ConfigDict(extra="forbid")
     instructions: DecisionText | None = None
 
@@ -44,7 +51,7 @@ class SystemOneNoulQuestion(_Question):
 
 class SystemOneChoiceQuestion(_Question):
     type: Literal["choice"]
-    criteria: dict[str, DecisionText | None] = Field(min_length=1, max_length=MAX_CHOICE_OPTIONS)
+    criteria: dict[str, DecisionText | None] = Field(min_length=1, max_length=len(DEFAULT_CHOICE_LABELS))
 
 
 class SystemOneScoreQuestion(_Question):
@@ -58,11 +65,16 @@ SystemOneQuestion = Annotated[
 ]
 
 
-class SystemOneInputs(_JsonModel):
+class SystemOneInputs(BaseModel):
     model_config = ConfigDict(extra="forbid")
     assets: dict[str, dict[str, Any]] = Field(default_factory=dict)
     state: DecisionText
     questions: dict[str, SystemOneQuestion] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def _finite_json(self):
+        json.dumps(self.model_dump(exclude_unset=True), allow_nan=False)
+        return self
 
 
 class SystemOneTextRequest(SystemOneInputs):
@@ -94,23 +106,6 @@ def question_options(question):
         **(criteria or {}),
     }
     return list(criteria.items())
-
-
-DEFAULT_CHOICE_LABELS = tuple(
-    (
-        "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z AA AB AC AD AE AF AG"
-        " AH AI AJ AK AL AM AN AO AP AQ AR AS AT AU AV AW AX AY AZ BA BB BC BD BE"
-        " BF BG BH BI BJ BK BL BM BN BO BP BR BS BT BU BV BW BX BY CA CB CC CD CE"
-        " CF CG CH CI CK CL CM CN CO CP CR CS CT CU CV CW CX CY DA DB DC DD DE DF"
-        " DG DH DI DJ DK DL DM DN DO DP DR DS DT DU DV DW DX DY EA EB EC ED EE EF"
-        " EG EH EI EK EL EM EN EO EP EQ ER ES ET EU EV EW EX EZ FA FB FC FD FE FF"
-        " FG FH FI FK FL FM FN FO FP FR FS FT FU FW FX FY GA GB GC GD GE GF GG GH"
-        " GI GL GM GN GO GP GR GS GT GU GV GW GX GY HA HB HC HD HE HF HG HH HI HK"
-        " HL HM HN HO HP HQ HR HS HT HU HV HW HX HY HZ IA IB IC ID IE IF IG IH II"
-        " IJ IK IL IM IN IO IP IQ IR IS IT IU IV IW IX IZ JA JB JC JD JE JI JJ JK"
-        " JM JO JP JR JS JT"
-    ).split()
-)
 
 
 def image_source_name(asset, source: str | bytes) -> str:
@@ -318,7 +313,6 @@ class Candidate:
 class PreparedDecision:
     prompt: PiccoloInputs
     candidates: tuple[Candidate, ...]
-    image_sources: tuple[str | bytes, ...]
     state_parts: FieldParts | None
     instruction_parts: FieldParts
 
@@ -349,8 +343,6 @@ def prepare_decision(request: PreparedRequest, question_key: str) -> PreparedDec
     is_noul = question["type"] == "noul"
     if is_noul:
         options.reverse()
-    if len(options) > len(DEFAULT_CHOICE_LABELS):
-        raise ValueError("Piccolo candidates exceed the checkpoint candidate inventory")
 
     state = request._state_parts
     instructions = _reference_parts(question.get("instructions"), pattern)
@@ -385,7 +377,6 @@ def prepare_decision(request: PreparedRequest, question_key: str) -> PreparedDec
             Candidate(key, label, None if description is None else number_refs(description))
             for (key, _), label, description in zip(options, labels, descriptions, strict=True)
         ),
-        image_sources=tuple(request.image_sources[key] for key in asset_order),
         state_parts=None if prompt.state_is_asset_only else number_refs(state),
         instruction_parts=number_refs(instructions),
     )

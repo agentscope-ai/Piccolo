@@ -1,38 +1,13 @@
-"""Image decoding and Qwen3.5 prompt encoding for Piccolo."""
+"""Qwen3.5 prompt rendering, image tensor ordering and tokenization."""
 
-import base64
-import os
-from io import BytesIO
-
-import httpx
 import torch
-from PIL import Image, UnidentifiedImageError
 from transformers.models.qwen3_vl.processing_qwen3_vl import Qwen3VLProcessorKwargs
 from transformers.utils.chat_template_utils import _compile_jinja_template
 
 from .common_inputs import PreparedDecision, render_text
 
-
-def load_image_source(source, *, download=None):
-    if isinstance(source, str) and source.startswith(("http://", "https://")):
-        if download is None:
-            response = httpx.get(
-                source, timeout=float(os.getenv("REQUEST_TIMEOUT", "3")), follow_redirects=True
-            )
-            response.raise_for_status()
-            source = response.content
-        else:
-            source = download(source)
-    elif isinstance(source, str) and source.startswith("data:"):
-        source = base64.b64decode(source.split(",", 1)[1], validate=True)
-    if isinstance(source, bytes):
-        source = BytesIO(source)
-    try:
-        image = source if isinstance(source, Image.Image) else Image.open(source)
-        image.load()
-    except (UnidentifiedImageError, OSError, SyntaxError) as error:
-        raise ValueError(f"Could not decode image: {error}") from error
-    return image
+# Checkpoint consumers use this import path to load image sources.
+from .piccolo_images import load_image_source  # noqa: F401
 
 
 def render_prompt(

@@ -81,16 +81,13 @@ def write_hf_inference_assets(
     *,
     template,
     image_size,
-    processor_options=None,
+    max_length=None,
     model_type="piccolo_qwen3_5",
     loop_config=None,
 ):
     if model_type not in MODEL_TYPES:
         raise ValueError("Only Piccolo exports are supported")
     stem, name = MODEL_TYPES[model_type]
-    options = dict(processor_options or {})
-    if options.keys() - {"max_length"}:
-        raise ValueError("Piccolo processor options accept only max_length")
     directory = Path(directory)
     config = json.loads((directory / "config.json").read_text())
     if config.get("model_type") not in {"qwen3_5", *MODEL_TYPES}:
@@ -125,13 +122,15 @@ def write_hf_inference_assets(
         "enable_thinking",
         "choice_labels",
         "max_length",
+        "chat_template",
     ):
         processor.pop(name, None)
     processor.update(
         processor_class="PiccoloProcessor",
         auto_map={"AutoProcessor": "piccolo_processing.PiccoloProcessor"},
-        **options,
     )
+    if max_length is not None:
+        processor["max_length"] = max_length
     if "image_processor" in processor:
         processor["image_processor"]["size"] = dict(image_size)
     image_path = directory / "preprocessor_config.json"
@@ -143,28 +142,15 @@ def write_hf_inference_assets(
         raise ValueError("Piccolo requires image processor assets")
     _write_json(processor_path, processor)
     (directory / "chat_template.jinja").write_text(template, encoding="utf-8")
-    for name in ("tokenizer_config.json", "processor_config.json"):
-        path = directory / name
-        if path.exists():
-            data = json.loads(path.read_text())
-            data.pop("chat_template", None)
-            if name == "tokenizer_config.json":
-                data.pop("auto_map", None)
-                data.pop("processor_class", None)
-            _write_json(path, data)
-    for name in (
-        "generation_config.json",
-        "jev_template.json",
-        "piccolo.json",
-        "sglang_runtime.json",
-        "chat_template.json",
-        "decision-inference.json",
-    ):
-        (directory / name).unlink(missing_ok=True)
+    tokenizer_path = directory / "tokenizer_config.json"
+    if tokenizer_path.exists():
+        tokenizer = json.loads(tokenizer_path.read_text())
+        for name in ("chat_template", "auto_map", "processor_class"):
+            tokenizer.pop(name, None)
+        _write_json(tokenizer_path, tokenizer)
     modules = MODULES + (LOOP_MODULES if model_type == "piccolo_qwen3_5_loop" else ())
     for module in modules:
         shutil.copy2(Path(__file__).with_name(module + ".py"), directory / (module + ".py"))
-    read_hf_inference_assets(directory)
     readme = directory / "README.md"
     if readme.exists() and not (directory / "BASE_MODEL_README.md").exists():
         readme.replace(directory / "BASE_MODEL_README.md")
@@ -283,7 +269,7 @@ def convert(
             output,
             template=template,
             image_size=image_size,
-            processor_options={} if max_length is None else {"max_length": max_length},
+            max_length=max_length,
             model_type=model_type,
             loop_config=loop_config,
         )
