@@ -9,16 +9,15 @@ from starlette.responses import JSONResponse
 from transformers import AutoTokenizer
 from sglang.srt.managers.io_struct import GenerateReqInput
 
-from .flex_prompt import FlexPromptCompiler, Unsupported
+from .flex_prompt import Unsupported
+from .input_profiles import compiler_from_env
 
 
 class SystemOne:
     def __init__(self, tokenizer_path, model):
         self.model = model
-        self.compiler = FlexPromptCompiler(
+        self.compiler = compiler_from_env(
             AutoTokenizer.from_pretrained(tokenizer_path, local_files_only=True),
-            layout="header", read_twice=True, twice_max_tokens=3000,
-            max_row_tokens=65535,
         )
 
     async def handle(self, request: Request):
