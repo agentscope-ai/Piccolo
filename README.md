@@ -20,7 +20,7 @@ Piccolo is a family of **4B, 9B and 27B decision models**. Given a state, a ques
 
 ## Models
 
-Vision-language checkpoints: [Piccolo-4B-VL](https://huggingface.co/agentscope-ai/Piccolo-4B-VL), [Piccolo-9B-VL](https://huggingface.co/agentscope-ai/Piccolo-9B-VL), and [Piccolo-27B-VL](https://huggingface.co/agentscope-ai/Piccolo-27B-VL).
+Vision-language checkpoints: [Piccolo-0.8B-VL](https://huggingface.co/agentscope-ai/Piccolo-0.8B-VL), [Piccolo-2B-VL](https://huggingface.co/agentscope-ai/Piccolo-2B-VL), [Piccolo-4B-VL](https://huggingface.co/agentscope-ai/Piccolo-4B-VL), [Piccolo-9B-VL](https://huggingface.co/agentscope-ai/Piccolo-9B-VL), and [Piccolo-27B-VL](https://huggingface.co/agentscope-ai/Piccolo-27B-VL).
 
 The foundation checkpoints and text GGUF releases are available in the following formats.
 
@@ -144,7 +144,7 @@ python3.12 scripts/export_home_decision.py --check
 python3.12 -m unittest tests.test_home_decision -v
 ```
 
-[Showcase notes](docs/SHOWCASE.md) explain asset generation. For issues, include the game, seed, reproduction steps and an anonymized replay where possible. Preserve original participant IDs and outcomes. See [verification](docs/VERIFICATION.md) and the [changelog](CHANGELOG.md).
+[Showcase notes](docs/SHOWCASE.md) explain asset generation. For issues, include the game, seed, reproduction steps and an anonymized replay where possible. Preserve original participant IDs and outcomes. See the [changelog](CHANGELOG.md) for release changes.
 
 ## License and attribution
 

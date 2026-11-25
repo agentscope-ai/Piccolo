@@ -20,7 +20,7 @@ Piccolo 是一个 **4B、9B、27B 决策模型系列**。给定当前状态、�
 
 ## 模型下载
 
-Vision-language checkpoints: [Piccolo-4B-VL](https://huggingface.co/agentscope-ai/Piccolo-4B-VL), [Piccolo-9B-VL](https://huggingface.co/agentscope-ai/Piccolo-9B-VL), and [Piccolo-27B-VL](https://huggingface.co/agentscope-ai/Piccolo-27B-VL).
+Vision-language checkpoints: [Piccolo-0.8B-VL](https://huggingface.co/agentscope-ai/Piccolo-0.8B-VL), [Piccolo-2B-VL](https://huggingface.co/agentscope-ai/Piccolo-2B-VL), [Piccolo-4B-VL](https://huggingface.co/agentscope-ai/Piccolo-4B-VL), [Piccolo-9B-VL](https://huggingface.co/agentscope-ai/Piccolo-9B-VL), and [Piccolo-27B-VL](https://huggingface.co/agentscope-ai/Piccolo-27B-VL).
 
 The foundation checkpoints and text GGUF releases are available in the following formats.
 
@@ -144,7 +144,7 @@ python3.12 scripts/export_home_decision.py --check
 python3.12 -m unittest tests.test_home_decision -v
 ```
 
-素材复现见 [Showcase 说明](docs/SHOWCASE.md)。反馈问题时附玩法、种子、步骤及脱敏回放，保留原参与者身份与终局。[验证记录](docs/VERIFICATION.md) · [变更说明](CHANGELOG.md)。
+素材复现见 [Showcase 说明](docs/SHOWCASE.md)。反馈问题时附玩法、种子、步骤及脱敏回放，保留原参与者身份与终局。版本变更见 [变更说明](CHANGELOG.md)。
 
 ## 许可与署名
 
