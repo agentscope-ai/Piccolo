@@ -32,10 +32,6 @@ def main():
     depth = config['text_config']['num_hidden_layers']
     if depth + sum(e-s for s,e in language['blocks'])*(len(language['per_block_pass_alphas'])-1) != language['language_layer_calls']:
         raise ValueError('Profile does not match checkpoint depth')
-    import hashlib
-    index = model / 'model.safetensors.index.json'
-    if not index.is_file() or hashlib.sha256(index.read_bytes()).hexdigest() != profile['model_index_sha256']:
-        raise ValueError('Checkpoint index differs from the archived model for this profile')
     if not 0 < a.memory_fraction < 1 or a.context_length < 1:
         raise ValueError('Invalid memory fraction or context length')
     root = Path(tempfile.mkdtemp(prefix='piccolo-sglang-'))

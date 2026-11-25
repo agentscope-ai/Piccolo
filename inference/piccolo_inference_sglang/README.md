@@ -73,7 +73,7 @@ python -m piccolo_inference_sglang.launch \
 
 This entry point enables OCR and uses BF16, TP1, a 32,768-token context and one concurrent request. Prepare the separate OCR environment and weights as described above. It listens on `127.0.0.1` by default; add `--host 0.0.0.0` for remote access. Use `--served-model-name` to override `Piccolo`.
 
-The launcher checks the checkpoint index SHA256 and layer count against the selected [profile](piccolo_inference_sglang/profiles). Loop passes reuse layer weights; the 9B profile also repeats a vision block. Attention defaults to `auto` (FA3 on CUDA compute capability 9.x, Triton otherwise); override it with `--attention-backend fa3` or `--attention-backend triton`. `--dry-run` prints the command without loading the model or checking GPU capability. The shell launchers above do not enable loop inference by default.
+The launcher checks the layer count against the selected [profile](piccolo_inference_sglang/profiles). Loop passes reuse layer weights; the 9B profile also repeats a vision block. Attention defaults to `auto` (FA3 on CUDA compute capability 9.x, Triton otherwise); override it with `--attention-backend fa3` or `--attention-backend triton`. `--dry-run` prints the command without loading the model or checking GPU capability. The shell launchers above do not enable loop inference by default.
 
 ### Optional text input profiles
 
