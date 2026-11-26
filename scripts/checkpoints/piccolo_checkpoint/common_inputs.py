@@ -5,7 +5,7 @@ from __future__ import annotations
 import base64
 import json
 import re
-from collections.abc import Mapping
+from collections.abc import Iterator, Mapping
 from copy import deepcopy
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -197,18 +197,6 @@ class JevRequest(TypedDict):
     assets: NotRequired[dict[str, dict[str, Any]]]
 
 
-# Strings are literal text. Integers are one-based indices into asset_order.
-FieldParts = tuple[str | int, ...]
-
-
-@dataclass(frozen=True)
-class _AssetRef:
-    asset_id: str
-
-
-_ReferenceParts = tuple[str | _AssetRef, ...]
-
-
 def _reference_pattern(asset_ids) -> re.Pattern[str] | None:
     """Match literal substrings, preferring the longest ID at the same position."""
     if not asset_ids:
@@ -216,73 +204,16 @@ def _reference_pattern(asset_ids) -> re.Pattern[str] | None:
     return re.compile("|".join(re.escape(key) for key in sorted(asset_ids, key=len, reverse=True)))
 
 
-def _string_parts(text: str, pattern: re.Pattern[str]):
-    cursor = 0
-    for match in pattern.finditer(text):
-        if cursor < match.start():
-            yield text[cursor : match.start()]
-        yield _AssetRef(match.group())
-        cursor = match.end()
-    if cursor < len(text):
-        yield text[cursor:]
-
-
-def _json_key(key) -> str:
-    if isinstance(key, str):
-        return _compact_json(key)
-    # Let json.dumps handle coercion and validation of non-string Python keys.
-    return _compact_json({key: None}).removeprefix("{").removesuffix(":null}")
-
-
-def _json_parts(value, pattern: re.Pattern[str]):
+def _asset_references(value, pattern: re.Pattern[str]) -> Iterator[str]:
+    """Yield matching IDs from string values in encounter order."""
     if isinstance(value, str):
-        yield '"'
-        for part in _string_parts(value, pattern):
-            # The template's Image N text needs no JSON escaping.
-            yield _compact_json(part)[1:-1] if isinstance(part, str) else part
-        yield '"'
+        yield from (match.group() for match in pattern.finditer(value))
     elif isinstance(value, Mapping):
-        yield "{"
-        for index, (key, item) in enumerate(value.items()):
-            if index:
-                yield ","
-            yield _json_key(key)
-            yield ":"
-            yield from _json_parts(item, pattern)
-        yield "}"
+        for item in value.values():
+            yield from _asset_references(item, pattern)
     elif isinstance(value, list):
-        yield "["
-        for index, item in enumerate(value):
-            if index:
-                yield ","
-            yield from _json_parts(item, pattern)
-        yield "]"
-    else:
-        yield _compact_json(value)
-
-
-def _reference_parts(value, pattern: re.Pattern[str] | None) -> _ReferenceParts:
-    if value is None:
-        return ()
-    if pattern is None:
-        text = render_text(value)
-        return (text,) if text else ()
-    if isinstance(value, str):
-        return tuple(_string_parts(value, pattern))
-
-    parts: list[str | _AssetRef] = []
-    literal: list[str] = []
-    for part in _json_parts(value, pattern):
-        if isinstance(part, str):
-            literal.append(part)
-        else:
-            if literal:
-                parts.append("".join(literal))
-                literal.clear()
-            parts.append(part)
-    if literal:
-        parts.append("".join(literal))
-    return tuple(parts)
+        for item in value:
+            yield from _asset_references(item, pattern)
 
 
 @dataclass(frozen=True)
@@ -290,13 +221,6 @@ class PiccoloInputs:
     jev_request: JevRequest
     question_key: str
     asset_order: tuple[str, ...]
-
-    @property
-    def state_is_asset_only(self) -> bool:
-        state = self.jev_request["state"]
-        return isinstance(state, dict) and all(
-            isinstance(value, str) and value in self.asset_order for value in state.values()
-        )
 
 
 @dataclass(frozen=True)
@@ -310,8 +234,6 @@ class Candidate:
 class PreparedDecision:
     prompt: PiccoloInputs
     candidates: tuple[Candidate, ...]
-    state_parts: FieldParts | None
-    instruction_parts: FieldParts
 
 
 @dataclass(frozen=True)
@@ -319,7 +241,7 @@ class PreparedRequest:
     payload: JevRequest
     image_sources: dict[str, str | bytes]
     _asset_pattern: re.Pattern[str] | None = field(repr=False)
-    _state_parts: _ReferenceParts = field(repr=False)
+    _state_asset_ids: tuple[str, ...] = field(repr=False)
 
 
 def prepare_request(payload: JevRequest) -> PreparedRequest:
@@ -328,7 +250,12 @@ def prepare_request(payload: JevRequest) -> PreparedRequest:
     SystemOneInputs.model_validate(payload)
     sources = dict(_validated_sources(payload.get("assets", {})))
     pattern = _reference_pattern(sources)
-    return PreparedRequest(payload, sources, pattern, _reference_parts(payload["state"], pattern))
+    state_ids = (
+        tuple(dict.fromkeys(_asset_references(payload["state"], pattern)))
+        if pattern is not None
+        else ()
+    )
+    return PreparedRequest(payload, sources, pattern, state_ids)
 
 
 def prepare_decision(request: PreparedRequest, question_key: str) -> PreparedDecision:
@@ -341,39 +268,22 @@ def prepare_decision(request: PreparedRequest, question_key: str) -> PreparedDec
     if is_noul:
         options.reverse()
 
-    state = request._state_parts
-    instructions = _reference_parts(question.get("instructions"), pattern)
-    criteria = question.get("criteria") or {}
-    # Default noul descriptions are literal text even if an asset ID occurs in them.
-    descriptions = tuple(
-        None
-        if description is None
-        else _reference_parts(description, None if is_noul and key not in criteria else pattern)
-        for key, description in options
-    )
-    order = dict.fromkeys(
-        part.asset_id
-        for parts in (state, instructions, *descriptions)
-        if parts is not None
-        for part in parts
-        if isinstance(part, _AssetRef)
-    )
+    order = dict.fromkeys(request._state_asset_ids)
+    if pattern is not None:
+        order.update(dict.fromkeys(_asset_references(question.get("instructions"), pattern)))
+        criteria = question.get("criteria") or {}
+        for key, description in options:
+            # Default noul descriptions do not reference request assets.
+            if not is_noul or key in criteria:
+                order.update(dict.fromkeys(_asset_references(description, pattern)))
     for key in request.image_sources:
         order.setdefault(key)
-    asset_order = tuple(order)
-    indices = {key: index for index, key in enumerate(asset_order, start=1)}
-
-    def number_refs(parts: _ReferenceParts) -> FieldParts:
-        return tuple(indices[part.asset_id] if isinstance(part, _AssetRef) else part for part in parts)
 
     labels = DEFAULT_CHOICE_LABELS[: len(options)]
-    prompt = PiccoloInputs(payload, question_key, asset_order)
     return PreparedDecision(
-        prompt=prompt,
+        prompt=PiccoloInputs(payload, question_key, tuple(order)),
         candidates=tuple(
             Candidate(key, label, description)
             for (key, description), label in zip(options, labels, strict=True)
         ),
-        state_parts=None if prompt.state_is_asset_only else number_refs(state),
-        instruction_parts=number_refs(instructions),
     )

@@ -27,8 +27,6 @@ def render_prompt(
     return _compile_jinja_template(template).render(
         prompt=decision.prompt,
         candidates=decision.candidates,
-        state_parts=decision.state_parts,
-        instruction_parts=decision.instruction_parts,
         render_text=render_text,
         vision_overview_text=_vision_overview_text,
         add_generation_prompt=add_generation_prompt,

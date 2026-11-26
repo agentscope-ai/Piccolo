@@ -1,14 +1,4 @@
 {# Piccolo Qwen3.5 decision prompt from one Jev request and a selected question. #}
-{%- macro render_field(parts) -%}
-    {%- for part in parts -%}
-        {%- if part is integer -%}
-            {{- 'Image ' ~ part -}}
-        {%- else -%}
-            {{- part -}}
-        {%- endif -%}
-    {%- endfor -%}
-{%- endmacro -%}
-
 {%- set request = prompt.jev_request -%}
 {%- set question = request.questions[prompt.question_key] -%}
 {%- set visual = prompt.asset_order | length > 0 -%}
@@ -30,10 +20,11 @@
         {%- endif -%}
         {{- question.get('instructions') ~ '\n' -}}
     {%- else -%}
-        {%- if state_parts is not none -%}
-            {{- render_field(state_parts) ~ '\n\n' -}}
+        {# Only an empty object suppresses the text-only state section. #}
+        {%- if request.state != {} -%}
+            {{- render_text(request.state) ~ '\n\n' -}}
         {%- endif -%}
-        {{- render_field(instruction_parts) ~ '\n' -}}
+        {{- render_text(question.get('instructions')) ~ '\n' -}}
     {%- endif -%}
     {%- for option in candidates -%}
         {{- option.label ~ '. ' -}}
