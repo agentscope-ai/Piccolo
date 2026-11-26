@@ -13,7 +13,6 @@
 {%- endset -%}
 
 {%- set body -%}
-    {# Match the original visual path's raw state and option descriptions. #}
     {%- if visual -%}
         {%- if request.state not in (none, {}, '') -%}
             {{- 'State:\n' ~ render_text(request.state) ~ '\n\n' -}}
@@ -28,18 +27,14 @@
     {%- endif -%}
     {%- for option in candidates -%}
         {{- option.label ~ '. ' -}}
-        {%- if visual -%}
-            {{- option.description -}}
-        {%- else -%}
-            {%- if question.type == 'choice' -%}
-                {{- option.key -}}
-                {%- if option.description is not none -%}
-                    {{- ': ' -}}
-                {%- endif -%}
-            {%- endif -%}
+        {%- if question.type == 'choice' -%}
+            {{- option.key -}}
             {%- if option.description is not none -%}
-                {{- render_text(option.description) -}}
+                {{- ': ' -}}
             {%- endif -%}
+        {%- endif -%}
+        {%- if option.description is not none or (visual and question.type != 'choice') -%}
+            {{- option.description if visual else render_text(option.description) -}}
         {%- endif -%}
         {{- '\n' -}}
     {%- endfor -%}
