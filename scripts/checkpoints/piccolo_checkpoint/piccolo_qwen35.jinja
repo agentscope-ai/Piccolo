@@ -1,0 +1,53 @@
+{# Piccolo Qwen3.5 decision prompt from one Jev request and a selected question. #}
+{%- set request = prompt.jev_request -%}
+{%- set question = request.questions[prompt.question_key] -%}
+{%- set visual = prompt.asset_order | length > 0 -%}
+
+{%- set header -%}
+    {{- 'Questions that will be asked about the context:\n' -}}
+    {%- for item in request.questions.values() -%}
+        {%- set instructions = item.get('instructions') -%}
+        {{- '- ' ~ (vision_overview_text(instructions) if visual else render_text(instructions)) ~ '\n' -}}
+    {%- endfor -%}
+    {{- '\n' -}}
+{%- endset -%}
+
+{%- set body -%}
+    {%- if visual -%}
+        {%- if request.state not in (none, {}, '') -%}
+            {{- 'State:\n' ~ render_text(request.state) ~ '\n\n' -}}
+        {%- endif -%}
+        {{- question.get('instructions') ~ '\n' -}}
+    {%- else -%}
+        {# Only an empty object suppresses the text-only state section. #}
+        {%- if request.state != {} -%}
+            {{- render_text(request.state) ~ '\n\n' -}}
+        {%- endif -%}
+        {{- render_text(question.get('instructions')) ~ '\n' -}}
+    {%- endif -%}
+    {%- for option in candidates -%}
+        {{- option.label ~ '. ' ~ option.key -}}
+        {%- if option.description is not none -%}
+            {{- ': ' -}}
+            {{- option.description
+                if visual and option.description is not mapping
+                else render_text(option.description) -}}
+        {%- endif -%}
+        {{- '\n' -}}
+    {%- endfor -%}
+    {{- "Answer with the option's letter from the given choices directly." -}}
+{%- endset -%}
+
+{%- set media -%}
+    {%- for asset_id in prompt.asset_order -%}
+        {{- '<|vision_start|><|image_pad|><|vision_end|>' -}}
+    {%- else -%}
+        {{- '\n\n' -}}
+    {%- endfor -%}
+{%- endset -%}
+
+{# Preserve the checkpoint layout, including the body on both sides of the media. #}
+{%- set ocr = ('State:\n' ~ ocr_state ~ '\n\n') if ocr_state else '' -%}
+{%- set user_text = header ~ ocr ~ body ~ media ~ body -%}
+{{- '<|im_start|>user\n' ~ (user_text | trim) ~ '<|im_end|>\n' -}}
+{{- '<|im_start|>assistant\n<think>\n\n</think>\n\n' -}}

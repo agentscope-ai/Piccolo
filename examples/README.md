@@ -2,18 +2,14 @@
 
 [request.json](request.json) asks whether a read-only tool operation may delete or overwrite data. The example returns candidate probabilities without executing the tool. The [workflow collection](workflows/README.md) contains 12 bilingual examples from agent and data workflows.
 
-## Full checkpoint
+## Using the request example
 
-Run from the repository root in a Python environment with sufficient memory for the 4B weights:
+Load `request.json` and run inference with the Transformers processor and model;
+see the [HF guide](../inference/hf/README.md#using-transformers). Shared request
+formats and image assets are documented in the
+[inference overview](../inference/README.md#inputs-and-outputs).
 
-```bash
-python -m pip install -r inference/reference/requirements.txt huggingface_hub
-hf download agentscope-ai/Piccolo-4B --revision ae30995bef9b0f0fa7d12adf517c63cdbc4d10d2 --local-dir Piccolo-4B
-python inference/reference/piccolo_inference.py \
-  --model Piccolo-4B --request examples/request.json --device cuda:0 --output result.json
-```
-
-For CPU inference, use `--device cpu --dtype float32`. The output includes `attention_mode`, `layout` and `results`. Each `option_keys` list corresponds to `bidirectional_prompt.probabilities`; the probabilities sum to one.
+For HTTP calls, see the [SGLang guide](../inference/sglang/README.md#http-requests).
 
 ## QwenPaw
 

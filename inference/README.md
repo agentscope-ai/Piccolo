@@ -1,31 +1,99 @@
-# Inference and local integration
+# Piccolo inference overview
 
-Piccolo provides full Safetensors checkpoints and three GGUF formats. See the [model matrix](../docs/MODELS.md). For local use, start the compatible llama.cpp runtime managed by [QwenPaw](../docs/QWENPAW.md). For full checkpoints, use the [reference implementation](reference/piccolo_inference.py).
+Piccolo and PiccoloLoop use the same candidate-scoring protocol. Normalized HF
+checkpoints support local Transformers inference and HTTP serving through SGLang.
 
-## Reference inference
+## Getting started
 
-Run from the repository root:
+| Task | Guide | Scope |
+| --- | --- | --- |
+| Local HF inference | [HF guide](hf/README.md) | AutoModel/AutoProcessor, input encoding and result handling |
+| HTTP serving | [SGLang guide](sglang/README.md) | Installation, startup, HTTP requests and runtime constraints |
+| Checkpoint preparation | [Checkpoint tools](../scripts/checkpoints/README.md) | Qwen3.5 conversion, source packaging, loop configuration and structural validation |
 
-```bash
-python -m pip install -r inference/reference/requirements.txt huggingface_hub
-hf download agentscope-ai/Piccolo-4B --revision ae30995bef9b0f0fa7d12adf517c63cdbc4d10d2 --local-dir Piccolo-4B
-python inference/reference/piccolo_inference.py \
-  --model Piccolo-4B --request examples/request.json --device cuda:0
+`inference/hf/` contains the Transformers example, dependencies and usage guide.
+`inference/sglang/` contains the serving plugin and native execution adapters.
+Model, processor and template sources for checkpoint preparation live in
+`scripts/checkpoints/`; inference does not depend on those tools.
+
+This overview defines the shared inputs and execution semantics. Each backend
+guide covers its own invocation method. Run all commands from the repository root.
+
+## Checkpoint requirements
+
+| Architecture | `model_type` | HF model class |
+| --- | --- | --- |
+| Piccolo | `piccolo_qwen3_5` | `PiccoloModel` |
+| PiccoloLoop | `piccolo_qwen3_5_loop` | `PiccoloLoopModel` |
+
+A complete checkpoint provides `config.json`, Safetensors weights, processor and
+tokenizer assets, `chat_template.jinja`, and the Python modules referenced by
+`auto_map`. Configuration, input processing and templates are loaded from the
+checkpoint. PiccoloLoop defines its language and vision recurrence in
+`config.json` through `loop_config`.
+
+The candidate-scoring interface described here requires a normalized Piccolo or
+PiccoloLoop checkpoint. For historical models, use the inference code commit
+specified in their Hugging Face model cards. Prepare Qwen3.5 checkpoints with
+the checkpoint tools before using this interface. Changing the template changes
+inference semantics; historical published scores do not validate a new configuration.
+
+Published GGUF models use the compatible llama.cpp runtime managed by
+[QwenPaw](../docs/QWENPAW.md). See the [model guide](../docs/MODELS.md) for formats
+and pinned revisions.
+
+## Inputs and outputs
+
+HF requests contain `state`, the complete `questions` mapping and optional image
+`assets`. HTTP requests add `model`, which must match the served model name.
+
+```json
+{
+  "state": "The sky is blue.",
+  "questions": {
+    "q": {"type": "noul", "instructions": "Is the sky blue?"}
+  }
+}
 ```
 
-The model directory must contain `decision-inference.json`, the tokenizer and all weight shards. CPU inference uses `--device cpu --dtype float32`. See the [request and output example](../examples/README.md). The implementation includes candidate-row scoring, the attention mask and prompt compilation. The FlexDM layout retains its [MIT notice](reference/THIRD_PARTY_LICENSES.md).
+| Question type | `criteria` | Meaning |
+| --- | --- | --- |
+| `choice` | Mapping from option keys to descriptions | Score and normalize over the candidates |
+| `noul` | Optional `true` / `false` descriptions | Estimate the probability that a proposition is true |
+| `score` | Ordered list of level descriptions, from lowest to highest | Score the ordered levels |
 
-## SGLang server
+Images are referenced by asset ID from the state, questions or candidate fields.
+Following [Jev reference semantics](https://docs.typesafe.ai/images#references),
+IDs match literal substrings anywhere in string values: `cat` also matches the
+start of `category`. Whole values match first; longer strings are scanned from
+left to right without overlapping replacements. Object keys, option keys and
+question IDs stay unchanged. Use UUIDs or explicitly delimited IDs to avoid
+accidental matches. When several IDs match at the same position, this
+implementation prefers the longest ID; Jev does not specify that tie-break.
 
-The [SGLang plugin](piccolo_inference_sglang/README.md) provides `/v1/systemone` for text and `/v1/decisions` for vision, with installation, launch and evaluation commands.
+Replace `data_base64` below with actual PNG data. An asset may also use
+`{"type":"image","url":"https://..."}`.
 
-## Decision protocol
+```json
+{
+  "state": {"image": "photo"},
+  "questions": {
+    "q": {"type": "noul", "instructions": "Is the image red?"}
+  },
+  "assets": {
+    "photo": {"type": "image", "format": "png", "data_base64": "..."}
+  }
+}
+```
 
-- **Input:** native `state` and complete `questions`, using the `flex_twice` layout. Rereading is used when the single-pass request fits within 3,000 tokens and each compiled row fits the context window.
-- **Attention:** Qwen3.5 full-attention layers attend bidirectionally over the complete prompt; linear-attention layers retain their original computation.
-- **Output:** read single-token candidate logits at `Answer: (` and apply a temperature-1 softmax. No answer text is generated.
-- **Runtime:** disable prefix reuse, causal chunked prefill and silent truncation. QwenPaw allows up to 8,192 tokens per compiled prompt row.
+The model reads candidate logits at the last real prompt token and applies a
+softmax over the candidate set at temperature 1. HF probabilities follow the
+processor's `option_keys`; `noul` uses false, true order. The HTTP service converts
+these scores into structured answers and returns the probability of true for `noul`.
 
-Use a runtime that implements this decision protocol. The `blink` identifier in GGUF files is the serialized architecture name.
+## Execution semantics
 
-[Models](../docs/MODELS.md) · [Benchmark results and reproduction](../evaluation/README.md)
+- Full-attention layers are bidirectional; GDN layers retain causal scans.
+- Each call processes an independent complete prompt, without incremental generation, prefix reuse or silent truncation.
+- Models return candidate scores and probabilities without generating answer tokens.
+- PiccoloLoop shares physical layer weights across passes. Each GDN pass starts with an empty scan state while hidden states continue from the preceding pass.

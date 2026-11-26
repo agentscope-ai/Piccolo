@@ -24,7 +24,9 @@ Piccolo is integrated into [QwenPaw main](https://github.com/agentscope-ai/QwenP
 
 Thresholds are catalog policy, not measured peak-memory guarantees. The managed runtime serves one model at a time. Starting Piccolo selects the decision slot; automatic review and compaction each have their own opt-in switch.
 
-Inference requires bidirectional prompt attention in full-attention layers, unchanged linear attention, the exact `flex_twice` layout and candidate-token probability readout. It generates no answer tokens. Stock causal chat completion is not equivalent. [Reference inference](../inference/README.md).
+Inference for the published revisions above requires bidirectional prompt attention in full-attention layers, unchanged linear attention, the exact `flex_twice` layout and candidate-token probability readout. It generates no answer tokens. Stock causal chat completion is not equivalent. For historical checkpoints, use the inference code commit specified in their model cards;
+[the current HF and SGLang usage](../inference/README.md#checkpoint-requirements) require normalized
+Piccolo or PiccoloLoop HF exports.
 
 ## Evaluation
 

@@ -100,7 +100,7 @@ Piccolo is integrated into **[QwenPaw main](https://github.com/agentscope-ai/Qwe
 
 Starting the model does not enable these features. The managed local runtime serves **one model at a time**; chat can use another provider. Review keeps its native thresholds and human-approval fallback. [Setup screenshots](assets/qwenpaw/README.md).
 
-Piccolo reads candidate-token logits directly with bidirectional prompt attention in full-attention layers and unchanged linear attention. It generates no answer text. The native `/v1/systemone` endpoint returns structured results. Stock causal chat completion does not implement this contract. [Reference inference and request example](inference/README.md).
+Piccolo reads candidate-token logits directly with bidirectional prompt attention in full-attention layers and unchanged linear attention. It generates no answer text. The native `/v1/systemone` endpoint returns structured results. Stock causal chat completion does not implement this contract. [Inference overview and request format](inference/README.md).
 
 ## Run the Arena
 
@@ -128,7 +128,7 @@ Open **http://127.0.0.1:8080/**. See [Arena setup](arena/README.md), [API](arena
 | Path | Contents |
 | --- | --- |
 | [models/](models/README.md) | Published model links and fixed revision manifest |
-| [inference/](inference/README.md) | Full-checkpoint reference inference and native protocol |
+| [inference/](inference/README.md) | HF inference and SGLang serving |
 | [examples/](examples/README.md) | Minimal decision request and local invocation |
 | [evaluation/](evaluation/README.md) | Benchmark results and one-command reproduction |
 | [arena/](arena/README.md) | Interactive application, shared engines, results and replays |
@@ -148,4 +148,4 @@ python3.12 -m unittest tests.test_home_decision -v
 
 ## License and attribution
 
-Original project code is licensed under **[Apache-2.0](LICENSE)**. The published model repositories also use Apache-2.0. Third-party components retain their own licenses: see [NOTICE](NOTICE), [Arena third-party notes](arena/docs/THIRD_PARTY.md) and [FlexDM's MIT notice](inference/reference/THIRD_PARTY_LICENSES.md). Arena derives from JevArena; historical `jev.*` protocols, `JEV_*` environment variables and replay IDs remain intact.
+Original project code is licensed under **[Apache-2.0](LICENSE)**. The published model repositories also use Apache-2.0. Third-party components retain their own licenses: see [NOTICE](NOTICE), [Arena third-party notes](arena/docs/THIRD_PARTY.md) and [FlexDM's MIT notice](scripts/checkpoints/piccolo_checkpoint/licenses/FlexDM-MIT.txt). Arena derives from JevArena; historical `jev.*` protocols, `JEV_*` environment variables and replay IDs remain intact.
