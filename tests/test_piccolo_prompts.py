@@ -26,7 +26,7 @@ REQUESTS = {
                 "instructions": "记录是否明确显示宠物？",
                 "criteria": {
                     "true": "记录明确显示宠物。",
-                    "false": "记录没有明确显示宠物。",
+                    "false": None,
                 },
             },
             "score": {
@@ -108,15 +108,15 @@ Questions that will be asked about the context:
 {"scene":"宠物档案","visible":true}
 
 记录是否明确显示宠物？
-A. 记录没有明确显示宠物。
-B. 记录明确显示宠物。
+A. false
+B. true: 记录明确显示宠物。
 Answer with the option's letter from the given choices directly.
 
 {"scene":"宠物档案","visible":true}
 
 记录是否明确显示宠物？
-A. 记录没有明确显示宠物。
-B. 记录明确显示宠物。
+A. false
+B. true: 记录明确显示宠物。
 Answer with the option's letter from the given choices directly.<|im_end|>
 <|im_start|>assistant
 <think>
@@ -133,17 +133,17 @@ Questions that will be asked about the context:
 {"scene":"宠物档案","visible":true}
 
 评估记录的清晰度。
-A. 低
-B. {"label":"中","certainty":null}
-C. 高
+A. 0: 低
+B. 1: {"label":"中","certainty":null}
+C. 2: 高
 Answer with the option's letter from the given choices directly.
 
 {"scene":"宠物档案","visible":true}
 
 评估记录的清晰度。
-A. 低
-B. {"label":"中","certainty":null}
-C. 高
+A. 0: 低
+B. 1: {"label":"中","certainty":null}
+C. 2: 高
 Answer with the option's letter from the given choices directly.<|im_end|>
 <|im_start|>assistant
 <think>
@@ -188,14 +188,14 @@ State:
 {"scene":"宠物照片","visible":true}
 
 看 asset-detail，是否能确认宠物？
-A. The proposition is false.
-B. The proposition is true.
+A. false
+B. true
 Answer with the option's letter from the given choices directly.<|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|>State:
 {"scene":"宠物照片","visible":true}
 
 看 asset-detail，是否能确认宠物？
-A. The proposition is false.
-B. The proposition is true.
+A. false
+B. true
 Answer with the option's letter from the given choices directly.<|im_end|>
 <|im_start|>assistant
 <think>
@@ -216,14 +216,14 @@ State:
 {"scene":"宠物照片","visible":true}
 
 看 asset-detail，是否能确认宠物？
-A. The proposition is false.
-B. The proposition is true.
+A. false
+B. true
 Answer with the option's letter from the given choices directly.<|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|>State:
 {"scene":"宠物照片","visible":true}
 
 看 asset-detail，是否能确认宠物？
-A. The proposition is false.
-B. The proposition is true.
+A. false
+B. true
 Answer with the option's letter from the given choices directly.<|im_end|>
 <|im_start|>assistant
 <think>
@@ -241,16 +241,16 @@ State:
 {"scene":"宠物照片","visible":true}
 
 按 asset-scene 评估照片的清晰度。
-A. 低
-B. {"label":"中","certainty":null}
-C. 高
+A. 0: 低
+B. 1: {"label":"中","certainty":null}
+C. 2: 高
 Answer with the option's letter from the given choices directly.<|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|>State:
 {"scene":"宠物照片","visible":true}
 
 按 asset-scene 评估照片的清晰度。
-A. 低
-B. {"label":"中","certainty":null}
-C. 高
+A. 0: 低
+B. 1: {"label":"中","certainty":null}
+C. 2: 高
 Answer with the option's letter from the given choices directly.<|im_end|>
 <|im_start|>assistant
 <think>

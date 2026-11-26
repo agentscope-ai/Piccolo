@@ -26,14 +26,9 @@
         {{- render_text(question.get('instructions')) ~ '\n' -}}
     {%- endif -%}
     {%- for option in candidates -%}
-        {{- option.label ~ '. ' -}}
-        {%- if question.type == 'choice' -%}
-            {{- option.key -}}
-            {%- if option.description is not none -%}
-                {{- ': ' -}}
-            {%- endif -%}
-        {%- endif -%}
-        {%- if option.description is not none or (visual and question.type != 'choice') -%}
+        {{- option.label ~ '. ' ~ option.key -}}
+        {%- if option.description is not none -%}
+            {{- ': ' -}}
             {{- option.description
                 if visual and option.description is not mapping
                 else render_text(option.description) -}}

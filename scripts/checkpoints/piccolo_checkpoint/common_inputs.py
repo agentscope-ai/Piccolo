@@ -104,12 +104,8 @@ def question_options(question):
         return list(criteria.items())
     if kind == "score":
         return [(str(i), value) for i, value in enumerate(criteria)]
-    criteria = {
-        "true": "The proposition is true.",
-        "false": "The proposition is false.",
-        **(criteria or {}),
-    }
-    return list(criteria.items())
+    criteria = criteria or {}
+    return [("false", criteria.get("false")), ("true", criteria.get("true"))]
 
 
 def _validated_sources(assets):
@@ -257,18 +253,12 @@ def prepare_decision(request: PreparedRequest, question_key: str) -> PreparedDec
     pattern = request._asset_pattern
     question = payload["questions"][question_key]
     options = question_options(question)
-    is_noul = question["type"] == "noul"
-    if is_noul:
-        options.reverse()
 
     order = dict.fromkeys(request._state_asset_ids)
     if pattern is not None:
         order.update(dict.fromkeys(_asset_references(question.get("instructions"), pattern)))
-        criteria = question.get("criteria") or {}
-        for key, description in options:
-            # Default noul descriptions do not reference request assets.
-            if not is_noul or key in criteria:
-                order.update(dict.fromkeys(_asset_references(description, pattern)))
+        for _, description in options:
+            order.update(dict.fromkeys(_asset_references(description, pattern)))
     for key in request.image_sources:
         order.setdefault(key)
 
