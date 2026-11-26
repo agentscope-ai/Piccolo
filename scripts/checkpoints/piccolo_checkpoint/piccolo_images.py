@@ -1,6 +1,5 @@
 """Load and resize Piccolo image sources."""
 
-import base64
 import os
 from io import BytesIO
 
@@ -18,8 +17,6 @@ def load_image_source(source, *, download=None):
             source = response.content
         else:
             source = download(source)
-    elif isinstance(source, str) and source.startswith("data:"):
-        source = base64.b64decode(source.split(",", 1)[1], validate=True)
     if isinstance(source, bytes):
         source = BytesIO(source)
     try:
@@ -30,8 +27,25 @@ def load_image_source(source, *, download=None):
     return image
 
 
-def load_piccolo_image(url, max_pixels, *, image_loader=None):
-    image = (image_loader or load_image_source)(url)
+def load_request_images(sources, *, download=None):
+    """Decode each source once and keep the result under every referring asset ID."""
+    loaded = {
+        source: load_image_source(source, download=download)
+        for source in dict.fromkeys(sources.values())
+    }
+    return {key: loaded[source] for key, source in sources.items()}
+
+
+def map_unique_images(images, transform):
+    """Apply a transform once per decoded image, including shared asset sources."""
+    results = {}
+    for image in images.values():
+        if id(image) not in results:
+            results[id(image)] = transform(image)
+    return {key: results[id(image)] for key, image in images.items()}
+
+
+def normalize_image(image, max_pixels):
     width, height = image.size
     if width * height > max_pixels:
         scale = (max_pixels / (width * height)) ** 0.5
@@ -50,5 +64,7 @@ def load_piccolo_image(url, max_pixels, *, image_loader=None):
         resized = image.convert(mode).resize((w, h), Image.Resampling.LANCZOS)
         stream = BytesIO()
         resized.save(stream, fmt, **({"quality": 95} if fmt == "JPEG" else {}))
-        image = Image.open(BytesIO(stream.getvalue()))
-    return image.convert("RGB")
+        stream.seek(0)
+        with Image.open(stream) as reduced:
+            return reduced.convert("RGB")
+    return image if image.mode == "RGB" else image.convert("RGB")

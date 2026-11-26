@@ -80,6 +80,10 @@ class SystemOneInputs(BaseModel):
 class SystemOneTextRequest(SystemOneInputs):
     model: str
 
+    def prepare(self) -> PreparedRequest:
+        """Prepare the validated HTTP body without validating its JSON again."""
+        return _prepare_payload(self.model_dump(exclude={"model"}, exclude_unset=True))
+
 
 def _compact_json(value) -> str:
     return json.dumps(value, ensure_ascii=False, separators=(",", ":"), allow_nan=False)
@@ -106,21 +110,6 @@ def question_options(question):
         **(criteria or {}),
     }
     return list(criteria.items())
-
-
-def image_source_name(asset, source: str | bytes) -> str:
-    """Return the source string expected by custom image loaders."""
-    if isinstance(source, str):
-        return source
-    fmt = "jpeg" if asset["format"] == "jpg" else asset["format"]
-    return f"data:image/{fmt};base64,{asset['data_base64']}"
-
-
-def image_sources(assets) -> dict[str, str]:
-    """Validate asset descriptors and return their original loader source strings."""
-    return {
-        key: image_source_name(assets[key], source) for key, source in _validated_sources(assets)
-    }
 
 
 def _validated_sources(assets):
@@ -248,6 +237,10 @@ def prepare_request(payload: JevRequest) -> PreparedRequest:
     """Validate and prepare data shared by every question in the request."""
     payload = deepcopy(payload)
     SystemOneInputs.model_validate(payload)
+    return _prepare_payload(payload)
+
+
+def _prepare_payload(payload: JevRequest) -> PreparedRequest:
     sources = dict(_validated_sources(payload.get("assets", {})))
     pattern = _reference_pattern(sources)
     state_ids = (

@@ -12,13 +12,12 @@ from .common_inputs import (
     JevRequest,
     PreparedDecision,
     PreparedRequest,
-    image_source_name,
     prepare_decision,
     prepare_request,
 )
 from .common_media import EncodedImages, encode_prompt, prompt_encoding_kwargs
-from .piccolo_images import load_image_source, load_piccolo_image
-from .piccolo_ocr import DETECTOR_ID, RECOGNIZER_ID, TorchOCR
+from .piccolo_images import load_request_images, map_unique_images, normalize_image
+from .piccolo_ocr import DETECTOR_ID, MAX_IMAGE_PIXELS, RECOGNIZER_ID, TorchOCR
 
 
 @dataclass
@@ -29,8 +28,6 @@ class EncodedDecision:
 
 
 class PiccoloProcessor(Qwen3VLProcessor):
-    image_loader = None
-
     @staticmethod
     def load_ocr(detector=DETECTOR_ID, recognizer=RECOGNIZER_ID, *, device="cpu"):
         """Load the optional OCR backend from local directories or the local Hub cache."""
@@ -93,12 +90,11 @@ class PiccoloProcessor(Qwen3VLProcessor):
         decisions = [prepare_decision(request, key) for key in keys]
         kwargs = prompt_encoding_kwargs(self)
         asset_order = decisions[0].prompt.asset_order
-        images = self._load_images(request, asset_order, images)
-        ocr_texts = ocr.recognize(images) if isinstance(ocr, TorchOCR) else ocr
+        if images is None:
+            images = load_request_images(request.image_sources)
+        images, ocr_texts = self.prepare_media({key: images[key] for key in asset_order}, ocr=ocr)
         if images:
-            limit = self.image_processor.size["longest_edge"]
-            ordered = [load_piccolo_image(images[key], limit) for key in asset_order]
-            pixels = self.image_processor(images=ordered, **kwargs["images_kwargs"])
+            pixels = self.image_processor(images=list(images.values()), **kwargs["images_kwargs"])
         else:
             pixels = {}
         encoded_images = EncodedImages(asset_order, pixels)
@@ -107,16 +103,15 @@ class PiccoloProcessor(Qwen3VLProcessor):
             for decision in decisions
         ]
 
-    def _load_images(self, request: PreparedRequest, asset_order, images):
-        if images is not None:
-            return {key: images[key] for key in asset_order}
-        if self.image_loader:
-            assets = request.payload.get("assets", {})
-            return {
-                key: self.image_loader(image_source_name(assets[key], request.image_sources[key]))
-                for key in asset_order
-            }
-        return {key: load_image_source(request.image_sources[key]) for key in asset_order}
+    def prepare_media(self, images, *, ocr=None):
+        """Normalize decoded images and resolve OCR, sharing pixels when the limits agree."""
+        if not images:
+            return images, None if isinstance(ocr, TorchOCR) else ocr
+        limit = self.image_processor.size["longest_edge"]
+        normalized = map_unique_images(images, lambda image: normalize_image(image, limit))
+        if isinstance(ocr, TorchOCR):
+            ocr = ocr.recognize(normalized if limit == MAX_IMAGE_PIXELS else images)
+        return normalized, ocr
 
     def _encode_decision(self, decision: PreparedDecision, images: EncodedImages, text_kwargs, ocr_texts):
         encoded = encode_prompt(

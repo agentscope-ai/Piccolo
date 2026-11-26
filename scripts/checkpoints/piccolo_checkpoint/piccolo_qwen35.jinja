@@ -48,9 +48,6 @@
 
 {%- set media -%}
     {%- for asset_id in prompt.asset_order -%}
-        {%- if add_vision_id -%}
-            {{- 'Picture ' ~ loop.index ~ ': ' -}}
-        {%- endif -%}
         {{- '<|vision_start|><|image_pad|><|vision_end|>' -}}
     {%- else -%}
         {{- '\n\n' -}}
@@ -61,11 +58,4 @@
 {%- set ocr = ('State:\n' ~ ocr_state ~ '\n\n') if ocr_state else '' -%}
 {%- set user_text = header ~ ocr ~ body ~ media ~ body -%}
 {{- '<|im_start|>user\n' ~ (user_text | trim) ~ '<|im_end|>\n' -}}
-{%- if add_generation_prompt -%}
-    {{- '<|im_start|>assistant\n' -}}
-    {%- if enable_thinking is defined and enable_thinking is true -%}
-        {{- '<think>\n' -}}
-    {%- else -%}
-        {{- '<think>\n\n</think>\n\n' -}}
-    {%- endif -%}
-{%- endif -%}
+{{- '<|im_start|>assistant\n<think>\n\n</think>\n\n' -}}

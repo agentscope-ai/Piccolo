@@ -9,9 +9,6 @@ from transformers.utils.chat_template_utils import _compile_jinja_template
 
 from .common_inputs import PreparedDecision, render_text
 
-# Checkpoint consumers use this import path to load image sources.
-from .piccolo_images import load_image_source  # noqa: F401
-
 
 def _vision_overview_text(value) -> str:
     return value if isinstance(value, str) else json.dumps(value, ensure_ascii=False)
@@ -50,9 +47,6 @@ def render_prompt(
     template: str,
     decision: PreparedDecision,
     *,
-    add_generation_prompt: bool = True,
-    enable_thinking: bool = False,
-    add_vision_id: bool = False,
     ocr_texts: Mapping[str, str] | None = None,
 ) -> str:
     return _compile_jinja_template(template).render(
@@ -61,9 +55,10 @@ def render_prompt(
         render_text=render_text,
         vision_overview_text=_vision_overview_text,
         ocr_state=_ocr_state(decision, ocr_texts),
-        add_generation_prompt=add_generation_prompt,
-        enable_thinking=enable_thinking,
-        add_vision_id=add_vision_id,
+        # Keep the existing context for templates supplied at checkpoint export.
+        add_generation_prompt=True,
+        enable_thinking=False,
+        add_vision_id=False,
     )
 
 

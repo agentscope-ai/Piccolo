@@ -30,15 +30,18 @@ class PiccoloEncoder:
         # These modules are bundled with the selected checkpoint's processor.
         package = type(self.processor).__module__.rpartition(".")[0]
         inputs = import_module(".common_inputs", package)
-        media = import_module(".common_media", package)
         self.request_schema = inputs.SystemOneTextRequest
-        self.prepare_request = getattr(inputs, "prepare_request", None)
-        self.image_sources = inputs.image_sources
-        self.load_image_source = media.load_image_source
+        self.load_request_images = None
+        if hasattr(self.request_schema, "prepare"):
+            self.load_request_images = import_module(".piccolo_images", package).load_request_images
+        else:
+            self.prepare_request = getattr(inputs, "prepare_request", None)
+            self.image_sources = inputs.image_sources
+            self.load_image_source = import_module(".common_media", package).load_image_source
         self.ocr = None
         if os.getenv("PICCOLO_OCR_ENABLED") == "1":
             load_ocr = getattr(self.processor, "load_ocr", None)
-            if self.prepare_request is None or load_ocr is None:
+            if load_ocr is None:
                 raise RuntimeError("OCR requires a checkpoint exported with Torch OCR support")
             model_paths = {
                 arg: path
@@ -53,34 +56,19 @@ class PiccoloEncoder:
     def encode_request(self, body):
         if body.model != self.model_name:
             raise ValueError("Unknown served model")
-        raw = body.model_dump(exclude_unset=True)
-        assets = raw.get("assets", {})
-        if any("path" in asset for asset in assets.values()):
+        if any("path" in asset for asset in body.assets.values()):
             raise ValueError("Image assets require HTTP/HTTPS url or data_base64, not local paths")
-        payload = {"state": body.state, "questions": raw["questions"], "assets": assets}
-        # Decode each distinct source before locking. Slow downloads do not block
-        # text requests or requests whose images are already available.
-        request = self.prepare_request(payload) if self.prepare_request is not None else None
-        sources = request.image_sources if request is not None else self.image_sources(assets)
-        loaded = {
-            source: self.load_image_source(source, download=download_image)
-            for source in dict.fromkeys(sources.values())
-        }
-        images = (
-            {key: loaded[source] for key, source in sources.items()} if request is not None else {}
-        )
-        ocr_kwargs = {"ocr": self.ocr.recognize(images)} if self.ocr is not None and images else {}
-        with self.lock:
-            if request is not None:
-                items = self.processor.encode_request(request, images=images, **ocr_kwargs)
-            else:
-                # Published checkpoints without request preparation use a source-string loader.
-                previous_loader = self.processor.image_loader
-                self.processor.image_loader = loaded.__getitem__
-                try:
-                    items = self.processor.encode_request(payload)
-                finally:
-                    self.processor.image_loader = previous_loader
+        if self.load_request_images is None:
+            items = self._encode_older_checkpoint(body)
+        else:
+            request = body.prepare()
+            # Keep downloads and OCR outside the shared processor lock.
+            images = self.load_request_images(request.image_sources, download=download_image)
+            ocr_texts = None
+            if self.ocr is not None and images:
+                images, ocr_texts = self.processor.prepare_media(images, ocr=self.ocr)
+            with self.lock:
+                items = self.processor.encode_request(request, images=images, ocr=ocr_texts)
         encoded = []
         questions = []
         for item in items:
@@ -102,3 +90,28 @@ class PiccoloEncoder:
             encoded.append((tokens, ids, media))
             questions.append((item.question_id, item.option_keys))
         return iter(encoded), questions
+
+    def _encode_older_checkpoint(self, body):
+        raw = body.model_dump(exclude_unset=True)
+        assets = raw.get("assets", {})
+        payload = {"state": body.state, "questions": raw["questions"], "assets": assets}
+        request = self.prepare_request(payload) if self.prepare_request is not None else None
+        sources = request.image_sources if request is not None else self.image_sources(assets)
+        loaded = {
+            source: self.load_image_source(source, download=download_image)
+            for source in dict.fromkeys(sources.values())
+        }
+        if request is not None:
+            images = {key: loaded[source] for key, source in sources.items()}
+            kwargs = {"ocr": self.ocr.recognize(images)} if self.ocr is not None and images else {}
+            with self.lock:
+                return self.processor.encode_request(request, images=images, **kwargs)
+
+        # The earliest checkpoints load images by their original source strings.
+        with self.lock:
+            previous_loader = self.processor.image_loader
+            self.processor.image_loader = loaded.__getitem__
+            try:
+                return self.processor.encode_request(payload)
+            finally:
+                self.processor.image_loader = previous_loader

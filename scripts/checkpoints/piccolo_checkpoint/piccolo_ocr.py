@@ -12,7 +12,7 @@ from transformers import (
     AutoModelForTextRecognition,
 )
 
-from .piccolo_images import load_piccolo_image
+from .piccolo_images import map_unique_images, normalize_image
 
 DETECTOR_ID = "PaddlePaddle/PP-OCRv5_mobile_det_safetensors"
 RECOGNIZER_ID = "PaddlePaddle/en_PP-OCRv5_mobile_rec_safetensors"
@@ -183,12 +183,10 @@ class TorchOCR:
     @torch.inference_mode()
     def recognize(self, images):
         with self._lock, torch.autocast(self.device.type, enabled=False):
-            return {
-                asset_id: self._recognize(image) for asset_id, image in images.items()
-            }
+            return map_unique_images(images, self._recognize)
 
     def _recognize(self, image):
-        image = load_piccolo_image(image, MAX_IMAGE_PIXELS)
+        image = normalize_image(image, MAX_IMAGE_PIXELS)
         bgr = np.asarray(image)[:, :, ::-1].copy()
         pixels = _detection_pixels(self._cv2, bgr).to(self.device)
         detected = self.detector(pixel_values=pixels)

@@ -6,7 +6,6 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.responses import ORJSONResponse
 from fastapi.routing import APIRoute
-from sglang.srt.entrypoints.openai.serving_decisions import QuestionView
 from sglang.srt.entrypoints.systemone.serving import (
     SystemOneServing,
     _choice_confidence,
@@ -17,55 +16,38 @@ from sglang.srt.entrypoints.systemone.serving import (
 from .encoding import PiccoloEncoder
 
 
-def question_view(question):
-    if question.type == "choice":
-        return QuestionView(
-            kind="choice",
-            question=question.instructions,
-            names=list(question.criteria),
-            details=list(question.criteria.values()),
-        )
-    if question.type == "noul":
-        criteria = question.criteria
-        return QuestionView(
-            kind="yes_no",
-            question=question.instructions,
-            names=["true", "false"],
-            details=[criteria.true if criteria else None, criteria.false if criteria else None],
-        )
-    return QuestionView(
-        kind="score",
-        question=question.instructions,
-        names=[str(i) for i in range(len(question.criteria))],
-        details=list(question.criteria),
-    )
-
-
-def answer(view, option_keys, probabilities, question_id):
+def answer(question, option_keys, probabilities, question_id):
+    kind = question.type
+    if kind == "choice":
+        names = list(question.criteria)
+    elif kind == "noul":
+        names = ["true", "false"]
+    else:
+        names = [str(i) for i in range(len(question.criteria))]
     if (
         len(probabilities) != len(option_keys)
-        or len(option_keys) != len(view.names)
-        or set(option_keys) != set(view.names)
+        or len(option_keys) != len(names)
+        or set(option_keys) != set(names)
         or not all(math.isfinite(p) for p in probabilities)
     ):
         raise RuntimeError(f"question {question_id!r} scored invalid values")
     by_key = dict(zip(option_keys, probabilities, strict=True))
-    if view.kind == "yes_no":
+    if kind == "noul":
         return {"type": "noul", "noul": by_key["true"]}
-    by_key = {key: by_key[key] for key in view.names}
+    by_key = {key: by_key[key] for key in names}
     probabilities = list(by_key.values())
-    result = {"type": view.kind, "probabilities": by_key}
+    result = {"type": kind, "probabilities": by_key}
     normalized = _normalized(probabilities)
-    if view.kind == "choice":
+    if kind == "choice":
         result.update(
-            choice=view.names[probabilities.index(max(probabilities))],
+            choice=names[probabilities.index(max(probabilities))],
             confidence=_choice_confidence(normalized),
         )
     else:
         result.update(
             score=math.fsum(i * p for i, p in enumerate(probabilities)),
             confidence=_score_confidence(normalized),
-            legend=dict(zip(view.names, view.details, strict=True)),
+            legend=dict(zip(names, question.criteria, strict=True)),
         )
     return result
 
@@ -81,12 +63,11 @@ class PiccoloServing(SystemOneServing):
         return None
 
     def _convert_to_internal_request(self, request, raw_request=None):
-        encoded, questions = self.encoder.encode_request(request)
-        views = {key: question_view(question) for key, question in request.questions.items()}
-        return encoded, (questions, views)
+        encoded, encoded_questions = self.encoder.encode_request(request)
+        return encoded, (encoded_questions, request.questions)
 
     async def _handle_non_streaming_request(self, adapted_request, processed, raw_request):
-        questions, views = processed
+        encoded_questions, questions = processed
         _, _, result = await self._score(
             adapted_request=adapted_request,
             raw_request=raw_request,
@@ -98,9 +79,9 @@ class PiccoloServing(SystemOneServing):
             content={
                 "model": self.tokenizer_manager.served_model_name,
                 "answers": {
-                    key: answer(views[key], option_keys, probabilities, key)
+                    key: answer(questions[key], option_keys, probabilities, key)
                     for (key, option_keys), probabilities in zip(
-                        questions, result.scores, strict=True
+                        encoded_questions, result.scores, strict=True
                     )
                 },
                 "usage": {"input_tokens": result.prompt_tokens, "output_tokens": 0},
