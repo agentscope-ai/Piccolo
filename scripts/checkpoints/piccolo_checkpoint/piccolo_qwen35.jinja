@@ -11,40 +11,52 @@
 
 {%- set request = prompt.jev_request -%}
 {%- set question = request.questions[prompt.question_key] -%}
+{%- set visual = prompt.asset_order | length > 0 -%}
 
 {%- set header -%}
     {{- 'Questions that will be asked about the context:\n' -}}
     {%- for item in request.questions.values() -%}
-        {{- '- ' ~ render_text(item.get('instructions')) ~ '\n' -}}
+        {%- set instructions = item.get('instructions') -%}
+        {{- '- ' ~ (vision_overview_text(instructions) if visual else render_text(instructions)) ~ '\n' -}}
     {%- endfor -%}
     {{- '\n' -}}
 {%- endset -%}
 
 {%- set body -%}
-    {%- if state_parts is not none -%}
-        {{- render_field(state_parts) ~ '\n\n' -}}
+    {# Match the original visual path's raw state and option descriptions. #}
+    {%- if visual -%}
+        {%- if request.state not in (none, {}, '') -%}
+            {{- 'State:\n' ~ render_text(request.state) ~ '\n\n' -}}
+        {%- endif -%}
+        {{- question.get('instructions') ~ '\n' -}}
+    {%- else -%}
+        {%- if state_parts is not none -%}
+            {{- render_field(state_parts) ~ '\n\n' -}}
+        {%- endif -%}
+        {{- render_field(instruction_parts) ~ '\n' -}}
     {%- endif -%}
-    {{- render_field(instruction_parts) ~ '\n' -}}
     {%- for option in candidates -%}
         {{- option.label ~ '. ' -}}
-        {%- if question.type == 'choice' -%}
-            {{- option.key -}}
+        {%- if visual -%}
+            {{- option.description -}}
+        {%- else -%}
+            {%- if question.type == 'choice' -%}
+                {{- option.key -}}
+                {%- if option.description is not none -%}
+                    {{- ': ' -}}
+                {%- endif -%}
+            {%- endif -%}
             {%- if option.description is not none -%}
-                {{- ': ' -}}
+                {{- render_text(option.description) -}}
             {%- endif -%}
         {%- endif -%}
-        {%- if option.description is not none -%}
-            {{- render_field(option.description) -}}
-        {%- endif -%}
+        {{- '\n' -}}
     {%- endfor -%}
     {{- "Answer with the option's letter from the given choices directly." -}}
 {%- endset -%}
 
 {%- set media -%}
     {%- for asset_id in prompt.asset_order -%}
-        {%- if prompt.asset_order | length > 1 -%}
-            {{- 'Image ' ~ loop.index ~ ':' -}}
-        {%- endif -%}
         {%- if add_vision_id -%}
             {{- 'Picture ' ~ loop.index ~ ': ' -}}
         {%- endif -%}

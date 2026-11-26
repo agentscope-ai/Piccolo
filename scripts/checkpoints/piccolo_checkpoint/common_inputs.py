@@ -303,7 +303,7 @@ class PiccoloInputs:
 class Candidate:
     key: str
     label: str
-    description: FieldParts | None
+    description: DecisionText | None
 
 
 @dataclass(frozen=True)
@@ -371,8 +371,8 @@ def prepare_decision(request: PreparedRequest, question_key: str) -> PreparedDec
     return PreparedDecision(
         prompt=prompt,
         candidates=tuple(
-            Candidate(key, label, None if description is None else number_refs(description))
-            for (key, _), label, description in zip(options, labels, descriptions, strict=True)
+            Candidate(key, label, description)
+            for (key, description), label in zip(options, labels, strict=True)
         ),
         state_parts=None if prompt.state_is_asset_only else number_refs(state),
         instruction_parts=number_refs(instructions),
