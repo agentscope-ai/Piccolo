@@ -34,7 +34,9 @@
             {%- endif -%}
         {%- endif -%}
         {%- if option.description is not none or (visual and question.type != 'choice') -%}
-            {{- option.description if visual else render_text(option.description) -}}
+            {{- option.description
+                if visual and option.description is not mapping
+                else render_text(option.description) -}}
         {%- endif -%}
         {{- '\n' -}}
     {%- endfor -%}
