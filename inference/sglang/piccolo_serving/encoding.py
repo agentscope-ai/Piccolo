@@ -35,6 +35,20 @@ class PiccoloEncoder:
         self.prepare_request = getattr(inputs, "prepare_request", None)
         self.image_sources = inputs.image_sources
         self.load_image_source = media.load_image_source
+        self.ocr = None
+        if os.getenv("PICCOLO_OCR_ENABLED") == "1":
+            load_ocr = getattr(self.processor, "load_ocr", None)
+            if self.prepare_request is None or load_ocr is None:
+                raise RuntimeError("OCR requires a checkpoint exported with Torch OCR support")
+            model_paths = {
+                arg: path
+                for arg, env in (
+                    ("detector", "PICCOLO_OCR_DET_MODEL"),
+                    ("recognizer", "PICCOLO_OCR_REC_MODEL"),
+                )
+                if (path := os.getenv(env))
+            }
+            self.ocr = load_ocr(device=os.getenv("PICCOLO_OCR_DEVICE", "cpu"), **model_paths)
 
     def encode_request(self, body):
         if body.model != self.model_name:
@@ -52,10 +66,13 @@ class PiccoloEncoder:
             source: self.load_image_source(source, download=download_image)
             for source in dict.fromkeys(sources.values())
         }
+        images = (
+            {key: loaded[source] for key, source in sources.items()} if request is not None else {}
+        )
+        ocr_kwargs = {"ocr": self.ocr.recognize(images)} if self.ocr is not None and images else {}
         with self.lock:
             if request is not None:
-                images = {key: loaded[source] for key, source in sources.items()}
-                items = self.processor.encode_request(request, images=images)
+                items = self.processor.encode_request(request, images=images, **ocr_kwargs)
             else:
                 # Published checkpoints without request preparation use a source-string loader.
                 previous_loader = self.processor.image_loader

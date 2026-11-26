@@ -12,6 +12,9 @@ dependencies = ["torch>=2.11", "transformers==5.19.0", "Pillow>=11.3.0", "httpx>
 [project.entry-points."sglang.srt.plugins"]
 piccolo = "piccolo_serving.plugin:register"
 
+[project.optional-dependencies]
+ocr = ["opencv-python-headless>=4.10", "pyclipper>=1.3"]
+
 [tool.setuptools.packages.find]
 include = ["piccolo_serving*"]
 

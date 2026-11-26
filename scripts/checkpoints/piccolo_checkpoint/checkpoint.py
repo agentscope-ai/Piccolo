@@ -13,6 +13,7 @@ MODULES = (
     "common_inputs",
     "common_media",
     "piccolo_images",
+    "piccolo_ocr",
 )
 LOOP_MODULES = ("piccolo_loop_configuration", "piccolo_loop_modeling", "loop_utils")
 MODEL_TYPES = {

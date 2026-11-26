@@ -30,6 +30,24 @@ ModelConfig or ServerArgs.
 
 The distribution is `piccolo-serving`; the Python package is `piccolo_serving`.
 
+### Optional OCR
+
+With a checkpoint exported using the current tools, install the OCR extra and
+enable OCR at server startup:
+
+```bash
+python -m pip install './inference/sglang[ocr]'
+PICCOLO_OCR_ENABLED=1 \
+PICCOLO_OCR_DET_MODEL=/models/PP-OCRv5_mobile_det_safetensors \
+PICCOLO_OCR_REC_MODEL=/models/en_PP-OCRv5_mobile_rec_safetensors \
+bash inference/sglang/scripts/launch_sglang.sh /models/Piccolo 0 18604
+```
+
+Set `PICCOLO_OCR_DEVICE=cuda:0` to use CUDA. OCR uses CPU by default.
+The model path variables can be omitted if both weights are in the local
+Hugging Face cache. Only image requests are augmented and the HTTP schema
+stays the same.
+
 ## HTTP requests
 
 The request model name must match the server. This example uses `/models/Piccolo`:

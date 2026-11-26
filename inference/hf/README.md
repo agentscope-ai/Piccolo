@@ -36,6 +36,27 @@ you can also use `processor(payload)`. Image requests pass through the complete
 multimodal model. Probabilities always follow `item.option_keys`. The model and
 processor support independent reloading after `save_pretrained()`.
 
+### Optional OCR
+
+With a checkpoint exported using the current tools, install
+`opencv-python-headless` and `pyclipper`, then load the two PP-OCRv5 models
+once and pass the backend when encoding:
+
+```python
+ocr = processor.load_ocr(
+    "/models/PP-OCRv5_mobile_det_safetensors",
+    "/models/en_PP-OCRv5_mobile_rec_safetensors",
+    device="cuda:0",
+)
+items = processor.encode_request(payload, ocr=ocr)
+```
+
+The default device is CPU. Model paths can be omitted when the
+[detector](https://huggingface.co/PaddlePaddle/PP-OCRv5_mobile_det_safetensors) and
+[English recognizer](https://huggingface.co/PaddlePaddle/en_PP-OCRv5_mobile_rec_safetensors)
+are in the local Hugging Face cache. Image requests include one transcription
+per image in prompt order and still pass the original image inputs to the model.
+
 ## Requests and results
 
 To use an existing request file, replace the example's `payload` with:

@@ -17,7 +17,8 @@ from .common_inputs import (
     prepare_request,
 )
 from .common_media import EncodedImages, encode_prompt, prompt_encoding_kwargs
-from .piccolo_images import load_piccolo_image
+from .piccolo_images import load_image_source, load_piccolo_image
+from .piccolo_ocr import DETECTOR_ID, RECOGNIZER_ID, TorchOCR
 
 
 @dataclass
@@ -29,6 +30,11 @@ class EncodedDecision:
 
 class PiccoloProcessor(Qwen3VLProcessor):
     image_loader = None
+
+    @staticmethod
+    def load_ocr(detector=DETECTOR_ID, recognizer=RECOGNIZER_ID, *, device="cpu"):
+        """Load the optional OCR backend from local directories or the local Hub cache."""
+        return TorchOCR(detector, recognizer, device=device)
 
     def __init__(
         self,
@@ -46,6 +52,7 @@ class PiccoloProcessor(Qwen3VLProcessor):
 
     def __call__(self, payload=None, *, question_key=None, **kwargs):
         if isinstance(payload, dict) and "questions" in payload:
+            ocr = kwargs.pop("ocr", None)
             if kwargs.pop("return_tensors", "pt") != "pt" or kwargs:
                 raise ValueError('Decision encoding accepts only return_tensors="pt"')
             if question_key is None:
@@ -54,7 +61,7 @@ class PiccoloProcessor(Qwen3VLProcessor):
                         "Select question_key or use encode_request for multiple questions"
                     )
                 question_key = next(iter(payload["questions"]))
-            return self.encode_question(payload, question_key).inputs
+            return self.encode_question(payload, question_key, ocr=ocr).inputs
         if payload is not None:
             kwargs["text"] = payload
         return super().__call__(**kwargs)
@@ -64,9 +71,10 @@ class PiccoloProcessor(Qwen3VLProcessor):
         payload: JevRequest | PreparedRequest,
         *,
         images: Mapping[str, Image.Image] | None = None,
+        ocr: TorchOCR | Mapping[str, str] | None = None,
     ) -> list[EncodedDecision]:
         """Encode questions in order, optionally reusing images keyed by asset ID."""
-        return self._encode_questions(payload, None, images)
+        return self._encode_questions(payload, None, images, ocr)
 
     def encode_question(
         self,
@@ -74,49 +82,49 @@ class PiccoloProcessor(Qwen3VLProcessor):
         question_key: str,
         *,
         images: Mapping[str, Image.Image] | None = None,
+        ocr: TorchOCR | Mapping[str, str] | None = None,
     ) -> EncodedDecision:
         """Encode one question from a raw request or reuse its prepared data."""
-        return self._encode_questions(payload, (question_key,), images)[0]
+        return self._encode_questions(payload, (question_key,), images, ocr)[0]
 
-    def _encode_questions(self, payload, question_keys, images):
+    def _encode_questions(self, payload, question_keys, images, ocr):
         request = payload if isinstance(payload, PreparedRequest) else prepare_request(payload)
         keys = request.payload["questions"] if question_keys is None else question_keys
         decisions = [prepare_decision(request, key) for key in keys]
         kwargs = prompt_encoding_kwargs(self)
         asset_order = decisions[0].prompt.asset_order
-        encoded_images = self._encode_images(request, asset_order, images, kwargs["images_kwargs"])
+        images = self._load_images(request, asset_order, images)
+        ocr_texts = ocr.recognize(images) if isinstance(ocr, TorchOCR) else ocr
+        if images:
+            limit = self.image_processor.size["longest_edge"]
+            ordered = [load_piccolo_image(images[key], limit) for key in asset_order]
+            pixels = self.image_processor(images=ordered, **kwargs["images_kwargs"])
+        else:
+            pixels = {}
+        encoded_images = EncodedImages(asset_order, pixels)
         return [
-            self._encode_decision(decision, encoded_images, kwargs["text_kwargs"])
+            self._encode_decision(decision, encoded_images, kwargs["text_kwargs"], ocr_texts)
             for decision in decisions
         ]
 
-    def _encode_images(self, request: PreparedRequest, asset_order, images, image_kwargs):
-        if not asset_order:
-            return EncodedImages(asset_order, {})
-        limit = self.image_processor.size["longest_edge"]
-        loader = None
+    def _load_images(self, request: PreparedRequest, asset_order, images):
         if images is not None:
-            sources = (images[key] for key in asset_order)
-        else:
-            sources = (request.image_sources[key] for key in asset_order)
-            loader = self.image_loader
-            if loader:
-                assets = request.payload.get("assets", {})
-                sources = (
-                    image_source_name(assets[key], source)
-                    for key, source in zip(asset_order, sources, strict=True)
-                )
-        ordered_images = [
-            load_piccolo_image(source, limit, image_loader=loader) for source in sources
-        ]
-        return EncodedImages(asset_order, self.image_processor(images=ordered_images, **image_kwargs))
+            return {key: images[key] for key in asset_order}
+        if self.image_loader:
+            assets = request.payload.get("assets", {})
+            return {
+                key: self.image_loader(image_source_name(assets[key], request.image_sources[key]))
+                for key in asset_order
+            }
+        return {key: load_image_source(request.image_sources[key]) for key in asset_order}
 
-    def _encode_decision(self, decision: PreparedDecision, images: EncodedImages, text_kwargs):
+    def _encode_decision(self, decision: PreparedDecision, images: EncodedImages, text_kwargs, ocr_texts):
         encoded = encode_prompt(
             self,
             decision,
             pixels=images.for_order(decision.prompt.asset_order),
             text_kwargs=text_kwargs,
+            ocr_texts=ocr_texts,
         )
         tokens = encoded["input_ids"][0].tolist()
         if not tokens or len(tokens) > self.max_length:

@@ -12,7 +12,7 @@ templates and structural validation tools. HF and SGLang inference in
 | `checkpoint.py` | Script entry point for conversion and validation |
 | `piccolo_checkpoint/checkpoint.py` | Conversion, asset export and weight structure validation |
 | `piccolo_checkpoint/*_configuration.py`, `*_modeling.py` | Model sources bundled with checkpoints |
-| `piccolo_checkpoint/piccolo_processing.py`, `common_*.py`, `piccolo_images.py` | Input processing sources bundled with checkpoints |
+| `piccolo_checkpoint/piccolo_processing.py`, `common_*.py`, `piccolo_images.py`, `piccolo_ocr.py` | Input processing sources bundled with checkpoints |
 | `piccolo_checkpoint/piccolo_qwen35.jinja` | Decision template source |
 
 Export copies the required sources into the checkpoint root, preserving module

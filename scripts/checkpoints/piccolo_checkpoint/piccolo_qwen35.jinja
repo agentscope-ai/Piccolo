@@ -58,7 +58,8 @@
 {%- endset -%}
 
 {# Preserve the checkpoint layout, including the body on both sides of the media. #}
-{%- set user_text = header ~ body ~ media ~ body -%}
+{%- set ocr = ('State:\n' ~ ocr_state ~ '\n\n') if ocr_state else '' -%}
+{%- set user_text = header ~ ocr ~ body ~ media ~ body -%}
 {{- '<|im_start|>user\n' ~ (user_text | trim) ~ '<|im_end|>\n' -}}
 {%- if add_generation_prompt -%}
     {{- '<|im_start|>assistant\n' -}}
